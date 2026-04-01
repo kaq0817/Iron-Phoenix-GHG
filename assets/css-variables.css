@@ -31,7 +31,7 @@
   /* Common hooks linked to settings */
   --buttons-radius: 0px;
   --color-text-main: rgb(var(--color-white));
-  --color-accent: rgb(var(--color-neon-green));
+  --color-accent: rgb(var(--color-teal));
 }
 
 /* -------------------------------------------------------------------------- */
@@ -42,15 +42,15 @@
 /* Example color scheme (static) */
 .color-default {
   --color-background: 0,0,0;
-  --gradient-background: linear-gradient(90deg, #39FF14 0%, #fff 100%);
+  --gradient-background: linear-gradient(90deg, rgb(var(--color-teal)) 0%, #ffffff 100%);
   --color-foreground: 255,255,255;
   --color-background-contrast: 255,255,255;
   --color-shadow: 0,0,0;
-  --color-button: 57,255,20;
+  --color-button: 38,166,154;
   --color-button-text: 0,0,0;
   --color-secondary-button: 255,255,255;
   --color-secondary-button-text: 0,0,0;
-  --color-link: 57,255,20;
+  --color-link: 38,166,154;
   --color-badge-foreground: 255,255,255;
   --color-badge-background: 0,0,0;
   --color-badge-border: 255,255,255;

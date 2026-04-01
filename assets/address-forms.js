@@ -75,9 +75,7 @@
 
     var text = 'ZIP / Postal code';
     var n = (countryName || '').toLowerCase();
-    if (n === 'united kingdom') text = 'Postcode';
-    if (n === 'australia') text = 'Postcode';
-    if (n === 'ireland') text = 'Eircode';
+    if (n === 'canada') text = 'Postal code';
     label.textContent = text;
   }
 

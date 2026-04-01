@@ -10,6 +10,8 @@ Hero Custom (centered, LCP-friendly)
   assign heading_text = section.settings.headline | default: section.settings.title | default: shop.name
   assign sub_text     = section.settings.subheadline | default: section.settings.subtitle
   assign cta_link     = section.settings.cta_link | default: routes.all_products_collection_url
+  assign bg_loading = 'lazy'
+  assign bg_priority = 'auto'
 
   assign has_heading = false
   assign has_bg = false
@@ -21,6 +23,11 @@ Hero Custom (centered, LCP-friendly)
   if section.settings.background_image != blank
     assign has_bg = true
   endif
+
+  if request.page_type == 'index'
+    assign bg_loading = 'eager'
+    assign bg_priority = 'high'
+  endif
 -%}
 
 {{ 'section-hero-custom.css' | asset_url | stylesheet_tag }}
@@ -30,10 +37,10 @@ Hero Custom (centered, LCP-friendly)
     <div class="hero-custom__background" aria-hidden="true">
       {% render 'optimized-image',
         image: section.settings.background_image,
-        width_override: 1600,
+        width_override: 1200,
         sizes: '100vw',
-        loading: 'eager',
-        fetchpriority: 'high',
+        loading: bg_loading,
+        fetchpriority: bg_priority,
         alt: heading_text
       %}
     </div>

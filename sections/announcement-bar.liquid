@@ -2,6 +2,24 @@
 {{ 'component-slider.css' | asset_url | stylesheet_tag }}
 {{ 'component-list-social.css' | asset_url | stylesheet_tag }}
 
+<style>
+  .utility-bar,
+  .utility-bar--bottom-border {
+    border: 0 !important;
+    box-shadow: none !important;
+  }
+
+  .utility-bar::before,
+  .utility-bar::after {
+    display: none !important;
+  }
+
+  .announcement-bar {
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+  }
+</style>
+
 {%- assign social_icons = false -%}
 {%- if settings.social_facebook_link != blank or settings.social_instagram_link != blank or settings.social_youtube_link != blank or settings.social_tiktok_link != blank or settings.social_twitter_link != blank or settings.social_pinterest_link != blank or settings.social_snapchat_link != blank or settings.social_tumblr_link != blank or settings.social_vimeo_link != blank -%}
   {%- assign social_icons = true -%}
@@ -200,7 +218,7 @@ customElements.get('localization-form') || customElements.define('localization-f
     { "type": "checkbox", "id": "auto_rotate", "label": "Auto rotate", "default": false },
     { "type": "range", "id": "change_slides_speed", "min": 3, "max": 10, "step": 1, "unit": "s", "label": "Slide speed", "default": 5 },
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
-    { "type": "checkbox", "id": "show_line_separator", "label": "Show separator line", "default": true },
+    { "type": "checkbox", "id": "show_line_separator", "label": "Show separator line", "default": false },
     { "type": "checkbox", "id": "show_social", "label": "Show social icons", "default": false },
     { "type": "checkbox", "id": "enable_country_selector", "label": "Enable country selector", "default": false },
     { "type": "checkbox", "id": "enable_language_selector", "label": "Enable language selector", "default": false }

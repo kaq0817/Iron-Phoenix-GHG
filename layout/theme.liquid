@@ -22,7 +22,7 @@
 
     <meta
       name="description"
-      content="Iron Phoenix GHG is not affiliated with the Iron Phoenix video game or unrelated Creator-Spring stores. Our official sites are ironphoenix.store and ourphoenixrise.com."
+      content="Our Phoenix Rise (DBA Iron Phoenix GHG) offers made-to-order apparel, gifts, and lifestyle products with secure checkout and US-based customer support."
     >
 
     <title>
@@ -137,6 +137,35 @@
       @media (min-width: 750px) {
         body { font-size: 1.6rem; }
       }
+
+      /* Homepage frame pass: clean black/teal shell with continuous rails */
+      body.template-index #MainContent {
+        position: relative;
+        background: linear-gradient(180deg, #06090f 0%, #05080e 100%);
+      }
+
+      body.template-index #MainContent::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        border-left: 1px solid rgba(36, 213, 255, 0.22);
+        border-right: 1px solid rgba(36, 213, 255, 0.22);
+        box-shadow: inset 0 0 0 1px rgba(8, 24, 36, 0.55);
+      }
+
+      body.template-index #MainContent .shopify-section {
+        position: relative;
+      }
+
+      body.template-index #MainContent .shopify-section + .shopify-section {
+        border-top: 1px solid rgba(36, 213, 255, 0.12);
+      }
+
+      body.template-index #MainContent [id^='LevelUpHero-'] .levelup-hero__bg {
+        background: linear-gradient(180deg, rgba(7, 12, 20, 0.96) 0%, rgba(5, 9, 16, 0.94) 100%);
+      }
+
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
       img { max-width: 100%; height: auto; object-fit: cover; object-position: center; loading: lazy; decoding: async; }
@@ -148,33 +177,33 @@
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Iron Phoenix GHG",
-        "alternateName": "Go Hard Gaming Discord LLC",
-        "url": "https://ironphoenix.store",
-        "description": "Iron Phoenix GHG is a creator-owned brand. We are not affiliated with the Iron Phoenix video game or any other Creator-Spring stores using that name.",
+        "name": "Our Phoenix Rise",
+        "alternateName": "Iron Phoenix GHG",
+        "legalName": "Go Hard Gaming Discord LLC",
+        "url": "https://ourphoenixrise.com",
+        "description": "Our Phoenix Rise is operated by Go Hard Gaming Discord LLC (DBA Iron Phoenix GHG).",
         "sameAs": [
-          "https://ourphoenixrise.com",
-          "https://shadowseekers-forge.creator-spring.com",
           "https://facebook.com/GohardgamingIronPhoenix",
           "https://twitter.com/SSgohardgaming",
+          "https://youtube.com/@shadowseekerOG",
           "https://tiktok.com/@gohardgamingdiscord"
         ],
         "contactPoint": [
           {
             "@type": "ContactPoint",
             "contactType": "Customer Support",
-            "email": "support@ironphoenix.store",
-            "url": "https://ironphoenix.store/pages/contact",
+            "email": "Helpcenter@ourphoenixrise.com",
+            "telephone": "+1-518-415-8496",
+            "url": "https://ourphoenixrise.com/pages/contact",
             "availableLanguage": ["English"],
             "areaServed": "US"
           }
         ]
       }
     </script>
-    <link rel="preload" as="image" href="{{ article.image | image_url: width: 240 }}">
 </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
+  <body class="template-{{ template.name | escape }} gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
     <script>
       document.documentElement.classList.replace('no-js', 'js');
     </script>

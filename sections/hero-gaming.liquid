@@ -23,10 +23,6 @@
         {%- endif -%}
       </div>
 
-      <div style="margin-top:1.25rem;">
-        {%- comment -%} Assumes snippet exists in theme {%- endcomment -%}
-        {% render 'vip-xp-bar' %}
-      </div>
     </div>
 
     {%- if section.settings.image != blank -%}
@@ -36,8 +32,8 @@
           image: section.settings.image,
           width_override: 1200,
           sizes: '(max-width: 749px) 100vw, 50vw',
-          loading: 'eager',
-          fetchpriority: 'high',
+          loading: 'lazy',
+          fetchpriority: 'low',
           alt: section.settings.image_alt | default: section.settings.heading,
           class: 'hero-gaming__image'
         %}

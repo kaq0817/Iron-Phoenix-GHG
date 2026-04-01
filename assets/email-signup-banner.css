@@ -1,170 +1,155 @@
-{% comment %}
-Email signup banner (external CSS + safe text)
-- Uses assets/email-signup-banner.css
-- No inline @media; alignment via classes
-- Overlay opacity via CSS var on section
-- Subheading rendered as PLAIN TEXT (strip_html | escape)
-{% endcomment %}
+/* assets/email-signup-banner.css */
 
-{{ 'email-signup-banner.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
-<noscript>{{ 'email-signup-banner.css' | asset_url | stylesheet_tag }}</noscript>
-
-{%- liquid
-  assign img = section.settings.image
-  assign alt_text = section.settings.image_alt | default: ''
-
-  assign section_classes = 'email-signup-banner'
-  if section.settings.show_text_box
-    assign section_classes = section_classes | append: ' show-text-box'
-  endif
-  if section.settings.image_height != 'adapt-image'
-    assign section_classes = section_classes | append: ' height--' | append: section.settings.image_height
-  endif
-  if section.settings.color_scheme == 'scheme-1'
-    assign section_classes = section_classes | append: ' color-scheme--dark'
-  else
-    assign section_classes = section_classes | append: ' color-scheme--light'
-  endif
-
-  assign desktop_align_class = 'align-' | append: section.settings.desktop_content_alignment
-  assign mobile_align_class  = 'mobile-align-' | append: section.settings.mobile_content_alignment
-  assign overlay_opacity = section.settings.image_overlay_opacity | divided_by: 100.0
--%}
-
-<section
-  id="EmailSignup-{{ section.id }}"
-  class="{{ section_classes }}"
-  role="region"
-  aria-label="Email signup"
-  style="--overlay: {{ overlay_opacity }};"
->
-  <div class="banner">
-    {% if section.settings.show_background_image and img != blank %}
-      <div class="banner__media">
-        {% render 'optimized-image',
-          image: img,
-          alt: alt_text,
-          width_override: 1500,
-          sizes: '100vw',
-          loading: 'eager',
-          fetchpriority: 'high',
-          class: 'banner__media-image' %}
-        {% if section.settings.image_overlay_opacity > 0 %}
-          <div class="banner__overlay"></div>
-        {% endif %}
-      </div>
-    {% endif %}
-
-    <div class="banner__content {{ desktop_align_class }} {{ mobile_align_class }}">
-      <div class="signup__box">
-        {%- for block in section.blocks -%}
-          {%- case block.type -%}
-            {%- when 'heading' -%}
-              <h2 class="signup__heading {{ block.settings.heading_size }}" {{ block.shopify_attributes }}>
-                {{ block.settings.heading | escape }}
-              </h2>
-
-            {%- when 'paragraph' -%}
-              <p class="signup__subheading {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
-                {{ block.settings.text | strip_html | escape }}
-              </p>
-
-            {%- when 'email_form' -%}
-              <div {{ block.shopify_attributes }}>
-                {% form 'customer', class: 'newsletter-form' %}
-                  <input type="hidden" name="contact[tags]" value="newsletter">
-                  <div class="newsletter-form__field-wrapper">
-                    <input
-                      id="NewsletterForm--{{ section.id }}"
-                      type="email"
-                      name="contact[email]"
-                      class="field__input"
-                      value="{{ form.email | escape }}"
-                      autocorrect="off" autocapitalize="off" autocomplete="email"
-                      placeholder="Email address" required
-                      {% if form.errors %} aria-invalid="true" aria-describedby="Newsletter-error--{{ section.id }}"{% endif %}
-                      {% if form.posted_successfully? %} aria-describedby="Newsletter-success--{{ section.id }}"{% endif %}
-                    >
-                    <button type="submit" class="field__button button">Subscribe</button>
-                  </div>
-
-                  {% if form.errors %}
-                    <small class="form__message" id="Newsletter-error--{{ section.id }}">Please enter a valid email.</small>
-                  {% endif %}
-
-                  {% if form.posted_successfully? %}
-                    <p class="form__message" id="Newsletter-success--{{ section.id }}" tabindex="-1">Thanks! You’re subscribed.</p>
-                  {% endif %}
-                {% endform %}
-              </div>
-          {%- endcase -%}
-        {%- endfor -%}
-      </div>
-    </div>
-  </div>
-</section>
-
-{% schema %}
-{
-  "name": "Email signup banner",
-  "tag": "section",
-  "class": "section section-email-signup-banner",
-  "settings": [
-    { "type": "checkbox", "id": "show_background_image", "label": "Show background image", "default": true },
-    { "type": "image_picker", "id": "image", "label": "Background image" },
-    { "type": "text", "id": "image_alt", "label": "Background image alt" },
-    { "type": "range", "id": "image_overlay_opacity", "min": 0, "max": 100, "step": 5, "unit": "%", "label": "Overlay opacity", "default": 20 },
-    { "type": "select", "id": "image_height", "label": "Section height",
-      "options": [
-        { "value": "adapt-image", "label": "Adapt to image" },
-        { "value": "small", "label": "Small" },
-        { "value": "medium", "label": "Medium" },
-        { "value": "large", "label": "Large" }
-      ],
-      "default": "medium"
-    },
-    { "type": "select", "id": "desktop_content_alignment", "label": "Desktop content alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "center"
-    },
-    { "type": "select", "id": "mobile_content_alignment", "label": "Mobile content alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "center"
-    },
-    { "type": "checkbox", "id": "show_text_box", "label": "Show frosted background for content", "default": true },
-    { "type": "checkbox", "id": "show_text_below", "label": "Show text below image on mobile", "default": true }
-  ],
-  "blocks": [
-    { "type": "heading", "name": "Heading", "limit": 1,
-      "settings": [
-        { "type": "text", "id": "heading", "label": "Heading text", "default": "Join the Phoenix Elite" },
-        { "type": "select", "id": "heading_size", "label": "Heading size",
-          "options": [ { "value": "h2", "label": "H2" }, { "value": "h1", "label": "H1" }, { "value": "h0", "label": "Hero" } ],
-          "default": "h1"
-        }
-      ]
-    },
-    { "type": "paragraph", "name": "Subheading", "limit": 1,
-      "settings": [
-        { "type": "richtext", "id": "text", "label": "Subheading text", "default": "<p>Get exclusive drops, tips, and members-only discounts.</p>" },
-        { "type": "select", "id": "text_style", "label": "Text style",
-          "options": [ { "value": "body", "label": "Body" }, { "value": "subtitle", "label": "Subtitle" } ],
-          "default": "body"
-        }
-      ]
-    },
-    { "type": "email_form", "name": "Email form", "limit": 1 }
-  ],
-  "presets": [
-    { "name": "Email signup banner", "blocks": [ { "type": "heading" }, { "type": "paragraph" }, { "type": "email_form" } ] }
-  ]
+.email-signup-banner {
+  position: relative;
+  margin: 0;
 }
-{% endschema %}
+
+.email-signup-banner .banner {
+  position: relative;
+  min-height: 260px;
+  border-radius: 0;
+  overflow: hidden;
+}
+
+.email-signup-banner.height--small .banner {
+  min-height: 240px;
+}
+
+.email-signup-banner.height--medium .banner {
+  min-height: 320px;
+}
+
+.email-signup-banner.height--large .banner {
+  min-height: 420px;
+}
+
+.email-signup-banner .banner__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.email-signup-banner .banner__media img,
+.email-signup-banner .banner__media picture,
+.email-signup-banner .banner__media .banner__media-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.email-signup-banner .banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, var(--overlay, 0.25));
+}
+
+.email-signup-banner .banner__content {
+  position: relative;
+  z-index: 1;
+  min-height: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(20px, 4vw, 44px);
+}
+
+.email-signup-banner .banner__content.align-left {
+  justify-content: flex-start;
+}
+
+.email-signup-banner .banner__content.align-right {
+  justify-content: flex-end;
+}
+
+.email-signup-banner .signup__box {
+  width: min(700px, 100%);
+  text-align: center;
+  color: #fff;
+}
+
+.email-signup-banner.show-text-box .signup__box {
+  background: rgba(8, 12, 16, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  padding: clamp(18px, 3vw, 28px);
+  backdrop-filter: blur(8px);
+}
+
+.email-signup-banner .signup__heading {
+  margin: 0 0 0.5rem;
+  line-height: 1.15;
+}
+
+.email-signup-banner .signup__heading.h0 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+}
+
+.email-signup-banner .signup__heading.h1 {
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+}
+
+.email-signup-banner .signup__heading.h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+}
+
+.email-signup-banner .signup__subheading {
+  margin: 0 0 1rem;
+  line-height: 1.55;
+  opacity: 0.95;
+}
+
+.email-signup-banner .newsletter-form__field-wrapper {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.email-signup-banner .field__input {
+  width: 100%;
+  min-height: 46px;
+  padding: 0.7rem 0.9rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.email-signup-banner .field__input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.email-signup-banner .field__button {
+  min-height: 46px;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  border: 0;
+  background: #37ff88;
+  color: #08120f;
+  font-weight: 700;
+}
+
+.email-signup-banner .form__message {
+  margin-top: 0.7rem;
+  display: block;
+}
+
+@media (max-width: 749px) {
+  .email-signup-banner .banner__content.mobile-align-left {
+    justify-content: flex-start;
+  }
+
+  .email-signup-banner .banner__content.mobile-align-right {
+    justify-content: flex-end;
+  }
+
+  .email-signup-banner .newsletter-form__field-wrapper {
+    grid-template-columns: 1fr;
+  }
+
+  .email-signup-banner .field__button {
+    width: 100%;
+  }
+}

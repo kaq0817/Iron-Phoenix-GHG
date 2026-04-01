@@ -1,74 +1,91 @@
 /* assets/section-hero-custom.css */
 
-/* Wrapper */
 .hero-custom {
   position: relative;
+  min-height: clamp(360px, 62vw, 640px);
   display: grid;
   place-items: center;
-  padding: clamp(3rem, 6vw, 8rem) 1.6rem;
+  padding: clamp(2.2rem, 4vw, 4rem) 1rem;
   text-align: center;
-  background-color: rgb(var(--color-background)); /* Use theme's background color */
-  background-image: var(--hero-bg, none); /* Dynamic background image from Liquid */
-  background-size: cover;
-  background-position: center;
-  isolation: isolate; /* Creates a new stacking context */
-  color: rgb(var(--color-foreground)); /* Use theme's foreground color for text */
+  color: #fff;
+  overflow: hidden;
+  isolation: isolate;
 }
 
-/* Media */
-.hero-logo {
-  margin-bottom: 1.5rem;
-  object-fit: contain;
-  max-width: 200px;
+.hero-custom__background {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.hero-custom__background img,
+.hero-custom__background picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hero-custom::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.35) 0%, rgba(0, 0, 0, 0.65) 100%);
+}
+
+.hero-custom__content {
+  width: min(860px, 92vw);
+}
+
+.hero-custom__logo {
+  margin-bottom: 1rem;
+}
+
+.hero-custom__logo img,
+.hero-custom__logo picture {
+  width: clamp(100px, 20vw, 180px);
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
-/* Text */
-.hero-headline {
-  margin: 0 0 .5rem;
-  font-size: clamp(2.2rem, 4.5vw, 4rem);
-  line-height: 1.05;
-}
-.hero-subheadline {
-  margin: 0 0 1.25rem;
-  opacity: .9;
-  max-width: 72ch;
+.hero-custom__headline {
+  margin: 0 0 0.45rem;
+  font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+  line-height: 1.08;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 }
 
-/* Neon accents (using core brand accents from css-variables.css.liquid) */
-.hero-headline.neon-glow {
-  text-shadow:
-    0 0 10px rgba(var(--color-neon-pink), .5), /* Using --color-neon-pink */
-    0 0 30px rgba(var(--color-neon-pink), .35);
+.hero-custom__subheadline {
+  margin: 0 auto 1.1rem;
+  max-width: 60ch;
+  font-size: clamp(1rem, 1.8vw, 1.2rem);
+  line-height: 1.5;
+  opacity: 0.95;
 }
-.hero-custom .button--neon {
+
+.hero-custom__button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: .5rem;
-  padding: .9rem 1.25rem;
-  border-radius: 12px;
-  font-weight: 700;
-  color: rgb(var(--color-black)); /* Text is black on neon button */
-  background: linear-gradient(90deg, rgb(var(--color-neon-pink)), rgb(var(--color-neon-green))); /* Neon gradient */
-  box-shadow:
-    0 0 16px rgba(var(--color-neon-pink), .35),
-    0 0 10px rgba(var(--color-neon-green), .25);
+  padding: 0.85rem 1.35rem;
+  border-radius: 999px;
   text-decoration: none;
-  transition: transform .15s ease, filter .15s ease;
-}
-.hero-custom .button--neon:hover {
-  transform: translateY(-2px);
-  filter: saturate(1.05);
-}
-.hero-custom .button--neon:focus-visible {
-  outline: 2px solid rgb(var(--color-white)); /* White outline for focus */
-  outline-offset: 2px;
+  font-weight: 700;
+  background: linear-gradient(90deg, #46ff79, #00d4ff);
+  color: #071014;
+  box-shadow: 0 8px 28px rgba(0, 212, 255, 0.28);
+  transition: transform 0.16s ease, filter 0.16s ease;
 }
 
-/* Responsive niceties */
-@media (min-width: 990px) {
-  .hero-custom {
-    padding: clamp(6rem, 9vw, 12rem) 2rem;
-  }
+.hero-custom__button:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.08);
+}
+
+.hero-custom__button:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 2px;
 }
