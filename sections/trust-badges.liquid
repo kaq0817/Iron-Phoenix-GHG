@@ -1,19 +1,69 @@
-<section class="trust-badges" style="text-align: center; padding: 2rem;">
-  <h2>Shop With Confidence</h2>
+<style>
+  .trust-ribbon {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    background: linear-gradient(135deg, #0d1535 0%, #1a3a8f 50%, #0d1535 100%);
+    border-top: 1px solid var(--color-deco-gold, #c9a84c);
+    border-bottom: 1px solid var(--color-deco-gold, #c9a84c);
+    padding: 2.8rem 2rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  /* Subtle Art Deco corner lines */
+  .trust-ribbon::before,
+  .trust-ribbon::after {
+    content: '';
+    position: absolute;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: rgba(201, 168, 76, 0.3);
+  }
+  .trust-ribbon::before { left: 24px; }
+  .trust-ribbon::after  { right: 24px; }
+
+  .trust-ribbon__heading {
+    font-size: clamp(1.6rem, 2vw, 2rem);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-deco-gold, #c9a84c);
+    margin: 0 0 1.8rem;
+  }
+
+  .trust-ribbon__img {
+    display: block;
+    margin: 0 auto;
+    width: min(880px, 90vw);
+    height: auto;
+  }
+</style>
+
+<section class="trust-ribbon">
+  <h2 class="trust-ribbon__heading">Shop With Confidence</h2>
   {% if section.settings.trust_image %}
     <picture>
-      <source srcset="{{ section.settings.trust_image | image_url: format: 'webp' }}" type="image/webp" media="(min-width: 768px)">
+      <source
+        srcset="{{ section.settings.trust_image | image_url: width: 1760, format: 'webp' }}"
+        type="image/webp"
+        media="(min-width: 768px)"
+      >
       <img
-        src="{{ section.settings.trust_image | image_url: width: 600, format: 'webp' }}"
-        alt="{{ section.settings.alt_text | escape | default: 'Trust Badges' }}"
-        width="600"
+        class="trust-ribbon__img"
+        src="{{ section.settings.trust_image | image_url: width: 880, format: 'webp' }}"
+        alt="{{ section.settings.alt_text | escape | default: 'Trust Badges: Gamer Designed, Wellness, Secure, Support' }}"
+        width="880"
         height="auto"
         loading="lazy"
-        style="max-width: 100%; height: auto; margin-top: 1rem;"
       >
     </picture>
   {% else %}
-    <p style="margin-top:2rem;color:var(--color-foreground,#222);">Upload your trust badges image in the section settings!</p>
+    <p style="color:var(--color-deco-gold,#c9a84c);margin:0;">Upload your trust badges image in the section settings.</p>
   {% endif %}
 </section>
 
