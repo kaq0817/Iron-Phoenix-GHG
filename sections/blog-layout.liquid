@@ -3,9 +3,12 @@
   - Full-width blog content
 {% endcomment %}
 
-{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
-{{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'component-article-card.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-article-card.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'component-card.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'component-card.css' | asset_url | stylesheet_tag }}</noscript>
+<link rel="stylesheet" href="{{ 'section-main-blog.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}</noscript>
 
 <div class="blog-layout page-width">
   <div class="blog-layout__main">

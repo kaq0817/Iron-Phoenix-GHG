@@ -2,7 +2,8 @@
   Sidebar: Featured Collections (safe)
 {% endcomment %}
 
-{{ 'section-featured-collection-sidebar.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'section-featured-collection-sidebar.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-featured-collection-sidebar.css' | asset_url | stylesheet_tag }}</noscript>
 
 <aside class="blog-sidebar-featured-collections">
   {% if section.settings.heading != blank %}

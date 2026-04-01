@@ -5,7 +5,8 @@
   Styles live in assets/badge-pack.css
 {% endcomment %}
 
-{{ 'badge-pack.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'badge-pack.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'badge-pack.css' | asset_url | stylesheet_tag }}</noscript>
 
 <section class="badge-pack color-{{ section.settings.color_scheme }}">
   <div class="badge-pack__wrapper page-width">
