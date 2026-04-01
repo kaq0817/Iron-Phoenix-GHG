@@ -98,27 +98,44 @@
 
     <style>
       :root {
-        /* Luxury Palette */
-        --color-primary: #1a0033; /* Deep dark purple/navy */
-        --color-secondary: #a87932; /* Rich gold/bronze */
-        --color-accent: #00f5ff; /* Vibrant cyan, as used in header and footer */
-        --rgb-accent: 0, 245, 255; /* RGB for rgba usage */
+        /* ── Global Palette (agreed Apr 2026) ── */
+        --color-background-dark:      #0b0f1a;
+        --color-accent:               #14f1d9; /* teal — gaming, outdoors, wellness */
+        --rgb-accent:                 20, 241, 217;
+        --color-secondary:            #3a86ff; /* blue */
+        --color-cta:                  #f5ff3b; /* CTA highlight */
+        --color-text-light:           #ffffff;
+        --color-text-muted:           #a0a7b8;
+        --color-text-faded:           #5a6275;
+        --color-text-highlight:       #d0d7e8;
+        --color-border-subtle:        #1e2535;
+        --color-border-subtle-dark:   #131826;
+        --color-icon-default:         #6b7a99;
 
-        /* Semantic Colors */
-        --color-background-dark: #000000;
-        --color-text-light: #ffffff;
-        --color-text-muted: #cccccc;
-        --color-text-faded: #666666;
-        --color-text-highlight: #aaaaaa;
-        --color-border-subtle: #222222;
-        --color-border-subtle-dark: #1a1a1a;
-        --color-icon-default: #888888;
+        /* ── Jewelry / Art Deco (1920s — rich jewel-tone blues, ivory, thin gold — elegant NOT dusty) ── */
+        --color-navy-deep:            #0b1e3d; /* deep ceremonial navy */
+        --color-royal-blue:           #1a3a8f; /* rich saturated royal blue — main panel */
+        --color-jewel-blue:           #1e4db7; /* jewel-tone sapphire mid-tone */
+        --color-ice-blue:             #a8c4e0; /* light ice blue for text/accents on dark */
+        --color-ivory:                #f5f0e4; /* ivory rose petals / satin ribbon */
+        --color-pearl:                #f8f5ef; /* lightest highlight */
+        --color-sapphire:             #1845c8; /* pure sapphire gem accent */
+        --color-deco-gold:            #c9a84c; /* THIN borders & Art Deco lines ONLY */
 
-        /* Header Specific */
-        --color-header-gradient-start: #32004b;
-        --color-header-gradient-end: #000032;
-        --color-search-bg: rgba(255, 255, 255, 0.1);
-        --color-search-placeholder: #b5b5ff;
+        /* ── Americana Front Porch collection ── */
+        --color-americana-white:      #f2ede4; /* warm clapboard white */
+        --color-americana-navy:       #1e3466; /* deep navy — chairs, accents */
+        --color-americana-red:        #9e2a2b; /* colonial barn red door */
+        --color-americana-sky:        #b8d4da; /* haint blue porch ceiling */
+        --color-americana-terra:      #c1713a; /* terracotta pot */
+        --color-americana-check:      #2d4a7a; /* gingham navy textile */
+        --color-americana-wheat:      #d9c49a; /* welcome mat / wood tone */
+
+        /* ── Header ── */
+        --color-header-gradient-start: #0d1b35;
+        --color-header-gradient-end:   #0b0f1a;
+        --color-search-bg:             rgba(20, 241, 217, 0.08);
+        --color-search-placeholder:    #a0a7b8;
       }
 
       html { box-sizing: border-box; }
@@ -141,7 +158,7 @@
       /* Homepage frame pass: clean black/teal shell with continuous rails */
       body.template-index #MainContent {
         position: relative;
-        background: linear-gradient(180deg, #06090f 0%, #05080e 100%);
+        background: linear-gradient(180deg, #0b0f1a 0%, #090d17 100%);
       }
 
       body.template-index #MainContent::before {

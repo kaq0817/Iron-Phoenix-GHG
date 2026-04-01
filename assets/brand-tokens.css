@@ -61,50 +61,65 @@
   /* Identity */
   --brand-variant: "gamer";
 
-  /* Backgrounds & text (RGB + non-rgb) */
-  --color-primary-bg-rgb: 10,10,10;
+  /* Backgrounds & text */
+  --color-primary-bg-rgb: 11,15,26;
   --color-body-text-rgb:  255,255,255;
-  --color-headings-rgb:   0,255,255;
-  --color-links-rgb:      255,0,255;
+  --color-headings-rgb:   20,241,217;
+  --color-links-rgb:      58,134,255;
 
-  --color-primary-bg: 10,10,10;
+  --color-primary-bg: 11,15,26;
   --color-body-text:  255,255,255;
-  --color-headings:   0,255,255;
-  --color-links:      255,0,255;
+  --color-headings:   20,241,217;
+  --color-links:      58,134,255;
 
   /* Accent + buttons */
-  --color-accent: #39FF14;
-  --color-accent-rgb: 57,255,20;
-  --color-accent-hover: #FFFF00;
-  --color-accent-hover-rgb: 255,255,0;
+  --color-accent: #14f1d9;
+  --color-accent-rgb: 20,241,217;
+  --color-accent-hover: #3a86ff;
+  --color-accent-hover-rgb: 58,134,255;
 
-  --color-button-primary-bg: 255,0,255;
-  --color-button-primary-text: 0,0,0;
-  --color-button-primary-hover: 255,255,0;
+  --color-button-primary-bg: 20,241,217;
+  --color-button-primary-text: 11,15,26;
+  --color-button-primary-hover: 58,134,255;
 
   /* Gradients */
-  --color-background-gradient-start: #00BDBD;
-  --color-background-gradient-end:   #6a1b9a;
-  --color-background-gradient-start-rgb: 0,189,189;
-  --color-background-gradient-end-rgb:   106,27,154;
+  --color-background-gradient-start: #0d1b35;
+  --color-background-gradient-end:   #0b0f1a;
+  --color-background-gradient-start-rgb: 13,27,53;
+  --color-background-gradient-end-rgb:   11,15,26;
 
   /* Hex companions */
-  --color-bg: #000000;
-  --color-main-text: #00BDBD;
-  --color-neon-pink:   #FF10F0;
-  --color-neon-yellow: #FFFF00;
-  --color-neon-green:  #39FF14;
-
-  --color-neon-pink-rgb:   255,16,240;
-  --color-neon-yellow-rgb: 255,255,0;
-  --color-neon-green-rgb:  57,255,20;
+  --color-bg:          #0b0f1a;
+  --color-main-text:   #14f1d9;
+  --color-cta:         #f5ff3b;
+  --color-cta-rgb:     245,255,59;
+  --color-text-muted:  #a0a7b8;
 
   --color-text-main:     #ffffff;
-  --color-text-cta:      #000000;
-  --color-border:        #ffffff;
+  --color-text-cta:      #0b0f1a;
+  --color-border:        #1e2535;
   --color-text-main-rgb: 255,255,255;
-  --color-text-cta-rgb:  0,0,0;
-  --color-border-rgb:    255,255,255;
+  --color-text-cta-rgb:  11,15,26;
+  --color-border-rgb:    30,37,53;
+
+  /* Jewelry / Art Deco — rich jewel-tone blues (deep, saturated, elegant — NOT dusty, NOT neon) */
+  --color-navy-deep:   #0b1e3d; /* deep ceremonial navy */
+  --color-royal-blue:  #1a3a8f; /* rich saturated royal blue — main panel */
+  --color-jewel-blue:  #1e4db7; /* jewel-tone sapphire mid-tone */
+  --color-ice-blue:    #a8c4e0; /* light ice for text/accents on dark */
+  --color-ivory:       #f5f0e4; /* ivory rose petals / satin ribbon */
+  --color-pearl:       #f8f5ef; /* lightest highlight */
+  --color-sapphire:    #1845c8; /* pure sapphire gem accent */
+  --color-deco-gold:   #c9a84c; /* THIN borders & Art Deco lines ONLY */
+
+  /* Americana Front Porch collection */
+  --color-americana-white: #f2ede4; /* warm clapboard white */
+  --color-americana-navy:  #1e3466; /* deep navy — chairs, accents */
+  --color-americana-red:   #9e2a2b; /* colonial barn red door */
+  --color-americana-sky:   #b8d4da; /* haint blue porch ceiling */
+  --color-americana-terra: #c1713a; /* terracotta pot */
+  --color-americana-check: #2d4a7a; /* gingham navy textile */
+  --color-americana-wheat: #d9c49a; /* welcome mat / wood tone */
 
   --buttons-radius: 12px;
 }
