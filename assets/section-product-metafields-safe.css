@@ -1,0 +1,37 @@
+/* assets/section-product-metafields-safe.css */
+
+.product-metafields {
+  padding: 1.2rem 0;
+}
+.product-metafields__title {
+  margin: 0 0 .4rem;
+  font-weight: 800;
+  letter-spacing: .02em;
+}
+.product-metafields__text {
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+.product-metafields__traits {
+  margin: 0;
+  display: grid;
+  gap: .4rem;
+}
+.product-metafields__row {
+  display: grid;
+  grid-template-columns: 9rem 1fr;
+  gap: .6rem;
+  align-items: start;
+}
+.product-metafields__key {
+  margin: 0;
+  opacity: .8;
+}
+.product-metafields__val {
+  margin: 0;
+}
+@media (max-width: 640px) {
+  .product-metafields__row {
+    grid-template-columns: 7.5rem 1fr;
+  }
+}

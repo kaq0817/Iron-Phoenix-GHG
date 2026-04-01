@@ -1,0 +1,57 @@
+{%- comment -%}
+VIP Banner (snippet)
+- Shows a join CTA if customer is NOT a member
+- Membership via tags (settings.membership_allowed_tags) and/or metafields:
+  customer.metafields.membership.active (boolean)
+  customer.metafields.membership.expires_on (date)
+- Updated: Removed "Free Gift" text logic to prevent misrepresentation.
+{%- endcomment -%}
+
+<link rel="stylesheet" href="{{ 'vip.css' | asset_url }}" media="print" onload="this.media='all'" preload>
+<noscript>{{ 'vip.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign membership_enabled = settings.enable_membership | default: false -%}
+{%- if membership_enabled -%}
+  {%- assign is_member = false -%}
+
+  {%- if customer -%}
+    {%- assign allowed_tags = settings.membership_allowed_tags | default: 'Member,VIP' | split: ',' -%}
+
+    {%- comment -%} Check if any allowed tag is on the customer (trim each allowed tag). {%- endcomment -%}
+    {%- for t in allowed_tags -%}
+      {%- assign t_clean = t | strip -%}
+      {%- if customer.tags contains t_clean -%}
+        {%- assign is_member = true -%}{%- break -%}
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- comment -%} Metafield: active boolean. {%- endcomment -%}
+    {%- if is_member == false and customer.metafields.membership.active and customer.metafields.membership.active.value == true -%}
+      {%- assign is_member = true -%}
+    {%- endif -%}
+
+    {%- comment -%} Metafield: expires_on date (active if in the future). {%- endcomment -%}
+    {%- if is_member == false and customer.metafields.membership.expires_on and customer.metafields.membership.expires_on.value -%}
+      {%- assign today = 'now' | date: '%Y-%m-%d' -%}
+      {%- assign exp = customer.metafields.membership.expires_on.value | date: '%Y-%m-%d' -%}
+      {%- if exp >= today -%}{%- assign is_member = true -%}{%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- unless is_member -%}
+    {%- comment -%} Destination: membership product if handle provided, else account register. {%- endcomment -%}
+    {%- if settings.membership_product_handle and settings.membership_product_handle != '' -%}
+      {%- assign dest_url = routes.collections_url | append: '/' | append: settings.membership_product_handle | prepend: routes.root_url -%}
+    {%- else -%}
+      {%- assign dest_url = routes.account_register_url -%}
+    {%- endif -%}
+
+    <div class="vip-banner" role="note" aria-label="VIP membership promotion: Join for exclusive discounts">
+      <strong class="vip-banner__badge">{{ settings.vip_badge_text | default: 'VIP' | escape }}</strong>
+      <span class="vip-banner__text">
+        {{ 'Members get exclusive discounts.' | escape }}
+      </span>
+      <a href="{{ dest_url | escape }}" class="vip-banner__link">{{ 'Join now' | escape }}</a>
+    </div>
+  {%- endunless -%}
+{%- endif -%}

@@ -1,0 +1,57 @@
+/* assets/section-featured-collection-sidebar.css */
+
+aside.blog-sidebar-featured-collections {
+  padding: 1.5rem 1rem;
+}
+
+.sidebar-heading {
+  font-size: 1.2rem;
+  text-align: left;
+  margin-bottom: 1rem;
+}
+
+.sidebar-featured-collections-list {
+  /* No specific styles here from the original inline block */
+}
+
+.sidebar-featured-collection-card {
+  margin-bottom: 1.25rem;
+  background: rgb(var(--color-white)); /* Using theme's --color-white */
+  border-radius: 8px;
+  padding: 0.75rem;
+  box-shadow: 0 2px 8px rgba(var(--color-black), 0.06); /* Using theme's --color-black */
+}
+
+.sidebar-featured-collection-card a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit; /* Inherit text color from parent to apply dynamically */
+}
+
+.sidebar-featured-collection-card img {
+  width: 60px; /* Example fixed size, adjust as needed */
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-right: 0.75rem;
+}
+
+.sidebar-featured-collection-card div {
+  flex-grow: 1; /* Allow content to take available space */
+}
+
+.sidebar-featured-collection-card div:first-of-type {
+  font-weight: bold;
+  color: rgb(var(--color-black)); /* Using theme's --color-black */
+}
+
+.sidebar-featured-collection-card div:last-of-type {
+  font-size: 0.9rem;
+  color: rgba(var(--color-black), 0.7); /* Muted text using theme's --color-black */
+}
+
+.sidebar-featured-collections-list > div:last-of-type {
+  font-size: 0.95rem;
+  color: rgba(var(--color-black), 0.5); /* Lighter text for empty state */
+}

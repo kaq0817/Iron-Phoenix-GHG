@@ -1,0 +1,8 @@
+{%- comment -%} /snippets/cta-powerup.liquid — neon CTA with icon {%- endcomment -%}
+{%- assign href = href | default: routes.all_products_collection_url -%}
+<a href="{{ href }}" class="button btn--powerup">
+  <span class="inline-flex items-center" style="display:inline-flex;gap:.6rem;align-items:center;">
+    {% render 'gaming-icons', name: icon | default: 'bolt', class: 'icon' %}
+    <span>{{ label | default: 'Power Up' | escape }}</span>
+  </span>
+</a>

@@ -1,0 +1,282 @@
+<!-- sections/collection-list.liquid -->
+{% comment %}
+  Collection List (customizable titles + hide-empty)
+  - Title typography controls (align/size/weight/case/spacing)
+  - Card title typography controls (align/size/weight/case/spacing)
+  - Hide collections with 0 products (toggle)
+  - FIX: schema uses integer ranges; CSS converts to rem/em
+{% endcomment %}
+
+{%- assign sec_id = 'col-list-' | append: section.id -%}
+
+{%- style -%}
+/* ---- Scoped to this section instance ---- */
+#{{ sec_id }}{
+  /* Section heading vars (sizes in tenths of rem, spacing in hundredths of em) */
+  --heading-align: {{ section.settings.heading_align }};
+  --heading-size: {{ section.settings.heading_size_tenths | divided_by: 10.0 }}rem;
+  --heading-weight: {{ section.settings.heading_weight }};
+  --heading-transform: {{ section.settings.heading_transform }};
+  --heading-letter: {{ section.settings.heading_letter_spacing_centis | divided_by: 100.0 }}em;
+
+  /* Subheading vars */
+  --sub-align: {{ section.settings.subheading_align }};
+  --sub-size: {{ section.settings.subheading_size_tenths | divided_by: 10.0 }}rem;
+  --sub-weight: {{ section.settings.subheading_weight }};
+  --sub-letter: {{ section.settings.subheading_letter_spacing_centis | divided_by: 100.0 }}em;
+
+  /* Card title vars */
+  --card-title-align: {{ section.settings.card_title_align }};
+  --card-title-size: {{ section.settings.card_title_size_tenths | divided_by: 10.0 }}rem;
+  --card-title-weight: {{ section.settings.card_title_weight }};
+  --card-title-transform: {{ section.settings.card_title_transform }};
+  --card-title-letter: {{ section.settings.card_title_letter_spacing_centis | divided_by: 100.0 }}em;
+
+  /* Padding */
+  --pt: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+  --pb: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+}
+@media (min-width: 750px){
+  #{{ sec_id }}{ --pt: {{ section.settings.padding_top }}px; --pb: {{ section.settings.padding_bottom }}px; }
+}
+
+/* Section spacing */
+#{{ sec_id }}.section-padding{ padding-top: var(--pt); padding-bottom: var(--pb); }
+
+/* Section header styles */
+#{{ sec_id }} .collection-list__header{ text-align: var(--heading-align); margin: 0 0 1.2rem; }
+#{{ sec_id }} .collection-list__heading{
+  margin: 0;
+  font-size: clamp(calc(var(--heading-size) - .4rem), 4vw, var(--heading-size));
+  font-weight: var(--heading-weight);
+  text-transform: var(--heading-transform);
+  letter-spacing: var(--heading-letter);
+}
+#{{ sec_id }} .collection-list__subheading{
+  margin: .4rem 0 0;
+  text-align: var(--sub-align);
+  font-size: clamp(calc(var(--sub-size) - .2rem), 3vw, var(--sub-size));
+  font-weight: var(--sub-weight);
+  letter-spacing: var(--sub-letter);
+  opacity: .86;
+}
+
+/* Grid */
+#{{ sec_id }} .collection-list{
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0,1fr));
+}
+@media (min-width: 750px){
+  #{{ sec_id }} .collection-list{
+    grid-template-columns: repeat({{ section.settings.columns_desktop }}, minmax(0,1fr));
+  }
+}
+
+/* Card title overrides (Dawn-compatible selectors) */
+#{{ sec_id }} .card__heading,
+#{{ sec_id }} .card__heading a,
+#{{ sec_id }} .collection-card__title,
+#{{ sec_id }} .card-collection .full-unstyled-link{
+  display: block;
+  text-align: var(--card-title-align) !important;
+  font-size: clamp(calc(var(--card-title-size) - .2rem), 3vw, var(--card-title-size)) !important;
+  font-weight: var(--card-title-weight) !important;
+  text-transform: var(--card-title-transform) !important;
+  letter-spacing: var(--card-title-letter) !important;
+}
+{%- endstyle -%}
+
+<section id="{{ sec_id }}" class="section-padding gradient color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <header class="collection-list__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="collection-list__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="collection-list__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    <div class="collection-list" role="list">
+      {%- assign shown = 0 -%}
+
+      {%- if section.blocks.size > 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign col = block.settings.collection -%}
+          {%- if col != blank -%}
+            {%- assign pc = col.all_products_count -%}
+            {%- if pc == nil -%}{%- assign pc = col.products_count -%}{%- endif -%}
+            {%- if section.settings.hide_empty and pc == 0 -%}{%- continue -%}{%- endif -%}
+
+            <div role="listitem" {{ block.shopify_attributes }}>
+              {%- render 'card-collection', card_collection: col -%}
+            </div>
+
+            {%- assign shown = shown | plus: 1 -%}
+            {%- if shown >= section.settings.max_items -%}{%- break -%}{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        {%- if shown == 0 -%}
+          <p>No collections to show.</p>
+        {%- endif -%}
+
+      {%- else -%}
+        {%- for col in collections -%}
+          {%- unless col.handle == 'frontpage' -%}
+            {%- assign pc = col.all_products_count -%}
+            {%- if pc == nil -%}{%- assign pc = col.products_count -%}{%- endif -%}
+            {%- if section.settings.hide_empty and pc == 0 -%}{%- continue -%}{%- endif -%}
+
+            <div role="listitem">
+              {%- render 'card-collection', card_collection: col -%}
+            </div>
+
+            {%- assign shown = shown | plus: 1 -%}
+            {%- if shown >= section.settings.max_items -%}{%- break -%}{%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+
+        {%- if shown == 0 -%}
+          <p>No collections to show.</p>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by collection" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Browse our collections" },
+
+    { "type": "checkbox", "id": "hide_empty", "label": "Hide empty collections (0 products)", "default": true },
+
+    { "type": "range", "id": "max_items", "label": "Max collections to show", "min": 1, "max": 50, "step": 1, "default": 12 },
+
+    { "type": "select", "id": "columns_mobile", "label": "Columns (mobile)", "default": "2",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 1, "max": 6, "step": 1, "default": 4 },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+
+    { "type": "header", "content": "Section heading styles" },
+    { "type": "select", "id": "heading_align", "label": "Heading alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    /* sizes in tenths of rem: 16→1.6rem, 48→4.8rem */
+    { "type": "range", "id": "heading_size_tenths", "label": "Heading size (×0.1rem)", "min": 16, "max": 48, "step": 1, "default": 24 },
+
+    { "type": "select", "id": "heading_weight", "label": "Heading weight", "default": "800",
+      "options": [
+        { "value": "400", "label": "400" },
+        { "value": "500", "label": "500" },
+        { "value": "600", "label": "600" },
+        { "value": "700", "label": "700" },
+        { "value": "800", "label": "800" },
+        { "value": "900", "label": "900" }
+      ]
+    },
+    { "type": "select", "id": "heading_transform", "label": "Heading case", "default": "none",
+      "options": [
+        { "value": "none", "label": "Normal" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "lowercase", "label": "lowercase" }
+      ]
+    },
+
+    /* spacing in hundredths of em: -5→-0.05em ... 30→0.30em */
+    { "type": "range", "id": "heading_letter_spacing_centis", "label": "Heading letter spacing (×0.01em)", "min": -5, "max": 30, "step": 1, "default": 2 },
+
+    { "type": "header", "content": "Subheading styles" },
+    { "type": "select", "id": "subheading_align", "label": "Subheading alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    /* sizes in tenths of rem: 12→1.2rem ... 24→2.4rem */
+    { "type": "range", "id": "subheading_size_tenths", "label": "Subheading size (×0.1rem)", "min": 12, "max": 24, "step": 1, "default": 16 },
+
+    { "type": "select", "id": "subheading_weight", "label": "Subheading weight", "default": "500",
+      "options": [
+        { "value": "400", "label": "400" },
+        { "value": "500", "label": "500" },
+        { "value": "600", "label": "600" },
+        { "value": "700", "label": "700" }
+      ]
+    },
+
+    /* spacing in hundredths of em: -5→-0.05em ... 20→0.20em */
+    { "type": "range", "id": "subheading_letter_spacing_centis", "label": "Subheading letter spacing (×0.01em)", "min": -5, "max": 20, "step": 1, "default": 1 },
+
+    { "type": "header", "content": "Card title styles" },
+    { "type": "select", "id": "card_title_align", "label": "Card title alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+
+    /* sizes in tenths of rem: 12→1.2rem ... 24→2.4rem */
+    { "type": "range", "id": "card_title_size_tenths", "label": "Card title size (×0.1rem)", "min": 12, "max": 24, "step": 1, "default": 16 },
+
+    { "type": "select", "id": "card_title_weight", "label": "Card title weight", "default": "700",
+      "options": [
+        { "value": "400", "label": "400" },
+        { "value": "500", "label": "500" },
+        { "value": "600", "label": "600" },
+        { "value": "700", "label": "700" },
+        { "value": "800", "label": "800" }
+      ]
+    },
+    { "type": "select", "id": "card_title_transform", "label": "Card title case", "default": "none",
+      "options": [
+        { "value": "none", "label": "Normal" },
+        { "value": "uppercase", "label": "UPPERCASE" },
+        { "value": "lowercase", "label": "lowercase" }
+      ]
+    },
+
+    /* spacing in hundredths of em: -5→-0.05em ... 20→0.20em */
+    { "type": "range", "id": "card_title_letter_spacing_centis", "label": "Card title letter spacing (×0.01em)", "min": -5, "max": 20, "step": 1, "default": 1 },
+
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Select collection" }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    { "name": "Collection list" }
+  ]
+}
+{% endschema %}

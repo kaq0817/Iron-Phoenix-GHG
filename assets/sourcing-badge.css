@@ -1,0 +1,40 @@
+/* assets/sourcing-badge.css */
+/* Small, GPU-friendly neon badge that works in dark UIs */
+.sourcing-badge {
+  --badge-bg: rgba(0,0,0,0.4);
+  --badge-fg: #e6fff7;
+  --badge-neon: #39ff14;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font: 600 12px/1.1 var(--font-body-family, system-ui, -apple-system, Segoe UI, Roboto, Arial);
+  padding: .35rem .7rem;
+  border-radius: 999px;
+  color: var(--badge-fg);
+  background: var(--badge-bg);
+  border: 1px solid rgba(255,255,255,.08);
+  letter-spacing: .02em;
+  white-space: nowrap;
+}
+
+.sourcing-badge__icon { display: inline-block; }
+
+.sourcing-badge--mto {
+  --badge-neon: #ff10f0;           /* neon pink */
+  --badge-fg: #ffe6fb;
+  border-color: rgba(255,16,240,.35);
+  box-shadow: 0 0 .4rem rgba(255,16,240,.35), inset 0 0 .2rem rgba(255,16,240,.25);
+}
+
+.sourcing-badge--instock {
+  --badge-neon: #39ff14;           /* neon green */
+  --badge-fg: #eaffea;
+  border-color: rgba(57,255,20,.35);
+  box-shadow: 0 0 .4rem rgba(57,255,20,.35), inset 0 0 .2rem rgba(57,255,20,.25);
+}
+
+.sourcing-badge--mto .sourcing-badge__icon,
+.sourcing-badge--instock .sourcing-badge__icon {
+  color: var(--badge-neon);
+  filter: drop-shadow(0 0 .25rem var(--badge-neon));
+}

@@ -1,0 +1,29 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "show_vendor": false,
+        "products_per_page": 12
+      }
+    },
+    "trust_badges_M7eFxk": {
+      "type": "trust-badges",
+      "name": "Trust Badges",
+      "settings": {
+        "trust_image": "shopify://shop_images/png.png",
+        "alt_text": "Trust Badges: Gamer Designed, Wellness, Secure, Support"
+      }
+    },
+    "sub_collections_mHPb3y": {
+      "type": "auto-subcollections",
+      "name": "Auto SubCollections",
+      "settings": {}
+    }
+  },
+  "order": [
+    "sub_collections_mHPb3y",
+    "main",
+    "trust_badges_M7eFxk"
+  ]
+}

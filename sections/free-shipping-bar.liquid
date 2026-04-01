@@ -1,0 +1,210 @@
+{%- style -%}
+  .free-shipping-bar {
+    background: linear-gradient(135deg, #ff6b35, #f7931e);
+    color: white;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+
+    /* Sticky behavior */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    /* 🔥 Force true full width */
+    width: 100vw !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    border-radius: 0 !important;
+  }
+
+  .free-shipping-bar.is-empty {
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  }
+
+  .fsb__text {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+  }
+
+  .fsb__text strong {
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .fsb__track {
+    background: rgba(255, 255, 255, 0.3);
+    height: 6px;
+    border-radius: 3px;
+    overflow: hidden;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .fsb__bar {
+    background: rgba(255, 255, 255, 0.9);
+    height: 100%;
+    border-radius: 3px;
+    width: var(--fsb-progress);
+    transition: width 0.3s ease;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    .free-shipping-bar {
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+
+    .fsb__text {
+      font-size: 13px;
+    }
+  }
+
+  /* Hide on checkout and certain pages */
+  .template-cart .free-shipping-bar,
+  .template-checkout .free-shipping-bar {
+    display: none;
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign show_everywhere = section.settings.show_everywhere | default: true
+  assign hide_on_cart = section.settings.hide_on_cart | default: false
+
+  assign should_hide = false
+  if show_everywhere == false
+    assign should_hide = true
+  endif
+
+  if hide_on_cart and request.page_type == 'cart'
+    assign should_hide = true
+  endif
+
+  if request.page_type == 'checkout'
+    assign should_hide = true
+  endif
+
+  assign default_threshold_cents = section.settings.default_threshold | remove: '$' | remove: ',' | times: 100
+  assign vip_threshold_cents = section.settings.vip_threshold | remove: '$' | remove: ',' | times: 100
+  assign legend_threshold_enabled = section.settings.legend_free_shipping | default: true
+
+  assign threshold_cents = default_threshold_cents
+  if customer
+    if legend_threshold_enabled and customer.tags contains 'Legend'
+      assign threshold_cents = 0
+    elsif customer.tags contains 'VIP' or customer.tags contains 'Pro'
+      assign threshold_cents = vip_threshold_cents
+    endif
+  endif
+
+  assign cart_total = cart.total_price | default: 0
+  assign item_count = cart.items | size
+
+  if item_count == 0 and threshold_cents > 0
+    assign is_empty_state = true
+  else
+    assign is_empty_state = false
+  endif
+
+  assign progress = 0
+  if threshold_cents > 0
+    if cart_total > 0
+      assign progress = cart_total | times: 100 | divided_by: threshold_cents
+      if progress > 100
+        assign progress = 100
+      endif
+    else
+      assign progress = 0
+    endif
+  else
+    assign progress = 100
+  endif
+
+  assign amount_remaining = threshold_cents | minus: cart_total
+-%}
+
+{%- unless should_hide -%}
+  <div class="free-shipping-bar{% if is_empty_state %} is-empty{% endif %}" role="status" aria-live="polite">
+    {%- if threshold_cents == 0 -%}
+      <p class="fsb__text">🎉 You get <strong>free shipping</strong> on every order!</p>
+    {%- elsif cart_total >= threshold_cents -%}
+      <p class="fsb__text">🎉 You qualify for <strong>free shipping!</strong></p>
+    {%- else -%}
+      {%- if is_empty_state -%}
+        <p class="fsb__text">
+          🛍️ Start shopping and get <strong>free shipping</strong> on orders over {{ threshold_cents | money }}!
+        </p>
+      {%- else -%}
+        {% capture amount_remaining_money %}{{ amount_remaining | money }}{% endcapture %}
+        <p class="fsb__text">
+          Add <strong>{{ amount_remaining_money }}</strong> more for <strong>free shipping!</strong>
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- unless is_empty_state and cart_total == 0 -%}
+      <div class="fsb__track" aria-hidden="true">
+        <div class="fsb__bar" style="--fsb-progress: {{ progress }}%;"></div>
+      </div>
+    {%- endunless -%}
+  </div>
+{%- endunless -%}
+
+{% schema %}
+{
+  "name": "Free Shipping Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_everywhere",
+      "label": "Show on entire site",
+      "default": true,
+      "info": "Display the free shipping bar across all pages to encourage higher cart values"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_cart",
+      "label": "Hide on cart page",
+      "default": false,
+      "info": "Hide the bar on cart page if you prefer"
+    },
+    {
+      "type": "header",
+      "content": "Thresholds"
+    },
+    {
+      "type": "text",
+      "id": "default_threshold",
+      "label": "Default free shipping threshold",
+      "default": "$159.00",
+      "info": "Amount needed for free shipping"
+    },
+    {
+      "type": "text",
+      "id": "vip_threshold",
+      "label": "VIP/Pro customer threshold",
+      "default": "$139.00",
+      "info": "Lower threshold for VIP customers"
+    },
+    {
+      "type": "checkbox",
+      "id": "legend_free_shipping",
+      "label": "Legend customers get free shipping",
+      "default": true,
+      "info": "Legend tier customers always qualify"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Free Shipping Bar",
+      "settings": {
+        "show_everywhere": true,
+        "hide_on_cart": false
+      }
+    }
+  ]
+}
+{% endschema %}

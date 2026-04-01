@@ -1,0 +1,24 @@
+/* section-vip-callout.css */
+.vip-callout{
+  text-align:center;
+  padding:clamp(24px,4vw,40px) 20px;
+  background: rgba(255,255,255,.03);
+  border-radius: 16px;
+}
+.vip-callout__title{
+  margin:0 0 .4rem;
+  font-size:clamp(1.6rem,3.2vw,2.2rem);
+  font-weight:800;
+  letter-spacing:.01em;
+}
+.vip-callout__subtitle{
+  opacity:.95;
+  max-width:70ch;
+  margin:0 auto 1rem;
+}
+.vip-callout__button{
+  display:inline-block;
+  font-weight:700;
+  border-radius:10px;
+  padding:.8rem 1.25rem;
+}

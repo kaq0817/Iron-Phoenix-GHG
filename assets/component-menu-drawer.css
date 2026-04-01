@@ -1,0 +1,72 @@
+/* Menu drawer styles for <menu-drawer id="menu-drawer"> with .active toggle */
+
+.header__icon--menu { position: initial; }
+
+/* Root */
+menu-drawer#menu-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: block;
+  /* hidden by default (aria-hidden set by JS) */
+}
+menu-drawer[aria-hidden="true"] { display: none; }
+
+/* Overlay */
+.menu-drawer__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+}
+
+/* Panel slides in from the left */
+.menu-drawer__panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;        /* left */
+  width: min(86vw, 360px);
+  background: var(--color-background, #fff);
+  color: var(--color-text, #111);
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  transform: translateX(-100%);
+  visibility: hidden;
+  transition: transform var(--duration-default, 200ms) ease,
+              visibility var(--duration-default, 200ms) ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+}
+
+/* Open state (JS adds .active to the drawer root) */
+menu-drawer.active .menu-drawer__panel {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+/* Header row */
+.menu-drawer__header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0,0,0,.08);
+}
+.menu-drawer__title { font-weight: 600; }
+.menu-drawer__close { background:none; border:0; padding:.5rem; cursor:pointer; }
+
+/* Nav + lists */
+.menu-drawer__nav { overflow:auto; padding:.75rem 1rem 1.25rem; }
+.menu-drawer__list, .menu-drawer__sublist { list-style:none; margin:0; padding:0; }
+.menu-drawer__item { display:flex; align-items:center; gap:.5rem; }
+.menu-drawer__link { flex:1; display:block; padding:.75rem 0; text-decoration:none; color:inherit; }
+
+/* Submenu toggles */
+.menu-drawer__subtoggle { margin-left:auto; background:none; border:0; cursor:pointer; padding:.25rem .5rem; }
+.menu-drawer__sublist { padding-left:.75rem; }
+.menu-drawer__sublist[hidden] { display:none; }
+
+/* Prevent page scroll while open (JS adds to <html>) */
+.menu-drawer-open { overflow:hidden; }
+
+/* Optional: wider panel on desktop */
+@media (min-width: 750px) {
+  .menu-drawer__panel { width: 40rem; }
+}

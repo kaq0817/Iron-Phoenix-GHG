@@ -1,0 +1,102 @@
+{%- comment -%}
+/sections/product-metafields.liquid
+Iron Phoenix GHG — Secure product metafields renderer
+- Escapes all customer-controlled strings
+- Supports .value or direct string metafields
+- Lightweight, no external assets
+{%- endcomment -%}
+
+{%- assign mf = product.metafields.custom -%}
+
+<section class="product-metafields color-{{ section.settings.color_scheme }}">
+  {%- comment -%} Short copy (escaped, line breaks preserved) {%- endcomment -%}
+  {%- if mf -%}
+    {%- assign short_copy_raw = mf.short_copy.value | default: mf.short_copy -%}
+    {%- if short_copy_raw != blank and section.settings.show_short -%}
+      <div class="product-metafields__short">
+        {%- if section.settings.short_heading != blank -%}
+          <h2 class="product-metafields__title">{{ section.settings.short_heading | escape }}</h2>
+        {%- endif -%}
+        <p class="product-metafields__text">
+          {{ short_copy_raw | strip | escape | newline_to_br }}
+        </p>
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} Traits (Fit / Size / Color) — all escaped {%- endcomment -%}
+  {%- if mf and section.settings.show_traits -%}
+    {%- assign fit_raw  = mf.male_female_unisex.value | default: mf.male_female_unisex -%}
+    {%- assign size_raw = mf.size.value               | default: mf.size -%}
+    {%- assign color_raw= mf.google_color.value       | default: mf.google_color -%}
+
+    {%- if fit_raw != blank or size_raw != blank or color_raw != blank -%}
+      <dl class="product-metafields__traits">
+        {%- if fit_raw != blank -%}
+          <div class="product-metafields__row">
+            <dt class="product-metafields__key">{{ section.settings.fit_label | default: 'Fit' | escape }}</dt>
+            <dd class="product-metafields__val">{{ fit_raw  | strip | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if size_raw != blank -%}
+          <div class="product-metafields__row">
+            <dt class="product-metafields__key">{{ section.settings.size_label | default: 'Size' | escape }}</dt>
+            <dd class="product-metafields__val">{{ size_raw | strip | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if color_raw != blank -%}
+          <div class="product-metafields__row">
+            <dt class="product-metafields__key">{{ section.settings.color_label | default: 'Color' | escape }}</dt>
+            <dd class="product-metafields__val">{{ color_raw | strip | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- comment -%} Optional features list (list.single_line_text_field) — each item escaped {%- endcomment -%}
+  {%- if mf and section.settings.show_features -%}
+    {%- assign features = mf.features_list.value | default: mf.features_list -%}
+    {%- if features != blank -%}
+      <ul class="product-metafields__features" role="list">
+        {%- for ftxt in features -%}
+          <li class="product-metafields__feature">{{ ftxt | escape }}</li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  {%- endif -%}
+</section>
+
+<style>
+  .product-metafields{padding:1.2rem 0}
+  .product-metafields__title{margin:0 0 .5rem;font-weight:800;letter-spacing:.02em}
+  .product-metafields__text{margin:0 0 1.2rem;line-height:1.65}
+  .product-metafields__traits{margin:0;display:grid;gap:.5rem}
+  .product-metafields__row{display:grid;grid-template-columns:9rem 1fr;gap:.6rem;align-items:start}
+  .product-metafields__key{margin:0;opacity:.8}
+  .product-metafields__val{margin:0}
+  .product-metafields__features{margin:1rem 0 0;display:grid;gap:.4rem}
+  .product-metafields__feature{list-style:disc inside}
+  @media (max-width:640px){.product-metafields__row{grid-template-columns:7.5rem 1fr}}
+</style>
+
+{% schema %}
+{
+  "name": "Product metafields",
+  "class": "section-product-metafields",
+  "settings": [
+    { "type": "checkbox", "id": "show_short", "label": "Show short copy", "default": true },
+    { "type": "text", "id": "short_heading", "label": "Short copy heading", "default": "Highlights" },
+
+    { "type": "checkbox", "id": "show_traits", "label": "Show traits (fit/size/color)", "default": true },
+    { "type": "text", "id": "fit_label",  "label": "Fit label",   "default": "Fit" },
+    { "type": "text", "id": "size_label", "label": "Size label",  "default": "Size" },
+    { "type": "text", "id": "color_label","label": "Color label", "default": "Color" },
+
+    { "type": "checkbox", "id": "show_features", "label": "Show features list (optional metafield)", "default": false },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" }
+  ],
+  "presets": [{ "name": "Product metafields" }]
+}
+{% endschema %}

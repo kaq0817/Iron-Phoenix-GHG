@@ -1,0 +1,30 @@
+<a href="{{ card_collection.url }}" class="collection-card">
+  <div class="collection-card__media">
+    {% if card_collection.image %}
+      <img
+        src="{{ card_collection.image | image_url: width: 800 }}"
+        srcset="
+          {{ card_collection.image | image_url: width: 400 }} 400w,
+          {{ card_collection.image | image_url: width: 600 }} 600w,
+          {{ card_collection.image | image_url: width: 800 }} 800w
+        "
+        sizes="100vw"
+        class="collection-card__image"
+        alt="{{ card_collection.image.alt | default: card_collection.title | escape }}"
+        loading="lazy"
+        width="800"
+        height="{{ 800 | divided_by: card_collection.image.aspect_ratio | round }}"
+      >
+    {% else %}
+      {{ 'collection-1' | placeholder_svg_tag }}
+    {% endif %}
+  </div>
+
+  <div class="collection-card__info">
+    <h2 class="collection-card__title">{{ card_collection.title | escape }}</h2>
+    <p class="collection-card__count">
+      {{ card_collection.all_products_count }}
+      {{ card_collection.all_products_count | pluralize: 'product', 'products' }}
+    </p>
+  </div>
+</a>

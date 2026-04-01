@@ -1,0 +1,350 @@
+{% comment %}
+  Contact Us (Elite) — Iron Phoenix GHG (Sanitized + Hours Aligned + Voicemail Policy)
+  - Public page shows City/State/Zip only
+  - Optional JSON-LD can include full street address (toggle)
+  - Rich text fields sanitized to remove legacy placeholders
+  - Anti-spam: honeypot, dwell time, nonce, throttle
+  - NEW: Voicemail policy for call screening
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'contact-us.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'contact-us.css' | asset_url | stylesheet_tag }}</noscript>
+
+{% comment %} helper tokens to strip stale placeholders {% endcomment %}
+{% assign _kill1 = '1-800-SPAM-BOT' %}
+{% assign _kill2 = '1-900-FAKE-NUM' %}
+{% assign _kill3 = 'spammer@fake.com' %}
+{% assign _kill4 = 'bot@scam.net' %}
+
+<section class="contact-us-container" style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;">
+  <h1 class="contact-us-title">{{ section.settings.heading | default: 'Contact Us' | escape }}</h1>
+
+  {% if section.settings.intro_richtext != blank %}
+    <div class="contact-us-intro rte">
+      {{ section.settings.intro_richtext
+        | replace: _kill1, '' | replace: _kill2, ''
+        | replace: _kill3, '' | replace: _kill4, '' }}
+    </div>
+  {% endif %}
+
+  <div class="contact-section">
+    <h2 class="section-heading">FAQ 📚</h2>
+    {% if section.settings.faq_prompt_richtext != blank %}
+      <div class="rte">
+        {{ section.settings.faq_prompt_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.customer_support_section_title | default: 'Customer Support (Text Only)' | escape }} 💬</h2>
+    <div class="contact-details-grid">
+      <div class="contact-detail-item">
+        <h3>{{ section.settings.customer_support_section_title | default: 'Customer Support (Text Only)' | escape }}</h3>
+        <p>{{ section.settings.customer_support_section_text | default: 'Questions about products or orders?' | escape }}</p>
+        <p>{{ 'contact.form.email' | t }}:
+          <a href="mailto:{{ section.settings.support_email | default: 'support@ironphoenix.store' | escape }}" class="contact-link">{{ section.settings.support_email | default: 'support@ironphoenix.store' | escape }}</a>
+        </p>
+        <p>Text Only:
+          <a href="sms:{{ section.settings.support_sms_number_uri | default: '+15184158496' | escape }}" class="contact-link">{{ section.settings.support_sms_number_label | default: '(518) 415-8496 (Text Only)' | escape }}</a>
+        </p>
+      </div>
+      <div class="contact-detail-item">
+        <h3>{{ section.settings.biz_inquiries_section_title | default: 'Business Inquiries (Text Only)' | escape }}</h3>
+        <p>{{ section.settings.biz_inquiries_section_text | default: 'For proposals or collaborations:' | escape }}</p>
+        <p>{{ 'contact.form.email' | t }}:
+          <a href="mailto:{{ section.settings.biz_email | default: 'shadowseeker@ironphoenix.store' | escape }}" class="contact-link">{{ section.settings.biz_email | default: 'shadowseeker@ironphoenix.store' | escape }}</a>
+        </p>
+        <p>Text Only:
+          <a href="sms:{{ section.settings.biz_sms_number_uri | default: '+13074395613' | escape }}" class="contact-link">{{ section.settings.biz_sms_number_label | default: '(307) 439-5613 (Text Only)' | escape }}</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.response_time_title | default: 'Response Time & Service Area 🕒' | escape }}</h2>
+    <p>{{ section.settings.our_support_team_message | default: 'Our customer support team is available during the following hours:' | escape }}</p>
+    <p><strong>Customer Support Hours:</strong> {{ section.settings.customer_support_hours | default: 'Daily, 9:00 AM – 10:00 PM EST' | escape }}</p>
+    <p><strong>Business Inquiries Hours:</strong> {{ section.settings.business_inquiries_hours | default: 'Mon – Fri, 9:00 AM – 5:00 PM EST' | escape }}</p>
+    
+    {% comment %} NEW: Voicemail Policy Box {% endcomment %}
+    {% if section.settings.show_voicemail_policy %}
+      <div class="voicemail-policy-box" style="margin-top: 20px; padding: 16px; background: linear-gradient(135deg, rgba(0,255,255,0.05) 0%, rgba(255,0,255,0.05) 100%); border-left: 3px solid #00ffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,255,255,0.1);">
+        <p style="margin: 0 0 10px; font-weight: 700; color: #00ffff; font-size: 1.05em;">📞 {{ section.settings.voicemail_policy_title | default: 'How to Reach Us by Phone' | escape }}</p>
+        {% if section.settings.voicemail_policy_text != blank %}
+          <p style="margin: 0 0 10px; line-height: 1.6;">{{ section.settings.voicemail_policy_text | escape }}</p>
+        {% else %}
+          <p style="margin: 0 0 10px; line-height: 1.6;">Text messages typically get the fastest response! If you prefer to call, please leave a voicemail with:</p>
+        {% endif %}
+        <ul style="margin: 10px 0 10px 20px; padding: 0; line-height: 1.8;">
+          <li>Your name and order number</li>
+          <li>Brief description of your issue</li>
+          <li>Best time to reach you</li>
+        </ul>
+        <p style="margin: 10px 0 0; font-weight: 600;"><strong>Response time:</strong> {{ section.settings.voicemail_response_time | default: 'We return all voicemails within 4 hours during business hours.' | escape }}</p>
+      </div>
+    {% endif %}
+    
+    {% if section.settings.important_note_1_richtext != blank %}
+      <div class="note-text important rte">
+        {{ section.settings.important_note_1_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+    {% if section.settings.important_note_2_richtext != blank %}
+      <div class="note-text rte">
+        {{ section.settings.important_note_2_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.feedback_title | default: 'Your Feedback Matters 🌱' | escape }}</h2>
+    {% if section.settings.feedback_text_richtext != blank %}
+      <div class="rte">
+        {{ section.settings.feedback_text_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.websites_title | default: 'Our Websites' | escape }}</h2>
+    <ul class="website-list">
+      <li>Main store: <a href="{{ shop.url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.main_store_domain | default: shop.domain | escape }}</a></li>
+      <li>Etsy: <a href="https://{{ section.settings.etsy_shop_url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.etsy_shop_label | default: 'ironphoenixghg.etsy.com' | escape }}</a></li>
+      <li>Coming soon: {{ section.settings.coming_soon_websites | default: 'ironphoenixghg.store, gohardgaming.store, gohardgaminghq.com' | escape }}</li>
+      <li>Community: <a href="{{ section.settings.community_url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.community_label | default: 'gohardgamingdiscord.com' | escape }}</a> {{ section.settings.community_status_text | default: '(under construction)' | escape }}</li>
+    </ul>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.company_details_title | default: 'Company Details' | escape }}</h2>
+    <p><strong>Legal name:</strong> {{ section.settings.legal_name | default: 'Go Hard Gaming Discord LLC' | escape }}</p>
+    <p><strong>DBA:</strong> {{ section.settings.business_name | default: 'Iron Phoenix GHG' | escape }}</p>
+    <p><strong>Location:</strong> {{ section.settings.city | default: 'Ballston Spa' | escape }}, {{ section.settings.region | default: 'NY' | escape }} {{ section.settings.postal_code | default: '12020' | escape }}, {{ section.settings.country | default: 'USA' | escape }}</p>
+    <p class="note-text">{{ section.settings.single_operator_note | default: 'Note: All inquiries are handled by a single operator.' | escape }}</p>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.business_proposals_section_title | default: 'Business Proposals' | escape }}</h2>
+    {% if section.settings.email_proposals_richtext != blank %}
+      <div class="rte">
+        {{ section.settings.email_proposals_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+    {% if section.settings.business_proposals_important_note_richtext != blank %}
+      <div class="note-text important rte">
+        {{ section.settings.business_proposals_important_note_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.store_hours_section_title | default: 'Store Hours' | escape }}</h2>
+    <p><strong>Online store:</strong> {{ section.settings.online_store_status_text | default: 'Open 24/7.' | escape }}</p>
+    <p><strong>Order processing:</strong> {{ section.settings.order_processing_status_text | default: 'Within 8 business hours.' | escape }}</p>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.join_community_section_title | default: 'Join Our Community' | escape }}</h2>
+    {% if section.settings.join_community_text_richtext != blank %}
+      <div class="rte">
+        {{ section.settings.join_community_text_richtext
+          | replace: _kill1, '' | replace: _kill2, ''
+          | replace: _kill3, '' | replace: _kill4, '' }}
+      </div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_form %}
+    <div class="contact-section" id="contact-form-block-{{ section.id }}" data-min-dwell="{{ section.settings.min_dwell_ms | default: 2500 }}">
+      <h2 class="section-heading">{{ 'templates.contact.form.title' | t }}</h2>
+      {% assign hp_name = 'contact_' | append: section.id | append: '_hp' %}
+      {% form 'contact', id: 'ContactForm-' | append: section.id %}
+        {% if form.posted_successfully? %}
+          <p class="form-status form-status--success" role="status" aria-live="polite">{{ 'contact.form.post_success' | t }}</p>
+        {% endif %}
+        {% if form.errors %}
+          <div class="form-status form-status--error" role="alert" aria-live="assertive">
+            <ul>{% for field in form.errors %}<li>{{ form.errors.messages[field] | escape }}</li>{% endfor %}</ul>
+          </div>
+        {% endif %}
+
+        <div class="field"><label for="ContactForm-name-{{ section.id }}">{{ 'contact.form.name' | t }}</label><input type="text" id="ContactForm-name-{{ section.id }}" name="contact[name]" required value="{{ form.name | escape }}"></div>
+        <div class="field"><label for="ContactForm-email-{{ section.id }}">{{ 'contact.form.email' | t }}</label><input type="email" id="ContactForm-email-{{ section.id }}" name="contact[email]" required value="{{ form.email | escape }}"></div>
+        <div class="field"><label for="ContactForm-phone-{{ section.id }}">{{ 'contact.form.phone' | t }} ({{ 'accessibility.or' | t }})</label><input type="tel" id="ContactForm-phone-{{ section.id }}" name="contact[phone]" value="{{ form.phone | escape }}"></div>
+        <div class="field"><label for="ContactForm-message-{{ section.id }}">{{ 'contact.form.comment' | t }}</label><textarea id="ContactForm-message-{{ section.id }}" name="contact[body]" rows="6" required>{{ form.body | escape }}</textarea></div>
+
+        <!-- Honeypots & anti-spam -->
+        <div class="hp-wrap" aria-hidden="true"><label for="{{ hp_name }}">{{ 'newsletter.bot_protection.human_verification' | t }}</label><input autocomplete="off" tabindex="-1" type="text" id="{{ hp_name }}" name="{{ hp_name }}" value=""></div>
+        <div class="visually-hidden" aria-hidden="true">
+          <label for="ContactFormCompany-{{ section.id }}">Company</label>
+          <input type="text" id="ContactFormCompany-{{ section.id }}" name="contact[company]" tabindex="-1" autocomplete="off">
+        </div>
+        <div class="contact__decoy" aria-hidden="true">
+          <label for="ContactFormRef-{{ section.id }}">Reference</label>
+          <input type="text" id="ContactFormRef-{{ section.id }}" name="contact[reference]" autocomplete="off">
+        </div>
+
+        <input type="hidden" name="ghg_timestamp" id="ContactTsStart-{{ section.id }}" value="{{ 'now' | date: '%s' }}">
+        <input type="hidden" name="contact_nonce" id="ContactNonce-{{ section.id }}" value="">
+
+        <p class="contact__error" id="ContactAntiSpamError-{{ section.id }}" role="alert" style="display:none;"></p>
+
+        <button type="submit" class="button">{{ 'contact.form.send' | t }}</button>
+      {% endform %}
+    </div>
+    <script>
+    (function(){
+      const MIN_MS = parseInt({{ section.settings.min_dwell_ms | default: 2500 }}, 10) || 2500;
+      const form = document.querySelector('#ContactForm-{{ section.id }}');
+      if (!form) return;
+      const ts = document.getElementById('ContactTsStart-{{ section.id }}');
+      const nonce = document.getElementById('ContactNonce-{{ section.id }}');
+      const err = document.getElementById('ContactAntiSpamError-{{ section.id }}');
+      if (nonce) nonce.value = Math.random().toString(36).slice(2) + Date.now().toString(36);
+      const KEY = 'contact_submit_lock'; const LOCK_MS = 120000;
+      form.addEventListener('submit', function(e){
+        const hp = document.getElementById('{{ hp_name }}');
+        const hp2 = document.getElementById('ContactFormCompany-{{ section.id }}');
+        const decoy = document.getElementById('ContactFormRef-{{ section.id }}');
+        const fail = (msg)=>{ e.preventDefault(); if (err){ err.textContent = msg; err.style.display='block'; } };
+        if (hp && hp.value.trim() !== '') return fail('Bot check failed.');
+        if (hp2 && hp2.value.trim() !== '') return fail('Bot check failed.');
+        if (decoy && decoy.value.trim() !== '') return fail('Bot check failed.');
+        const start = +(ts && ts.value ? ts.value : 0) * 1000;
+        if (!start || (Date.now() - start) < MIN_MS) return fail('Please wait a moment before submitting.');
+        const locked = ()=> (Date.now() - (+localStorage.getItem(KEY) || 0)) < LOCK_MS;
+        if (locked()) return fail('You just submitted. Please try again later.');
+        localStorage.setItem(KEY, String(Date.now()));
+      }, { passive: false });
+    })();
+    </script>
+  {% endif %}
+
+  {% if section.settings.include_full_address_in_schema %}
+    {% capture org_name %}{{ section.settings.business_name | default: shop.name }}{% endcapture %}
+    <script type="application/ld+json">
+    {
+      "@context":"https://schema.org",
+      "@type":"Organization",
+      "name":{{ org_name | json }},
+      "url":{{ shop.url | json }},
+      "email":{{ section.settings.support_email | default: shop.email | json }},
+      "telephone":{{ section.settings.public_phone | default: section.settings.support_sms_number_uri | json }},
+      "address":{
+        "@type":"PostalAddress",
+        "streetAddress":{{ section.settings.street_address | json }},
+        "addressLocality":{{ section.settings.city | json }},
+        "addressRegion":{{ section.settings.region | json }},
+        "postalCode":{{ section.settings.postal_code | json }},
+        "addressCountry":{{ section.settings.country | json }}
+      }
+    }
+    </script>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Contact Us (Elite)",
+  "settings": [
+    { "type": "text", "id": "business_name", "label": "Business/DBA Name", "default": "Iron Phoenix GHG" },
+    { "type": "text", "id": "legal_name", "label": "Legal Name", "default": "Go Hard Gaming Discord LLC" },
+    { "type": "text", "id": "heading", "label": "Main Heading", "default": "Contact Us" },
+
+    { "type": "richtext", "id": "intro_richtext", "label": "Intro Text", "default": "<p>We're here to help with your questions and feedback.</p>" },
+    { "type": "richtext", "id": "faq_prompt_richtext", "label": "FAQ Text", "default": "<p>Check our <a href=\"/pages/faq\">FAQ</a>.</p>" },
+
+    { "type": "header", "content": "Contact Details" },
+    { "type": "text", "id": "customer_support_section_title", "label": "Support Title", "default": "Customer Support (Text Only)" },
+    { "type": "text", "id": "customer_support_section_text", "label": "Support Text", "default": "Questions about products or orders?" },
+    { "type": "text", "id": "support_email", "label": "Support Email", "default": "support@ironphoenix.store" },
+    { "type": "text", "id": "support_sms_number_label", "label": "Support Phone", "default": "(518) 415-8496 (Text Only)" },
+    { "type": "text", "id": "support_sms_number_uri", "label": "Support Phone URI", "default": "+15184158496" },
+
+    { "type": "text", "id": "biz_inquiries_section_title", "label": "Business Title", "default": "Business Inquiries (Text Only)" },
+    { "type": "text", "id": "biz_inquiries_section_text", "label": "Business Text", "default": "For proposals or collaborations:" },
+    { "type": "text", "id": "biz_email", "label": "Business Email", "default": "shadowseeker@ironphoenix.store" },
+    { "type": "text", "id": "biz_sms_number_label", "label": "Business Phone", "default": "(307) 439-5613 (Text Only)" },
+    { "type": "text", "id": "biz_sms_number_uri", "label": "Business Phone URI", "default": "+13074395613" },
+
+    { "type": "header", "content": "Response Time" },
+    { "type": "text", "id": "response_time_title", "label": "Response Title", "default": "Response Time & Service Area 🕒" },
+    { "type": "text", "id": "our_support_team_message", "label": "Support Message", "default": "Our customer support team is available during the following hours:" },
+    { "type": "text", "id": "customer_support_hours", "label": "Support Hours", "default": "Daily, 9:00 AM – 10:00 PM EST" },
+    { "type": "text", "id": "business_inquiries_hours", "label": "Business Hours", "default": "Mon – Fri, 9:00 AM – 5:00 PM EST" },
+    
+    { "type": "header", "content": "Voicemail Policy (NEW)" },
+    { "type": "checkbox", "id": "show_voicemail_policy", "label": "Show Voicemail Policy", "default": true },
+    { "type": "text", "id": "voicemail_policy_title", "label": "Voicemail Title", "default": "How to Reach Us by Phone" },
+    { "type": "textarea", "id": "voicemail_policy_text", "label": "Voicemail Instructions", "default": "Text messages typically get the fastest response! If you prefer to call, please leave a voicemail with:", "info": "Leave blank to use default text" },
+    { "type": "text", "id": "voicemail_response_time", "label": "Voicemail Response Time", "default": "We return all voicemails within 4 hours during business hours." },
+    
+    { "type": "richtext", "id": "important_note_1_richtext", "label": "Note 1", "default": "<p>Support in U.S. only during EST hours.</p>" },
+    { "type": "richtext", "id": "important_note_2_richtext", "label": "Note 2", "default": "<p>Check spam if no reply; use social media for urgent issues.</p>" },
+
+    { "type": "header", "content": "Feedback" },
+    { "type": "text", "id": "feedback_title", "label": "Feedback Title", "default": "Your Feedback Matters 🌱" },
+    { "type": "richtext", "id": "feedback_text_richtext", "label": "Feedback Text", "default": "<p>Send feedback to <a href=\"mailto:shadowseeker@ironphoenix.store\">shadowseeker@ironphoenix.store</a>.</p>" },
+
+    { "type": "header", "content": "Websites" },
+    { "type": "text", "id": "websites_title", "label": "Websites Title", "default": "Our Websites" },
+    { "type": "text", "id": "main_store_domain", "label": "Main Domain", "default": "ironphoenix.store" },
+    { "type": "text", "id": "etsy_shop_url", "label": "Etsy Shop URL", "info": "Enter a valid URL (e.g., ironphoenixghg.etsy.com)", "default": "ironphoenixghg.etsy.com" },
+    { "type": "text", "id": "etsy_shop_label", "label": "Etsy Label", "default": "ironphoenixghg.etsy.com" },
+    { "type": "text", "id": "coming_soon_websites", "label": "Coming Soon", "default": "ironphoenixghg.store, gohardgaming.store, gohardgaminghq.com" },
+    { "type": "text", "id": "community_url", "label": "Community URL", "default": "https://gohardgamingdiscord.com" },
+    { "type": "text", "id": "community_label", "label": "Community Label", "default": "gohardgamingdiscord.com" },
+    { "type": "text", "id": "community_status_text", "label": "Community Status", "default": "(under construction)" },
+
+    { "type": "header", "content": "Company Details" },
+    { "type": "text", "id": "company_details_title", "label": "Company Title", "default": "Company Details" },
+    { "type": "text", "id": "city", "label": "City", "default": "Ballston Spa" },
+    { "type": "text", "id": "region", "label": "Region", "default": "NY" },
+    { "type": "text", "id": "postal_code", "label": "Postal Code", "default": "12020" },
+    { "type": "text", "id": "country", "label": "Country", "default": "USA" },
+    { "type": "text", "id": "single_operator_note", "label": "Operator Note", "default": "Note: All inquiries are handled by a single operator." },
+
+    { "type": "header", "content": "Business Proposals" },
+    { "type": "text", "id": "business_proposals_section_title", "label": "Proposals Title", "default": "Business Proposals" },
+    { "type": "richtext", "id": "email_proposals_richtext", "label": "Proposals Text", "default": "<p>Proposals to <a href=\"mailto:shadowseeker@ironphoenix.store\">shadowseeker@ironphoenix.store</a>.</p>" },
+    { "type": "richtext", "id": "business_proposals_important_note_richtext", "label": "Proposals Note", "default": "<p>No unsolicited partnerships; reviewed Mon-Fri, 9 AM-5 PM EST.</p>" },
+
+    { "type": "header", "content": "Store Hours" },
+    { "type": "text", "id": "store_hours_section_title", "label": "Hours Title", "default": "Store Hours" },
+    { "type": "text", "id": "online_store_status_text", "label": "Store Status", "default": "Open 24/7." },
+    { "type": "text", "id": "order_processing_status_text", "label": "Processing Status", "default": "Within 8 business hours." },
+
+    { "type": "header", "content": "Join Community" },
+    { "type": "text", "id": "join_community_section_title", "label": "Community Title", "default": "Join Our Community" },
+    { "type": "richtext", "id": "join_community_text_richtext", "label": "Community Text", "default": "<p>Join us on Discord for gaming fun!</p>" },
+
+    { "type": "header", "content": "JSON-LD" },
+    { "type": "checkbox", "id": "include_full_address_in_schema", "label": "Include Full Address", "default": false },
+    { "type": "text", "id": "street_address", "label": "Street Address", "default": "123 Main St" },
+    { "type": "text", "id": "public_phone", "label": "Public Phone", "default": "+1-518-415-8496" },
+
+    { "type": "header", "content": "Contact Form" },
+    { "type": "checkbox", "id": "show_form", "label": "Show Form", "default": false },
+    { "type": "range", "id": "min_dwell_ms", "min": 0, "max": 8000, "step": 250, "unit": "ms", "label": "Dwell Time", "default": 2500 },
+
+    { "type": "header", "content": "Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding Top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding Bottom", "default": 40 }
+  ],
+  "presets": [ { "name": "Contact Us (Elite)" } ]
+}
+{% endschema %}

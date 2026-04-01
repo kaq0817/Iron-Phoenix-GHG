@@ -1,0 +1,110 @@
+/* Iron Phoenix GHG – Branding Section Styles (safe, brand-aligned) */
+
+.branding-section {
+  /* Brand tokens (scoped) */
+  --ip-purple-900: #140a24;     /* deep purple */
+  --ip-purple-800: #1b0e31;     /* softer glow */
+  --ip-black:      #000000;
+  --ip-teal-500:   #00f5ff;     /* bright light teal */
+  --ip-teal-400:   #33f7ff;
+
+  --ip-surface:    rgba(255,255,255,0.04);
+  --ip-border:     rgba(255,255,255,0.10);
+
+  color: #fff;
+  text-align: center;
+  padding: 4rem 2rem;
+
+  /* Brand background (low-cost GPU) */
+  background:
+    radial-gradient(40rem 30rem at 20% 80%, rgba(27,14,49,0.40) 0%, transparent 60%),
+    radial-gradient(34rem 26rem at 80% 20%, rgba(27,14,49,0.32) 0%, transparent 65%),
+    linear-gradient(180deg, var(--ip-purple-900) 0%, var(--ip-black) 70%);
+
+  opacity: 0;
+  transform: translateY(24px);
+  animation: ip-fade-up .6s ease-out forwards;
+}
+
+@keyframes ip-fade-up {
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Logo */
+.branding-logo {
+  max-width: 200px;
+  margin-bottom: 2rem;
+  border-radius: 16px;
+  border: 2px solid var(--ip-border);
+  box-shadow: 0 10px 30px rgba(0,0,0,.35);
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+.branding-logo:hover {
+  transform: translateY(-2px);
+  border-color: var(--ip-teal-500);
+  box-shadow: 0 16px 38px rgba(0,245,255,.25);
+}
+
+/* Content block */
+.branding-block { max-width: 860px; margin: 0 auto; }
+.branding-heading {
+  font-size: clamp(2.2rem, 5vw, 3rem);
+  margin: 0 0 1rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  background: linear-gradient(135deg, #ffffff 0%, var(--ip-teal-500) 60%, var(--ip-teal-400) 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 18px rgba(0,245,255,.25);
+}
+
+/* Rich text */
+.branding-section .branding-content {
+  font-size: clamp(1.05rem, 2.6vw, 1.2rem);
+  line-height: 1.7;
+  opacity: .92;
+  margin: 0 auto 1.5rem;
+}
+.branding-section .branding-content a {
+  color: var(--ip-teal-500);
+  text-decoration: underline;
+}
+.branding-section .branding-content strong { color: #eaffff; }
+
+/* CTA */
+.branding-cta-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 1rem 2rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  border-radius: 999px;
+  text-decoration: none;
+  color: #000;
+  background: linear-gradient(135deg, var(--ip-teal-500), var(--ip-teal-400));
+  box-shadow: 0 12px 28px rgba(0,245,255,.28);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.branding-cta-btn:hover,
+.branding-cta-btn:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 40px rgba(0,245,255,.4);
+  outline: none;
+}
+
+/* Text alignment option (section wrapper already provides text-* class) */
+.text-left  .branding-block { text-align: left;  }
+.text-right .branding-block { text-align: right; }
+
+/* Mobile refinements */
+@media (max-width: 749px){
+  .branding-section { padding: 3rem 1.6rem; }
+  .branding-logo { max-width: 160px; }
+}
+
+/* Motion preference */
+@media (prefers-reduced-motion: reduce){
+  .branding-section { animation: none; opacity: 1; transform: none; }
+  .branding-logo { transition: none; }
+  .branding-cta-btn { transition: none; }
+}

@@ -1,0 +1,147 @@
+{%- comment -%}
+  Iron Phoenix GHG — Quick Order List
+  Usage:
+    {% render 'quick-order-list', product: product, show_image: true, show_sku: true %}
+  Params:
+    - product (required)
+    - show_image (bool)
+    - show_sku (bool)
+
+  JS hooks expected (in assets/quick-order.js):
+    [data-qo-form]           : the form scope
+    .quantity__input         : per-variant qty input (has data-variant-id and data-price)
+    [data-qo-cancel]         : clear inputs
+    [data-qo-submit]         : submit selected lines
+    [data-qo-count]          : items count display
+    [data-qo-subtotal]       : money subtotal display
+    [data-qo-msg]            : polite message area
+{%- endcomment -%}
+
+{%- assign p = product -%}
+{%- if p and p != empty -%}
+  <quick-order-list class="quick-order-list" role="region" aria-label="{{ 'quick_order.product' | t }}">
+    <div class="quick-order-list__contents">
+      <form class="quick-order-list__form" data-qo-form novalidate>
+        <table class="quick-order-list__table">
+          <thead>
+            <tr>
+              <th class="quick-order-list__table-heading--wide">{{ 'quick_order.product' | t }}</th>
+              <th class="right">{{ 'quick_order.price' | t }}</th>
+              <th class="right">{{ 'quick_order.qty' | t }}</th>
+              <th class="right">{{ 'quick_order.total' | t }}</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {%- for v in p.variants -%}
+              {%- assign available = v.available -%}
+              <tr class="variant-item{% unless show_image %} variant-item--no-media{% endunless %}{% if v.unit_price_measurement %} variant-item--unit-price{% endif %}">
+                <td>
+                  <div class="variant-item__inner">
+                    {%- if show_image -%}
+                      <span class="variant-item__image-container global-media-settings{% if p.featured_media == blank and v.featured_media == blank %} variant-item__image-container--no-img{% endif %}">
+                        <span class="variant-item__media">
+                          {%- assign img = v.featured_media | default: p.featured_media -%}
+                          {%- if img -%}
+                            {%- render 'optimized-image',
+                              image: img,
+                              alt: img.alt | default: p.title,
+                              sizes: '90px',
+                              width_override: 180,
+                              class: 'variant-item__image'
+                            -%}
+                          {%- endif -%}
+                        </span>
+                      </span>
+                    {%- endif -%}
+
+                    <div class="variant-item__details">
+                      <span class="variant-item__name">
+                        <a href="{{ p.url }}">{{ p.title | escape }}</a>
+                        {%- unless p.has_only_default_variant -%}
+                          — {{ v.title | escape }}
+                        {%- endunless -%}
+                      </span>
+
+                      {%- if show_sku and v.sku != blank -%}
+                        <span class="variant-item__sku">SKU: {{ v.sku | escape }}</span>
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </td>
+
+                <td class="variant-item__price right" data-qo-cell="price">
+                  <div class="price">
+                    <span class="price-item price-item--regular">{{ v.price | money }}</span>
+                  </div>
+                </td>
+
+                <td class="variant-item__quantity right">
+                  <div class="variant-item__quantity-wrapper">
+                    <div class="quantity">
+                      <label class="visually-hidden" for="qo-qty-{{ v.id }}">{{ 'quick_order.qty' | t }}</label>
+                      <input
+                        id="qo-qty-{{ v.id }}"
+                        class="quantity__input"
+                        type="number"
+                        inputmode="numeric"
+                        pattern="[0-9]*"
+                        min="0"
+                        value="0"
+                        {% unless available %}disabled aria-disabled="true"{% endunless %}
+                        data-variant-id="{{ v.id }}"
+                        data-price="{{ v.price }}"
+                      >
+                    </div>
+                    {%- unless available -%}
+                      <span class="variant-item__sold-out">{{ 'quick_order.sold_out' | t }}</span>
+                    {%- endunless -%}
+                  </div>
+                </td>
+
+                <td class="variant-item__totals right" data-qo-cell="line-total">
+                  <div class="price">
+                    <span class="price-item price-item--regular" data-qo-line-total>{{ 0 | money }}</span>
+                  </div>
+                </td>
+              </tr>
+            {%- endfor -%}
+          </tbody>
+        </table>
+
+        <div class="quick-order-list__total">
+          <div class="quick-order-list-total__info" aria-live="polite">
+            <div class="quick-order-list__total-items">
+              <span>{{ 'quick_order.items' | t }}: <strong data-qo-count>0</strong></span>
+              <p class="totals__subtotal">
+                {{ 'quick_order.estimated_total' | t }}:
+                <strong data-qo-subtotal>{{ 0 | money }}</strong>
+              </p>
+            </div>
+
+            <div class="quick-order-list-total__price">
+              <button type="button" class="button button--secondary quick-order-list__button quick-order-list__button-cancel" data-qo-cancel>
+                {{ 'quick_order.cancel' | t }}
+              </button>
+              <button type="submit" class="button button--primary quick-order-list__button quick-order-list__button-confirm" data-qo-submit>
+                {{ 'quick_order.add_selected_to_cart' | t }}
+              </button>
+            </div>
+          </div>
+
+          <div class="quick-order-list-total__confirmation">
+            <span data-qo-msg class="quick-order-list__message" aria-live="polite"></span>
+          </div>
+        </div>
+
+        <noscript>
+          <p style="margin-top:1rem">
+            <a class="button" href="{{ p.url }}">{{ 'products.product.view_full_details' | t }}</a>
+          </p>
+        </noscript>
+      </form>
+    </div>
+  </quick-order-list>
+{%- else -%}
+  <div class="quick-order-list__message">{{ 'quick_order.unavailable' | t }}</div>
+{%- endif -%}

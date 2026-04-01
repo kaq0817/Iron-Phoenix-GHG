@@ -1,0 +1,48 @@
+{%- comment -%}
+Optimized Product Card - FORCE WebP compression
+{%- endcomment -%}
+
+{%- if card_product and card_product != empty -%}
+  {%- liquid
+    assign title_words = card_product.title | split: ' ' | slice: 0, 5 | join: ' '
+    assign card_loading = 'lazy'
+    if lazy_load == false
+      assign card_loading = 'eager'
+    endif
+  -%}
+
+  <div class="card-wrapper product-card-wrapper underline-links-hover">
+    <div class="card card--{{ settings.card_style | default: 'standard' }} card--media card--extend-height">
+
+      {%- if card_product.featured_media -%}
+        <a class="card__media" href="{{ card_product.url }}">
+          <div class="media media--transparent">
+            <img
+              src="{{ card_product.featured_media | image_url: width: 600, format: 'webp' }}"
+              srcset="{{ card_product.featured_media | image_url: width: 300, format: 'webp' }} 300w,
+                      {{ card_product.featured_media | image_url: width: 600, format: 'webp' }} 600w,
+                      {{ card_product.featured_media | image_url: width: 900, format: 'webp' }} 900w"
+              sizes="(max-width: 749px) 50vw, (max-width: 989px) 33vw, 25vw"
+              alt="{{ card_product.featured_media.alt | default: title_words | escape }}"
+              loading="{{ card_loading }}"
+              width="600"
+              height="{{ 600 | divided_by: card_product.featured_media.aspect_ratio | round }}"
+              class="card__img motion-reduce"
+            >
+          </div>
+        </a>
+      {%- endif -%}
+
+      <div class="card__content">
+        <h3 class="card__heading h4">
+          <a href="{{ card_product.url }}">{{ title_words }}</a>
+        </h3>
+        {% render 'price', product: card_product, price_class: 'price--listing' %}
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  <div class="card-wrapper product-card-wrapper placeholder">
+    {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+  </div>
+{%- endif -%}

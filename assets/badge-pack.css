@@ -1,0 +1,30 @@
+/* /assets/badge-pack.css */
+.badge-pack {
+  padding: 24px 0 12px;
+}
+.badge-pack__wrapper {
+  margin: 0 auto;
+}
+.badge-pack__heading {
+  margin: 0 0 10px;
+  font-size: clamp(1.4rem, 1.2rem + 1vw, 2.2rem);
+  line-height: 1.2;
+}
+.badge-pack__list {
+  display: grid;
+  gap: 8px 16px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+.badge-pack__item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border: 1px solid rgba(0,0,0,.08);
+  border-radius: 10px;
+  background: color-mix(in oklab, rgb(var(--color-background)), transparent 10%);
+  font-size: 1.5rem;
+}

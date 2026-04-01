@@ -1,0 +1,27 @@
+<section class="account-login">
+  <h1>{{ 'customer.login.title' | t | default: 'Log in' | escape }}</h1>
+
+  {% form 'customer_login' %}
+    {{ form.errors | default_errors }}
+    <label class="visually-hidden" for="CustomerEmail">Email</label>
+    <input id="CustomerEmail" type="email" name="customer[email]" placeholder="Email" required>
+
+    <label class="visually-hidden" for="CustomerPassword">Password</label>
+    <input id="CustomerPassword" type="password" name="customer[password]" placeholder="Password" required>
+
+    <button type="submit">
+      {{ 'customer.login_page.sign_in' | t | default: 'Sign in' | escape }}
+    </button>
+  {% endform %}
+
+  <p>
+    <a href="{{ routes.account_register_url }}">
+      {{ 'customer.login_page.create_account' | t | default: 'Create account' | escape }}
+    </a>
+  </p>
+  <p>
+    <a href="{{ routes.account_login_url }}#recover">
+      {{ 'customer.login_page.forgot_password' | t | default: 'Forgot your password?' | escape }}
+    </a>
+  </p>
+</section>

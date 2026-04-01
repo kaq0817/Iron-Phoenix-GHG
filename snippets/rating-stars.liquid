@@ -1,0 +1,52 @@
+{%- comment -%}
+  Rating stars (metafields-aware, accessible)
+  Expects metafields:
+    - reviews.rating (type: "rating") -> .value.rating, .value.scale_max
+    - reviews.rating_count (number)   -> .value (or raw)
+{%- endcomment -%}
+
+{%- assign rating_obj = product.metafields.reviews.rating -%}
+{%- assign count_obj  = product.metafields.reviews.rating_count -%}
+
+{%- comment -%} Normalize values whether definition-backed or plain {%- endcomment -%}
+{%- assign rating_val = nil -%}
+{%- assign rating_max = 5 -%}
+{%- if rating_obj and rating_obj.value -%}
+  {%- assign rating_val = rating_obj.value.rating | default: rating_obj.value -%}
+  {%- assign rating_max = rating_obj.value.scale_max | default: 5 -%}
+{%- elsif rating_obj -%}
+  {%- assign rating_val = rating_obj -%}
+{%- endif -%}
+
+{%- assign rating_count = 0 -%}
+{%- if count_obj and count_obj.value != blank -%}
+  {%- assign rating_count = count_obj.value | plus: 0 -%}
+{%- elsif count_obj != blank -%}
+  {%- assign rating_count = count_obj | plus: 0 -%}
+{%- endif -%}
+
+{%- if rating_val and rating_val != blank -%}
+  {%- assign rating_floor = rating_val | floor -%}
+  <div
+    class="rating"
+    role="img"
+    aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: rating_val, rating_max: rating_max }}"
+  >
+    <span
+      aria-hidden="true"
+      class="rating-star"
+      style="--rating: {{ rating_floor }}; --rating-max: {{ rating_max }};"
+    ></span>
+  </div>
+
+  <p class="rating-text caption">
+    <span aria-hidden="true">{{ rating_val }} / {{ rating_max }}</span>
+  </p>
+
+  {%- if rating_count > 0 -%}
+    <p class="rating-count caption">
+      <span aria-hidden="true">({{ rating_count }})</span>
+      <span class="visually-hidden">{{ rating_count }} {{ 'accessibility.total_reviews' | t }}</span>
+    </p>
+  {%- endif -%}
+{%- endif -%}

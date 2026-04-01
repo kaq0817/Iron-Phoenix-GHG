@@ -1,0 +1,65 @@
+/* cj-policy.css */
+/* Iron Phoenix GHG — Policy Styling */
+/* Purpose: Improve readability for legal & policy pages */
+
+.policy {
+  line-height: 1.6;
+  color: inherit;
+}
+
+.policy__header {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.policy__updated {
+  font-size: 0.9rem;
+  opacity: 0.8;
+  margin-top: 0.25rem;
+}
+
+.policy__lede {
+  margin-top: 0.75rem;
+  font-size: 1rem;
+}
+
+.policy__block {
+  margin-bottom: 2rem;
+}
+
+.policy__block h2 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.policy__block ul,
+.policy__block ol {
+  padding-left: 1.25rem;
+  margin-top: 0.5rem;
+}
+
+.policy__block li {
+  margin-bottom: 0.5rem;
+}
+
+.policy__block address {
+  font-style: normal;
+  line-height: 1.5;
+}
+
+.policy__block .note {
+  margin-top: 0.75rem;
+  font-size: 0.9rem;
+  opacity: 0.85;
+}
+
+@media (max-width: 768px) {
+  .policy {
+    font-size: 0.95rem;
+  }
+
+  .policy__block {
+    margin-bottom: 1.5rem;
+  }
+}

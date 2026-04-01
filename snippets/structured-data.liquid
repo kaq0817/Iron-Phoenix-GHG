@@ -1,0 +1,62 @@
+{%- comment -%}
+  Centralized JSON-LD structured data for SEO
+{%- endcomment -%}
+
+{%- if template contains 'product' and product -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "image": [
+    {{ product.featured_image | image_url: 'master' | json }}
+  ],
+  "description": {{ product.description | strip_html | truncate: 200 | json }},
+  "sku": {{ product.selected_or_first_available_variant.sku | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | escape | json }}
+  },
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ product.price | divided_by: 100.0 | round: 2 | json }},
+    "itemCondition": "https://schema.org/NewCondition",
+    "availability": "https://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+    "url": {{ shop.url | append: product.url | json }}
+  }
+}
+</script>
+{%- endif -%}
+
+{%- if template contains 'article' and article -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ article.title | escape | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | escape | json }}
+  },
+  "datePublished": "{{ article.published_at }}",
+  "image": [
+    {{ article.image | image_url: 'master' | json }}
+  ],
+  "articleBody": {{ article.content | strip_html | truncate: 250 | json }}
+}
+</script>
+{%- endif -%}
+
+{%- if template == 'index' or template == 'page' or template contains 'collection' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": {{ shop.url | json }},
+  "name": {{ shop.name | escape | json }},
+  "logo": {{ settings.logo | image_url: 'master' | json }}
+}
+</script>
+{%- endif -%}
+

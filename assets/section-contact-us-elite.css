@@ -1,0 +1,225 @@
+/* assets/section-contact-us-elite.css */
+
+/* General container styling */
+.contact-us-container {
+  padding-top: var(--section-pt);
+  padding-bottom: var(--section-pb);
+  background-color: #000;
+  color: #e0e0e0;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+/* Titles and intros */
+.contact-us-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #00d9ff; /* Bright cyan - high contrast */
+}
+
+.contact-us-intro {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: #e0e0e0;
+}
+
+/* Individual contact sections */
+.contact-section {
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.section-heading {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+  color: #8b7ff5; /* Accessible purple */
+}
+
+/* Grid for contact details */
+.contact-details-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 1.5rem;
+}
+
+.contact-detail-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #00d9ff;
+  font-weight: 600;
+}
+
+.contact-detail-item p {
+  color: #e0e0e0;
+  line-height: 1.6;
+  margin-bottom: 0.5rem;
+}
+
+/* Links */
+.contact-link {
+  color: #5eb3ff; /* Accessible blue */
+  text-decoration: underline;
+  transition: color 0.2s;
+}
+
+.contact-link:hover {
+  color: #00d9ff;
+}
+
+/* Website list */
+.website-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.website-list li {
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #e0e0e0;
+}
+
+.website-list li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #8b7ff5;
+}
+
+/* Notes and important messages */
+.note-text {
+  font-size: 0.95rem;
+  color: #b0b0b0;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-left: 3px solid rgba(139, 127, 245, 0.5);
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.note-text.important {
+  font-weight: 600;
+  color: #e0e0e0;
+  border-left-color: #8b7ff5;
+}
+
+/* Contact form fields */
+.contact-us-container .field {
+  margin-bottom: 1.5rem;
+}
+
+.contact-us-container .field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #e0e0e0;
+}
+
+.contact-us-container .field input[type="text"],
+.contact-us-container .field input[type="email"],
+.contact-us-container .field input[type="tel"],
+.contact-us-container .field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 8px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: #e0e0e0;
+}
+
+.contact-us-container .field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contact-us-container .field input:focus,
+.contact-us-container .field textarea:focus {
+  border-color: #00d9ff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 217, 255, 0.3);
+}
+
+/* Submit button */
+.contact-us-container .button {
+  margin-top: 1.5rem;
+  padding: 0.85rem 2rem;
+  background-color: #8b7ff5;
+  color: #000;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-us-container .button:hover {
+  background-color: #00d9ff;
+  transform: translateY(-2px);
+}
+
+/* Form status messages */
+.form-status {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.form-status--success {
+  background-color: rgba(0, 255, 136, 0.1);
+  color: #00ff88;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.form-status--error {
+  background-color: rgba(255, 68, 136, 0.1);
+  color: #ff4488;
+  border: 1px solid rgba(255, 68, 136, 0.3);
+}
+
+.form-status ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-status li {
+  margin-bottom: 0.5rem;
+}
+
+/* Honeypot field - hidden for bot protection */
+.hp-wrap,
+.visually-hidden,
+.contact__decoy {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+.contact__error {
+  color: #ff4488;
+  margin-top: 1rem;
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 749px) {
+  .contact-details-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .contact-us-title {
+    font-size: 2rem;
+  }
+  
+  .section-heading {
+    font-size: 1.5rem;
+  }
+}

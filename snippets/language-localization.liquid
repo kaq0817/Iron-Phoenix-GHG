@@ -1,0 +1,62 @@
+{%- comment -%}
+snippets/language-localization.liquid
+Safe language (and optional country) switcher using Shopify localization form.
+- Uses existing locale keys under "localization.*" to satisfy Theme Check
+- Escapes language/country values and names
+- Accessible labels, no inline JS
+{%- endcomment -%}
+
+{% form 'localization', id: 'HeaderLocalization', class: 'localization-form' %}
+  <div class="localization-form__group">
+    <label class="visually-hidden" for="LocaleSwitcher">
+      {{ 'localization.language_label' | t | default: 'Language' | escape }}
+    </label>
+    <select
+      id="LocaleSwitcher"
+      name="locale_code"
+      class="localization-form__select"
+      aria-label="{{ 'localization.language_label' | t | default: 'Language' | escape }}"
+    >
+      {% for language in localization.available_languages %}
+        <option
+          value="{{ language.iso_code | escape }}"
+          {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+        >
+          {{ language.name | escape }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  {%- comment -%}
+    Optional country/region switcher (hidden by default).
+    Remove "hidden" if you want it visible.
+  {%- endcomment -%}
+  <div class="localization-form__group" hidden>
+    <label class="visually-hidden" for="CountrySwitcher">
+      {{ 'localization.country_label' | t | default: 'Country/region' | escape }}
+    </label>
+    <select
+      id="CountrySwitcher"
+      name="country_code"
+      class="localization-form__select"
+      aria-label="{{ 'localization.country_label' | t | default: 'Country/region' | escape }}"
+    >
+      {% for country in localization.available_countries %}
+        <option
+          value="{{ country.iso_code | escape }}"
+          data-currency="{{ country.currency.iso_code | escape }}"
+          {% if country.iso_code == localization.country.iso_code %}selected{% endif %}
+        >
+          {{ country.name | escape }}
+        </option>
+      {% endfor %}
+    </select>
+  </div>
+
+  <noscript>
+    <button class="button">
+      {{ 'localization.update_language' | t | default: 'Update language' | escape }}
+    </button>
+  </noscript>
+{% endform %}

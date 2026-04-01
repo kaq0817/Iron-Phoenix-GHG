@@ -1,0 +1,239 @@
+{%- comment -%}
+  File: sections/header.liquid
+  Updated: square logo support, no background box, clean tagline alignment
+{%- endcomment -%}
+
+{%- liquid
+  assign logo_img = section.settings.logo
+  assign logo_w = settings.logo_width | default: 80
+-%}
+
+<style>
+  .header-wrapper {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: linear-gradient(90deg, var(--color-header-gradient-start) 0%, var(--color-header-gradient-end) 100%);
+    color: var(--color-text-light);
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    padding: var(--header-padding-top-mobile, 16px) 20px var(--header-padding-bottom-mobile, 16px);
+  }
+
+  @media screen and (min-width: 750px) {
+    .header {
+      padding: var(--header-padding-top-desktop, 32px) 40px var(--header-padding-bottom-desktop, 32px);
+    }
+  }
+
+  /* LOGO + TAGLINE GROUP */
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  /* SQUARE LOGO — NO BACKGROUND BOX */
+  .header__heading-link img {
+    width: 60px; /* adjust visual size */
+    height: 60px; /* same as width → square */
+    object-fit: contain; /* ensures 1024×1024 shows fully */
+    display: block;
+  }
+
+  .header__tagline {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-accent); /* Cyan for better contrast on dark background */
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  @media screen and (max-width: 600px) {
+    .header__tagline {
+      font-size: 0.9rem;
+      max-width: 160px;
+      white-space: normal;
+      line-height: 1.2;
+    }
+  }
+
+  /* ICON GROUP */
+  .header__icons {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .header__icon {
+    color: var(--color-accent);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s ease;
+  }
+
+  .header__icon:hover {
+    background: rgba(var(--rgb-accent), 0.1);
+  }
+
+  /* SEARCH INPUT */
+  .header-search input[type='search'] {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    background: var(--color-search-bg);
+    color: var(--color-text-light);
+  }
+
+  .header-search input::placeholder {
+    color: var(--color-search-placeholder);
+  }
+
+  /* Hide Shopify's cart notification */
+  .cart-notification-wrapper,
+  .cart-notification,
+  #cart-notification {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    height: 0 !important;
+    pointer-events: none !important;
+  }
+</style>
+
+<div class="header-wrapper">
+  <header
+    class="header page-width"
+    style="
+      --header-padding-top-mobile: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
+      --header-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
+      --header-padding-top-desktop: {{ section.settings.padding_top }}px;
+      --header-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
+    "
+  >
+    <!-- LOGO + TAGLINE -->
+    <div class="header__logo">
+      <a href="{{ routes.root_url }}" class="header__heading-link">
+        {% if logo_img %}
+          <img
+            src="{{ logo_img | image_url: width: logo_w }}"
+            width="{{ logo_w }}"
+            height="{{ logo_w }}"
+            alt="{{ section.settings.logo_alt | default: shop.name | escape }}"
+            loading="eager"
+            decoding="async"
+          >
+        {% else %}
+          <span class="h2">{{ shop.name }}</span>
+        {% endif %}
+      </a>
+
+      <span class="header__tagline"> Reminding You to Use Your Imagination </span>
+    </div>
+
+    <!-- ICONS -->
+    <div class="header__icons">
+      <form role="search" class="header-search" action="{{ routes.search_url }}" method="get">
+        <input type="search" name="q" placeholder="Search..." aria-label="Search">
+        <input type="hidden" name="contact[Source_ID]" value="phoenix-flow-tracked">
+      </form>
+
+      {% if shop.customer_accounts_enabled %}
+        <a
+          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
+          class="header__icon"
+          aria-label="Account"
+        >
+          <svg width="24" height="24" fill="none">
+            <path d="M16 17v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 5a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
+                  stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      {% endif %}
+
+      <a href="{{ routes.cart_url }}" class="header__icon" aria-label="Cart">
+        <svg width="24" height="24" fill="none">
+          <path d="M3 3h2l.4 2m0 0L7 13h8l2-8H5.4Z"
+                stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="17" r="1" stroke="var(--color-accent)" stroke-width="2"/>
+          <circle cx="15" cy="17" r="1" stroke="var(--color-accent)" stroke-width="2"/>
+        </svg>
+      </a>
+
+      <button class="header__icon" id="menu-drawer-toggle" aria-label="Menu">
+        <svg width="24" height="24" fill="none">
+          <rect x="4" y="7" width="16" height="2" rx="1" fill="var(--color-accent)"/>
+          <rect x="4" y="15" width="16" height="2" rx="1" fill="var(--color-accent)"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+</div>
+
+{% render 'menu-drawer', menu: section.settings.menu %}
+
+{% schema %}
+{
+  "name": "Header",
+  "class": "section-header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "logo_alt", "label": "Logo Alt Text", "default": "Site logo" },
+    { "type": "link_list", "id": "menu", "label": "Navigation menu", "default": "main-menu" },
+    {
+      "type": "select",
+      "id": "sticky_header_type",
+      "label": "Sticky header type",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "on-scroll-up", "label": "On scroll up" },
+        { "value": "always", "label": "Always" }
+      ],
+      "default": "on-scroll-up"
+    },
+    { "type": "checkbox", "id": "show_line_separator", "label": "Show line separator", "default": false },
+    {
+      "type": "range",
+      "id": "margin_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Margin bottom",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 36,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 24
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,130 @@
+{%- style -%}
+  .members-hub {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  .members-hub__header {
+    text-align: center;
+    margin-bottom: 4rem;
+    padding: 3rem;
+    background: rgba(var(--color-surface-1), 0.5);
+    border: 1px solid rgba(var(--color-accent), 0.2);
+    border-radius: var(--radius);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+  .members-hub__title {
+    font-size: 4.2rem;
+    margin-bottom: 1rem;
+    background: linear-gradient(90deg, #39ff14, #00f5ff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    font-weight: 900;
+  }
+  .members-hub__welcome {
+    font-size: 1.8rem;
+    color: rgba(var(--color-white), 0.8);
+  }
+  .members-hub__grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    margin-top: 2rem;
+  }
+  .members-hub .card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    border-radius: var(--radius-sm);
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: #fff;
+    text-shadow: 0 0 10px rgba(var(--color-accent), 0.5);
+  }
+  .members-hub .card:hover {
+    background: rgba(var(--color-accent), 0.1);
+    border-color: rgba(var(--color-accent), 0.5);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(57, 255, 20, 0.2);
+  }
+{%- endstyle -%}
+
+<section class="page-width members-hub">
+  {% assign on = settings.enable_membership %}
+  <header class="members-hub__header">
+    <h2 class="members-hub__title">Members Hub</h2>
+    <div class="members-hub__welcome">
+      {% if on and customer %}
+        <p>
+          Welcome back,
+          <strong>
+            {%- if customer.first_name %}{{ customer.first_name | escape }}{% else %}Phoenix{% endif -%}</strong
+          >.
+        </p>
+        {% render 'vip-xp-bar' %}
+      {% elsif on %}
+        <p>Become a member to unlock exclusive drops, discounts, and the Phoenix Journal.</p>
+      {% else %}
+        <p>The Phoenix Sanctuary is currently under maintenance. Stay tuned.</p>
+      {% endif %}
+    </div>
+  </header>
+
+  {% if on %}
+    {% assign is_member = false %}
+    {% if customer %}
+      {%- comment -%} Build & use an explicit allow-list Theme Check can see {%- endcomment -%}
+      {% assign allowed_list = settings.membership_allowed_tags | default: 'Member,VIP' | split: ',' %}
+      {% for allow_raw in allowed_list %}
+        {% assign allow = allow_raw | strip %}
+        {% if allow != blank and customer.tags contains allow %}
+          {% assign is_member = true %}
+          {% break %}
+        {% endif %}
+      {% endfor %}
+
+      {% if is_member == false
+        and customer.metafields.membership.active
+        and customer.metafields.membership.active.value == true
+      %}
+        {% assign is_member = true %}
+      {% endif %}
+
+      {% if is_member == false
+        and customer.metafields.membership.expires_on
+        and customer.metafields.membership.expires_on.value
+      %}
+        {% assign today = 'now' | date: '%Y-%m-%d' %}
+        {% assign exp = customer.metafields.membership.expires_on.value | date: '%Y-%m-%d' %}
+        {% if exp >= today %}{% assign is_member = true %}{% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if is_member %}
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:1rem">
+        <a class="card" href="/blogs/news">Exclusive Articles</a>
+        <a class="card" href="{{ routes.all_products_collection_url | append: '?filter=member' }}">Member Deals</a>
+        {% if settings.gift_enabled and settings.gift_product_handle != blank %}
+          <a class="card" href="{{ routes.root_url }}/products/{{ settings.gift_product_handle }}">Claim Gift</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <div style="display:flex;gap:.5rem;margin-top:1rem">
+        <a class="button" href="{{ routes.account_login_url }}">Log in</a>
+        <a class="button button--secondary" href="{{ routes.account_register_url }}">Create account</a>
+      </div>
+    {% endif %}
+  {% endif %}
+</section>
+
+{% schema %}
+{ "name": "Members hub", "settings": [], "presets": [{ "name": "Members hub" }] }
+{% endschema %}

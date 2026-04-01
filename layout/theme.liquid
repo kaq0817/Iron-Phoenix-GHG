@@ -1,0 +1,254 @@
+<!doctype html>
+<html class="no-js" lang="{{ request.locale.iso_code | escape }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_background | default: '#000000' | escape }}">
+
+    {%- assign robots_directive = 'index, follow' -%}
+    {%- if shop.password_enabled or template.name == 'search' or request.path contains '/checkout' -%}
+      {%- assign robots_directive = 'noindex, nofollow' -%}
+    {%- elsif template.name == 'article' and article -%}
+      {%- if article.metafields.content.paywalled
+        and article.metafields.content.paywalled.value
+        or article.tags contains 'premium'
+      -%}
+        {%- assign robots_directive = 'noindex, noimageindex, noarchive, nosnippet' -%}
+      {%- endif -%}
+    {%- endif -%}
+    <meta name="robots" content="{{ robots_directive | escape }}">
+    <link rel="canonical" href="{{ canonical_url | escape }}">
+
+    <meta
+      name="description"
+      content="Iron Phoenix GHG is not affiliated with the Iron Phoenix video game or unrelated Creator-Spring stores. Our official sites are ironphoenix.store and ourphoenixrise.com."
+    >
+
+    <title>
+      {% if page_title %}
+        {{ page_title | escape }}
+      {% else %}
+        {{ shop.name | escape }}
+      {% endif %}
+    </title>
+
+    <link rel="sitemap" type="application/xml" href="{{ shop.url }}/sitemap.xml">
+
+    {%- render 'cart-notification' -%}
+    {%- render 'schema-protection' -%}
+    {%- render 'meta-tags' -%}
+    {%- render 'schema-structured-data' -%}
+
+    {%- if settings.favicon != blank -%}
+      <link
+        rel="icon"
+        type="image/png"
+        sizes="32x32"
+        href="{{ settings.favicon | image_url: width: 32, height: 32 | escape }}"
+      >
+    {%- endif -%}
+
+    {%- comment -%} Preconnect to critical origins {%- endcomment -%}
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com">
+    {%- endunless -%}
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://cdn.shopify.com">
+
+    {%- comment -%} Font preloading {%- endcomment -%}
+    {%- capture body_json -%}{{ settings.type_body_font | json }}{%- endcapture -%}
+    {%- capture head_json -%}{{ settings.type_header_font | json }}{%- endcapture -%}
+    {%- if body_json contains '"family":' -%}
+      {{ settings.type_body_font | font_url | preload_tag }}
+    {%- endif -%}
+    {%- if head_json contains '"family":' -%}
+      {{ settings.type_header_font | font_url | preload_tag }}
+    {%- endif -%}
+
+    {% comment %} ⚡️ LCP OPTIMIZATION: Conditional Preload for Critical Images (product only) {% endcomment %}
+    {%- liquid
+      assign lcp_image = blank
+      assign lcp_srcset = blank
+      assign lcp_sizes = blank
+
+      if template.name == 'product' and product and product.featured_media
+        assign lcp_image = product.featured_media
+        assign lcp_srcset = lcp_image | image_url: width: 600 | append: ' 600w, ' | append: lcp_image | image_url: width: 900 | append: ' 900w, ' | append: lcp_image | image_url: width: 1200 | append: ' 1200w'
+        assign lcp_sizes = '(min-width: 750px) 50vw, 100vw'
+      endif
+    -%}
+    {%- if lcp_image != blank -%}
+      {{- lcp_image
+        | image_url: width: 900
+        | image_tag: preload: true, srcset: lcp_srcset, sizes: lcp_sizes, alt: lcp_image.alt, class: 'lcp-preload-hide', decoding: 'async'
+      -}}
+      <style>
+        .lcp-preload-hide {
+          display: none !important;
+        }
+      </style>
+    {%- endif -%}
+
+    {%- comment -%} Critical CSS {%- endcomment -%}
+    {{ 'css-variables.css' | asset_url | stylesheet_tag }}
+    {{ 'brand-tokens.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+    <style>
+      :root {
+        /* Luxury Palette */
+        --color-primary: #1a0033; /* Deep dark purple/navy */
+        --color-secondary: #a87932; /* Rich gold/bronze */
+        --color-accent: #00f5ff; /* Vibrant cyan, as used in header and footer */
+        --rgb-accent: 0, 245, 255; /* RGB for rgba usage */
+
+        /* Semantic Colors */
+        --color-background-dark: #000000;
+        --color-text-light: #ffffff;
+        --color-text-muted: #cccccc;
+        --color-text-faded: #666666;
+        --color-text-highlight: #aaaaaa;
+        --color-border-subtle: #222222;
+        --color-border-subtle-dark: #1a1a1a;
+        --color-icon-default: #888888;
+
+        /* Header Specific */
+        --color-header-gradient-start: #32004b;
+        --color-header-gradient-end: #000032;
+        --color-search-bg: rgba(255, 255, 255, 0.1);
+        --color-search-placeholder: #b5b5ff;
+      }
+
+      html { box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: inherit; }
+      html { font-size: calc(var(--font-body-scale) * 62.5%); }
+      body {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        min-height: 100%;
+        margin: 0;
+        background-color: rgb(var(--color-black));
+        color: rgb(var(--color-white));
+        font-family: var(--font-body-family);
+        font-size: 1.5rem;
+      }
+      @media (min-width: 750px) {
+        body { font-size: 1.6rem; }
+      }
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+      img { max-width: 100%; height: auto; object-fit: cover; object-position: center; loading: lazy; decoding: async; }
+    </style>
+
+    {{ content_for_header }}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Iron Phoenix GHG",
+        "alternateName": "Go Hard Gaming Discord LLC",
+        "url": "https://ironphoenix.store",
+        "description": "Iron Phoenix GHG is a creator-owned brand. We are not affiliated with the Iron Phoenix video game or any other Creator-Spring stores using that name.",
+        "sameAs": [
+          "https://ourphoenixrise.com",
+          "https://shadowseekers-forge.creator-spring.com",
+          "https://facebook.com/GohardgamingIronPhoenix",
+          "https://twitter.com/SSgohardgaming",
+          "https://tiktok.com/@gohardgamingdiscord"
+        ],
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "email": "support@ironphoenix.store",
+            "url": "https://ironphoenix.store/pages/contact",
+            "availableLanguage": ["English"],
+            "areaServed": "US"
+          }
+        ]
+      }
+    </script>
+    <link rel="preload" as="image" href="{{ article.image | image_url: width: 240 }}">
+</head>
+
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+    </script>
+
+    {%- unless template.name == 'password' -%}
+      {%- if settings.cart_type == 'drawer' -%}{% section 'cart-drawer' %}{%- endif -%}
+      {% section 'header' %}
+    {%- endunless -%}
+
+    <main id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {%- unless template.name == 'password' -%}
+      {% section 'footer' %}
+    {%- endunless -%}
+
+    {%- render 'product-media-modal' -%}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t | escape }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t | escape }}</li>
+    </ul>
+
+    {%- render 'bot-protection' -%}
+
+    {%- comment -%} Single JavaScript file - global.js functionality merged into theme.js {%- endcomment -%}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {%- comment -%} ---- Google gtag.js only (no GTM; no duplicates) ---- {%- endcomment -%}
+    {%- assign ga4_id = settings.ga4_id | strip | default: 'G-V6ZP7KWRZN' -%}
+    {%- assign gtag_id = settings.google_tag_id | strip | default: 'GT-552Q5J6X' -%}
+
+    {%- assign ga4_prefix = ga4_id | slice: 0, 2 -%}
+    {%- assign gtag_prefix = gtag_id | slice: 0, 3 -%}
+    {%- assign has_ga4 = false -%}
+    {%- if ga4_id != blank and ga4_prefix == 'G-' -%}
+      {%- assign has_ga4 = true -%}
+    {%- endif -%}
+
+    {%- assign has_gtag = false -%}
+    {%- if gtag_id != blank and gtag_prefix == 'GT-' -%}
+      {%- assign has_gtag = true -%}
+    {%- endif -%}
+
+    {%- assign primary_id = '' -%}
+    {%- if has_ga4 -%}
+      {%- assign primary_id = ga4_id -%}
+    {%- elsif has_gtag -%}
+      {%- assign primary_id = gtag_id -%}
+    {%- endif -%}
+
+    {%- if primary_id != '' -%}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ primary_id | escape }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        {% if has_ga4 %}gtag('config', '{{ ga4_id  | escape }}');{% endif %}
+        {% if has_gtag %}gtag('config', '{{ gtag_id | escape }}');{% endif %}
+      </script>
+    {%- else -%}
+      <script>
+        console.warn('gtag not loaded: no valid GA4 (G-*) or Google Tag (GT-*) ID.');
+      </script>
+    {%- endif -%}
+
+    {%- render 'feature-scripts' -%}
+
+    <script>
+      // Defer non-critical scripts (placeholder)
+      window.addEventListener('load', function () {
+        // load chat widgets or other non-critical scripts here
+      });
+    </script>
+  </body>
+</html>

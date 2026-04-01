@@ -1,0 +1,70 @@
+{%- if image != blank -%}
+  {%- assign opt_raw = settings.image_optimization_level | downcase | default: 'smart' -%}
+  {%- case opt_raw -%}
+    {%- when 'aggressive' -%}{% assign base_target_w = 600 %}
+    {%- when 'original' -%}{% assign base_target_w = 1200 %}
+    {%- else -%}{% assign base_target_w = 900 %}
+  {%- endcase -%}
+
+  {%- assign max_src_w  = image.width | default: 1200 -%}
+  {%- assign max_gen_w  = 1600 -%}
+  {%- assign target_w   = base_target_w -%}
+
+  {%- if width_override -%}
+    {%- assign wo = width_override | plus: 0 -%}
+    {%- assign target_w = wo | at_most: max_gen_w | at_most: max_src_w | at_least: 320 -%}
+  {%- else -%}
+    {%- assign target_w = target_w | at_most: max_gen_w | at_most: max_src_w | at_least: 320 -%}
+  {%- endif -%}
+
+  {%- assign available_widths = '360,480,600,720,900,1000,1200,1600' | split: ',' -%}
+  {%- assign final_widths_string = '' -%}
+  {%- for w in available_widths -%}
+    {%- assign w_num = w | plus: 0 -%}
+    {%- if w_num <= target_w -%}
+      {%- assign final_widths_string = final_widths_string | append: w | append: ',' -%}
+    {%- endif -%}
+  {%- endfor -%}
+  {%- assign final_widths_list = final_widths_string | split: ',' -%}
+  {%- assign final_widths = final_widths_list | compact -%}
+
+  {%- assign intrinsic_w = image.width  | default: target_w -%}
+  {%- assign intrinsic_h = image.height | default: target_w -%}
+  {%- assign target_h = intrinsic_h | times: target_w | divided_by: intrinsic_w | round -%}
+
+  {%- assign sizes_attr    = sizes    | default: '100vw' -%}
+  {%- assign load_attr     = loading  | default: 'lazy' -%}
+  {%- assign decode_attr = decoding | default: 'async' -%}
+  {%- assign alt_fallback = product.title | default: collection.title | default: 'Image' -%}
+  {%- assign alt_text = alt | default: image.alt | default: alt_fallback | escape -%}
+
+  {%- comment -%} FIXED: Removed the broken 'matches' operator below {%- endcomment -%}
+  {%- if raw_alt == blank -%}
+    {%- assign alt_text = alt_fallback | escape -%}
+  {%- else -%}
+    {%- assign alt_text = raw_alt | escape -%}
+  {%- endif -%}
+  {%- assign final_class = class | default: '' -%}
+
+  <picture>
+    <source
+      type="image/avif"
+      srcset="{% for w in final_widths %}{{ image | image_url: width: w, format: 'avif' }} {{ w }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+      sizes="{{ sizes_attr }}">
+    <source
+      type="image/webp"
+      srcset="{% for w in final_widths %}{{ image | image_url: width: w, format: 'webp' }} {{ w }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+      sizes="{{ sizes_attr }}">
+    <img
+      src="{{ image | image_url: width: target_w }}"
+      srcset="{% for w in final_widths %}{{ image | image_url: width: w }} {{ w }}w{% unless forloop.last %}, {% endunless %}{% endfor %}"
+      sizes="{{ sizes_attr }}"
+      width="{{ target_w }}"
+      height="{{ target_h }}"
+      alt="{{ alt_text }}"
+      loading="{{ load_attr }}"
+      decoding="{{ decode_attr }}"
+      {% if fetchpriority %}fetchpriority="{{ fetchpriority }}"{% endif %}
+      {% if final_class != '' %}class="{{ final_class }}"{% endif %}>
+  </picture>
+{%- endif -%}

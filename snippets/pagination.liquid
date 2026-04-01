@@ -1,0 +1,88 @@
+{% comment %}
+  Pagination snippet
+  Usage:
+  {% paginate collection.products by 16 %}
+    {% render 'pagination', paginate: paginate, anchor: '#ProductGridContainer' %}
+  {% endpaginate %}
+{% endcomment %}
+
+{{ 'component-pagination.css' | asset_url | stylesheet_tag }}
+
+{%- if paginate.parts.size > 0 -%}
+  {%- comment -%} allow only true anchors (e.g., "#ProductGridContainer") {%- endcomment -%}
+  {%- assign safe_anchor = '' -%}
+  {%- if anchor and anchor contains '#' -%}
+    {%- assign safe_anchor = anchor -%}
+  {%- endif -%}
+
+  <nav
+    class="pagination-wrapper"
+    data-page="{{ paginate.current_page }}"
+    role="navigation"
+    aria-label="{{ 'general.pagination.label' | t | escape }}"
+  >
+    {%- comment -%}
+      Replaced <link rel="prev/next"> with hidden <a rel="prev/next"> to avoid RemoteAsset warnings.
+    {%- endcomment -%}
+    {%- if paginate.previous -%}
+      <a rel="prev" href="{{ paginate.previous.url }}" hidden aria-hidden="true" tabindex="-1"></a>
+    {%- endif -%}
+    {%- if paginate.next -%}
+      <a rel="next" href="{{ paginate.next.url }}" hidden aria-hidden="true" tabindex="-1"></a>
+    {%- endif -%}
+
+    <ul class="pagination__list list-unstyled" role="list">
+      {%- if paginate.previous -%}
+        <li>
+          <a
+            href="{{ paginate.previous.url }}{{ safe_anchor }}"
+            class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce"
+            aria-label="{{ 'general.pagination.previous' | t | escape }}"
+          >
+            <span class="svg-wrapper">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </a>
+        </li>
+      {%- endif -%}
+
+      {%- for part in paginate.parts -%}
+        <li>
+          {%- if part.is_link -%}
+            <a
+              href="{{ part.url }}{{ safe_anchor }}"
+              class="pagination__item link"
+              aria-label="{{ 'general.pagination.page' | t: number: part.title | escape }}"
+            >
+              {{- part.title -}}
+            </a>
+          {%- elsif part.title == paginate.current_page -%}
+            <span
+              class="pagination__item pagination__item--current light"
+              aria-current="page"
+              aria-label="{{ 'general.pagination.page' | t: number: part.title | escape }}"
+            >
+              {{- part.title -}}
+            </span>
+          {%- else -%}
+            <span class="pagination__item">{{ part.title }}</span>
+          {%- endif -%}
+        </li>
+      {%- endfor -%}
+
+      {%- if paginate.next -%}
+        <li>
+          <a
+            href="{{ paginate.next.url }}{{ safe_anchor }}"
+            class="pagination__item pagination__item--next pagination__item-arrow link motion-reduce"
+            aria-label="{{ 'general.pagination.next' | t | escape }}"
+          >
+            <span class="svg-wrapper">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </a>
+        </li>
+      {%- endif -%}
+    </ul>
+  </nav>
+{%- endif -%}

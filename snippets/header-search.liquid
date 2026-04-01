@@ -1,0 +1,20 @@
+{%- comment -%}
+  Small header search form; predictive can enhance via theme JS.
+{%- endcomment -%}
+
+<form role="search"
+      class="header-search"
+      action="{{ routes.search_url }}"
+      method="get"
+      aria-label="{{ 'general.search.search' | t | default: 'Search' | escape }}"
+      data-predictive-enabled="{{ settings.predictive_search_enabled }}">
+  <input type="search"
+         name="q"
+         value=""
+         placeholder="{{ 'general.search.search' | t | default: 'Search…' | escape }}"
+         aria-label="{{ 'general.search.search' | t | default: 'Search' | escape }}"
+         autocomplete="off">
+  <button class="button button--icon" type="submit" aria-label="{{ 'general.search.submit' | t | default: 'Search' | escape }}">
+    {{ 'icon-search.svg' | inline_asset_content }}
+  </button>
+</form>

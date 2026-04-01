@@ -1,0 +1,202 @@
+<script>
+/* product-dynamic-fixes.liquid — SAFE MODE
+   - Runs only on product template + when section root exists
+   - No price DOM overwrite by default (opt-in via data attribute)
+   - All blocks guarded with feature detection + try/catch
+   - Zero globals except window.__IPX_PD namespace
+*/
+(function(){
+  // 0) Bail fast if not on a product template
+  if (!{{ template.name | json }} || {{ template.name | json }} !== 'product') return;
+
+  // 1) Scope: section root
+  var rootId = 'MainProduct-{{ section.id | escape }}';
+  var root   = document.getElementById(rootId);
+  if (!root) return; // don’t run if this section isn’t on the page
+
+  // 2) Namespace to avoid collisions
+  window.__IPX_PD = window.__IPX_PD || {};
+
+  // 3) Safe money format (only if missing)
+  try {
+    window.Shopify = window.Shopify || {};
+    if (typeof Shopify.formatMoney !== 'function') {
+      Shopify.formatMoney = function(cents, format){
+        if (typeof cents === 'string') cents = cents.replace('.', '');
+        var f = {{ shop.money_format | json }};
+        var tokenMatch = (format || f).match(/\{\{\s*(\w+)\s*\}\}/);
+        var token = tokenMatch ? tokenMatch[1] : 'amount';
+        function fmt(n,p,th,de){ if(isNaN(n)||n==null) return '0';
+          n=(n/100).toFixed(p); var a=n.split('.');
+          a[0]=a[0].replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1'+(th||',')); return a[0]+(a[1]?(de||'.')+a[1]:''); }
+        var val = fmt(cents,2);
+        if (token==='amount_no_decimals') val=fmt(cents,0);
+        if (token==='amount_with_comma_separator') val=fmt(cents,2,'.',',');
+        if (token==='amount_no_decimals_with_comma_separator') val=fmt(cents,0,'.',',');
+        return (format||f).replace(/\{\{\s*\w+\s*\}\}/, val);
+      };
+    }
+  } catch(e){ /* keep going */ }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    try {
+      var variants    = {{ product.variants | json }};
+      var optionNames = {{ product.options | json }};
+      var mediaList   = {{ product.media | json }};
+
+      var vForm = root.querySelector('#VariantForm-{{ section.id }}');
+      var pForm = root.querySelector('#ProductForm-{{ section.id }}');
+      if (!pForm) return; // nothing to do
+
+      var idInput = pForm.querySelector('input[name="id"]');
+      var addBtn  = pForm.querySelector('.product__add-to-cart');
+      var qty     = pForm.querySelector('#Quantity-{{ section.id }}');
+
+      // Price target: opt-in element only (prevents overwriting theme price snippet)
+      // Add data-dynamic-price to a span if you want live price text updated.
+      var priceTarget = root.querySelector('[data-dynamic-price]');
+
+      function selectedOptions(){
+        var map = {};
+        if (!vForm) return map;
+        vForm.querySelectorAll('input[type="radio"]:checked').forEach(function(i){
+          var name = i.name.replace(/^options\[/,'').replace(/\]$/,'');
+          map[name] = i.value;
+        });
+        return map;
+      }
+
+      function findVariant(sel){
+        return variants.find(function(v){
+          return v.options.every(function(val, idx){
+            return sel[optionNames[idx]] === val;
+          });
+        });
+      }
+
+      function updateVariant(){
+        try{
+          var sel = selectedOptions();
+          var v   = findVariant(sel);
+          if (!v){ if(addBtn){ addBtn.disabled=true; addBtn.textContent='Unavailable'; } return; }
+
+          if (idInput) idInput.value = v.id;
+
+          // Only update price text if you explicitly added [data-dynamic-price]
+          if (priceTarget && window.Shopify && typeof Shopify.formatMoney==='function'){
+            var txt = Shopify.formatMoney(v.price);
+            priceTarget.textContent = txt;
+          }
+
+          // Button state/text (safe)
+          if (addBtn){
+            addBtn.disabled = !v.available;
+            if (window.Shopify && typeof Shopify.formatMoney==='function'){
+              addBtn.textContent = v.available ? ('Add to cart - ' + Shopify.formatMoney(v.price)) : 'Sold out';
+            } else {
+              addBtn.textContent = v.available ? 'Add to cart' : 'Sold out';
+            }
+          }
+
+          // Quantity max clamp if inventory tracked
+          if (qty){
+            if (v.inventory_management && typeof v.inventory_quantity === 'number'){
+              var max = Math.max(0, v.inventory_quantity);
+              if (max > 0){ qty.setAttribute('max', String(max)); if (parseInt(qty.value||'1',10) > max) qty.value = String(max); }
+              else { qty.removeAttribute('max'); }
+            } else {
+              qty.removeAttribute('max');
+            }
+          }
+
+          // Update URL (quietly)
+          try {
+            var url = new URL(window.location.href);
+            url.searchParams.set('variant', v.id);
+            history.replaceState({}, '', url);
+          } catch(e){ /* ignore */ }
+
+        } catch(e){ /* swallow to avoid site break */ }
+      }
+
+      // Wire variant changes (if radios exist)
+      if (vForm) vForm.addEventListener('change', updateVariant);
+      updateVariant();
+
+      // Quantity +/- (guarded)
+      (function(){
+        if (!qty) return;
+        var wrap  = qty.closest('.quantity-input') || pForm;
+        var minus = wrap ? wrap.querySelector('.quantity-btn--minus') : null;
+        var plus  = wrap ? wrap.querySelector('.quantity-btn--plus')  : null;
+
+        function sync(){
+          var min = parseInt(qty.min || '1', 10);
+          var max = qty.max ? parseInt(qty.max, 10) : Infinity;
+          var val = parseInt(qty.value || '1', 10);
+          if (isNaN(val) || val < min) val = min;
+          if (val > max) val = max;
+          qty.value = String(val);
+          if (minus) minus.disabled = (val <= min);
+          if (plus)  plus.disabled  = (isFinite(max) && val >= max);
+        }
+        function bump(d){
+          var min = parseInt(qty.min || '1', 10);
+          var max = qty.max ? parseInt(qty.max, 10) : Infinity;
+          var val = parseInt(qty.value || '1', 10);
+          val = isNaN(val) ? min : val + d;
+          val = Math.max(min, Math.min(max, val));
+          qty.value = String(val);
+          sync();
+        }
+        if (minus) minus.addEventListener('click', function(){ bump(-1); }, {passive:true});
+        if (plus)  plus .addEventListener('click', function(){ bump(+1); }, {passive:true});
+        qty.addEventListener('change', sync);
+        sync();
+      })();
+
+      // Thumbnails → main image swap (guarded, scoped)
+      (function(){
+        var main   = root.querySelector('#MainMedia');
+        var thumbs = root.querySelectorAll('.product__thumbnails .thumb');
+        if (!main || !thumbs.length) return;
+
+        thumbs.forEach(function(btn){
+          btn.addEventListener('click', function(){
+            try{
+              var mid = Number(this.getAttribute('data-media-id'));
+              var m   = mediaList.find(function(x){ return x.id === mid; });
+              if (!m) return;
+
+              thumbs.forEach(function(t){ t.classList.remove('is-active'); });
+              this.classList.add('is-active');
+
+              var old = main.querySelector('.product__img');
+              if (!old) return;
+
+              var ni = new Image();
+              ni.className = 'product__img';
+              ni.alt       = old.alt || {{ product.title | json }};
+              ni.decoding  = 'async';
+              ni.loading   = 'eager';
+              ni.style.opacity = '0';
+              ni.style.transition = 'opacity .25s';
+              ni.src = m.src || (m.preview_image && m.preview_image.src) || old.src;
+
+              ni.onload = function(){
+                main.appendChild(ni);
+                requestAnimationFrame(function(){ ni.style.opacity = '1'; });
+                setTimeout(function(){ try{ old.remove(); }catch(e){} }, 250);
+              };
+            } catch(e){ /* ignore */ }
+          }, {passive:true});
+        });
+      })();
+
+    } catch(e){
+      // last-resort guard: never let this break the site
+      console.error('product-dynamic-fixes safe error:', e);
+    }
+  });
+})();
+</script>

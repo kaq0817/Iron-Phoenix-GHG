@@ -1,0 +1,702 @@
+/* ==========================================================================
+   THEME.CSS — Iron Phoenix GHG
+   Fixed: header size, typography scale, mobile layout, per-collection themes
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   VARIABLES — Base
+   -------------------------------------------------------------------------- */
+:root {
+  --page-width: 1440px;
+
+  --font-body-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  --font-heading-family: var(--font-body-family);
+  --font-body-scale: 1;
+  --font-heading-scale: 1;
+
+  --color-black: 0, 0, 0;
+  --color-white: 255, 255, 255;
+
+  --color-fg: 227, 214, 246;
+  --color-headings: 204, 153, 255;
+  --color-links: 173, 110, 255;
+  --color-bg: 0, 0, 0;
+  --color-accent: 57, 255, 20;
+  --color-surface-1: 18, 18, 18;
+  --color-surface-2: 28, 28, 28;
+
+  --color-button-primary-bg: 255, 0, 255;
+  --color-button-primary-text: 0, 0, 0;
+  --color-button-primary-hover: 255, 255, 0;
+  --color-neon-green: #39FF14;
+  --color-neon-pink: #FF10F0;
+  --color-neon-yellow: #FFFF00;
+  --color-main-text: #E3D6F6;
+
+  --radius: 14px;
+  --radius-sm: 10px;
+  --buttons-radius: 12px;
+  --shadow-1: 0 10px 30px rgba(0,0,0,.35);
+  --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+
+  --page-width-margin: 2rem;
+  --spacing-sections-mobile: 3rem;
+  --spacing-sections-desktop: 6rem;
+}
+
+/* --------------------------------------------------------------------------
+   RESET / BASE
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  font-size: 62.5%;
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  color: rgb(var(--color-fg));
+  background: rgb(var(--color-bg));
+  font-family: var(--font-body-family);
+  font-size: 1.6rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg, video, canvas {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+a {
+  color: rgb(var(--color-links));
+  text-decoration: none;
+}
+
+a:hover, a:focus-visible { text-decoration: underline; }
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 2px;
+  border-radius: .25rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
+
+/* --------------------------------------------------------------------------
+   HEADER FIX — stop it being sucked into a tiny strip
+   -------------------------------------------------------------------------- */
+.header,
+.site-header,
+[class*="header"],
+#shopify-section-header {
+  width: 100% !important;
+  max-width: 100% !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 1.2rem 2.4rem !important;
+  min-height: 6rem !important;
+  background: rgba(0, 0, 0, 0.95) !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 100 !important;
+  border-bottom: 1px solid rgba(57, 255, 20, 0.2) !important;
+}
+
+.header__logo,
+.site-header__logo,
+[class*="header__logo"] {
+  flex-shrink: 0 !important;
+  max-height: 5rem !important;
+  width: auto !important;
+}
+
+.header__nav,
+.site-nav,
+[class*="header__menu"] {
+  display: flex !important;
+  align-items: center !important;
+  gap: 2.4rem !important;
+  font-size: 1.4rem !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+}
+
+/* --------------------------------------------------------------------------
+   LAYOUT — page width, sections
+   -------------------------------------------------------------------------- */
+.page-width {
+  max-width: var(--page-width);
+  margin-inline: auto;
+  padding-inline: 2rem;
+  width: 100%;
+}
+
+/* FIXED: No longer forcing flex/center on main content — this was killing the header */
+#MainContent,
+main {
+  width: 100%;
+  display: block !important;
+}
+
+.shopify-section {
+  width: 100%;
+}
+
+.section {
+  padding-top: clamp(3rem, 5vw, 7rem);
+  padding-bottom: clamp(3rem, 5vw, 7rem);
+}
+
+/* --------------------------------------------------------------------------
+   TYPOGRAPHY — FIXED: no more site-wide clamp overrides on every tag
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading-family);
+  line-height: 1.2;
+  margin: 0 0 0.6em;
+  letter-spacing: 0.2px;
+  color: rgb(var(--color-headings));
+  /* NO !important — let sections override naturally */
+}
+
+/* Hero headings get the big treatment — scoped, not global */
+.hero h1,
+.banner h1,
+[class*="hero__title"],
+[class*="banner__title"] {
+  font-size: clamp(2.8rem, 5vw, 5.6rem);
+  font-weight: 800;
+  line-height: 1.05;
+}
+
+/* Section headings — normal scale */
+h2 { font-size: clamp(2.2rem, 3vw, 3.2rem); }
+h3 { font-size: clamp(1.9rem, 2vw, 2.4rem); }
+h4 { font-size: 1.9rem; }
+
+/* Body text — NO forced max-width or centering globally */
+p {
+  margin: 0 0 1.2em;
+  color: rgba(var(--color-white), .9);
+  font-size: 1.6rem;
+  line-height: 1.7;
+}
+
+/* --------------------------------------------------------------------------
+   BUTTONS
+   -------------------------------------------------------------------------- */
+.button,
+.btn,
+a.button,
+button.button,
+.shopify-payment-button__button,
+input[type="submit"] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.1rem 2.2rem;
+  border-radius: var(--radius-sm);
+  border: none;
+  background: linear-gradient(135deg, #00f5ff 0%, #00d4ff 100%);
+  color: #000;
+  font-weight: 700;
+  font-size: 1.4rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 4px 15px rgba(0, 245, 255, 0.3);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.button:hover, .btn:hover, a.button:hover, button.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 245, 255, 0.5);
+  text-decoration: none;
+}
+
+.button--secondary,
+.button--outline {
+  background: transparent;
+  border: 2px solid #39ff14;
+  color: #39ff14;
+  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+}
+
+.button--secondary:hover {
+  background: rgba(57, 255, 20, 0.1);
+  box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+}
+
+.product-form__submit,
+[name="add"],
+.add-to-cart {
+  background: linear-gradient(135deg, #39ff14 0%, #2eff00 100%);
+  color: #000;
+  box-shadow: 0 4px 20px rgba(57, 255, 20, 0.4);
+}
+
+.cart__checkout-button,
+.button--primary[name="checkout"] {
+  background: linear-gradient(90deg, #ff10f0, #39ff14);
+  color: #000;
+  font-weight: 700;
+  box-shadow: 0 0 12px #ff10f0, 0 0 20px #39ff14;
+}
+
+/* --------------------------------------------------------------------------
+   GRIDS
+   -------------------------------------------------------------------------- */
+.grid { display: grid; gap: 2rem; }
+.grid--2 { grid-template-columns: repeat(2, 1fr); }
+.grid--3 { grid-template-columns: repeat(3, 1fr); }
+.grid--4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 900px) {
+  .grid--4, .grid--3 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 560px) {
+  .grid--2, .grid--3, .grid--4 { grid-template-columns: 1fr; }
+}
+
+/* --------------------------------------------------------------------------
+   PRODUCT PAGE
+   -------------------------------------------------------------------------- */
+.product {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+@media (min-width: 750px) {
+  .product { grid-template-columns: 1fr 1fr; }
+  .product__media { position: sticky; top: 2rem; }
+}
+
+.product__description {
+  text-align: left;
+  max-width: 700px;
+  margin-inline: auto;
+}
+
+.product__description ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.product__description ul li {
+  position: relative;
+  padding-left: 2em;
+  margin-bottom: 0.8em;
+  line-height: 1.7;
+}
+
+.product__description ul li::before {
+  content: '➤';
+  position: absolute;
+  left: 0;
+  color: var(--color-neon-green);
+}
+
+/* --------------------------------------------------------------------------
+   SOCIAL ICONS
+   -------------------------------------------------------------------------- */
+.list-social {
+  display: flex;
+  justify-content: center;
+  gap: 1.2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.list-social a svg {
+  width: 28px;
+  height: 28px;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.list-social a:hover svg { transform: scale(1.2); }
+
+.social-icon.facebook svg  { fill: #1877F2; filter: drop-shadow(0 0 6px #1877F2); }
+.social-icon.twitter svg   { fill: #1DA1F2; filter: drop-shadow(0 0 6px #1DA1F2); }
+.social-icon.tiktok svg    { fill: #000; background: #fff; border-radius: 6px; padding: 2px; filter: drop-shadow(0 0 6px #00F2EA) drop-shadow(0 0 10px #FF0050); }
+.social-icon.youtube svg   { fill: #FF0000; background: #fff; border-radius: 6px; padding: 2px; filter: drop-shadow(0 0 8px #FF0000); }
+.social-icon.pinterest svg { fill: #E60023; background: #fff; border-radius: 6px; padding: 2px; filter: drop-shadow(0 0 6px #FF1A1A); }
+.social-icon.twitch svg    { fill: #9146FF; filter: drop-shadow(0 0 6px #9146FF); }
+
+/* --------------------------------------------------------------------------
+   NEON UTILITY
+   -------------------------------------------------------------------------- */
+.neon-hr {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, rgba(255,16,240,.55), rgba(57,255,20,.55));
+  margin: 1.6rem 0;
+}
+
+.glow-text {
+  text-shadow: 0 0 10px rgba(57,255,20,.35), 0 0 30px rgba(57,255,20,.2);
+}
+
+.cart__subtotal-price {
+  color: #39ff14;
+  font-weight: bold;
+}
+
+/* --------------------------------------------------------------------------
+   FOOTER
+   -------------------------------------------------------------------------- */
+.footer,
+.footer__content,
+.footer__blocks-wrapper,
+.footer__block {
+  text-align: left;
+}
+
+/* --------------------------------------------------------------------------
+   MOBILE — FIXED: full width, no half-screen layout
+   -------------------------------------------------------------------------- */
+@media (max-width: 749px) {
+  html, body {
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  /* Header on mobile */
+  .header,
+  .site-header,
+  [class*="header"] {
+    padding: 1rem 1.6rem !important;
+    min-height: 5.6rem !important;
+  }
+
+  /* Full width everything */
+  .shopify-section,
+  .page-width,
+  .section,
+  .rich-text,
+  .banner,
+  .hero,
+  .collection-list,
+  .product-grid,
+  .image-with-text,
+  .multicolumn,
+  .newsletter,
+  .footer {
+    max-width: 100% !important;
+    width: 100% !important;
+    padding-left: 1.6rem !important;
+    padding-right: 1.6rem !important;
+  }
+
+  /* Typography on mobile */
+  h1 { font-size: 2.8rem; }
+  h2 { font-size: 2.2rem; }
+  h3 { font-size: 1.9rem; }
+
+  .hero h1,
+  .banner h1,
+  [class*="hero__title"] {
+    font-size: clamp(2.4rem, 7vw, 3.6rem);
+  }
+
+  p { font-size: 1.5rem; max-width: 100% !important; }
+}
+
+/* ==========================================================================
+   PER-COLLECTION THEMES
+   Each niche gets its own feel while sharing the base above
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   GAMING — Lifestyle | Neon, dark, electric
+   -------------------------------------------------------------------------- */
+body.template-collection--gaming,
+body[class*="collection--gaming"] {
+  --color-headings: 57, 255, 20;
+  --color-links: 57, 255, 20;
+  --color-accent: 57, 255, 20;
+  background: #050505 !important;
+}
+
+body.template-collection--gaming .collection-hero,
+body[class*="collection--gaming"] .hero {
+  background: radial-gradient(ellipse at top, #0a2a0a 0%, #050505 70%) !important;
+}
+
+body.template-collection--gaming h1,
+body.template-collection--gaming h2,
+body[class*="collection--gaming"] h1,
+body[class*="collection--gaming"] h2 {
+  color: #39FF14;
+  text-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+}
+
+body.template-collection--gaming .button,
+body[class*="collection--gaming"] .button {
+  background: linear-gradient(135deg, #39FF14, #00ff88) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 20px rgba(57, 255, 20, 0.5) !important;
+}
+
+/* --------------------------------------------------------------------------
+   SPORTS — Performance | Bold, energetic, red/orange
+   -------------------------------------------------------------------------- */
+body.template-collection--sports,
+body[class*="collection--sports"] {
+  --color-headings: 255, 60, 20;
+  --color-links: 255, 100, 20;
+  --color-accent: 255, 60, 20;
+  background: #080808 !important;
+}
+
+body.template-collection--sports .collection-hero,
+body[class*="collection--sports"] .hero {
+  background: radial-gradient(ellipse at top, #2a0a00 0%, #080808 70%) !important;
+}
+
+body.template-collection--sports h1,
+body.template-collection--sports h2,
+body[class*="collection--sports"] h1,
+body[class*="collection--sports"] h2 {
+  color: #FF3C14;
+  text-shadow: 0 0 20px rgba(255, 60, 20, 0.4);
+}
+
+body.template-collection--sports .button,
+body[class*="collection--sports"] .button {
+  background: linear-gradient(135deg, #FF3C14, #ff6a00) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(255, 60, 20, 0.5) !important;
+}
+
+/* --------------------------------------------------------------------------
+   OUTDOOR — Environment | Earth tones, deep green, natural
+   -------------------------------------------------------------------------- */
+body.template-collection--outdoor,
+body[class*="collection--outdoor"] {
+  --color-headings: 120, 200, 80;
+  --color-links: 100, 180, 60;
+  --color-accent: 120, 200, 80;
+  background: #060e04 !important;
+}
+
+body.template-collection--outdoor .collection-hero,
+body[class*="collection--outdoor"] .hero {
+  background: radial-gradient(ellipse at top, #0d2208 0%, #060e04 70%) !important;
+}
+
+body.template-collection--outdoor h1,
+body.template-collection--outdoor h2,
+body[class*="collection--outdoor"] h1,
+body[class*="collection--outdoor"] h2 {
+  color: #78C850;
+  text-shadow: 0 0 20px rgba(120, 200, 80, 0.3);
+}
+
+body.template-collection--outdoor .button,
+body[class*="collection--outdoor"] .button {
+  background: linear-gradient(135deg, #78C850, #4a9e25) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 20px rgba(120, 200, 80, 0.4) !important;
+}
+
+/* --------------------------------------------------------------------------
+   HOME — Comfort | Warm, soft, inviting
+   -------------------------------------------------------------------------- */
+body.template-collection--home,
+body[class*="collection--home"] {
+  --color-headings: 255, 200, 120;
+  --color-links: 255, 180, 80;
+  --color-accent: 255, 200, 120;
+  background: #0c0a06 !important;
+}
+
+body.template-collection--home .collection-hero,
+body[class*="collection--home"] .hero {
+  background: radial-gradient(ellipse at top, #2a1e08 0%, #0c0a06 70%) !important;
+}
+
+body.template-collection--home h1,
+body.template-collection--home h2,
+body[class*="collection--home"] h1,
+body[class*="collection--home"] h2 {
+  color: #FFC878;
+  text-shadow: 0 0 20px rgba(255, 200, 120, 0.3);
+}
+
+body.template-collection--home .button,
+body[class*="collection--home"] .button {
+  background: linear-gradient(135deg, #FFC878, #e6920a) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 20px rgba(255, 200, 120, 0.4) !important;
+}
+
+/* --------------------------------------------------------------------------
+   JEWELRY — Accessory | Luxury, gold, elegant
+   -------------------------------------------------------------------------- */
+body.template-collection--jewelry,
+body[class*="collection--jewelry"] {
+  --color-headings: 220, 180, 100;
+  --color-links: 200, 160, 80;
+  --color-accent: 220, 180, 100;
+  background: #07060a !important;
+}
+
+body.template-collection--jewelry .collection-hero,
+body[class*="collection--jewelry"] .hero {
+  background: radial-gradient(1200px 600px at 50% -10%, #3146ff 0%, #0b1033 55%, #070914 100%) !important;
+}
+
+body.template-collection--jewelry h1,
+body.template-collection--jewelry h2,
+body[class*="collection--jewelry"] h1,
+body[class*="collection--jewelry"] h2 {
+  color: #DCC064;
+  text-shadow: 0 0 20px rgba(220, 180, 100, 0.4);
+}
+
+body.template-collection--jewelry .button,
+body[class*="collection--jewelry"] .button {
+  background: linear-gradient(135deg, #DCC064, #a8892a) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 20px rgba(220, 180, 100, 0.4) !important;
+}
+
+/* --------------------------------------------------------------------------
+   AMERICANA — Style/Theme | Red, white, blue, bold
+   -------------------------------------------------------------------------- */
+body.template-collection--americana,
+body[class*="collection--americana"] {
+  --color-headings: 200, 50, 50;
+  --color-links: 100, 150, 255;
+  --color-accent: 200, 50, 50;
+  background: #060608 !important;
+}
+
+body.template-collection--americana .collection-hero,
+body[class*="collection--americana"] .hero {
+  background: radial-gradient(ellipse at top, #1a0606 0%, #060608 70%) !important;
+}
+
+body.template-collection--americana h1,
+body.template-collection--americana h2,
+body[class*="collection--americana"] h1,
+body[class*="collection--americana"] h2 {
+  color: #CC3232;
+  text-shadow: 0 0 20px rgba(200, 50, 50, 0.4);
+}
+
+body.template-collection--americana .button,
+body[class*="collection--americana"] .button {
+  background: linear-gradient(135deg, #CC3232, #3264CC) !important;
+  color: #fff !important;
+  box-shadow: 0 4px 20px rgba(200, 50, 50, 0.4) !important;
+}
+
+/* --------------------------------------------------------------------------
+   FAMILY — Use-case | Warm, friendly, purple/pink
+   -------------------------------------------------------------------------- */
+body.template-collection--family,
+body[class*="collection--family"] {
+  --color-headings: 255, 130, 200;
+  --color-links: 200, 100, 255;
+  --color-accent: 255, 130, 200;
+  background: #090608 !important;
+}
+
+body.template-collection--family .collection-hero,
+body[class*="collection--family"] .hero {
+  background: radial-gradient(ellipse at top, #200a1e 0%, #090608 70%) !important;
+}
+
+body.template-collection--family h1,
+body.template-collection--family h2,
+body[class*="collection--family"] h1,
+body[class*="collection--family"] h2 {
+  color: #FF82C8;
+  text-shadow: 0 0 20px rgba(255, 130, 200, 0.3);
+}
+
+body.template-collection--family .button,
+body[class*="collection--family"] .button {
+  background: linear-gradient(135deg, #FF82C8, #c864ff) !important;
+  color: #000 !important;
+  box-shadow: 0 4px 20px rgba(255, 130, 200, 0.4) !important;
+}
+
+/* Force transparent backgrounds in all collection templates */
+body[class*="template-collection"] #MainContent,
+body[class*="template-collection"] main,
+body[class*="template-collection"] .shopify-section,
+body[class*="template-collection"] .section,
+body[class*="template-collection"] .page-width,
+body[class*="template-collection"] .collection-hero__inner,
+body[class*="template-collection"] .product-grid {
+  background: transparent !important;
+}
+/* ── Force center on all standalone text/image sections ── */
+.shopify-section .rich-text,
+.shopify-section .image-with-text,
+.shopify-section [class*="rich-text"],
+.shopify-section [class*="image-with-text"] {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  max-width: 900px !important;
+  width: 100% !important;
+}
+
+.shopify-section .rich-text h2,
+.shopify-section .rich-text h3,
+.shopify-section .rich-text p,
+.shopify-section .image-with-text h2,
+.shopify-section .image-with-text p {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.shopify-section .rich-text .button,
+.shopify-section .image-with-text .button {
+  display: block !important;
+  width: fit-content !important;
+  margin: 1.6rem auto 0 !important;
+}
+/* Remove neon lines from all plain hr tags */
+hr {
+  border: none;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin: 2rem 0;
+  background: none;
+}
+
+/* Only apply neon style when explicitly classed */
+hr.neon-hr,
+.neon-hr {
+  height: 1px;
+  border: 0;
+  background: linear-gradient(90deg, rgba(255,16,240,.55), rgba(57,255,20,.55));
+  margin: 1.6rem 0;
+}

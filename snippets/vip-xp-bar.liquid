@@ -1,0 +1,32 @@
+{%- comment -%}
+/snippets/vip-xp-bar.liquid — styles in assets/snippet-vip-xp-bar.css
+{%- endcomment -%}
+
+<link rel="stylesheet" href="{{ 'snippet-vip-xp-bar.css' | asset_url }}" media="print" onload="this.media='all'" preload>
+<noscript>{{ 'snippet-vip-xp-bar.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign level = 'Player' -%}
+{%- assign pct = 10 -%}
+{%- if customer -%}
+  {%- if customer.tags contains 'Legend' -%}
+    {%- assign level = 'Legend' -%}{%- assign pct = 100 -%}
+  {%- elsif customer.tags contains 'VIP' or customer.tags contains 'Pro' -%}
+    {%- assign level = 'VIP' -%}{%- assign pct = 66 -%}
+  {%- endif -%}
+{%- endif -%}
+
+<div class="vipxp"
+     role="meter"
+     aria-valuenow="{{ pct }}"
+     aria-valuemin="0"
+     aria-valuemax="100"
+     aria-label="VIP experience progress: {{ level }} level at {{ pct }}%"
+     style="--pct: {{ pct }}%;">
+  <div class="vipxp__label">XP: <strong>{{ level | escape }}</strong></div>
+  <div class="vipxp__bar"><span class="vipxp__fill"></span></div>
+  {%- unless customer -%}
+    <div class="vipxp__hint">
+      <a href="{{ routes.account_login_url }}">Log in</a> to start earning XP
+    </div>
+  {%- endunless -%}
+</div>

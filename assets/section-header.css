@@ -1,0 +1,140 @@
+/* assets/section-header.css */
+
+/* Dynamic padding set by Liquid via CSS variables */
+.header-wrapper .header {
+  padding-top: var(--header-padding-top-mobile);
+  padding-right: 3rem;
+  padding-bottom: var(--header-padding-bottom-mobile);
+  padding-left: 3rem;
+}
+
+.section-header-wrapper {
+  position: sticky;
+  margin-bottom: var(--header-margin-bottom-mobile);
+}
+
+@media (min-width: 750px) {
+  .section-header-wrapper {
+    margin-bottom: var(--header-margin-bottom-desktop);
+  }
+}
+
+@media (min-width: 990px) {
+  .header-wrapper .header {
+    padding-top: var(--header-padding-top-desktop);
+    padding-bottom: var(--header-padding-bottom-desktop);
+  }
+}
+
+/* Header bar layout */
+.header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Logo styling */
+.header__logo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Icons container */
+.header__icons {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+/* Individual icon wrapper styling - CYAN COLOR */
+.header__icon {
+  color: #00f5ff;
+  transition: all 0.3s ease;
+}
+
+.header__icon:hover {
+  color: #00d4ff;
+  transform: translateY(-2px);
+}
+
+.header__icon .svg-wrapper svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+  fill: #00f5ff;
+  transition: fill 0.3s ease;
+}
+
+.header__icon:hover .svg-wrapper svg {
+  fill: #00d4ff;
+}
+
+/* Cart icon specific - make it stand out */
+.header__icon--cart .svg-wrapper svg {
+  fill: #00f5ff;
+}
+
+/* Account/user icon */
+.header__icon--account .svg-wrapper svg {
+  fill: #00f5ff;
+}
+
+/* Search icon */
+.header__icon--search .svg-wrapper svg {
+  fill: #00f5ff;
+}
+
+/* Cart count bubble - CYAN with BLACK text */
+.cart-count-bubble {
+  position: absolute;
+  transform: translate(-30%, -40%);
+  min-width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 700;
+  padding: .1rem .35rem;
+  background: #00f5ff;
+  color: #000;
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.5);
+  transition: all 0.3s ease;
+}
+
+.header__icon--cart:hover .cart-count-bubble {
+  background: #00d4ff;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.7);
+}
+
+/* Menu/hamburger icon if you have one */
+.header__icon--menu .svg-wrapper svg {
+  fill: #00f5ff;
+}
+
+/* Any header links */
+.header__menu-item,
+.header__link {
+  color: #fff;
+  transition: color 0.3s ease;
+}
+
+.header__menu-item:hover,
+.header__link:hover {
+  color: #00f5ff;
+}
+
+/* Search input styling if visible */
+.header__search input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(0, 245, 255, 0.3);
+  color: #fff;
+}
+
+.header__search input:focus {
+  border-color: #00f5ff;
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+}

@@ -1,0 +1,78 @@
+/* snippet-paywall.css — Neon style matching Iron Phoenix */
+
+.ipx-preview {
+  margin-bottom: 2rem;
+  color: var(--color-main-text);
+  font-size: 1.4rem;
+  line-height: 1.7;
+  max-width: 65ch;
+}
+
+.ipx-gate {
+  background-color: rgb(var(--color-surface-2));
+  border: 1px solid rgba(var(--color-accent), 0.3);
+  border-radius: var(--radius);
+  padding: 2rem;
+  color: rgb(var(--color-fg));
+  text-align: center;
+  box-shadow: var(--shadow-2);
+}
+
+.ipx-gate__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: rgb(var(--color-headings));
+  margin-bottom: 1rem;
+  text-shadow: 0 0 5px rgba(var(--color-headings), 0.5);
+}
+
+.ipx-gate__subtitle {
+  font-size: 1.2rem;
+  color: rgba(var(--color-fg), 0.8);
+  margin-bottom: 2rem;
+}
+
+.ipx-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  border-radius: var(--buttons-radius);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 10px rgba(255, 16, 240, 0.5), 0 0 14px rgba(57, 255, 20, 0.4);
+  text-shadow: 0 0 4px #000;
+  font-family: var(--font-heading-family);
+}
+
+.ipx-btn--primary {
+  background: linear-gradient(135deg,rgb(212, 56, 204) 0%, #39ff14 100%);
+  color: #000;
+}
+
+.ipx-btn--primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #ff10f0, 0 0 32px #39ff14;
+}
+
+.ipx-btn--ghost {
+  background: transparent;
+  border: 2px solid #ff10f0;
+  color: #ff10f0;
+}
+
+.ipx-btn--ghost:hover {
+  background: rgba(255, 16, 240, 0.1);
+  color: #fff;
+  border-color: #ff10f0;
+  box-shadow: 0 0 10px #ff10f0;
+}
+
+.ipx-gate__note {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: rgba(var(--color-fg), 0.65);
+  font-style: italic;
+}
+

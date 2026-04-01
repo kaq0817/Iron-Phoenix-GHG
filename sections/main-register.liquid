@@ -1,0 +1,11 @@
+<section>
+  <h1>{{ 'customer.register.title' | t }}</h1>
+  {% form 'create_customer' %}
+    {{ form.errors | default_errors }}
+    <input type="text" name="customer[first_name]" placeholder="First name" required>
+    <input type="text" name="customer[last_name]" placeholder="Last name" required>
+    <input type="email" name="customer[email]" placeholder="Email" required>
+    <input type="password" name="customer[password]" placeholder="Password" required>
+    <button type="submit">{{ 'customer.register.submit' | t }}</button>
+  {% endform %}
+</section>

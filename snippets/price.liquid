@@ -1,0 +1,84 @@
+{%- comment -%}
+STRICT anti-fake-sale pricing (variant-scoped)
+- Requires start & end dates, window <= 7 days, and now within window
+- Optional original_price metafield must equal compare_at_price if provided
+- Uses selected variant for accuracy
+{%- endcomment -%}
+
+{%- assign v = product.selected_or_first_available_variant | default: product.variants.first -%}
+{%- assign price = v.price | default: 0 -%}
+{%- assign compare = v.compare_at_price | default: 0 -%}
+{%- assign show_sale = false -%}
+
+{%- if compare > price and price > 0 -%}
+  {%- assign start_raw = v.metafields.custom.sale_start_date -%}
+  {%- assign end_raw   = v.metafields.custom.sale_end_date -%}
+
+  {%- if start_raw and end_raw -%}
+    {%- assign start_s = start_raw | date: '%s' | plus: 0 -%}
+    {%- assign end_s   = end_raw   | date: '%s' | plus: 0 -%}
+    {%- assign now_s   = 'now' | date: '%s' | plus: 0 -%}
+
+    {%- comment -%} in-window? {%- endcomment -%}
+    {%- assign in_window = false -%}
+    {%- if now_s >= start_s and now_s <= end_s -%}
+      {%- assign in_window = true -%}
+    {%- endif -%}
+
+    {%- comment -%} window length ok? (<= 7 days) {%- endcomment -%}
+    {%- assign window_secs = end_s | minus: start_s -%}
+    {%- assign window_ok = false -%}
+    {%- if window_secs >= 0 and window_secs <= 604800 -%}
+      {%- assign window_ok = true -%}
+    {%- endif -%}
+
+    {%- if in_window and window_ok -%}
+      {%- comment -%}
+        If original_price metafield exists, it must match compare_at exactly.
+        Prefer metafield type: number_decimal or money (without currency symbol).
+      {%- endcomment -%}
+      {%- assign original_meta = v.metafields.custom.original_price -%}
+      {%- if original_meta != blank -%}
+        {%- assign original_cents = original_meta | replace: ',', '' | times: 100 | round -%}
+        {%- assign compare_cents  = compare | round -%}
+        {%- if original_cents == compare_cents -%}
+          {%- assign show_sale = true -%}
+        {%- endif -%}
+      {%- else -%}
+        {%- assign show_sale = true -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+{%- endif -%}
+
+<div class="price{% if show_sale %} price--on-sale{% endif %}">
+  <div class="price__container">
+    {%- if show_sale -%}
+      <div class="price__sale">
+        <span class="visually-hidden">{{ 'products.product.price.sale_price' | t }}</span>
+        <span class="price-item price-item--sale">{{ price | money }}</span>
+
+        <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+        <s class="price-item price-item--regular">{{ compare | money }}</s>
+
+        <span class="price__badge price__badge-sale color-sale">
+          {{ 'products.product.on_sale' | t }}
+        </span>
+      </div>
+    {%- else -%}
+      <div class="price__regular">
+        <span class="visually-hidden">{{ 'products.product.price.regular_price' | t }}</span>
+        <span class="price-item price-item--regular">{{ price | money }}</span>
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- if v.unit_price_measurement -%}
+    <div class="unit-price">
+      <span class="visually-hidden">{{ 'products.product.price.unit_price' | t }}</span>
+      <span>{{ v.unit_price | money }}</span>
+      <span aria-hidden="true">/</span>
+      <span>{{ v.unit_price_measurement.reference_value }}{{ v.unit_price_measurement.reference_unit }}</span>
+    </div>
+  {%- endif -%}
+</div>

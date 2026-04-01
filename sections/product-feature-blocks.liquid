@@ -1,0 +1,106 @@
+{% comment %}
+  Product Feature Blocks - Simple & Clean
+  - Splits description into sentences
+  - Shows first 3 sentences with alternating images
+{% endcomment %}
+
+{{ 'section-product-feature-blocks.css' | asset_url | stylesheet_tag }}
+
+<section class="product-feature-blocks section-{{ section.id }}-padding">
+  <div class="page-width">
+    
+    {%- liquid
+      # Split description into sentences (on periods)
+      assign description_clean = product.description | strip_html | strip
+      assign sentences = description_clean | split: '. '
+      
+      # Get available images (skip first one, it's the hero)
+      assign available_images = product.images
+    -%}
+
+    {%- if sentences.size > 0 and available_images.size > 1 -%}
+      {%- for sentence in sentences limit: 3 -%}
+        {%- assign img_index = forloop.index -%}
+        {%- assign block_image = available_images[img_index] -%}
+        
+        {%- if block_image -%}
+          <div class="feature-block{% if forloop.index == 2 %} feature-block--reverse{% endif %}">
+            
+            <div class="feature-image">
+              <img
+                src="{{ block_image | image_url: width: 600, height: 450, crop: 'center' }}"
+                alt="{{ block_image.alt | default: product.title | escape }}"
+                width="600"
+                height="450"
+                loading="lazy"
+              >
+            </div>
+            
+           <div class="feature-text">
+  <p class="feature-desc">{{ sentence | strip }}.</p>
+</div>
+            
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      <div class="feature-block-fallback">
+        <p>Add a product description to display feature blocks.</p>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+{% schema %}
+{
+  "name": "Product Feature Blocks",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Feature Blocks"
+    }
+  ]
+}
+{% endschema %}

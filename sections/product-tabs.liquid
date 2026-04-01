@@ -1,0 +1,134 @@
+{%- comment -%}
+  Iron Phoenix GHG - Auto Product Tabs
+  - Automatically converts H3 Headers in your Product Description into Tabs.
+  - Content before the first H3 is the "Description" tab.
+  - Self-contained (CSS/JS included).
+{%- endcomment -%}
+
+<style>
+  .product-tabs-section {
+    margin: 4rem auto;
+    max-width: 120rem; /* Matches page width */
+    padding: 0 2rem;
+  }
+
+  .tabs-nav {
+    display: flex;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    margin-bottom: 2rem;
+    overflow-x: auto; /* Scroll on mobile if many tabs */
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    padding: 1.5rem 2.5rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.6);
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+    border-bottom: 3px solid transparent;
+  }
+
+  .tab-btn:hover {
+    color: rgba(255,255,255,0.9);
+  }
+
+  .tab-btn.active {
+    color: #fff;
+    border-bottom: 3px solid rgb(var(--color-base-accent-1));
+  }
+
+  .tab-content {
+    display: none;
+    font-size: 1.5rem;
+    line-height: 1.7;
+    color: rgba(255,255,255,0.85);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .tab-content.active {
+    display: block;
+  }
+
+  /* Typography inside tabs */
+  .tab-content h3 { display: none; } /* Hide the H3 since it is now a button */
+  .tab-content ul { padding-left: 2rem; margin-bottom: 1.5rem; }
+  .tab-content p { margin-bottom: 1.5rem; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<div class="product-tabs-section page-width">
+  {%- if product.description != blank -%}
+    
+    {%- assign description_parts = product.description | split: '<h3' -%}
+    
+    <div class="tabs-nav" role="tablist">
+      
+      <button class="tab-btn active" onclick="openTab(event, 'tab-0')">Description</button>
+
+      {%- for part in description_parts -%}
+        {%- unless forloop.first -%}
+          {%- assign title_parts = part | split: '</h3>' -%}
+          {%- assign tab_title = title_parts.first | strip_html | strip -%}
+          <button class="tab-btn" onclick="openTab(event, 'tab-{{ forloop.index0 }}')">{{ tab_title }}</button>
+        {%- endunless -%}
+      {%- endfor -%}
+    </div>
+
+    <div class="tabs-content-wrapper">
+      
+      <div id="tab-0" class="tab-content active rte">
+        {{ description_parts.first }}
+      </div>
+
+      {%- for part in description_parts -%}
+        {%- unless forloop.first -%}
+          {%- assign content_parts = part | split: '</h3>' -%}
+          <div id="tab-{{ forloop.index0 }}" class="tab-content rte">
+            {{ content_parts.last }}
+          </div>
+        {%- endunless -%}
+      {%- endfor -%}
+
+    </div>
+
+  {%- endif -%}
+</div>
+
+<script>
+  function openTab(evt, tabName) {
+    // 1. Hide all tab content
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tab-content");
+    for (i = 0; i < tabcontent.length; i++) {
+      tabcontent[i].style.display = "none";
+      tabcontent[i].classList.remove("active");
+    }
+
+    // 2. Deactivate all buttons
+    tablinks = document.getElementsByClassName("tab-btn");
+    for (i = 0; i < tablinks.length; i++) {
+      tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+
+    // 3. Show current tab and activate button
+    document.getElementById(tabName).style.display = "block";
+    setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
+    evt.currentTarget.className += " active";
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Auto Product Tabs",
+  "settings": [],
+  "presets": [{ "name": "Auto Product Tabs" }]
+}
+{% endschema %}

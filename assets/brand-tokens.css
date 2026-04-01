@@ -1,0 +1,110 @@
+/* Iron Phoenix GHG — Brand Tokens (single source of truth)
+   Uses <html data-brand="customs|gamer"> to switch tokens.
+   Includes both *-rgb and non-rgb variables for backward compatibility. */
+
+/* ==================== CUSTOMS ==================== */
+:root[data-brand="customs"]{
+  /* Identity */
+  --brand-variant: "customs";
+
+  /* Backgrounds & text (RGB + non-rgb) */
+  --color-primary-bg-rgb: 255,250,247;
+  --color-body-text-rgb:  31,41,55;
+  --color-headings-rgb:   155,93,229;
+  --color-links-rgb:      241,91,181;
+
+  --color-primary-bg: 255,250,247;
+  --color-body-text:  31,41,55;
+  --color-headings:   155,93,229;
+  --color-links:      241,91,181;
+
+  /* Accent + buttons */
+  --color-accent: #ef476f;
+  --color-accent-rgb: 239,71,111;
+  --color-accent-hover: #9b5de5;
+  --color-accent-hover-rgb: 155,93,229;
+
+  --color-button-primary-bg: 241,91,181;
+  --color-button-primary-text: 255,255,255;
+  --color-button-primary-hover: 155,93,229;
+
+  /* Gradients */
+  --color-background-gradient-start: #26a69a;
+  --color-background-gradient-end:   #6a1b9a;
+  --color-background-gradient-start-rgb: 38,166,154;
+  --color-background-gradient-end-rgb:   106,27,154;
+
+  /* Hex companions some components read directly */
+  --color-bg: #fffaf7;
+  --color-main-text: #3a2f4f;
+  --color-neon-pink:   #f15bb5;
+  --color-neon-yellow: #facc15;
+  --color-neon-green:  #22c55e;
+
+  --color-neon-pink-rgb:   241,91,181;
+  --color-neon-yellow-rgb: 250,204,21;
+  --color-neon-green-rgb:  34,197,94;
+
+  /* Borders & misc */
+  --color-text-main:     #ffffff;
+  --color-text-cta:      #000000;
+  --color-border:        #ffffff;
+  --color-text-main-rgb: 255,255,255;
+  --color-text-cta-rgb:  0,0,0;
+  --color-border-rgb:    255,255,255;
+
+  --buttons-radius: 14px;
+}
+
+/* ==================== GAMER ==================== */
+:root[data-brand="gamer"]{
+  /* Identity */
+  --brand-variant: "gamer";
+
+  /* Backgrounds & text (RGB + non-rgb) */
+  --color-primary-bg-rgb: 10,10,10;
+  --color-body-text-rgb:  255,255,255;
+  --color-headings-rgb:   0,255,255;
+  --color-links-rgb:      255,0,255;
+
+  --color-primary-bg: 10,10,10;
+  --color-body-text:  255,255,255;
+  --color-headings:   0,255,255;
+  --color-links:      255,0,255;
+
+  /* Accent + buttons */
+  --color-accent: #39FF14;
+  --color-accent-rgb: 57,255,20;
+  --color-accent-hover: #FFFF00;
+  --color-accent-hover-rgb: 255,255,0;
+
+  --color-button-primary-bg: 255,0,255;
+  --color-button-primary-text: 0,0,0;
+  --color-button-primary-hover: 255,255,0;
+
+  /* Gradients */
+  --color-background-gradient-start: #00BDBD;
+  --color-background-gradient-end:   #6a1b9a;
+  --color-background-gradient-start-rgb: 0,189,189;
+  --color-background-gradient-end-rgb:   106,27,154;
+
+  /* Hex companions */
+  --color-bg: #000000;
+  --color-main-text: #00BDBD;
+  --color-neon-pink:   #FF10F0;
+  --color-neon-yellow: #FFFF00;
+  --color-neon-green:  #39FF14;
+
+  --color-neon-pink-rgb:   255,16,240;
+  --color-neon-yellow-rgb: 255,255,0;
+  --color-neon-green-rgb:  57,255,20;
+
+  --color-text-main:     #ffffff;
+  --color-text-cta:      #000000;
+  --color-border:        #ffffff;
+  --color-text-main-rgb: 255,255,255;
+  --color-text-cta-rgb:  0,0,0;
+  --color-border-rgb:    255,255,255;
+
+  --buttons-radius: 12px;
+}

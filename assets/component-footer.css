@@ -1,0 +1,242 @@
+/* component-footer.css — Iron Phoenix GHG • Neon Card Edition */
+
+.footer {
+  background-color: #000;
+  color: #fff;
+  padding: 50px 20px 25px;
+  border-top: 2px solid #00ffff;
+  font-family: "Roboto", sans-serif;
+}
+
+.footer-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+/* ===== 4-Column Neon Card Grid ===== */
+.footer-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
+}
+
+/* ===== Card Panels ===== */
+.contact-box {
+  background: linear-gradient(180deg, #0d0d0d 0%, #111111 100%);
+  border: 1.5px solid rgba(255, 0, 255, 0.6);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);
+  padding: 25px 20px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.contact-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.4);
+}
+
+/* ===== Headings ===== */
+.footer-block h3,
+.contact-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #00ffff;
+  margin-bottom: 10px;
+  letter-spacing: 0.5px;
+}
+
+/* ===== Text + Links ===== */
+.footer-block p {
+  margin: 6px 0;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.footer-block a {
+  color: #ff00ff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer-block a:hover {
+  color: #00ffff;
+}
+
+/* ===== Newsletter + Social ===== */
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+}
+
+.newsletter-input {
+  background: #111;
+  border: 1px solid #333;
+  color: #fff;
+  padding: 12px;
+  border-radius: 4px;
+}
+.newsletter-input::placeholder {
+  color: #888;
+}
+
+.newsletter-button {
+  background: #ff00ff;
+  color: #fff;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.newsletter-button:hover {
+  background: #00ffff;
+  color: #000;
+}
+
+/* ===== Neon Social Icon Glow - Iron Phoenix Signature ===== */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+.footer-social a {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 1.5px solid #111;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0);
+}
+
+/* Per-platform hover glow */
+.footer-social a[href*="facebook"],
+.footer-social a[aria-label="Facebook"] {
+  color: #1877f2;
+}
+.footer-social a[href*="facebook"]:hover {
+  box-shadow: 0 0 15px #1877f2;
+  background: rgba(24, 119, 242, 0.15);
+}
+
+.footer-social a[href*="twitter"],
+.footer-social a[aria-label="Twitter"] {
+  color: #1da1f2;
+}
+.footer-social a[href*="twitter"]:hover {
+  box-shadow: 0 0 15px #1da1f2;
+  background: rgba(29, 161, 242, 0.15);
+}
+
+.footer-social a[href*="tiktok"],
+.footer-social a[aria-label="TikTok"] {
+  color: #fff;
+}
+.footer-social a[href*="tiktok"]:hover {
+  box-shadow: 0 0 15px #ff0050;
+  background: rgba(255, 0, 80, 0.15);
+}
+
+.footer-social a[href*="pinterest"],
+.footer-social a[aria-label="Pinterest"] {
+  color: #e60023;
+}
+.footer-social a[href*="pinterest"]:hover {
+  box-shadow: 0 0 15px #e60023;
+  background: rgba(230, 0, 35, 0.15);
+}
+
+.footer-social a[href*="youtube"],
+.footer-social a[aria-label="YouTube"] {
+  color: #ff0000;
+}
+.footer-social a[href*="youtube"]:hover {
+  box-shadow: 0 0 15px #ff0000;
+  background: rgba(255, 0, 0, 0.15);
+}
+
+.footer-social a[href*="twitch"],
+.footer-social a[aria-label="Twitch"] {
+  color: #9146ff;
+}
+.footer-social a[href*="twitch"]:hover {
+  box-shadow: 0 0 15px #9146ff;
+  background: rgba(145, 70, 255, 0.15);
+}
+
+
+/* ===== Bottom Bar ===== */
+.footer-bottom {
+  border-top: 1px solid #333;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-payment {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-policies {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+}
+.footer-policies a {
+  color: #999;
+  font-size: 0.9rem;
+}
+.footer-policies a:hover {
+  color: #fff;
+}
+
+/* ===== Accessibility Focus ===== */
+.footer a:focus,
+.newsletter-input:focus,
+.newsletter-button:focus {
+  outline: 2px solid #00ffff;
+  outline-offset: 2px;
+}
+
+/* ===== Responsive Tweaks ===== */
+@media (max-width: 1024px) {
+  .footer-blocks {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  }
+}
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 15px 20px;
+  }
+  .footer-blocks {
+    gap: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .footer-block h3 {
+    font-size: 0.95rem;
+  }
+  .footer-policies {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+}

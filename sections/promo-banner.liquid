@@ -1,0 +1,36 @@
+{% comment %}
+Promo Banner — styles in assets/section-promo-banner.css
+- No inline styles; button uses your existing .button--neon class or fallback
+{% endcomment %}
+
+{{ 'section-promo-banner.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-promo-banner.css' | asset_url | stylesheet_tag }}</noscript>
+
+<section class="promo-banner">
+  <div class="page-width promo-banner__inner text-center">
+    {% if section.settings.heading != blank %}
+      <h2 class="promo-banner__heading">{{ section.settings.heading | escape }}</h2>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <p class="promo-banner__sub">{{ section.settings.subheading | escape }}</p>
+    {% endif %}
+    {% if section.settings.cta_label and section.settings.cta_link %}
+      <a href="{{ section.settings.cta_link | escape }}" class="button--neon promo-banner__cta">
+        {{ section.settings.cta_label | escape }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Promo banner",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "🕹️ Buy 2, Get 1 25% Off!" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "No hidden fees. US shipping always included." },
+    { "type": "url", "id": "cta_link", "label": "CTA link", "default": "/collections/all" },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Shop Limited Drops Now" }
+  ],
+  "presets": [{ "name": "Promo banner" }]
+}
+{% endschema %}

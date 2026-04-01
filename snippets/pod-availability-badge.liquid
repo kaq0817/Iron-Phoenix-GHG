@@ -1,0 +1,88 @@
+{%- comment -%}
+/snippets/pod-availability-badge.liquid
+- Fix: Treat "inventory not tracked" as always available
+- POD vendors: always show "In stock — made to order" unless explicitly unavailable
+- Non-POD vendors: respect normal stock, but override if inventory tracking is off
+{%- endcomment -%}
+
+{%- assign prod = product -%}
+{%- if prod == blank and card_product -%}{%- assign prod = card_product -%}{%- endif -%}
+{%- if prod == blank and product_param -%}{%- assign prod = product_param -%}{%- endif -%}
+
+{%- if prod -%}
+  {%- assign is_pod_vendor = false -%}
+  {%- assign vendor_clean = prod.vendor | strip -%}
+
+  {%- assign pod_vendors = 'Printify,Printful,AnywherePod' | split: ',' -%}
+  {%- for vn in pod_vendors -%}
+    {%- assign vn_clean = vn | strip -%}
+    {%- if vendor_clean == vn_clean -%}
+      {%- assign is_pod_vendor = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- assign v = prod.selected_or_first_available_variant -%}
+  {%- assign show_mto = false -%}
+  {%- if v -%}
+    {%- if is_pod_vendor -%}
+      {%- comment -%}POD vendors: only MTO if explicitly unavailable{%- endcomment -%}
+      {%- unless v.available -%}{%- assign show_mto = true -%}{%- endunless -%}
+    {%- else -%}
+      {%- comment -%}Non-POD vendors: override Shopify's "inventory not tracked"{%- endcomment -%}
+      {%- if v.inventory_management == blank -%}
+        {%- assign show_mto = false -%}
+      {%- else -%}
+        {%- unless v.available -%}{%- assign show_mto = true -%}{%- endunless -%}
+        {%- if v.inventory_quantity != blank and v.inventory_quantity <= 0 -%}
+          {%- assign show_mto = true -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  <div class="pod-availability" role="status" aria-live="polite">
+    {%- if is_pod_vendor -%}
+      {%- if show_mto -%}
+        <span class="pod-availability__state pod-availability__state--mto">
+          Made to order — ships soon
+        </span>
+      {%- else -%}
+        <span class="pod-availability__state pod-availability__state--in">
+          In stock — made to order
+        </span>
+      {%- endif -%}
+    {%- else -%}
+      {%- if show_mto -%}
+        <span class="pod-availability__state pod-availability__state--mto">
+          Currently made to order
+        </span>
+      {%- else -%}
+        <span class="pod-availability__state pod-availability__state--in">
+          In stock
+        </span>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+  <style>
+    .pod-availability__state {
+      display:inline-flex;
+      align-items:center;
+      gap:.5rem;
+      padding:.35rem .6rem;
+      border-radius:.5rem;
+      font-weight:600;
+    }
+    .pod-availability__state--mto {
+      background: rgba(255,223,94,.12);
+      color:#ffdf5e;
+      border:1px dashed rgba(255,223,94,.45);
+    }
+    .pod-availability__state--in {
+      background: rgba(57,255,20,.12);
+      color:#39ff14;
+      border:1px dashed rgba(57,255,20,.45);
+    }
+  </style>
+{%- endif -%}

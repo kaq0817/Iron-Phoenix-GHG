@@ -1,0 +1,50 @@
+{%- assign ns_id = section.id | default: 'global' -%}
+
+<section id="newsletter-{{ ns_id }}" class="newsletter">
+  {% form 'customer', id: "NewsletterForm-" | append: ns_id, class: 'newsletter-form', novalidate: 'novalidate' %}
+    {%- comment -%} Base tag so you can segment this signup source {%- endcomment -%}
+    <input type="hidden" name="contact[tags]" value="newsletter-tiered-sale">
+
+    <div class="newsletter-form__row">
+      <label for="NewsletterEmail-{{ ns_id }}" class="visually-hidden">
+        {{ 'newsletter.label' | t | default: 'Email' }}
+      </label>
+      <input
+        id="NewsletterEmail-{{ ns_id }}"
+        class="input"
+        type="email"
+        name="contact[email]"
+        autocomplete="email"
+        placeholder="{{ 'newsletter.label' | t | default: 'Email' }}"
+        required
+      >
+      <button type="submit" class="button">
+        {{ 'newsletter.button_label' | t | default: 'Subscribe' }}
+      </button>
+    </div>
+
+    <fieldset class="newsletter-form__interests" aria-label="Interests">
+      <legend class="visually-hidden">Interests</legend>
+
+      <label class="checkbox">
+        <input type="checkbox" name="contact[tags]" value="Product Updates">
+        <span>Product Updates</span>
+      </label>
+
+      <label class="checkbox">
+        <input type="checkbox" name="contact[tags]" value="Blog News">
+        <span>Blog News</span>
+      </label>
+    </fieldset>
+
+    {% if form.posted_successfully? %}
+      <p class="success-message" aria-live="polite">
+        {{ 'newsletter.success' | t | default: 'Thanks for subscribing' }}
+      </p>
+    {% elsif form.errors %}
+      <div class="error-message" aria-live="polite">
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
+  {% endform %}
+</section>

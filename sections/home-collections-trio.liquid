@@ -1,0 +1,152 @@
+{%- comment -%}
+Iron Phoenix GHG — Home Collections Trio (Gaming / Wellness / Sports)
+- No inline CSS; styles in assets/section-home-collections-trio.css
+- Uses brand tokens if present; otherwise has safe defaults
+- Correct pluralization for product counts
+- Styles externalized to assets/section-home-collections-trio.css
+- Uses theme's global CSS variables for colors
+{%- endcomment -%}
+
+{{ 'section-home-collections-trio.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-home-collections-trio.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- style -%}
+  /* Define CSS variables for dynamic padding and gradient colors */
+  .home-collections {
+    --home-collections-padding-block: clamp(2.4rem, 3vw, 4rem) 0;
+    /* Gradient color definitions from settings, converted to RGB for consistency */
+    --color-background-gradient-start-gaming: rgb(0, 189, 189); /* Default #00BDBD */
+    --color-background-gradient-end-gaming: rgb(106, 27, 154); /* Default #6a1b9a */
+    --color-background-gradient-start-wellness: rgb(240, 147, 251); /* Default #f093fb */
+    --color-background-gradient-end-wellness: rgb(245, 87, 108); /* Default #f5576c */
+    --color-background-gradient-start-sports: rgb(79, 172, 254); /* Default #4facfe */
+    --color-background-gradient-end-sports: rgb(0, 242, 254); /* Default #00f2fe */
+  }
+{%- endstyle -%}
+
+<section class="home-collections color-{{ section.settings.color_scheme }}">
+  {%- if section.settings.heading != blank -%}
+    <header class="home-collections__header">
+      <h2 class="home-collections__title">{{ section.settings.heading | escape }}</h2>
+      {%- if section.settings.subheading != blank -%}
+        <p class="home-collections__sub">{{ section.settings.subheading | escape }}</p>
+      {%- endif -%}
+    </header>
+  {%- endif -%}
+
+  <div class="home-collections__grid">
+    {%- for block in section.blocks -%}
+      {%- assign c          = block.settings.collection -%}
+      {%- assign tile_title = block.settings.title_override | default: c.title -%}
+      {%- assign tile_desc  = block.settings.blurb -%}
+      {%- assign theme_key  = block.settings.theme_key | default: 'gaming' -%}
+      {%- assign show_count = block.settings.show_count -%}
+      {%- assign href       = c.url | default: '#' -%}
+
+      <a class="hc-tile theme-{{ theme_key }}" href="{{ href | escape }}" {{ block.shopify_attributes }}>
+        <div class="hc-tile__media" aria-hidden="true">
+          {%- assign img = block.settings.image | default: c.image -%}
+          {%- if img -%}
+            {%- assign img_alt = tile_title | default: 'Collection' | escape -%}
+            <img
+              src="{{ img | image_url: width: 1200 }}"
+              alt="{{ img_alt }}"
+              loading="lazy"
+              class="hc-tile__img"
+              width="1200"
+              height="{{ 1200 | divided_by: img.aspect_ratio | round }}"
+            >
+          {%- else -%}
+            {{ 'collection-1' | placeholder_svg_tag: 'hc-tile__ph' }}
+          {%- endif -%}
+        </div>
+
+        <div class="hc-tile__content">
+          {%- if block.settings.icon != 'none' -%}
+            <span class="hc-tile__icon" aria-hidden="true">
+              {%- case block.settings.icon -%}
+                {%- when 'gamepad' -%} 🎮
+                {%- when 'spa' -%} 🧘
+                {%- when 'dumbbell' -%} 🏋️
+                {%- else -%} ⭐
+              {%- endcase -%}
+            </span>
+          {%- endif -%}
+
+          <h3 class="hc-tile__title">{{ tile_title | escape }}</h3>
+
+          {%- if show_count and c -%}
+            <p class="hc-tile__meta">
+              {{ c.all_products_count }} {{ c.all_products_count | pluralize: 'product', 'products' }}
+            </p>
+          {%- endif -%}
+
+          {%- if tile_desc != blank -%}
+            <p class="hc-tile__desc">{{ tile_desc | strip | escape }}</p>
+          {%- endif -%}
+
+          <span class="hc-tile__cta">Shop now →</span>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home Collections Trio",
+  "class": "section-home-collections-trio",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Explore our collections" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Gaming · Wellness · Sports" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" }
+  ],
+  "blocks": [
+    {
+      "type": "collection_tile",
+      "name": "Collection tile",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Override image (optional)" },
+        { "type": "text", "id": "title_override", "label": "Title override" },
+        { "type": "textarea", "id": "blurb", "label": "Short description" },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "default": "gamepad",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "gamepad", "label": "Gamepad (Gaming)" },
+            { "value": "spa", "label": "Lotus (Wellness)" },
+            { "value": "dumbbell", "label": "Dumbbell (Sports)" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "theme_key",
+          "label": "Tile style",
+          "default": "gaming",
+          "options": [
+            { "value": "gaming", "label": "Gaming (neon cyan/purple)" },
+            { "value": "wellness", "label": "Wellness (pink → coral)" },
+            { "value": "sports", "label": "Sports (blue → teal)" }
+          ]
+        },
+        { "type": "checkbox", "id": "show_count", "label": "Show product count", "default": true }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Collections Trio",
+      "blocks": [
+        { "type": "collection_tile", "settings": { "icon": "gamepad",  "theme_key": "gaming" } },
+        { "type": "collection_tile", "settings": { "icon": "spa",      "theme_key": "wellness" } },
+        { "type": "collection_tile", "settings": { "icon": "dumbbell", "theme_key": "sports" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

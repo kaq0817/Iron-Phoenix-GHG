@@ -1,0 +1,117 @@
+{%- comment -%}
+snippets/meta-tags.liquid
+- Dynamic Open Graph + Twitter cards
+- Adds sitemap hint
+- Fixes Liquid syntax errors (theme-check safe)
+{%- endcomment -%}
+
+{%- liquid
+  # Detect page type safely
+  assign is_product = false
+  assign is_article = false
+  assign is_collection = false
+
+  if template contains 'product'
+    assign is_product = true
+  elsif template contains 'article'
+    assign is_article = true
+  elsif template contains 'collection'
+    assign is_collection = true
+  endif
+
+  # Title/description for cards
+  assign meta_title = page_title | default: shop.name
+  assign raw_desc   = page_description | default: shop.description
+  assign meta_desc  = raw_desc | strip | truncate: 300, '…'
+
+  # Choose best image
+  assign meta_image = nil
+  if is_product and product
+    assign meta_image = product.featured_image
+  elsif is_article and article
+    assign meta_image = article.image
+  elsif is_collection and collection
+    assign meta_image = collection.image
+  endif
+  if meta_image == nil
+    if settings.share_image
+      assign meta_image = settings.share_image
+    elsif page_image
+      assign meta_image = page_image
+    endif
+  endif
+
+  # Alt fallback
+  assign image_alt = ''
+  if meta_image != nil
+    assign image_alt = meta_image.alt | default: meta_title
+  endif
+
+  # og:type
+  assign og_type = 'website'
+  if is_product
+    assign og_type = 'product'
+  elsif is_article
+    assign og_type = 'article'
+  endif
+
+  # Optional Twitter handle (normalize to @username)
+  assign twitter_site = settings.twitter_handle | strip
+  if twitter_site != blank
+    if twitter_site contains '@'
+      assign twitter_site = twitter_site
+    else
+      assign twitter_site = '@' | append: twitter_site
+    endif
+  endif
+-%}
+
+{%- comment -%} Base Open Graph {%- endcomment -%}
+<meta property="og:site_name" content="{{ shop.name | escape }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:title" content="{{ meta_title | escape }}">
+<meta property="og:description" content="{{ meta_desc | escape }}">
+<meta property="og:url" content="{{ canonical_url }}">
+
+{%- if meta_image != nil -%}
+  <meta property="og:image" content="{{ meta_image | image_url: width: 1200 }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ image_alt | escape }}">
+{%- endif -%}
+
+{%- comment -%} Twitter Card {%- endcomment -%}
+<meta name="twitter:card" content="summary_large_image">
+{%- if twitter_site != blank -%}
+  <meta name="twitter:site" content="{{ twitter_site | escape }}">
+{%- endif -%}
+<meta name="twitter:title" content="{{ meta_title | escape }}">
+<meta name="twitter:description" content="{{ meta_desc | escape }}">
+{%- if meta_image != nil -%}
+  <meta name="twitter:image" content="{{ meta_image | image_url: width: 1200 }}">
+  <meta name="twitter:image:alt" content="{{ image_alt | escape }}">
+{%- endif -%}
+
+{%- comment -%} Favicon {%- endcomment -%}
+{%- if settings.favicon -%}
+  <link rel="icon" href="{{ settings.favicon | image_url: width: 32 }}">
+{%- endif -%}
+
+{%- comment -%} Sitemap hint {%- endcomment -%}
+{% comment %} theme-check-disable RemoteAsset {% endcomment %}
+<link rel="sitemap" type="application/xml" href="{{ shop.url }}/sitemap.xml">
+{% comment %} theme-check-enable RemoteAsset {% endcomment %}
+
+{%- comment -%} JSON-LD Organization (homepage only) {%- endcomment -%}
+{%- if template.name == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }}{% if settings.share_image %},
+  "logo": {{ settings.share_image | image_url: width: 600 | json }}{% endif %},
+  "description": {{ shop.description | default: shop.name | json }}
+}
+</script>
+{%- endif -%}

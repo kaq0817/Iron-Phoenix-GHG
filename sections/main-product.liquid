@@ -1,0 +1,320 @@
+{%- comment -%}
+  Iron Phoenix GHG - Main Product (With FAQ Accordion)
+{%- endcomment -%}
+
+<link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="{{ 'component-price.css' | asset_url }}" media="print" onload="this.media='all'">
+
+<noscript>{{ 'section-main-product.css' | asset_url | stylesheet_tag }}</noscript>
+<noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign p = product -%}
+{%- assign v = p.selected_or_first_available_variant -%}
+{%- assign hero_media = v.featured_media | default: p.featured_media -%}
+
+{%- comment -%} Prepare POD and Inventory Logic {%- endcomment -%}
+{%- render 'pod-guard', product: p -%}
+{%- render 'inventory-guard', product: p -%}
+{%- render 'structured-product', product: p -%}
+
+<style>
+  /* --- LAYOUT GRID --- */
+  .product-section {
+    max-width: 140rem;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .product-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  @media screen and (min-width: 990px) {
+    .product-grid {
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 5rem;
+    }
+    .product__media-wrapper {
+      width: 60%;
+    }
+    .product__info-wrapper {
+      width: 40%;
+      position: sticky;
+      top: 3rem;
+    }
+  }
+
+  /* --- MEDIA --- */
+  .product__media-main img {
+    width: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+
+  .product__thumbnails {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  .thumb {
+    width: 80px;
+    height: 80px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    border-radius: 4px;
+    padding: 0;
+    background: none;
+  }
+
+  .thumb.active {
+    border-color: #333;
+  }
+  .thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+  }
+
+  /* --- INFO --- */
+  .product__title {
+    font-size: 2.8rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+  .product__meta-desc {
+    font-size: 1.5rem;
+    margin-bottom: 2rem;
+    color: rgba(var(--color-base-text), 0.85);
+  }
+  .product__price {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: rgb(var(--color-base-accent-1));
+  }
+
+  .shipping-meta {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    background: rgba(var(--color-base-text), 0.05);
+    padding: 8px 12px;
+    border-radius: 4px;
+    width: fit-content;
+  }
+
+  .product__add-to-cart {
+    width: 100%;
+    padding: 1.5rem;
+    font-size: 1.6rem;
+    font-weight: bold;
+    background: rgb(var(--color-base-accent-1));
+    color: rgb(var(--color-base-background-1));
+    border-radius: 4px;
+  }
+
+  .rte {
+    margin-top: 3rem;
+    font-size: 1.5rem;
+    line-height: 1.7;
+  }
+
+  /* --- FAQ ACCORDION --- */
+  .faq-wrapper {
+    margin-top: 3rem;
+    padding: 1rem 0;
+    border-top: 1px solid rgba(var(--color-base-text), 0.2);
+  }
+  .faq-question {
+    padding: 1rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.6rem;
+  }
+  .faq-answer {
+    display: none;
+    padding-bottom: 1rem;
+    font-size: 1.4rem;
+    line-height: 1.6;
+  }
+  .faq-arrow {
+    transition: transform 0.2s ease;
+  }
+  .faq-open .faq-arrow {
+    transform: rotate(90deg);
+  }
+</style>
+
+<section id="MainProduct-{{ section.id }}" class="product-section">
+  <div class="product-grid">
+    <!-- MEDIA SECTION -->
+    <div class="product__media-wrapper">
+      <div class="product__media-main" id="MainMedia-{{ section.id }}">
+        {% if hero_media %}
+          <img
+            src="{{ hero_media | image_url: width: 1000 }}"
+            alt="{{ p.title | escape }}"
+            id="ProductMainImage-{{ section.id }}"
+            width="1000"
+            height="{{ 1000 | divided_by: hero_media.aspect_ratio | ceil }}"
+            loading="eager"
+          >
+        {% endif %}
+      </div>
+
+      {% if p.media.size > 1 %}
+        <div class="product__thumbnails">
+          {% for media in p.media limit: 6 %}
+            <button
+              class="thumb{% if forloop.first %} active{% endif %}"
+              onclick="changeImage(this, '{{ media | image_url: width: 1000 }}')"
+            >
+              <img
+                src="{{ media | image_url: width: 150 }}"
+                alt="{{ media.alt | default: p.title | escape }}"
+                width="150"
+                height="{{ 150 | divided_by: media.aspect_ratio | ceil }}"
+                loading="lazy"
+              >
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- INFO SIDE -->
+    <div class="product__info-wrapper">
+      <h1 class="product__title">{{ p.title | escape }}</h1>
+
+      <div class="product__meta-desc">
+        {% if product.metafields.global.description_tag != blank %}
+          {{ product.metafields.global.description_tag }}
+        {% else %}
+          {{ product.description | strip_html | truncate: 160 }}
+        {% endif %}
+      </div>
+
+      <div class="product__price">{{ v.price | money }}</div>
+
+      {% if product.metafields.custom.production_and_shipping != blank %}
+        <div class="shipping-meta">
+          🚚
+          {{ product.metafields.custom.production_and_shipping.value | join: ', ' | replace: 'days', 'business days' }}
+        </div>
+      {% endif %}
+
+      <form method="post" action="{{ routes.cart_add_url }}">
+        <input type="hidden" name="id" value="{{ v.id }}">
+
+        {% unless p.has_only_default_variant %}
+          {% for option in p.options_with_values %}
+            <div class="product__option">
+              <legend>{{ option.name }}</legend>
+
+              {% for value in option.values %}
+                <label class="product__swatch">
+                  <input
+                    type="radio"
+                    name="option-{{ option.name }}"
+                    value="{{ value }}"
+                    {% if option.selected_value == value %}
+                      checked
+                    {% endif %}
+                  >
+                  <span>{{ value }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        {% endunless %}
+
+        <div style="margin-top: 1.5rem;">
+          <label>Quantity</label>
+          <input type="number" name="quantity" value="1" min="1" style="width: 60px; margin-left: 10px;">
+        </div>
+
+        <button
+          type="submit"
+          class="product__add-to-cart"
+          {% unless v.available %}
+            disabled
+          {% endunless %}
+        >
+          {% if v.available %}Add to Cart{% else %}Sold Out{% endif %}
+        </button>
+      </form>
+
+      <!-- PRODUCT DESCRIPTION -->
+      <div class="product__description rte">
+        {{ p.description }}
+      </div>
+
+      <!-- FAQ ACCORDION -->
+      {% if product.metafields.custom.faq != blank %}
+        <div class="faq-wrapper">
+          <h3>FAQs</h3>
+
+          {% assign faq_lines = product.metafields.custom.faq | split: '\n' %}
+
+          {% for line in faq_lines %}
+            {% assign qa = line | split: 'A:' %}
+            {% if qa.size > 1 %}
+              {% assign q = qa[0] | remove: 'Q:' | strip %}
+              {% assign a = qa[1] | strip %}
+
+              <div class="faq-item">
+                <div class="faq-question">
+                  {{ q }}
+                  <span class="faq-arrow">▶</span>
+                </div>
+                <div class="faq-answer">{{ a }}</div>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  function changeImage(btn, src) {
+    document.getElementById('ProductMainImage-{{ section.id }}').src = src;
+    document.querySelectorAll('.thumb').forEach((t) => t.classList.remove('active'));
+    btn.classList.add('active');
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.faq-question').forEach((item) => {
+      item.addEventListener('click', function () {
+        let parent = this.parentElement;
+        let answer = parent.querySelector('.faq-answer');
+
+        if (answer.style.display === 'block') {
+          answer.style.display = 'none';
+          parent.classList.remove('faq-open');
+        } else {
+          answer.style.display = 'block';
+          parent.classList.add('faq-open');
+        }
+      });
+    });
+  });
+</script>
+
+{%- comment -%} Structured data is now handled via snippets/structured-product.liquid {%- endcomment -%}
+
+{% schema %}
+{
+  "name": "Main Product (With FAQ )",
+  "settings": [],
+  "presets": [{ "name": "Main Product (With FAQ Accordion)" }]
+}
+{% endschema %}

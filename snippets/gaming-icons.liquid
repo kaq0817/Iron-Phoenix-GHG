@@ -1,0 +1,14 @@
+{%- comment -%} /snippets/gaming-icons.liquid — inline icons {%- endcomment -%}
+{%- assign n = name | default: 'controller' -%}
+{%- case n -%}
+  {%- when 'controller' -%}
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="{{ class }}">
+      <path d="M7 14h10l2 2h1a3 3 0 0 0 0-6h-2l-1-2a4 4 0 0 0-3.6-2.2H10.6A4 4 0 0 0 7 8.8L6 11H4a3 3 0 0 0 0 6h1l2-3Z"/><rect x="8" y="11" width="2" height="2"/><rect x="14" y="11" width="2" height="2"/>
+    </svg>
+  {%- when 'bolt' -%}
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="{{ class }}">
+      <path d="M11 21 5 13h5L8 3h9l-4 7h5l-7 11Z"/>
+    </svg>
+  {%- else -%}
+    <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" class="{{ class }}"><circle cx="12" cy="12" r="10"/></svg>
+{%- endcase -%}

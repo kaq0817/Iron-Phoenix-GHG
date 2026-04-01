@@ -1,0 +1,51 @@
+.collection-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--product-card-radius, 12px);
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.collection-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.collection-card__media {
+  aspect-ratio: 1 / 1.2;
+  /* Taller, portrait style for impact */
+  overflow: hidden;
+}
+
+.collection-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.collection-card:hover .collection-card__image {
+  transform: scale(1.08);
+}
+
+.collection-card__info {
+  padding: 2rem;
+  text-align: center;
+}
+
+.collection-card__title {
+  font-size: clamp(1.8rem, 2vw, 2.4rem);
+  font-weight: 800;
+  margin-bottom: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.collection-card__count {
+  font-size: 1.4rem;
+  opacity: 0.8;
+  font-style: italic;
+}

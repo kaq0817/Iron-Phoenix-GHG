@@ -1,0 +1,67 @@
+{%- comment -%} Unified Social Links + Share Buttons {%- endcomment -%}
+{%- liquid
+  assign share_url = shop.secure_url | append: request.path
+  assign share_title = page_title | default: shop.name
+  assign share_description = page_description | default: shop.description | strip_html | truncate: 160
+
+  assign share_image = nil
+  if template contains 'product' and product and product.featured_image
+    assign share_image = product.featured_image | image_url: width: 1200
+  elsif article and article.image
+    assign share_image = article.image | image_url: width: 1200
+  elsif settings.share_image
+    assign share_image = settings.share_image | image_url: width: 1200
+  endif
+-%}
+
+<div class="social-sharing-container">
+  <h3 class="social-sharing-title">Follow & Share</h3>
+
+  <div class="social-links-grid">
+    <a href="https://www.pinterest.com/ssgohardgaming/" target="_blank" rel="noopener noreferrer" class="social-link pinterest">
+      <span class="social-icon">📌</span><span class="social-text">Pinterest</span>
+    </a>
+    <a href="https://www.instagram.com/gohardgamingdiscord/" target="_blank" rel="noopener noreferrer" class="social-link instagram">
+      <span class="social-icon">📷</span><span class="social-text">Instagram</span>
+    </a>
+    <a href="https://www.threads.net/@gohardgamingdiscord" target="_blank" rel="noopener noreferrer" class="social-link threads">
+      <span class="social-icon">🧵</span><span class="social-text">Threads</span>
+    </a>
+    <a href="https://www.facebook.com/GohardgamingIronPhoenix/" target="_blank" rel="noopener noreferrer" class="social-link facebook">
+      <span class="social-icon">📘</span><span class="social-text">Facebook</span>
+    </a>
+    <a href="https://www.facebook.com/profile.php?id=61556111668272" target="_blank" rel="noopener noreferrer" class="social-link facebook">
+      <span class="social-icon">👤</span><span class="social-text">FB Profile</span>
+    </a>
+    <a href="https://www.tiktok.com/@shadowseekerkc" target="_blank" rel="noopener noreferrer" class="social-link tiktok">
+      <span class="social-icon">🎵</span><span class="social-text">TikTok</span>
+    </a>
+    <a href="https://suno.com/@shadowseeker_1" target="_blank" rel="noopener noreferrer" class="social-link suno">
+      <span class="social-icon">🎶</span><span class="social-text">Suno Music</span>
+    </a>
+  </div>
+
+  <div class="share-current-page">
+    <h4 class="share-title">Share this page</h4>
+    <div class="share-buttons">
+      <a href="https://www.facebook.com/sharer/sharer.php?u={{ share_url | url_encode }}" target="_blank" rel="noopener" class="share-btn">📘 Facebook</a>
+      <a href="https://twitter.com/intent/tweet?url={{ share_url | url_encode }}&text={{ share_title | url_encode }}" target="_blank" rel="noopener" class="share-btn">🐦 X/Twitter</a>
+      <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ share_url | url_encode }}" target="_blank" rel="noopener" class="share-btn">in LinkedIn</a>
+      <a href="https://pinterest.com/pin/create/button/?url={{ share_url | url_encode }}{% if share_image %}&media={{ share_image | url_encode }}{% endif %}&description={{ share_description | url_encode }}" target="_blank" rel="noopener" class="share-btn">📌 Pinterest</a>
+      <button type="button" class="share-btn" onclick="navigator.clipboard.writeText('{{ share_url }}'); this.textContent='Copied!';">🔗 Copy link</button>
+    </div>
+  </div>
+</div>
+
+<style>
+.social-sharing-container{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:2rem;border-radius:1rem;margin:2rem 0;text-align:center}
+.social-sharing-title{font-weight:700;margin-bottom:1rem}
+.social-links-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.75rem;margin:1rem 0}
+.social-link{display:flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem;background:rgba(255,255,255,.12);border:2px solid rgba(255,255,255,.25);border-radius:.5rem;color:#fff;text-decoration:none;font-weight:600;transition:.2s}
+.social-link:hover{background:rgba(255,255,255,.22);transform:translateY(-1px)}
+.share-current-page{margin-top:1.25rem;padding-top:1.25rem;border-top:2px solid rgba(255,255,255,.2)}
+.share-buttons{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center}
+.share-btn{padding:.6rem 1rem;background:rgba(255,255,255,.15);border:2px solid rgba(255,255,255,.3);border-radius:24px;color:#fff;text-decoration:none;font-weight:600;transition:.2s;cursor:pointer}
+.share-btn:hover{background:rgba(255,255,255,.25)}
+@media(max-width:768px){.social-links-grid{grid-template-columns:repeat(auto-fit,minmax(120px,1fr))}}
+</style>

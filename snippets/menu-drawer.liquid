@@ -1,0 +1,223 @@
+{%- comment -%}
+File: snippets/menu-drawer.liquid
+Description: Contains the CSS, HTML, Liquid for links, and JavaScript for the universal off-canvas menu.
+{%- endcomment -%}
+
+<style>
+/* -------------------------------------------------------------------------- */
+/* MENU DRAWER STYLES (OPENS FROM RIGHT) */
+/* -------------------------------------------------------------------------- */
+
+/* Root and Initial State */
+menu-drawer#menu-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 60; /* High z-index to ensure it sits above the header */
+  display: block; 
+}
+
+/* 🚨 CRITICAL FIX: Ensure the entire drawer component is hidden when closed */
+menu-drawer[aria-hidden="true"] { 
+  visibility: hidden; /* Use visibility to hide without affecting layout/transitions */
+  pointer-events: none; /* Prevents interaction with the page behind it */
+  transition: visibility 0s linear 300ms; /* Delay visibility until transition is complete */
+}
+
+/* Overlay (Darkens the rest of the page) */
+.menu-drawer__overlay {
+  position: fixed; 
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  opacity: 0;
+  transition: opacity 300ms ease;
+  pointer-events: auto;
+}
+
+/* Panel slides in from the RIGHT */
+.menu-drawer__panel {
+  position: fixed; 
+  inset-block: 0;
+  inset-inline-end: 0; /* Positioned to the right edge */
+  width: min(86vw, 360px);
+  max-width: 100%;
+  background: #1a1a2e; /* Your theme dark background */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  outline: none;
+  /* CRITICAL: Pushed 100% off-screen to the right by default */
+  transform: translateX(100%); 
+  transition: transform 300ms ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,.25);
+  z-index: 1000; /* Ensure the panel is above the overlay */
+}
+
+/* Open State CSS */
+menu-drawer[aria-hidden="false"] {
+  visibility: visible;
+  pointer-events: auto;
+  transition-delay: 0s;
+}
+
+menu-drawer[aria-hidden="false"] .menu-drawer__panel {
+  transform: translateX(0); /* Slides into view */
+}
+
+menu-drawer[aria-hidden="false"] .menu-drawer__overlay {
+  opacity: 1; /* Overlay fades in */
+}
+
+/* Header row */
+.menu-drawer__header {
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 1.5rem; 
+  border-bottom: 1px solid rgba(0, 245, 255, 0.2);
+}
+.menu-drawer__title { 
+  font-weight: 600; 
+  color: #00f5ff; 
+}
+.menu-drawer__close { 
+  background:none; border:0; padding:.5rem; cursor:pointer; 
+  color: #00f5ff; 
+  font-size: 2rem;
+}
+
+/* Nav + lists */
+.menu-drawer__nav { overflow:auto; padding:.75rem 1rem 1.25rem; }
+.menu-drawer__list, .menu-drawer__sublist { list-style:none; margin:0; padding:0; }
+.menu-drawer__item { display:block; } 
+.menu-drawer__link { 
+  display:block; padding:1rem 0; text-decoration:none; color:#fff; 
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.2s ease;
+}
+.menu-drawer__link:hover {
+  color: #00f5ff;
+  padding-right: 0.5rem; /* Subtle right padding change to indicate active link */
+}
+
+/* Submenu styles */
+.menu-drawer__sublist { padding-right:1rem; }
+.menu-drawer__sublink { display:block; padding:.5rem 0; text-decoration:none; color:#ddd; }
+
+/* CRITICAL FIX: Prevent page scroll while open (JS adds to body) */
+body.drawer-open { 
+  overflow:hidden; 
+  position: fixed; /* Prevents background content from shifting/scrolling */
+  width: 100%;
+}
+
+</style>
+
+{%- liquid
+  # Logic to determine which menu to use (from header section settings)
+  assign menu_input = menu
+  if menu_input == blank and section and section.settings and section.settings.menu
+    assign menu_input = section.settings.menu
+  endif
+
+  assign menu_obj = nil
+  if menu_input and menu_input.links
+    assign menu_obj = menu_input
+  elsif menu_input
+    assign menu_obj = linklists[menu_input]
+  endif
+-%}
+
+<menu-drawer id="menu-drawer" class="menu-drawer" aria-hidden="true" tabindex="-1">
+  <div class="menu-drawer__overlay" data-close-menu></div>
+
+  <div class="menu-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t | default: 'Menu' | escape }}" tabindex="-1">
+    <header class="menu-drawer__header">
+      <span class="menu-drawer__title">{{ 'sections.header.menu' | t | default: 'Menu' }}</span>
+      <button type="button" class="menu-drawer__close" aria-label="{{ 'accessibility.close' | t | default: 'Close' | escape }}" data-close-menu>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </header>
+
+    <nav class="menu-drawer__nav" role="navigation">
+      {%- if menu_obj and menu_obj.links and menu_obj.links.size > 0 -%}
+        <ul class="menu-drawer__list" role="list">
+          {%- for link in menu_obj.links -%}
+            <li class="menu-drawer__item">
+              <a class="menu-drawer__link" href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+
+              {%- if link.links and link.links.size > 0 -%}
+                <ul class="menu-drawer__sublist" role="list">
+                  {%- for child in link.links -%}
+                    <li>
+                      <a class="menu-drawer__sublink" href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="menu-drawer__empty">
+          {{ 'sections.header.menu' | t | default: 'Add links to your “Navigation menu” in the header settings.' }}
+        </p>
+      {%- endif -%}
+    </nav>
+  </div>
+</menu-drawer>
+
+<script>
+// Menu Drawer JavaScript Logic
+(function() {
+  'use strict';
+  
+  const toggle = document.getElementById('menu-drawer-toggle'); 
+  const drawer = document.getElementById('menu-drawer');
+  const closeButtons = document.querySelectorAll('[data-close-menu]'); 
+  
+  if (toggle && drawer) {
+    
+    function closeDrawer() {
+      drawer.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('drawer-open');
+      toggle.setAttribute('aria-expanded', 'false');
+    }
+    
+    function openDrawer() {
+      drawer.setAttribute('aria-hidden', 'false');
+      document.body.classList.add('drawer-open');
+      toggle.setAttribute('aria-expanded', 'true');
+    }
+
+    // 🚨 CRITICAL FIX: Explicitly set initial state to ensure it's closed on load
+    if (drawer.getAttribute('aria-hidden') !== 'false') {
+        drawer.setAttribute('aria-hidden', 'true');
+    }
+
+    // Open on toggle click
+    toggle.addEventListener('click', function() {
+      const isHidden = drawer.getAttribute('aria-hidden') === 'true';
+      if (isHidden) {
+        openDrawer();
+      } else {
+        closeDrawer();
+      }
+    });
+
+    // Close handlers (close button and overlay)
+    closeButtons.forEach(button => {
+      button.addEventListener('click', closeDrawer);
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && drawer.getAttribute('aria-hidden') === 'false') {
+        closeDrawer();
+      }
+    });
+    
+    // Prevent background content from being scrolled when the drawer is open
+    // The CSS 'position: fixed' on body.drawer-open helps this, but JavaScript helps ensure focus stays.
+  }
+})();
+</script>

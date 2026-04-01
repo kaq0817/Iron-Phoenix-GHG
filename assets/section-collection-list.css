@@ -1,0 +1,23 @@
+/* assets/section-collection-list.css */
+
+.section-collection-list-padding {
+  padding-top: var(--section-padding-top, 36px);
+  padding-bottom: var(--section-padding-bottom, 36px);
+}
+@media (min-width: 750px) {
+  .section-collection-list-padding {
+    padding-top: var(--section-padding-top, 36px);
+    padding-bottom: var(--section-padding-bottom, 36px);
+  }
+}
+.collection-list {
+  display: grid;
+  gap: 1.6rem;
+  grid-template-columns: repeat(var(--columns-mobile, 2), 1fr);
+}
+@media (min-width: 990px) {
+  .collection-list { grid-template-columns: repeat(var(--columns-desktop, 4), 1fr); }
+}
+.collection-list__header { margin-bottom: 1rem; }
+.collection-list__heading { margin: 0 0 .25rem; }
+.collection-list__subheading { opacity: .85; margin: 0; }

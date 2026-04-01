@@ -1,0 +1,42 @@
+<section class="trust-badges" style="text-align: center; padding: 2rem;">
+  <h2>Shop With Confidence</h2>
+  {% if section.settings.trust_image %}
+    <picture>
+      <source srcset="{{ section.settings.trust_image | image_url: format: 'webp' }}" type="image/webp" media="(min-width: 768px)">
+      <img
+        src="{{ section.settings.trust_image | image_url: width: 600, format: 'webp' }}"
+        alt="{{ section.settings.alt_text | escape | default: 'Trust Badges' }}"
+        width="600"
+        height="auto"
+        loading="lazy"
+        style="max-width: 100%; height: auto; margin-top: 1rem;"
+      >
+    </picture>
+  {% else %}
+    <p style="margin-top:2rem;color:var(--color-foreground,#222);">Upload your trust badges image in the section settings!</p>
+  {% endif %}
+</section>
+
+{% schema %}
+{
+  "name": "Trust Badges",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "trust_image",
+      "label": "Trust badges image"
+    },
+    {
+      "type": "text",
+      "id": "alt_text",
+      "label": "Image alt text",
+      "default": "Trust Badges: Gamer Designed, Wellness, Secure, Support"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Trust Badges"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,44 @@
+{%- comment -%}
+Main cart items (OS 2.0)
+- Minimal, robust section that:
+  • Shows empty-cart state
+  • Defers line items to your existing 'cart-items' snippet
+- No inline CSS; styling should live in theme assets.
+- Avoids duplicate totals/actions in case your snippet already handles them.
+{%- endcomment -%}
+
+<section class="cart page-width" id="MainCart-{{ section.id }}" data-section-id="{{ section.id }}">
+  <header class="cart__header">
+    <h1 class="cart__title">
+      {{ 'sections.cart.title' | t | default: 'Your cart' }}
+    </h1>
+  </header>
+
+  {%- if cart == empty -%}
+    <div class="cart__empty" role="status" aria-live="polite">
+      <p class="cart__empty-text">
+        {{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}
+      </p>
+      <a class="button button--primary" href="{{ routes.collections_url }}">
+        {{ 'sections.cart.continue_shopping' | t | default: 'Continue shopping' }}
+      </a>
+    </div>
+  {%- else -%}
+    <div class="cart__content">
+      {%- render 'cart-items' -%}
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Main cart items",
+  "class": "section-main-cart-items",
+  "tag": "section",
+  "settings": [],
+  "blocks": [],
+  "presets": [
+    { "name": "Main cart items" }
+  ]
+}
+{% endschema %}

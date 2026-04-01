@@ -1,0 +1,48 @@
+{% comment %}
+  Blog Featured Image Section
+  - Displays a large banner/feature image for the blog (optional).
+  - Uses blog.image if no custom image is set.
+  - Uses optimized-image snippet for proper sizing and performance.
+{% endcomment %}
+
+{% assign feature_image = section.settings.image | default: blog.image %}
+
+{% if feature_image %}
+  <div class="blog-featured-image" style="margin: 2rem 0;">
+    {% render 'optimized-image',
+      image: feature_image,
+      width_override: 1200,
+      alt: blog.title,
+      class: 'blog-feature-img',
+      loading: 'eager',
+      sizes: '100vw'
+    %}
+  </div>
+{% endif %}
+
+<style>
+  .blog-featured-image {
+    width: 100%;
+    overflow: hidden;
+    border-radius: 10px;
+  }
+  
+  .blog-feature-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Blog Featured Image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom featured image"
+    }
+  ]
+}
+{% endschema %}

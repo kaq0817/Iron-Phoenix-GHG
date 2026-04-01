@@ -1,0 +1,31 @@
+{%- comment -%}
+  Cart Notification Toast
+  Shows when an item is added to the cart (AJAX add)
+  Updated: 2025-08-04
+{%- endcomment -%}
+<div id="cart-notification" class="cart-notification" aria-live="polite" aria-atomic="true" aria-hidden="true">
+  <div class="cart-notification__inner">
+    <span class="cart-notification__icon" aria-hidden="true">🛒</span>
+
+    {%- comment -%}
+      Use existing locale key: general.cart.item_added ("Item added to your cart")
+      Prepend the product title if you pass `cart_notification_title` to this snippet.
+    {%- endcomment -%}
+    <span class="cart-notification__message">
+      {%- if cart_notification_title -%}
+        {{ cart_notification_title | escape }} — 
+      {%- endif -%}
+      {{ 'general.cart.item_added' | t | default: 'Item added to your cart' }}
+    </span>
+
+    <a href="{{ routes.cart_url }}" class="cart-notification__view-cart">
+      {{ 'general.cart.view_empty_cart' | t | default: 'View cart' }}
+    </a>
+
+    <button type="button"
+            class="cart-notification__close"
+            aria-label="{{ 'accessibility.close' | t | default: 'Close' }}">
+      &times;
+    </button>
+  </div>
+</div>

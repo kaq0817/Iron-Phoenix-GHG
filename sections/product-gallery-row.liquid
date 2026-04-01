@@ -1,0 +1,64 @@
+{% comment %}
+  Horizontal row of product images (thumbs)
+  - Styles externalized to assets/section-product-gallery-row.css
+  - Uses theme's global CSS variables for colors
+{% endcomment %}
+
+{{ 'section-product-gallery-row.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .gallery-row#gallery-row-{{ section.id }} {
+    --gallery-row-margin: 1.5rem 0;
+  }
+{%- endstyle -%}
+
+{%- if section.settings.enable_gallery -%}
+  <section id="gallery-row-{{ section.id }}" class="gallery-row" data-gallery-row>
+    {% if product and product.media.size > 0 %}
+      <div class="row" aria-label="Additional product images">
+        {% for m in product.media limit: 12 %}
+          {% if m.media_type == 'image' %}
+            {% assign w = 320 %}
+            {% assign h = w | divided_by: m.aspect_ratio | round %}
+            {% assign original_width = m.width %}
+            <div class="gallery-thumb" data-image-src="{{ m | image_url: width: 1200 }}" data-original-width="{{ original_width }}">
+              <img
+                src="{{ m | image_url: width: w }}"
+                alt="{{ m.alt | default: product.title | escape }}"
+                loading="lazy"
+                width="{{ w }}"
+                height="{{ h }}">
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Product gallery row",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_gallery",
+      "label": "Enable Gallery",
+      "default": true,
+      "info": "Disable if images are too large or unwanted."
+    },
+    {
+      "type": "range",
+      "id": "max_image_width",
+      "min": 500,
+      "max": 2000,
+      "step": 100,
+      "unit": "px",
+      "label": "Maximum Image Width Threshold",
+      "default": 1000,
+      "info": "Gallery will be disabled if any image exceeds this width."
+    }
+  ],
+  "presets": [{ "name": "Product gallery row" }]
+}
+{% endschema %}

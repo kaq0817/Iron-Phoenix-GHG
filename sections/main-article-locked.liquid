@@ -1,0 +1,111 @@
+{%- comment -%}
+  Iron Phoenix GHG — Locked Article Template
+  Uses 'paywall-gate' snippet to restrict content to members.
+{%- endcomment -%}
+
+{%- if article -%}
+  <section id="ArticleLocked-{{ section.id }}" class="article-locked color-{{ section.settings.color_scheme }}">
+    <div class="page-width article-locked__inner">
+      {%- if section.settings.show_cover_image and article.image -%}
+        {%- assign cover_img = article.image -%}
+        <div class="article-locked__media" style="margin-bottom: 2rem;">
+          <img
+            src="{{ cover_img | image_url: width: 1200 }}"
+            sizes="(max-width: 749px) 100vw, 1200px"
+            alt="{{ cover_img.alt | default: article.title | escape }}"
+            loading="lazy"
+            class="article-locked__image"
+            width="{{ cover_img.width }}"
+            height="{{ cover_img.width | divided_by: cover_img.aspect_ratio | round }}"
+            style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"
+          >
+        </div>
+      {%- endif -%}
+
+      <header class="article-locked__header" style="text-align: center; margin-bottom: 3rem;">
+        <h1 class="article-locked__title">{{ article.title | escape }}</h1>
+        {%- if section.settings.show_meta -%}
+          <p class="article-locked__meta" style="opacity: 0.7;">
+            {{ article.published_at | date: '%B %d, %Y' }}
+            {%- if article.author -%}
+              &nbsp;•&nbsp;{{ article.author | escape }}
+            {%- endif -%}
+          </p>
+        {%- endif -%}
+      </header>
+
+      <div class="article-locked__content rte">
+        {%- render 'paywall-gate',
+          content_html: article.content,
+          free_paragraphs: section.settings.free_paragraphs,
+          allowed_tags: section.settings.allowed_tags,
+          gate_title: section.settings.gate_title,
+          gate_subtitle: section.settings.gate_subtitle
+        -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Locked article",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meta",
+      "label": "Show date/author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cover_image",
+      "label": "Show cover image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Paywall Settings"
+    },
+    {
+      "type": "range",
+      "id": "free_paragraphs",
+      "label": "Free paragraphs to show",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "allowed_tags",
+      "label": "Allowed customer tags (CSV)",
+      "default": "Member,VIP",
+      "info": "Comma-separated list of tags that can view full content."
+    },
+    {
+      "type": "text",
+      "id": "gate_title",
+      "label": "Gate title",
+      "default": "Members-only Article"
+    },
+    {
+      "type": "textarea",
+      "id": "gate_subtitle",
+      "label": "Gate subtitle",
+      "default": "Log in or create a free account to continue reading."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Locked article"
+    }
+  ]
+}
+{% endschema %}

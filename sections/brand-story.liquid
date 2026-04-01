@@ -1,0 +1,152 @@
+<!-- /sections/cj-shipping-returns.liquid -->
+{%- comment -%}
+  Iron Phoenix GHG — Refund & Return Policy
+  - All outputs from settings are escaped.
+  - No external CSS/JS to avoid MissingAsset.
+  - Explicit rule: refunds only after item is physically returned and verified.
+{%- endcomment -%}
+<link rel="stylesheet" href="{{ 'cj-policy.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'cj-policy.css' | asset_url | stylesheet_tag }}</noscript>
+
+<section class="policy page-width" aria-labelledby="policy-title">
+  <header class="policy__header" style="margin-bottom:1.25rem">
+    {% if section.settings.use_h1 %}
+      <h1 id="policy-title" class="h1">{{ section.settings.title | default: 'Refund & Return Policy' | escape }}</h1>
+    {% else %}
+      <h2 id="policy-title" class="h1">{{ section.settings.title | default: 'Refund & Return Policy' | escape }}</h2>
+    {% endif %}
+    <p class="policy__updated"><strong>Last Updated:</strong> {{ section.settings.last_updated | default: 'June 24, 2025' | escape }}</p>
+    <p class="policy__lede"><strong>Important:</strong> Refunds are issued <em>only after</em> the returned item is <strong>physically received and verified as the correct item</strong>. Returns without prior authorization (RMA) may be refused.</p>
+  </header>
+
+  <div class="policy__block">
+    <h2 class="h3">1) Standard Returns (Non-Personalized Items)</h2>
+    <ul>
+      <li><strong>Window:</strong> {{ section.settings.standard_days | default: 30 | escape }} days from delivery.</li>
+      <li><strong>Condition:</strong> New, unused, with all original tags/packaging intact.</li>
+      <li><strong>Authorization required:</strong> Contact support before sending a return; we will issue an RMA and instructions.</li>
+      <li><strong>Refunds after inspection:</strong> Refunds are issued only after we <strong>receive</strong> the item and <strong>verify</strong> it is the same item originally shipped and meets condition requirements.</li>
+      <li><strong>Shipping:</strong> Return shipping is the customer’s responsibility; shipping costs are non-refundable.</li>
+      <li><strong>Restocking fee:</strong> Non-defective standard returns may incur a <strong>{{ section.settings.restocking_fee | default: 15 | escape }}%</strong> restocking fee.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">2) Made-to-Order &amp; Defective Products</h2>
+    <ul>
+      <li><strong>Report within:</strong> {{ section.settings.defect_days | default: 30 | escape }} days of receipt.</li>
+      <li><strong>Verification:</strong> Email clear photos of the defect; we may also require the item to be returned for inspection.</li>
+      <li><strong>Resolution options:</strong> After verification, choose a <strong>free replacement</strong> or a <strong>refund</strong>. If a refund is chosen, the item must be <strong>returned and verified</strong> first.</li>
+      <li><strong>Replacements:</strong> A return may still be required at our discretion to prevent misuse.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">3) Custom &amp; Personalized Orders</h2>
+    <ul>
+      <li><strong>Cancellations/changes:</strong> Request within <strong>24 hours</strong> of purchase (production typically starts after that).</li>
+      <li><strong>Returns:</strong> Not accepted except for verified <strong>manufacturing/printing defects</strong> or our <strong>customization error</strong>.</li>
+      <li><strong>Refunds require return:</strong> For any approved refund on a custom item, the original item must be returned and verified as the correct item first.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">4) Exchanges</h2>
+    <ul>
+      <li>Exchanges follow the same steps as returns (RMA required). We’ll ship the exchange after the returned item is received and verified.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">5) Non-Returnable Items</h2>
+    <ul>
+      <li>Gift cards, final-sale items, and items marked non-returnable at checkout.</li>
+      <li>Used, worn, washed, or damaged items not due to our error.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">6) How to Initiate a Return (RMA Required)</h2>
+    <ol>
+      <li><strong>Contact support:</strong> Email <a href="mailto:{{ section.settings.support_email | escape }}">{{ section.settings.support_email | escape }}</a> or call <a href="tel:{{ section.settings.support_phone | escape }}">{{ section.settings.support_phone | escape }}</a>.</li>
+      <li><strong>Receive RMA &amp; instructions:</strong> We’ll confirm eligibility and provide the correct return address and RMA.</li>
+      <li><strong>Ship back:</strong> Pack securely and include your RMA. Keep your tracking number.</li>
+      <li><strong>Inspection &amp; refund:</strong> We issue refunds only after the item is received and verified as the correct item and in acceptable condition.</li>
+    </ol>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">7) Return Address (Authorized Returns Only)</h2>
+    <address>
+      {{ section.settings.return_name | default: 'Iron Phoenix GHG — Returns' | escape }}<br>
+      {{ section.settings.return_street | default: '142 W. Milton Rd., Trailer 7' | escape }}<br>
+      {{ section.settings.return_city | default: 'Ballston Spa' | escape }}, {{ section.settings.return_state | default: 'NY' | escape }} {{ section.settings.return_zip | default: '12020' | escape }}<br>
+      {{ section.settings.return_country | default: 'USA' | escape }}
+    </address>
+    <p class="note">Do not send items without an RMA — unauthorized parcels may be refused.</p>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">8) Refund Method &amp; Timing</h2>
+    <ul>
+      <li>Refunds are issued to the original payment method after verification; your bank may take 3–10 business days to post.</li>
+      <li>Shipping, duties, and taxes are non-refundable unless required by law.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">9) International Orders</h2>
+    <ul>
+      <li>Returns must be shipped DDP (duties paid) with RMA. Duties/taxes paid at import are non-refundable.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">10) Vendor-Fulfilled (CJ) Orders — Not Treated as Custom</h2>
+    <ul>
+      <li>CJ-fulfilled items are <strong>not</strong> treated as custom products. Standard or Defective policies apply.</li>
+      <li>For defects, we may require photos and a physical return (per CJ guidance). Refunds still require return &amp; verification.</li>
+    </ul>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">11) Contact</h2>
+    <p>Email: <a href="mailto:{{ section.settings.support_email | escape }}">{{ section.settings.support_email | escape }}</a><br>
+    Phone: <a href="tel:{{ section.settings.support_phone | escape }}">{{ section.settings.support_phone | escape }}</a></p>
+  </div>
+
+  <div class="policy__block">
+    <h2 class="h3">12) Exceptions &amp; Misuse</h2>
+    <ul>
+      <li>We may reject or adjust refunds for items returned used, damaged, altered, or not matching the original order.</li>
+      <li>Return-to-sender packages without RMA may be refused.</li>
+      <li>Suspected fraud/abuse may be reported and ineligible for refunds.</li>
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ref & Ret (CJ optimized)",
+  "class": "section-policy",
+  "settings": [
+    { "type": "checkbox", "id": "use_h1", "label": "Use H1 tag for page title", "default": true },
+    { "type": "text", "id": "title", "label": "Policy title", "default": "Refund & Return Policy" },
+    { "type": "text", "id": "last_updated", "label": "Last updated", "default": "June 24, 2025" },
+    { "type": "range", "id": "standard_days", "min": 7, "max": 60, "step": 1, "label": "Standard return window (days)", "default": 30 },
+    { "type": "range", "id": "defect_days", "min": 7, "max": 60, "step": 1, "label": "Defect report window (days)", "default": 30 },
+    { "type": "range", "id": "restocking_fee", "min": 0, "max": 25, "step": 1, "unit": "%", "label": "Restocking fee (non-defective standard returns)", "default": 15 },
+    { "type": "text", "id": "support_email", "label": "Support email", "default": "Support@ironphoenix.store" },
+    { "type": "text", "id": "support_phone", "label": "Support phone", "default": "(518) 415-8496" },
+    { "type": "text", "id": "return_name", "label": "Return name", "default": "Iron Phoenix GHG — Returns" },
+    { "type": "text", "id": "return_street", "label": "Return street", "default": "142 W. Milton Rd., Trailer 7" },
+    { "type": "text", "id": "return_city", "label": "Return city", "default": "Ballston Spa" },
+    { "type": "text", "id": "return_state", "label": "Return state/region", "default": "NY" },
+    { "type": "text", "id": "return_zip", "label": "Return postal/ZIP", "default": "12020" },
+    { "type": "text", "id": "return_country", "label": "Return country", "default": "USA" }
+  ],
+  "presets": [
+    { "name": "Refund & Returns (CJ optimized)" }
+  ]
+}
+{% endschema %}

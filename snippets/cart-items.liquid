@@ -1,0 +1,448 @@
+{%- comment -%}
+FILE 2 of 4: cart-items.liquid
+Location: snippets/cart-items.liquid
+Copy everything below this line
+{%- endcomment -%}
+
+<style>
+.cart-items {
+  list-style: none;
+  padding: 0;
+  margin: 2rem 0;
+}
+
+.cart-item {
+  display: flex;
+  gap: 2rem;
+  padding: 2rem;
+  border: 1px solid rgba(255,255,255,0.1);
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+}
+
+.cart-item__image {
+  flex-shrink: 0;
+  width: 120px;
+}
+
+.cart-item__image img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.cart-item__details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cart-item__title {
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: rgb(var(--color-base-text, 255,255,255));
+  text-decoration: none;
+}
+
+.cart-item__variant {
+  font-size: 1.4rem;
+  color: rgba(var(--color-base-text, 255,255,255), 0.7);
+}
+
+.cart-item__meta {
+  font-size: 1.3rem;
+  color: rgba(var(--color-base-text, 255,255,255), 0.6);
+}
+
+.cart-item__properties {
+  margin: 1rem 0;
+  font-size: 1.3rem;
+}
+
+.cart-item__prop-key {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.cart-item__prop-val {
+  margin-left: 1rem;
+}
+
+.cart-item__price {
+  font-size: 1.6rem;
+  font-weight: 600;
+  margin: 1rem 0;
+}
+
+.cart-item__price-original {
+  color: rgba(var(--color-base-text, 255,255,255), 0.5);
+  margin-right: 1rem;
+  text-decoration: line-through;
+}
+
+.cart-item__price-final {
+  color: rgb(var(--color-base-accent-1, 255,255,0));
+}
+
+.cart-item__quantity {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.quantity-input {
+  width: 80px;
+  padding: 0.8rem;
+  font-size: 1.4rem;
+  text-align: center;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  background: rgba(0,0,0,0.3);
+  color: rgb(var(--color-base-text, 255,255,255));
+}
+
+.quantity-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cart-item__remove {
+  color: rgb(var(--color-base-accent-1, 255,255,0));
+  text-decoration: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.cart-item__remove:hover {
+  text-decoration: underline;
+}
+
+.cart-item__remove:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cart-item__error {
+  color: #ff6b6b;
+  font-size: 1.3rem;
+  margin-top: 0.5rem;
+}
+
+.cart__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-top: 2px solid rgba(255,255,255,0.1);
+  margin-top: 2rem;
+}
+
+.cart__subtotal {
+  font-size: 1.8rem;
+  font-weight: 700;
+}
+
+.cart__subtotal-price {
+  color: rgb(var(--color-base-accent-1, 255,255,0));
+  margin-left: 1rem;
+}
+
+.cart__actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.button {
+  padding: 1.2rem 2.4rem;
+  border: none;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button--primary {
+  background: rgb(var(--color-base-accent-1, 255,255,0));
+  color: rgb(var(--color-base-background-1, 0,0,0));
+}
+
+.button--primary:hover {
+  opacity: 0.9;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+@media (max-width: 749px) {
+  .cart-item {
+    flex-direction: column;
+  }
+  
+  .cart-item__image {
+    width: 100%;
+    max-width: 200px;
+  }
+  
+  .cart__footer {
+    flex-direction: column;
+    gap: 2rem;
+  }
+}
+</style>
+
+{%- if cart == empty -%}
+  <p class="cart-empty">
+    {{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}
+  </p>
+{%- else -%}
+  <form action="{{ routes.cart_url | escape }}" method="post" novalidate class="cart__form" id="CartForm-Items">
+    <ul class="cart-items" role="list">
+      {%- for item in cart.items -%}
+        <li class="cart-item" role="listitem" data-key="{{ item.key | escape }}">
+          <div class="cart-item__image">
+            <a href="{{ item.url | escape }}" aria-label="{{ item.product.title | escape }}">
+              {%- if item.image -%}
+                {{ item.image | image_url: width: 300 | image_tag: class: 'cart-item__img', alt: item.product.title, loading: 'lazy' }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'cart-item__img' }}
+              {%- endif -%}
+            </a>
+          </div>
+
+          <div class="cart-item__details">
+            <a href="{{ item.url | escape }}" class="cart-item__title">
+              {{ item.product.title | escape }}
+            </a>
+
+            {%- if item.product.has_only_default_variant == false and item.variant.title -%}
+              <div class="cart-item__variant">{{ item.variant.title | escape }}</div>
+            {%- endif -%}
+
+            {%- comment -%} Optional metafields {%- endcomment -%}
+            {%- assign mfns = 'custom' -%}
+            {%- assign mf_short = item.product.metafields[mfns].short_desc -%}
+            {%- if mf_short != blank -%}
+              <p class="cart-item__meta">{{ mf_short | strip | strip_html | escape }}</p>
+            {%- endif -%}
+
+            {%- comment -%} Line item properties {%- endcomment -%}
+            {%- if item.properties and item.properties.size > 0 -%}
+              <dl class="cart-item__properties">
+                {%- for p in item.properties -%}
+                  {%- assign key = p.first -%}
+                  {%- assign val = p.last -%}
+                  {%- if val == blank or key contains '_hidden' -%}{% continue %}{%- endif -%}
+
+                  <dt class="cart-item__prop-key">{{ key | strip | escape }}</dt>
+                  <dd class="cart-item__prop-val">
+                    {%- if val contains '/uploads/' -%}
+                      <a href="{{ val | escape }}" target="_blank" rel="nofollow noopener">File</a>
+                    {%- else -%}
+                      {{ val | strip | strip_html | escape }}
+                    {%- endif -%}
+                  </dd>
+                {%- endfor -%}
+              </dl>
+            {%- endif -%}
+
+            {%- comment -%} Pricing - shows discount savings {%- endcomment -%}
+            <div class="cart-item__price">
+              {%- assign line_price = item.line_price -%}
+              {%- assign final_price = item.final_line_price -%}
+              {%- if line_price > final_price -%}
+                <s class="cart-item__price-original">{{ line_price | money_with_currency }}</s>
+              {%- endif -%}
+              <span class="cart-item__price-final">{{ final_price | money_with_currency }}</span>
+            </div>
+
+            {%- comment -%} Quantity controls {%- endcomment -%}
+            <div class="cart-item__quantity">
+              {%- assign qid = 'Quantity-' | append: forloop.index -%}
+              <label for="{{ qid | escape }}">Quantity:</label>
+              <input
+                id="{{ qid | escape }}"
+                class="quantity-input"
+                type="number"
+                value="{{ item.quantity }}"
+                min="0"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                data-line="{{ forloop.index }}"
+                data-key="{{ item.key | escape }}"
+                aria-label="{{ 'sections.cart.quantity' | t | default: 'Quantity' }}"
+              >
+              <button
+                type="button"
+                class="cart-item__remove"
+                data-line="{{ forloop.index }}"
+                aria-label="Remove {{ item.product.title | escape }}"
+              >
+                Remove
+              </button>
+            </div>
+            
+            <div class="cart-item__error" id="cart-error-{{ forloop.index }}" role="alert" aria-live="polite"></div>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- comment -%} Cart footer with subtotal and actions {%- endcomment -%}
+    <div class="cart__footer">
+      <div class="cart__subtotal">
+        <span class="cart__subtotal-label">Subtotal:</span>
+        <strong class="cart__subtotal-price">{{ cart.total_price | money_with_currency }}</strong>
+      </div>
+
+      <div class="cart__actions">
+        <button type="submit" name="update" class="button">
+          Update cart
+        </button>
+        <button type="submit" name="checkout" class="button button--primary">
+          Checkout
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <script>
+  (function() {
+    'use strict';
+    
+    const updateTimeouts = new Map();
+    const pendingRequests = new Map();
+    
+    document.addEventListener('DOMContentLoaded', function() {
+      const removeLinks = document.querySelectorAll('.cart-item__remove');
+      
+      removeLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          const line = this.getAttribute('data-line');
+          
+          if (line && !this.disabled) {
+            this.disabled = true;
+            this.textContent = 'Removing...';
+            
+            updateCartLine(line, 0, this);
+          }
+        });
+      });
+      
+      const quantityInputs = document.querySelectorAll('.quantity-input');
+      
+      quantityInputs.forEach(input => {
+        input.addEventListener('change', function() {
+          const line = this.getAttribute('data-line');
+          const newQuantity = parseInt(this.value, 10);
+          
+          if (isNaN(newQuantity) || newQuantity < 0) {
+            showError(line, 'Please enter a valid quantity');
+            this.value = this.defaultValue;
+            return;
+          }
+          
+          if (updateTimeouts.has(line)) {
+            clearTimeout(updateTimeouts.get(line));
+          }
+          
+          if (pendingRequests.has(line)) {
+            pendingRequests.get(line).abort();
+          }
+          
+          const timeoutId = setTimeout(() => {
+            updateCartLine(line, newQuantity, this);
+          }, 500);
+          
+          updateTimeouts.set(line, timeoutId);
+        });
+      });
+    });
+    
+    function updateCartLine(line, quantity, element) {
+      const controller = new AbortController();
+      pendingRequests.set(line, controller);
+      
+      if (element) {
+        element.disabled = true;
+      }
+      
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          line: parseInt(line),
+          quantity: quantity
+        }),
+        signal: controller.signal
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        window.location.reload();
+      })
+      .catch(error => {
+        if (error.name === 'AbortError') {
+          console.log('Request cancelled - newer request in progress');
+          return;
+        }
+        
+        console.error('Error updating cart:', error);
+        
+        let errorMsg = 'Failed to update cart. Please try again.';
+        if (!navigator.onLine) {
+          errorMsg = 'No internet connection. Please check your network.';
+        }
+        
+        showError(line, errorMsg);
+        
+        if (element) {
+          element.disabled = false;
+          if (element.tagName === 'INPUT') {
+            element.value = element.defaultValue;
+          } else {
+            element.textContent = 'Remove';
+          }
+        }
+      })
+      .finally(() => {
+        pendingRequests.delete(line);
+        updateTimeouts.delete(line);
+      });
+    }
+    
+    function showError(line, message) {
+      const errorElement = document.getElementById('cart-error-' + line);
+      if (errorElement) {
+        errorElement.textContent = message;
+        setTimeout(() => {
+          errorElement.textContent = '';
+        }, 5000);
+      }
+    }
+  })();
+  </script>
+{%- endif -%}

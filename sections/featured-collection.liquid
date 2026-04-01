@@ -1,0 +1,152 @@
+{%- comment -%}
+  Featured Collection Section - Optimized Version (Horizontal Grid)
+  - Uses render-card-product wrapper
+  - Consistent with main product grid
+  - CLS-safe images via optimized-image snippet
+  - EXCLUDES current product if on a product page
+{%- endcomment -%}
+
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign chosen_collection = section.settings.collection
+  assign products_to_show = section.settings.products_to_show | default: 8
+
+  # Capture the current product ID to exclude it (defaults to 0 if not on a product page)
+  assign current_product_id = product.id | default: 0
+-%}
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    --featured-collection-padding-top-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --featured-collection-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --featured-collection-padding-top-desktop: {{ section.settings.padding_top }}px;
+    --featured-collection-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="featured-collection section-{{ section.id }}-padding featured-collection-section-padding color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <div class="title-wrapper center">
+        <h2 class="title featured-collection__title">{{ section.settings.title | escape }}</h2>
+      </div>
+    {% endif %}
+
+    {% if chosen_collection != blank %}
+      {% assign collection = collections[chosen_collection] %}
+      {% if collection and collection.products.size > 0 %}
+        <ul class="featured-collection__grid" role="list">
+          {%- assign shown_count = 0 -%}
+
+          {% for card_product in collection.products %}
+            {%- comment -%} Skip if this is the product the user is currently viewing {%- endcomment -%}
+            {% if card_product.id == current_product_id %}{% continue %}{% endif %}
+
+            {%- comment -%} Stop loop once we hit the requested limit {%- endcomment -%}
+            {% if shown_count >= products_to_show %}{% break %}{% endif %}
+
+            <li class="featured-collection__item">
+              {%- render 'render-card-product',
+                card_product: card_product,
+                media_aspect_ratio: section.settings.image_ratio,
+                show_secondary_image: true,
+                show_vendor: false,
+                show_rating: false,
+                quick_add: 'standard',
+                section_id: section.id,
+                lazy_load: true,
+                image_width: 600
+              -%}
+            </li>
+
+            {%- assign shown_count = shown_count | plus: 1 -%}
+          {% endfor %}
+        </ul>
+      {% else %}
+        <div class="collection-empty center">
+          <p>This collection is empty or doesn't exist.</p>
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="collection-empty center">
+        <p>Please select a collection in the section settings.</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 25,
+      "step": 1,
+      "label": "Products to show",
+      "default": 8
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "options": [
+        { "value": "accent-1", "label": "Accent 1" },
+        { "value": "accent-2", "label": "Accent 2" },
+        { "value": "background-1", "label": "Background 1" },
+        { "value": "background-2", "label": "Background 2" },
+        { "value": "inverse", "label": "Inverse" }
+      ],
+      "default": "background-1",
+      "label": "Color scheme"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "default": "adapt",
+      "label": "Image aspect ratio",
+      "options": [
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "portrait", "label": "Portrait" },
+        { "value": "square", "label": "Square" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Featured Collection" }]
+}
+{% endschema %}

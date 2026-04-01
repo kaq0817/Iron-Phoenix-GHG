@@ -1,0 +1,220 @@
+{% comment %}
+  Featured Blog — compact thumbnails
+  - Small fixed-height thumbnails (120/160/200px)
+  - 2 cols mobile (configurable 1–3) / 3–4 cols desktop
+  - Lightweight so products remain the hero
+{% endcomment %}
+
+{%- liquid
+  assign blog_obj = section.settings.blog
+  assign limit = section.settings.post_limit | default: 4
+
+  if section.settings.thumb_size == 'md'
+    assign thumb_h = 280
+  elsif section.settings.thumb_size == 'lg'
+    assign thumb_h = 380
+  else
+    assign thumb_h = 180
+  endif
+
+  assign card_style = section.settings.card_style | default: 'rounded'
+-%}
+
+<section
+  class="featured-blog-grid compact color-{{ section.settings.color_scheme }} card-style-{{ card_style }}"
+  style="--thumb-h: {{ thumb_h }}px;"
+>
+  <div class="page-width">
+    {% unless section.settings.heading == blank %}
+      <div class="fbg__header">
+        <h2 class="fbg__title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+        {% if blog_obj and section.settings.show_view_all and blog_obj.articles_count > limit %}
+          <a class="fbg__viewall" href="{{ blog_obj.url }}">View all</a>
+        {% endif %}
+      </div>
+    {% endunless %}
+
+    <ul
+      class="fbg__grid"
+      style="--cols-desktop: {{ section.settings.columns_desktop }}; --cols-mobile: {{ section.settings.columns_mobile }};"
+    >
+      {% if blog_obj and blog_obj.articles_count > 0 %}
+        {% for article in blog_obj.articles limit: limit %}
+          <li class="fbg__item">
+            <article class="fbg-card" itemscope itemtype="http://schema.org/BlogPosting">
+              <a class="fbg-card__media" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+                {% if article.image %}
+                  <div class="thumb">
+                    <img
+                      src="{{ article.image | image_url: width: 240 }}"
+                      alt="{{ article.image.alt | default: article.title | escape }}"
+                      loading="eager"
+                      width="240"
+                      height="{{ thumb_h }}"
+                     fetchpriority="high">
+                  </div>
+                {% else %}
+                  <div class="thumb placeholder">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+              </a>
+
+              <div class="fbg-card__content">
+                <h3 class="fbg-card__title">
+                  <a href="{{ article.url }}" itemprop="headline">{{ article.title | escape }}</a>
+                </h3>
+
+                {% if section.settings.show_excerpt %}
+                  <p class="fbg-card__excerpt">
+                    {{ article.excerpt_or_content | strip_html | truncate: 60 }}
+                  </p>
+                {% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..limit) %}
+          <li class="fbg__item">
+            <article class="fbg-card">
+              <div class="thumb placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="fbg-card__content">
+                <h3 class="fbg-card__title"><span>Blog post</span></h3>
+                {% if section.settings.show_excerpt %}
+                  <p class="fbg-card__excerpt">Quick summary of your blog.</p>
+                {% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+
+    {% if blog_obj and section.settings.show_view_all and blog_obj.articles_count > limit %}
+      <div class="fbg__footer">
+        <a class="button" href="{{ blog_obj.url }}">View all posts</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<style>
+  .featured-blog-grid{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
+  .fbg__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+  .fbg__title{margin:0}
+  .fbg__viewall{font-size:.85rem;text-decoration:none;color:var(--color-accent,currentColor)}
+
+  .fbg__grid{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;
+    grid-template-columns:repeat(var(--cols-mobile),minmax(0,1fr))}
+  @media(min-width:750px){.fbg__grid{gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(min-width:990px){.fbg__grid{gap:1rem;grid-template-columns:repeat(var(--cols-desktop),minmax(0,1fr))}}
+
+  .fbg-card{background:rgba(255,255,255,.03);border:1px solid rgba(0,0,0,.12);overflow:hidden;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
+  .fbg-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+  /* Shape styles */
+  .card-style-rectangle .fbg-card{border-radius:8px}
+  .card-style-rounded .fbg-card{border-radius:16px}
+  .card-style-circular .fbg-card{border-radius:24px}
+  .card-style-circular .thumb{aspect-ratio:1;height:auto;border-radius:50%;margin:1rem auto 0;width:calc(100% - 2rem);max-width:180px}
+  .card-style-circular .fbg-card__content{text-align:center}
+  .card-style-blob .fbg-card{border-radius:60% 40% 30% 70%/60% 30% 70% 40%}
+  .card-style-blob .thumb{border-radius:50% 30% 40% 60%/40% 60% 30% 50%;margin:.75rem;width:calc(100% - 1.5rem);height:calc(var(--thumb-h) - 1.5rem)}
+
+  .thumb{width:100%;height:var(--thumb-h);background:rgba(0,0,0,.06);overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .placeholder-svg{width:100%;height:100%;opacity:.4}
+
+  .fbg-card__content{padding:6px 8px}
+  .fbg-card__title{margin:0;font-size:.9rem;line-height:1.2}
+  .fbg-card__title a{text-decoration:none;color:inherit}
+  .fbg-card__excerpt{margin:4px 0 0;font-size:.8rem;opacity:.8}
+
+  .fbg__footer{margin-top:.75rem;text-align:center}
+  .button{display:inline-block;padding:.55rem .85rem;border-radius:8px;background:var(--color-accent,#26a69a);color:#fff;text-decoration:none;font-weight:600}
+</style>
+
+{% schema %}
+{
+  "name": "Blog thumbnails",
+  "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "post_limit", "min": 2, "max": 12, "step": 1, "default": 4, "label": "Posts to show" },
+
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "From the Phoenix Journal" },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h2",
+      "options": [
+        { "value": "h3", "label": "Small" },
+        { "value": "h2", "label": "Medium" }
+      ]
+    },
+
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card shape",
+      "default": "rounded",
+      "options": [
+        { "value": "rectangle", "label": "Rectangle" },
+        { "value": "rounded", "label": "Rounded" },
+        { "value": "circular", "label": "Circular" },
+        { "value": "blob", "label": "Blob (organic)" }
+      ]
+    },
+
+    {
+      "type": "select",
+      "id": "thumb_size",
+      "label": "Thumbnail height",
+      "default": "sm",
+      "options": [
+        { "value": "sm", "label": "Small (180px)" },
+        { "value": "md", "label": "Medium (280px)" },
+        { "value": "lg", "label": "Large (380px)" }
+      ]
+    },
+
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Columns on mobile"
+    },
+
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View all' link", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": false },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "default": 24, "label": "Top padding" },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "default": 24,
+      "label": "Bottom padding"
+    }
+  ],
+  "presets": [{ "name": "Blog thumbnails", "settings": { "post_limit": 4, "columns_desktop": 3, "columns_mobile": 2 } }]
+}
+{% endschema %}

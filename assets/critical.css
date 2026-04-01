@@ -1,0 +1,107 @@
+/* Critical CSS for ironphoenix.store Product Page */
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+  color: #333;
+}
+
+/* Product Hero Section */
+.product-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.product-hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  align-items: center;
+}
+
+.product-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.product-meta-description {
+  font-size: 1rem;
+  margin-bottom: 20px;
+  color: #666;
+}
+
+.product-image-main img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.product-details {
+  text-align: center;
+}
+
+.product-price {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add-to-cart {
+  background: #4caf50;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  cursor: pointer;
+  width: 100%;
+}
+
+.add-to-cart:hover {
+  background: #45a049;
+}
+
+/* Free Shipping Bar (Critical if Above the Fold) */
+.free-shipping-bar {
+  text-align: center;
+  margin: 15px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.progress-bar {
+  height: 8px;
+  background: #4caf50;
+  width: 0; /* Updated dynamically via JS */
+  max-width: 100%;
+  margin-top: 5px;
+}
+
+/* Media Query for Desktop (Above 768px) */
+@media (min-width: 768px) {
+  .product-hero {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .add-to-cart {
+    width: auto;
+    padding: 10px 20px;
+  }
+}

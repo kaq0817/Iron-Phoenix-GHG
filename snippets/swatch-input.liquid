@@ -1,0 +1,25 @@
+<input
+  type="{{ type | default: 'radio' }}"
+  id="{{ id }}"
+  name="{{ name }}"
+  value="{{ value | escape }}" {# FIX: Escaped for XSS prevention #}
+  form="{{ product_form_id }}"
+  class="swatch-input__input{% if visually_disabled %} visually-disabled{% endif %}"
+  {% if checked %}
+    checked
+  {% endif %}
+  {% if disabled %}
+    disabled
+  {% endif %}
+  {% if additional_props %}
+    {{ additional_props }}
+  {% endif %}
+>
+<label
+  for="{{ id }}"
+  title="{{ value | escape }}" {# FIX: Escaped for XSS prevention #}
+  class="swatch-input__label{% if shape == 'square' %} swatch-input__label--square{% endif %}"
+>
+  {% render 'swatch', swatch: swatch, shape: shape %}
+  {{ help_text }}
+</label>

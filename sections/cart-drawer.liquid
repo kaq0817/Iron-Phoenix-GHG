@@ -1,0 +1,242 @@
+{% comment %}
+  Cart Drawer (Online Store 2.0 Section)
+
+  This file combines the best practices from both the provided snippet and the OS 2.0 section.
+  It is designed to work seamlessly with the custom 'cart-drawer.js' you provided.
+{% endcomment %}
+
+<cart-drawer class="cart-drawer" aria-hidden="true">
+  {% comment %}
+    ID "CartDrawer-Overlay" is required by the JavaScript for the close action.
+    We are adding the smooth CSS transition to this class.
+  {% endcomment %}
+  <div id="CartDrawer-Overlay" class="cart-drawer__overlay" data-close-drawer></div>
+
+  {% comment %}
+    ID "CartDrawer" is required by the JavaScript for the focus trap and section updates.
+    We are adding the smooth CSS transition to the panel element.
+  {% endcomment %}
+  <div id="CartDrawer" class="cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawer-Title">
+    
+    <div class="cart-drawer__header">
+      <h2 id="CartDrawer-Title" class="cart-drawer__title">{{ 'sections.cart.title' | t | default: 'Your cart' }}</h2>
+      
+      {% comment %} 
+        Retain the 'vip-banner' render if you are using it in this theme. 
+        If you are not using a VIP banner, you can safely delete this line. 
+      {% endcomment %}
+      {% render 'vip-banner' %}
+      
+      <button type="button" class="cart-drawer__close" data-close-drawer aria-label="{{ 'accessibility.close' | t | default: 'Close cart' }}">✕</button>
+    </div>
+
+    <div class="cart-drawer__loading" hidden>Loading…</div>
+
+    {% comment %}
+      Class 'drawer__inner' is required by the JS classes 'CartDrawer' and 'CartDrawerItems'.
+    {% endcomment %}
+    <cart-drawer-items class="drawer__inner{% if cart == empty %} is-empty{% endif %}">
+      
+      {% if cart == empty %}
+        <div class="drawer__inner-empty">
+          <p>{{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}</p>
+        </div>
+      {% else %}
+        <ul class="cart-drawer__items list-unstyled" role="list">
+          {% for item in cart.items %}
+            <li class="cart-drawer__item" data-cart-item data-line-index="{{ forloop.index }}" data-variant-id="{{ item.variant_id }}">
+              <a href="{{ item.url }}" class="cart-drawer__image">
+                {% comment %} 
+                  Using the robust 'srcset' and explicit dimensions from the OS 2.0 version 
+                  for better LCP/CLS performance. 
+                {% endcomment %}
+                <img
+                  src="{{ item.image | image_url: width: 180 }}"
+                  srcset="
+                    {{ item.image | image_url: width: 180 }} 180w,
+                    {{ item.image | image_url: width: 360 }} 360w
+                  "
+                  sizes="(max-width: 480px) 33vw, 180px"
+                  loading="lazy"
+                  alt="{{ item.title | escape }}"
+                  width="180"
+                  height="{{ 180 | divided_by: item.image.aspect_ratio | round }}"
+                >
+              </a>
+              <div class="cart-drawer__meta">
+                <a href="{{ item.url }}" class="cart-drawer__product-title">{{ item.product.title | escape }}</a>
+                {% unless item.product.has_only_default_variant %}
+                  <div class="cart-drawer__variant">{{ item.variant.title | escape }}</div>
+                {% endunless %}
+                
+                {% comment %} Enhanced quantity controls {% endcomment %}
+                <div class="cart-drawer__quantity-wrapper">
+                  <div class="cart-drawer__quantity">
+                    <button 
+                      type="button" 
+                      class="cart-drawer__qty-btn" 
+                      data-decrease-qty 
+                      data-line="{{ forloop.index }}"
+                      aria-label="Decrease quantity for {{ item.product.title | escape }}"
+                      {% if item.quantity <= 1 %}disabled{% endif %}
+                    >
+                      <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1H10" stroke="currentColor" stroke-width="1.5"/>
+                      </svg>
+                    </button>
+                    <input 
+                      type="number" 
+                      class="cart-drawer__qty-input" 
+                      value="{{ item.quantity }}" 
+                      min="1" 
+                      data-qty-input
+                      data-line="{{ forloop.index }}"
+                      aria-label="Quantity for {{ item.product.title | escape }}"
+                    >
+                    <button 
+                      type="button" 
+                      class="cart-drawer__qty-btn" 
+                      data-increase-qty 
+                      data-line="{{ forloop.index }}"
+                      aria-label="Increase quantity for {{ item.product.title | escape }}"
+                    >
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 0V10M0 5H10" stroke="currentColor" stroke-width="1.5"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <span class="cart-drawer__line-price" data-line-price>{{ item.final_line_price | money }}</span>
+                </div>
+                
+                {% comment %} Use the modern cart change URL for removal {% endcomment %}
+                <button 
+                  type="button"
+                  class="cart-drawer__remove" 
+                  data-remove-item
+                  data-line="{{ forloop.index }}"
+                  aria-label="Remove {{ item.product.title | escape }}"
+                >
+                  {{ 'sections.cart.remove' | t | default: 'Remove' }}
+                </button>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+      
+    </cart-drawer-items>
+
+    <div class="cart-drawer__footer" data-cart-footer {% if cart == empty %}hidden{% endif %}>
+      <div class="cart-drawer__total">
+        <span>{{ 'sections.cart.subtotal' | t | default: 'Subtotal' }}</span>
+        <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      {% comment %} 
+        Using the single, primary checkout button as the main call-to-action.
+        The "View Cart" button from the snippet is a good secondary option, which we can add here if needed.
+      {% endcomment %}
+      
+      <a href="{{ routes.cart_url }}" class="button button--secondary cart-drawer__view-cart">
+        {{ 'general.cart.view_empty_cart' | t | default: 'View cart' }}
+      </a>
+      
+      <a href="{{ routes.checkout_url }}" class="cart-drawer__checkout-button button button--primary">
+        {{ 'sections.cart.checkout' | t | default: 'Checkout' }}
+      </a>
+    </div>
+
+  </div>
+</cart-drawer>
+
+<style>
+  /* Quantity Controls Styling */
+  .cart-drawer__quantity-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .cart-drawer__quantity {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    padding: 0.25rem;
+  }
+
+  .cart-drawer__qty-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.2s;
+  }
+
+  .cart-drawer__qty-btn:hover:not(:disabled) {
+    opacity: 0.7;
+  }
+
+  .cart-drawer__qty-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  .cart-drawer__qty-input {
+    width: 40px;
+    border: none;
+    text-align: center;
+    font-size: 14px;
+    -moz-appearance: textfield;
+  }
+
+  .cart-drawer__qty-input::-webkit-outer-spin-button,
+  .cart-drawer__qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .cart-drawer__line-price {
+    font-weight: 600;
+  }
+
+  .cart-drawer__remove {
+    background: transparent;
+    border: none;
+    color: #999;
+    cursor: pointer;
+    font-size: 13px;
+    padding: 0.25rem 0;
+    margin-top: 0.25rem;
+    text-decoration: underline;
+  }
+
+  .cart-drawer__remove:hover {
+    color: #666;
+  }
+
+  .cart-drawer__view-cart {
+    margin-top: 0.5rem;
+  }
+
+  .cart-drawer__checkout-button {
+    margin-top: 0.5rem;
+  }
+</style>
+
+{% schema %}
+{ 
+  "name": "Cart drawer", 
+  "settings": [],
+  "presets": [
+    {
+      "name": "Cart drawer"
+    }
+  ]
+}
+{% endschema %}

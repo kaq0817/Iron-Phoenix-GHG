@@ -1,0 +1,119 @@
+{% comment %}
+  Iron Phoenix — Faceted Filters (standalone)
+  - Works on collection or search (auto-detects `results`)
+  - Supports list/boolean + price_range
+  - JS lives in snippets/facets-scripts.liquid (no {% javascript %} tag here)
+{% endcomment %}
+
+{%- assign results = collection -%}
+{%- if results == blank and search -%}
+  {%- assign results = search -%}
+{%- endif -%}
+
+<section id="Facets" class="facets-wrapper" data-section-id="{{ section.id }}">
+  <facet-filters-form class="facets" data-id="{{ section.id }}">
+    <form id="FacetFiltersForm-{{ section.id }}" class="facets__form">
+      <div class="facets__fields">
+        {%- if results.sort_by -%}
+          <input type="hidden" name="sort_by" value="{{ results.sort_by | escape }}">
+        {%- endif -%}
+
+        {%- for filter in results.filters -%}
+          <details class="facets__details" data-index="{{ forloop.index }}">
+            <summary class="facets__summary">
+              <span>{{ filter.label | escape }}</span>
+              <span class="facets__summary-icon" aria-hidden="true">+</span>
+            </summary>
+
+            <div class="facets__display">
+              {%- if filter.type == 'list' or filter.type == 'boolean' -%}
+                <ul class="facets__list" role="list">
+                  {%- for value in filter.values -%}
+                    {%- assign cid = 'Filter-' | append: filter.param_name | append: '-' | append: forloop.index -%}
+                    <li class="facets__item">
+                      <label for="{{ cid }}" class="facets__label">
+                        <input
+                          id="{{ cid }}"
+                          type="checkbox"
+                          name="{{ value.param_name }}"
+                          value="{{ value.value | escape }}"
+                          {% if value.active %}checked{% endif %}
+                          {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                        <span class="facets__label-text">{{ value.label | escape }} ({{ value.count }})</span>
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+
+              {%- elsif filter.type == 'price_range' -%}
+                <div class="facets__price">
+                  <div class="field">
+                    <label for="Filter-{{ filter.param_name }}-min">From</label>
+                    <input
+                      id="Filter-{{ filter.param_name }}-min"
+                      name="{{ filter.min_value.param_name }}"
+                      type="number" inputmode="numeric" min="0"
+                      {% if filter.min_value.value %}
+                        value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                      {% endif %}
+                      placeholder="0">
+                  </div>
+                  <div class="field">
+                    <label for="Filter-{{ filter.param_name }}-max">To</label>
+                    <input
+                      id="Filter-{{ filter.param_name }}-max"
+                      name="{{ filter.max_value.param_name }}"
+                      type="number" inputmode="numeric" min="0"
+                      {% if filter.max_value.value %}
+                        value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                      {% endif %}
+                      placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}">
+                  </div>
+                </div>
+              {%- endif -%}
+            </div>
+          </details>
+        {%- endfor -%}
+
+        {%- if results.current_vendor or results.current_type -%}
+          <input type="hidden" name="q" value="{{ results.current_vendor | default: results.current_type | escape }}">
+        {%- endif -%}
+      </div>
+
+      <noscript>
+        <button type="submit" class="facets__submit button">Apply filters</button>
+      </noscript>
+    </form>
+
+    <div class="facets__active">
+      {%- for filter in results.filters -%}
+        {%- for value in filter.active_values -%}
+          <facet-remove>
+            <a href="{{ value.url_to_remove }}" class="active-facet-remove" data-value="{{ value.value | escape }}">
+              {{ value.label | escape }} ✕
+            </a>
+          </facet-remove>
+        {%- endfor -%}
+      {%- endfor -%}
+
+      {%- if results.filters.size > 0 and results.has_active_filters -%}
+        <a href="{{ results.url | default: request.path }}" class="facets__clear">Clear all</a>
+      {%- endif -%}
+    </div>
+  </facet-filters-form>
+</section>
+
+{%- comment -%}
+  Load the behavior (kept in Snippets for reuse and to avoid {% javascript %} in Sections)
+{%- endcomment -%}
+{% render 'facets-scripts' %}
+
+{% schema %}
+{
+  "name": "Faceted Filters",
+  "settings": [],
+  "presets": [
+    { "name": "Faceted Filters" }
+  ]
+}
+{% endschema %}

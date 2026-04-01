@@ -1,0 +1,183 @@
+{% comment %}
+  Blog with Sidebar (single section controls 2-column layout)
+  - Desktop: main content + sidebar
+  - Mobile: stacks naturally
+{% endcomment %}
+
+<section id="BlogWithSidebar-{{ section.id }}" class="blog-with-sidebar color-{{ section.settings.color_scheme }}">
+  <div class="blogws__inner page-width">
+    <div class="blogws__grid">
+      <main class="blogws__main" role="main">
+        {%- if blog != blank -%}
+          {%- if section.settings.show_title -%}
+            <header class="blogws__header">
+              <h1 class="blogws__title">{{ blog.title | escape }}</h1>
+              {%- if section.settings.show_rss -%}
+                <a class="blogws__rss" href="{{ blog.url }}.atom" aria-label="RSS">RSS</a>
+              {%- endif -%}
+            </header>
+          {%- endif -%}
+
+          {%- paginate blog.articles by section.settings.per_page -%}
+            <ul class="blogws__list" role="list">
+              {%- for article in blog.articles -%}
+                <li class="blogws__item">
+                  <article class="blogws-card">
+                    {%- if section.settings.show_cover_image and article.image -%}
+                      <a class="blogws-card__media" href="{{ article.url }}">
+                        {%- assign w = 800 -%}
+                        {%- assign h = w | divided_by: article.image.aspect_ratio | round -%}
+                        <img
+                          src="{{ article.image | image_url: width: w }}"
+                          alt="{{ article.image.alt | default: article.title | escape }}"
+                          loading="lazy"
+                          decoding="async"
+                          width="{{ w }}"
+                          height="{{ h }}"
+                        >
+                      </a>
+                    {%- endif -%}
+
+                    <header class="blogws-card__header">
+                      <h2 class="blogws-card__title"><a href="{{ article.url }}">{{ article.title | escape }}</a></h2>
+                      {%- if section.settings.show_meta -%}
+                        <p class="blogws-card__meta">
+                          {{ article.published_at | date: "%B %d, %Y" }}
+                          {%- if article.author -%}&nbsp;•&nbsp;{{ article.author | escape }}{%- endif -%}
+                        </p>
+                      {%- endif -%}
+                    </header>
+
+                    {%- if section.settings.show_excerpt -%}
+                      <div class="blogws-card__excerpt">
+                        {{ article.excerpt | default: article.content | strip_html | truncatewords: 40 }}
+                      </div>
+                    {%- endif -%}
+                  </article>
+                </li>
+              {%- endfor -%}
+            </ul>
+
+            {%- if paginate.pages > 1 -%}
+              <nav class="blogws__pagination" role="navigation" aria-label="Pagination">
+                {{ paginate | default_pagination }}
+              </nav>
+            {%- endif -%}
+          {%- endpaginate -%}
+        {%- else -%}
+          <p>No blog assigned.</p>
+        {%- endif -%}
+      </main>
+
+      <aside class="blogws__sidebar" role="complementary">
+        {%- for block in section.blocks -%}
+          <div class="blogws-sideblock" {{ block.shopify_attributes }}>
+            {%- case block.type -%}
+              {%- when 'richtext' -%}
+                {%- if block.settings.title != blank -%}<h3 class="blogws-sideblock__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                <div class="rte">{{ block.settings.content }}</div>
+
+              {%- when 'menu' -%}
+                {%- if block.settings.title != blank -%}<h3 class="blogws-sideblock__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                {%- if block.settings.menu != blank -%}
+                  <ul class="blogws-menu" role="list">
+                    {%- for link in block.settings.menu.links -%}
+                      <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+
+              {%- when 'recent_posts' -%}
+                {%- if block.settings.title != blank -%}<h3 class="blogws-sideblock__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                <ul class="blogws-recent" role="list">
+                  {%- for a in blog.articles limit: block.settings.limit -%}
+                    <li><a href="{{ a.url }}">{{ a.title | escape }}</a></li>
+                  {%- endfor -%}
+                </ul>
+
+              {%- when 'collection_list' -%}
+                {%- if block.settings.title != blank -%}<h3 class="blogws-sideblock__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+                <ul class="blogws-collections" role="list">
+                  {%- for i in (1..4) -%}
+                    {%- assign handle = 'collection_' | append: i -%}
+                    {%- assign col = block.settings[handle] -%}
+                    {%- if col -%}<li><a href="{{ col.url }}">{{ col.title | escape }}</a></li>{%- endif -%}
+                  {%- endfor -%}
+                </ul>
+
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
+      </aside>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Blog with sidebar",
+  "class": "section-blog-with-sidebar",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
+    { "type": "checkbox", "id": "show_title", "label": "Show blog title", "default": true },
+    { "type": "checkbox", "id": "show_rss", "label": "Show RSS link", "default": false },
+    { "type": "checkbox", "id": "show_cover_image", "label": "Show article cover images", "default": true },
+    { "type": "checkbox", "id": "show_meta", "label": "Show meta (date/author)", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpts", "default": true },
+    { "type": "range", "id": "per_page", "label": "Articles per page", "min": 3, "max": 24, "step": 1, "default": 8 }
+  ],
+  "blocks": [
+    {
+      "type": "richtext",
+      "name": "Rich text",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "About this blog" },
+        { "type": "richtext", "id": "content", "label": "Content", "default": "<p>Short intro or promo.</p>" }
+      ]
+    },
+    {
+      "type": "menu",
+      "name": "Menu",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Quick links" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    },
+    {
+      "type": "recent_posts",
+      "name": "Recent posts",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Recent posts" },
+        { "type": "range", "id": "limit", "label": "Items", "min": 1, "max": 10, "step": 1, "default": 5 }
+      ]
+    },
+    {
+      "type": "collection_list",
+      "name": "Collections list",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Heading", "default": "Shop by category" },
+        { "type": "collection", "id": "collection_1", "label": "Collection 1" },
+        { "type": "collection", "id": "collection_2", "label": "Collection 2" },
+        { "type": "collection", "id": "collection_3", "label": "Collection 3" },
+        { "type": "collection", "id": "collection_4", "label": "Collection 4" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Blog with sidebar" }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.blogws__grid{display:grid;gap:2rem}
+@media (min-width: 990px){
+  .blogws__grid{grid-template-columns:1fr 320px;align-items:start}
+}
+.blogws__list{display:grid;gap:2rem;padding:0;margin:0}
+.blogws-card__media img{width:100%;height:auto;display:block;border-radius:8px}
+.blogws-sideblock + .blogws-sideblock{margin-top:2rem}
+.blogws-sideblock__title{margin:0 0 .5rem;font-weight:800}
+.blogws__header{display:flex;gap:1rem;align-items:center;justify-content:space-between;margin-bottom:1rem}
+.blogws__rss{font-size:.875rem;opacity:.8}
+{% endstylesheet %}

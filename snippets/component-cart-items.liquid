@@ -1,0 +1,117 @@
+{%- comment -%}
+  Iron Phoenix GHG – component-cart-items.liquid
+  Safe cart items list with escaped metafields and properties
+{%- endcomment -%}
+
+{%- if cart != empty -%}
+<ul class="cart-items" role="list">
+  {%- for item in cart.items -%}
+    <li class="cart-item" data-line="{{ forloop.index }}">
+      <div class="cart-item__media">
+        {%- if item.image -%}
+          <img
+            src="{{ item.image | image_url: width: 180 }}"
+            srcset="
+              {{ item.image | image_url: width: 90 }} 90w,
+              {{ item.image | image_url: width: 120 }} 120w,
+              {{ item.image | image_url: width: 150 }} 150w,
+              {{ item.image | image_url: width: 180 }} 180w
+            "
+            sizes="90px"
+            class="cart-item__image"
+            loading="lazy"
+            alt="{{ item.image.alt | escape }}"
+            width="180"
+            height="{{ 180 | divided_by: item.image.aspect_ratio | round }}"
+          >
+        {%- endif -%}
+      </div>
+
+      <div class="cart-item__details">
+        <h3 class="cart-item__title">
+          <a class="cart-item__link" href="{{ item.url }}">{{ item.product.title | escape }}</a>
+        </h3>
+
+        {%- comment -%} Product traits from metafields (all escaped) {%- endcomment -%}
+        {%- assign short_desc = item.product.metafields.custom.short_trade_description -%}
+        {%- assign mf_gender  = item.product.metafields.custom.male_female_unisex -%}
+        {%- assign mf_color   = item.product.metafields.custom.google_color -%}
+
+        {%- if short_desc or mf_gender or mf_color -%}
+          <div class="cart-item__traits">
+            {%- if short_desc != blank -%}
+              <p class="cart-item__meta">{{ short_desc | escape }}</p>
+            {%- endif -%}
+            <dl class="cart-item__meta-list">
+              {%- if mf_gender != blank -%}
+                <div class="cart-item__meta-row">
+                  <dt class="cart-item__meta-key">{{ 'products.product.gender' | t | default: 'Fit' }}</dt>
+                  <dd class="cart-item__meta-val">{{ mf_gender | escape }}</dd>
+                </div>
+              {%- endif -%}
+              {%- if mf_color != blank -%}
+                <div class="cart-item__meta-row">
+                  <dt class="cart-item__meta-key">{{ 'products.product.color' | t | default: 'Color' }}</dt>
+                  <dd class="cart-item__meta-val">{{ mf_color | escape }}</dd>
+                </div>
+              {%- endif -%}
+            </dl>
+          </div>
+        {%- endif -%}
+
+        {%- if item.product.has_only_default_variant == false and item.variant.title -%}
+          <div class="cart-item__variant">{{ item.variant.title | escape }}</div>
+        {%- endif -%}
+
+        {%- if item.properties and item.properties.size > 0 -%}
+          <dl class="cart-item__properties">
+            {%- for p in item.properties -%}
+              {%- assign key = p.first -%}
+              {%- assign val = p.last -%}
+              {%- unless val == blank -%}
+                <div class="cart-item__property">
+                  <dt class="cart-item__property-name">{{ key | escape }}:</dt>
+                  <dd class="cart-item__property-value">
+                    {%- if val contains '/uploads/' -%}
+                      <a href="{{ val | escape }}" rel="nofollow noopener" target="_blank">
+                        {{ 'general.uploads.file' | t | default: 'File' }}
+                      </a>
+                    {%- else -%}
+                      {{ val | escape }}
+                    {%- endif -%}
+                  </dd>
+                </div>
+              {%- endunless -%}
+            {%- endfor -%}
+          </dl>
+        {%- endif -%}
+
+        <div class="cart-item__qty-price">
+          <div class="quantity">
+            <button class="quantity__button" name="minus" aria-label="{{ 'products.product.quantity.decrease' | t | default: 'Decrease quantity' }}">−</button>
+            <input class="quantity__input" type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="{{ 'products.product.quantity.input_label' | t | default: 'Quantity' }}">
+            <button class="quantity__button" name="plus" aria-label="{{ 'products.product.quantity.increase' | t | default: 'Increase quantity' }}">+</button>
+          </div>
+
+          <div class="cart-item__price">
+            {%- if item.original_line_price != item.final_line_price -%}
+              <s class="price price--compare">{{ item.original_line_price | money }}</s>
+              <span class="price price--sale">{{ item.final_line_price | money }}</span>
+            {%- else -%}
+              <span class="price">{{ item.final_line_price | money }}</span>
+            {%- endif -%}
+          </div>
+        </div>
+
+        <a class="cart-item__remove link"
+           href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0"
+           aria-label="{{ 'sections.cart.remove_title' | t | default: 'Remove item' }}: {{ item.product.title | escape }}">
+          {{ 'sections.cart.remove' | t | default: 'Remove' }}
+        </a>
+      </div>
+    </li>
+  {%- endfor -%}
+</ul>
+{%- else -%}
+  <p>{{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}</p>
+{%- endif -%}

@@ -1,0 +1,71 @@
+/* Header Styles - Iron Phoenix GHG */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--color-header-bg, #1c1c1c);
+  color: var(--color-header-text, #ffffff);
+}
+
+.header .logo img {
+  height: 48px;
+  width: auto;
+}
+
+.header .nav-menu {
+  display: flex;
+  gap: 1.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.header .nav-menu a {
+  text-decoration: none;
+  color: var(--color-header-text, #ffffff);
+  font-weight: 600;
+  transition: color 0.2s ease-in-out;
+}
+
+.header .nav-menu a:hover {
+  color: var(--color-accent, #ffff33);
+}
+
+.header .cart-icon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  font-size: 1.25rem;
+  color: var(--color-header-text, #ffffff);
+  text-decoration: none;
+}
+
+.header .cart-icon .cart-count {
+  position: absolute;
+  top: -6px;
+  right: -10px;
+  background-color: var(--color-accent, #ffff33);
+  color: #000;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .header .nav-menu {
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+}

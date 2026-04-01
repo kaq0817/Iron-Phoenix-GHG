@@ -1,0 +1,6 @@
+/* /assets/vip.css */
+.member-price__label { font-weight: 600; }
+.member-price__value { color: #16a34a; }
+.vip-banner .link { text-decoration: underline; }
+.vip-callout { background: #111; color: #00cccc; border-radius: 12px; }
+.vip-callout .button { background:#00cccc; color:#000; border-radius:8px; padding:10px 20px; }

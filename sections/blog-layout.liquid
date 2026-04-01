@@ -1,0 +1,24 @@
+{% comment %}
+  Blog Layout Section (Main Only - No Sidebar)
+  - Full-width blog content
+{% endcomment %}
+
+{{ 'component-article-card.css' | asset_url | stylesheet_tag }}
+{{ 'component-card.css' | asset_url | stylesheet_tag }}
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
+
+<div class="blog-layout page-width">
+  <div class="blog-layout__main">
+    {%- section 'main-blog' -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Blog Layout (Main Only)",
+  "settings": [],
+  "presets": [
+    { "name": "Blog Layout (Main Only)" }
+  ]
+}
+{% endschema %}

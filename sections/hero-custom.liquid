@@ -1,0 +1,89 @@
+{%- comment -%}
+Hero Custom (centered, LCP-friendly)
+- Loads CSS via asset (no inline <style>)
+- Background image = only high-priority image
+- Logo is lazy/low to avoid bandwidth contention
+- Uses 'optimized-image' snippet for next-gen + sizes + width/height
+{%- endcomment -%}
+
+{%- liquid
+  assign heading_text = section.settings.headline | default: section.settings.title | default: shop.name
+  assign sub_text     = section.settings.subheadline | default: section.settings.subtitle
+  assign cta_link     = section.settings.cta_link | default: routes.all_products_collection_url
+
+  assign has_heading = false
+  assign has_bg = false
+  
+  if heading_text != blank
+    assign has_heading = true
+  endif
+  
+  if section.settings.background_image != blank
+    assign has_bg = true
+  endif
+-%}
+
+{{ 'section-hero-custom.css' | asset_url | stylesheet_tag }}
+
+<section class="hero-custom" aria-label="Hero">
+  {%- if has_bg -%}
+    <div class="hero-custom__background" aria-hidden="true">
+      {% render 'optimized-image',
+        image: section.settings.background_image,
+        width_override: 1600,
+        sizes: '100vw',
+        loading: 'eager',
+        fetchpriority: 'high',
+        alt: heading_text
+      %}
+    </div>
+  {%- endif -%}
+
+  <div class="hero-custom__content">
+    {%- if section.settings.logo != blank -%}
+      <div class="hero-custom__logo">
+        {% render 'optimized-image',
+          image: section.settings.logo,
+          width_override: 480,
+          sizes: '(max-width: 749px) 200px, 300px',
+          loading: 'lazy',
+          fetchpriority: 'low',
+          alt: shop.name
+        %}
+      </div>
+    {%- endif -%}
+
+    {%- if has_heading -%}
+    <h2 class="hero-custom__headline">{{ heading_text | escape }}</h2>
+    {%- endif -%}
+
+    {%- if sub_text != blank -%}
+      <p class="hero-custom__subheadline">{{ sub_text | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank and cta_link != blank -%}
+      <div class="hero-custom__cta">
+        <a href="{{ cta_link }}" class="hero-custom__button">
+          {{ section.settings.cta_label | escape }}
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Hero Custom",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Hero logo" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image (optional)" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Forged Phoenix" },
+    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Strength. Resilience. Rebirth." },
+    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Shop now" },
+    { "type": "url", "id": "cta_link", "label": "CTA link" },
+    { "type": "text", "id": "title", "label": "Fallback title (legacy)", "default": "Welcome to Iron Phoenix GHG" },
+    { "type": "text", "id": "subtitle", "label": "Fallback subtitle (legacy)", "default": "Gaming gear designed with wellness in mind" }
+  ],
+  "presets": [{ "name": "Hero Custom" }]
+}
+{% endschema %}
