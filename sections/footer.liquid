@@ -16,8 +16,8 @@
       font-family: 'Inter', sans-serif;
     }
     .ipx-wrap {
-  max-width: none;
-  width: min(1800px, calc(100vw - 64px));
+  max-width: 1440px;
+  width: min(1440px, calc(100vw - 48px));
   margin: 0 auto;
 }
 
@@ -25,9 +25,19 @@
 
     .ipx-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 56px;
+  grid-template-columns: repeat(4, minmax(220px, 1fr));
+  gap: clamp(24px, 2.4vw, 36px);
+  align-items: start;
   margin-bottom: 48px;
+}
+
+.ipx-col {
+  min-width: 0;
+}
+
+.ipx-col p {
+  margin: 0 0 16px;
+  line-height: 1.65;
 }
 
 .ipx-col h3 {
@@ -149,14 +159,14 @@
   font-weight: 600;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1024px) {
   .ipx-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 36px;
+    gap: 28px;
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 640px) {
   .ipx-footer {
     padding: 44px 16px 28px;
   }
