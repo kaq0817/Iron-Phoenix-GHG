@@ -1,39 +1,42 @@
 /* section-vip-callout.css */
 .vip-callout {
-  --vip-surface-top: rgba(248, 245, 239, 0.06);
-  --vip-surface-bottom: rgba(248, 245, 239, 0.02);
-  --vip-border: rgba(201, 168, 76, 0.2);
-  --vip-shadow: rgba(8, 18, 34, 0.18);
+  --vip-surface-top: transparent;
+  --vip-surface-bottom: transparent;
+  --vip-border: rgba(248, 245, 239, 0.12);
+  --vip-shadow: rgba(8, 18, 34, 0.08);
   --vip-title-font: Georgia, 'Times New Roman', serif;
-  --vip-subtitle-color: rgba(255, 255, 255, 0.9);
+  --vip-subtitle-color: rgba(255, 255, 255, 0.84);
   --vip-button-bottom: #ebe3d5;
   --vip-button-text: #172239;
   --vip-button-border: rgba(201, 168, 76, 0.55);
   width: 100%;
-  max-width: 1100px;
+  max-width: 960px;
   margin: 0 auto;
   text-align: center;
-  padding: clamp(32px, 5vw, 56px) clamp(18px, 4vw, 36px);
+  padding: clamp(24px, 4vw, 40px) clamp(18px, 4vw, 32px);
   background: linear-gradient(180deg, var(--vip-surface-top), var(--vip-surface-bottom));
-  border: 1px solid var(--vip-border);
-  border-radius: 28px;
-  box-shadow: 0 18px 48px var(--vip-shadow);
+  border-top: 1px solid var(--vip-border);
+  border-bottom: 1px solid var(--vip-border);
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
 
 .vip-callout__title {
   margin: 0 0 0.6rem;
-  font-size: clamp(1.9rem, 3.4vw, 2.8rem);
-  font-weight: 700;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 600;
   letter-spacing: 0.01em;
   font-family: var(--vip-title-font);
 }
 
 .vip-callout__subtitle {
   color: var(--vip-subtitle-color);
-  max-width: 72ch;
+  max-width: 62ch;
   margin: 0 auto 1.3rem;
-  font-size: clamp(1rem, 1.9vw, 1.2rem);
-  line-height: 1.62;
+  font-size: clamp(0.98rem, 1.5vw, 1.08rem);
+  line-height: 1.58;
 }
 
 .vip-callout__button {
@@ -49,9 +52,9 @@
 }
 
 .vip-callout__button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.02);
-  box-shadow: 0 10px 26px rgba(8, 18, 34, 0.24);
+  transform: translateY(-1px);
+  filter: brightness(1.01);
+  box-shadow: 0 8px 18px rgba(8, 18, 34, 0.14);
 }
 
 .vip-callout__button:focus-visible {

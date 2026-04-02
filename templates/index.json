@@ -15,8 +15,8 @@
 			"name": "Hero Custom",
 			"settings": {
 				"background_image": "shopify:\/\/shop_images\/1_2cf68320-d50a-4668-a5d7-4c238fbb8e6e.jpg",
-				"headline": "A Curated House of Gifts, Style, and Everyday Rituals",
-				"subheadline": "Thoughtful collections for home, jewelry, apparel, wellness, and meaningful giving.",
+				"headline": "Curated pieces for home, gifting, and everyday life",
+				"subheadline": "Explore a more refined mix of jewelry, home accents, apparel, wellness, and seasonal finds.",
 				"cta_label": "Explore collections",
 				"cta_link": "shopify:\/\/collections",
 				"title": "Welcome to Our Phoenix Rise",
@@ -25,6 +25,7 @@
 		},
 		"hero": {
 			"type": "level-up-hero",
+			"disabled": true,
 			"settings": {
 				"color_scheme": "",
 				"kicker": "CURATED FAVORITES",
@@ -47,49 +48,51 @@
 		},
 		"vip": {
 			"type": "vip-callout",
+			"disabled": true,
 			"settings": {
-				"vip_title": "Member Perks, Early Access, and Seasonal Savings",
-				"vip_subtitle": "<p>Join Phoenix Elite for first looks, thoughtful offers, and member pricing across the store.<\/p>",
+				"vip_title": "Join Phoenix Elite",
+				"vip_subtitle": "<p>Receive early access, select offers, and collection updates.<\/p>",
 				"vip_link": "\/pages\/vip-program",
-				"vip_cta": "Join Phoenix Elite"
+				"vip_cta": "Learn more"
 			}
 		},
 		"collection_list_d9zhHQ": {
 			"type": "collection-list",
 			"name": "Collection list",
 			"settings": {
-				"heading": "Explore the House of Phoenix",
-				"subheading": "Curated collections for gifting, jewelry, home, wellness, apparel, and everyday living.",
+				"heading": "Shop by collection",
+				"subheading": "A calmer way to browse the store.",
 				"hide_empty": true,
-				"max_items": 6,
-				"columns_mobile": "2",
-				"columns_desktop": 3,
+				"max_items": 4,
+				"columns_mobile": "1",
+				"columns_desktop": 4,
 				"color_scheme": "",
 				"heading_align": "center",
-				"heading_size_tenths": 28,
-				"heading_weight": "700",
+				"heading_size_tenths": 24,
+				"heading_weight": "600",
 				"heading_transform": "none",
-				"heading_letter_spacing_centis": 1,
+				"heading_letter_spacing_centis": 0,
 				"subheading_align": "center",
-				"subheading_size_tenths": 17,
+				"subheading_size_tenths": 15,
 				"subheading_weight": "500",
 				"subheading_letter_spacing_centis": 1,
 				"card_title_align": "center",
 				"card_title_size_tenths": 16,
-				"card_title_weight": "700",
+				"card_title_weight": "600",
 				"card_title_transform": "none",
 				"card_title_letter_spacing_centis": 0,
-				"padding_top": 44,
-				"padding_bottom": 44
+				"padding_top": 36,
+				"padding_bottom": 24
 			}
 		},
 		"urgency_bar": {
 			"type": "rich-text",
+			"disabled": true,
 			"settings": {
 				"color_scheme": "scheme-1",
 				"full_width": true,
-				"heading": "Made with care, chosen for everyday living",
-				"text": "<p>Our collections bring together giftable pieces, personal style, home accents, and made-to-order favorites with a more considered, collected feel.<\/p>",
+				"heading": "Made with care for everyday living",
+				"text": "<p>Explore home, gifting, jewelry, apparel, wellness, and seasonal collections gathered with a more considered point of view.<\/p>",
 				"note": "<p>Production timelines vary by item and season. Taxes and shipping are calculated at checkout.<\/p>",
 				"button_label": "Browse collections",
 				"button_link": "shopify:\/\/collections",
@@ -98,6 +101,7 @@
 		},
 		"email_banner": {
 			"type": "email-signup-banner",
+			"disabled": true,
 			"blocks": {
 				"heading": {
 					"type": "heading",
@@ -136,15 +140,15 @@
 		},
 		"best_sellers": {
 			"type": "featured-collection",
-			"disabled": true,
+			"disabled": false,
 			"settings": {
-				"title": "Featured Products",
+				"title": "Curated favorites",
 				"collection": "best-sellers",
-				"products_to_show": 8,
+				"products_to_show": 4,
 				"color_scheme": "",
-				"padding_top": 36,
-				"padding_bottom": 36,
-				"image_ratio": "adapt"
+				"padding_top": 20,
+				"padding_bottom": 44,
+				"image_ratio": "square"
 			}
 		},
 		"fc_bundles": {
@@ -194,13 +198,10 @@
 	"order": [
 		"free_shipping",
 		"hero_custom_ai3EaM",
-		"hero",
-		"vip",
 		"collection_list_d9zhHQ",
-		"urgency_bar",
-		"email_banner",
 		"best_sellers",
-		"fc_bundles",
-		"fc_holiday"
+		"vip",
+		"urgency_bar",
+		"email_banner"
 	]
 }

@@ -1,17 +1,17 @@
 .collection-card {
-  --collection-card-surface-top: rgba(248, 245, 239, 0.96);
-  --collection-card-surface-bottom: rgba(242, 237, 228, 0.98);
-  --collection-card-border: rgba(201, 168, 76, 0.2);
-  --collection-card-border-hover: rgba(201, 168, 76, 0.42);
-  --collection-card-shadow: rgba(8, 18, 34, 0.12);
-  --collection-card-shadow-hover: rgba(8, 18, 34, 0.18);
+  --collection-card-surface-top: rgba(255, 255, 255, 0.98);
+  --collection-card-surface-bottom: rgba(251, 249, 245, 0.98);
+  --collection-card-border: rgba(23, 34, 57, 0.08);
+  --collection-card-border-hover: rgba(23, 34, 57, 0.16);
+  --collection-card-shadow: rgba(8, 18, 34, 0.08);
+  --collection-card-shadow-hover: rgba(8, 18, 34, 0.14);
   --collection-card-title-color: #172239;
   --collection-card-count-color: #5a6275;
   --collection-card-title-font: Georgia, 'Times New Roman', serif;
   display: block;
   text-decoration: none;
   color: inherit;
-  border-radius: var(--product-card-radius, 18px);
+  border-radius: var(--product-card-radius, 14px);
   overflow: hidden;
   background: linear-gradient(180deg, var(--collection-card-surface-top) 0%, var(--collection-card-surface-bottom) 100%);
   border: 1px solid var(--collection-card-border);
@@ -20,13 +20,13 @@
 }
 
 .collection-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 18px 42px var(--collection-card-shadow-hover);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 28px var(--collection-card-shadow-hover);
   border-color: var(--collection-card-border-hover);
 }
 
 .collection-card__media {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 1 / 1;
   overflow: hidden;
 }
 
@@ -42,14 +42,14 @@
 }
 
 .collection-card__info {
-  padding: 1.7rem 1.5rem 1.85rem;
+  padding: 1.25rem 1.2rem 1.35rem;
   text-align: center;
 }
 
 .collection-card__title {
-  font-size: clamp(1.55rem, 1.7vw, 2rem);
-  font-weight: 700;
-  margin-bottom: 0.45rem;
+  font-size: clamp(1.3rem, 1.45vw, 1.65rem);
+  font-weight: 600;
+  margin-bottom: 0.35rem;
   text-transform: none;
   letter-spacing: 0.01em;
   line-height: 1.2;
@@ -58,8 +58,30 @@
 }
 
 .collection-card__count {
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   color: var(--collection-card-count-color);
   opacity: 1;
   font-style: normal;
+}
+
+@media (max-width: 749px) {
+  .collection-card {
+    border-radius: 12px;
+  }
+
+  .collection-card__media {
+    aspect-ratio: 4 / 3;
+  }
+
+  .collection-card__info {
+    padding: 1rem 1rem 1.1rem;
+  }
+
+  .collection-card__title {
+    font-size: 1.25rem;
+  }
+
+  .collection-card__count {
+    font-size: 1.05rem;
+  }
 }
