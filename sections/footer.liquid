@@ -9,9 +9,9 @@
 <footer class="ipx-footer" role="contentinfo">
   <style>
     .ipx-footer {
-      background: var(--color-background-dark);
-      color: var(--color-text-light);
-      border-top: 2px solid var(--color-accent);
+      background: var(--color-card-bg, #ffffff);
+      color: var(--color-main-text, #1F1F1F);
+      border-top: 1px solid var(--color-border-subtle, #e5e7eb);
       padding: 72px 32px 48px;
       font-family: 'Inter', sans-serif;
     }
@@ -40,7 +40,7 @@
 }
 
 .ipx-col h3 {
-  color: var(--color-accent);
+  color: var(--color-deep-accent, #6A1B9A);
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 22px;
@@ -49,7 +49,7 @@
   padding-bottom: 12px;
 }
 
-    .ipx-link { color: var(--color-text-light); text-decoration: none; transition: 0.3s; }
+    .ipx-link { color: var(--color-main-text, #1F1F1F); text-decoration: none; transition: 0.3s; }
     .ipx-link:hover { color: var(--color-accent); }
     
     /* Socials */
@@ -83,13 +83,13 @@
       flex-wrap: wrap;
     }
 .ipx-policies a {
-  color: var(--color-text-light);
+  color: var(--color-main-text, #1F1F1F);
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.2px;
 }
-    .ipx-policies a:hover { color: var(--color-text-light); }
+    .ipx-policies a:hover { color: var(--color-accent); }
 
    .ipx-bizbtn {
   display: inline-flex;
@@ -99,17 +99,17 @@
   padding: 12px 18px;
   background: transparent;
   border: 1px solid var(--color-accent);
-  color: var(--color-text-light);
+  color: var(--color-main-text, #1F1F1F);
   border-radius: 999px;
   cursor: pointer;
   font-size: 15px;
   font-weight: 600;
   line-height: 1;
   transition: 0.2s ease;
-  box-shadow: 0 0 0 1px rgba(0, 255, 255, 0.12);
+  box-shadow: none;
 }
 .ipx-bizbtn:hover {
-  background: rgba(0, 255, 255, 0.08);
+  background: rgba(var(--color-accent-rgb, 38,166,154), 0.08);
   color: var(--color-accent);
 }
 
@@ -127,7 +127,7 @@
 .ipx-gate-card {
   max-width: 480px;
   width: 100%;
-  background: var(--color-background-dark);
+  background: var(--color-card-bg, #ffffff);
   border: 1px solid var(--color-border-subtle);
   border-radius: 18px;
   padding: 24px;
@@ -149,7 +149,7 @@
 .ipx-gate-cancel {
   background: transparent;
   border: 1px solid var(--color-border-subtle);
-  color: var(--color-text-light);
+  color: var(--color-main-text, #1F1F1F);
 }
 .ipx-gate-confirm {
   background: var(--color-accent);
