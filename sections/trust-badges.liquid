@@ -1,12 +1,16 @@
 <style>
   .trust-ribbon {
+    --trust-ribbon-bg-start: #0d1535;
+    --trust-ribbon-bg-mid: #1a3a8f;
+    --trust-ribbon-bg-end: #0d1535;
+    --trust-ribbon-gold-soft: rgba(201, 168, 76, 0.3);
     width: 100vw;
     position: relative;
     left: 50%;
     right: 50%;
     margin-left: -50vw;
     margin-right: -50vw;
-    background: linear-gradient(135deg, #0d1535 0%, #1a3a8f 50%, #0d1535 100%);
+    background: linear-gradient(135deg, var(--trust-ribbon-bg-start) 0%, var(--trust-ribbon-bg-mid) 50%, var(--trust-ribbon-bg-end) 100%);
     border-top: 1px solid var(--color-deco-gold, #c9a84c);
     border-bottom: 1px solid var(--color-deco-gold, #c9a84c);
     padding: 2.8rem 2rem;
@@ -21,7 +25,7 @@
     top: 6px;
     bottom: 6px;
     width: 1px;
-    background: rgba(201, 168, 76, 0.3);
+    background: var(--trust-ribbon-gold-soft);
   }
 
   .trust-ribbon::before { left: 24px; }
