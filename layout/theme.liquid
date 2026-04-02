@@ -1,5 +1,28 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code | escape }}">
+{%- liquid
+  assign host_name = request.host | downcase
+  assign host_parts = host_name | split: '.'
+  assign host_subdomain = host_parts.first
+  assign brand_from_host = ''
+
+  case host_subdomain
+    when 'sports', 'active'
+      assign brand_from_host = 'sports'
+    when 'outdoors', 'outdoor', 'camping'
+      assign brand_from_host = 'outdoors'
+    when 'home', 'decor', 'homedecor'
+      assign brand_from_host = 'home'
+    when 'americana'
+      assign brand_from_host = 'americana'
+    when 'gaming', 'gamer', 'gamingfamily'
+      assign brand_from_host = 'family'
+    when 'jewelry', 'jewellery'
+      assign brand_from_host = 'jewelry'
+    when 'family', 'children', 'child', 'kids', 'kid'
+      assign brand_from_host = 'family'
+  endcase
+-%}
+<html class="no-js" lang="{{ request.locale.iso_code | escape }}"{% if brand_from_host != '' %} data-brand="{{ brand_from_host }}"{% endif %}>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">

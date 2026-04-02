@@ -9,9 +9,9 @@
 <footer class="ipx-footer" role="contentinfo">
   <style>
     .ipx-footer {
-      background: var(--color-card-bg, #ffffff);
-      color: var(--color-main-text, #1F1F1F);
-      border-top: 1px solid var(--color-border-subtle, #e5e7eb);
+      background: #0f1c2e;
+      color: #f4f6fb;
+      border-top: 1px solid rgba(201, 168, 76, 0.35);
       padding: 72px 32px 48px;
       font-family: 'Inter', sans-serif;
     }
@@ -37,10 +37,11 @@
 .ipx-col p {
   margin: 0 0 16px;
   line-height: 1.65;
+  color: #f4f6fb !important;
 }
 
 .ipx-col h3 {
-  color: var(--color-deep-accent, #6A1B9A);
+  color: #d9c49a;
   text-transform: uppercase;
   letter-spacing: 2px;
   margin-bottom: 22px;
@@ -49,8 +50,23 @@
   padding-bottom: 12px;
 }
 
-    .ipx-link { color: var(--color-main-text, #1F1F1F); text-decoration: none; transition: 0.3s; }
-    .ipx-link:hover { color: var(--color-accent); }
+    .ipx-link { color: #f4f6fb; text-decoration: none; transition: 0.3s; }
+    .ipx-link:hover { color: #b8d4da; }
+
+    .ipx-footer p,
+    .ipx-footer li,
+    .ipx-footer strong,
+    .ipx-footer em,
+    .ipx-footer span,
+    .ipx-footer a {
+      color: #f4f6fb !important;
+    }
+
+    .ipx-footer a:hover,
+    .ipx-footer .ipx-link:hover,
+    .ipx-footer .ipx-policies a:hover {
+      color: #b8d4da !important;
+    }
     
     /* Socials */
     .ipx-social { display: flex; flex-wrap: wrap; gap: 15px; margin-top: 15px; }
@@ -83,13 +99,13 @@
       flex-wrap: wrap;
     }
 .ipx-policies a {
-  color: var(--color-main-text, #1F1F1F);
+  color: #f4f6fb;
   text-decoration: none;
   font-size: 15px;
   font-weight: 600;
   letter-spacing: 0.2px;
 }
-    .ipx-policies a:hover { color: var(--color-accent); }
+    .ipx-policies a:hover { color: #b8d4da; }
 
    .ipx-bizbtn {
   display: inline-flex;
@@ -99,7 +115,7 @@
   padding: 12px 18px;
   background: transparent;
   border: 1px solid var(--color-accent);
-  color: var(--color-main-text, #1F1F1F);
+  color: #f4f6fb;
   border-radius: 999px;
   cursor: pointer;
   font-size: 15px;
@@ -109,8 +125,8 @@
   box-shadow: none;
 }
 .ipx-bizbtn:hover {
-  background: rgba(var(--color-accent-rgb, 38,166,154), 0.08);
-  color: var(--color-accent);
+  background: rgba(184, 212, 218, 0.14);
+  color: #b8d4da;
 }
 
 .ipx-gate[hidden] { display: none !important; }

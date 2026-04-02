@@ -181,7 +181,6 @@
       ]
     },
 
-    /* sizes in tenths of rem: 16→1.6rem, 48→4.8rem */
     { "type": "range", "id": "heading_size_tenths", "label": "Heading size (×0.1rem)", "min": 16, "max": 48, "step": 1, "default": 24 },
 
     { "type": "select", "id": "heading_weight", "label": "Heading weight", "default": "800",
@@ -202,7 +201,6 @@
       ]
     },
 
-    /* spacing in hundredths of em: -5→-0.05em ... 30→0.30em */
     { "type": "range", "id": "heading_letter_spacing_centis", "label": "Heading letter spacing (×0.01em)", "min": -5, "max": 30, "step": 1, "default": 2 },
 
     { "type": "header", "content": "Subheading styles" },
@@ -214,7 +212,6 @@
       ]
     },
 
-    /* sizes in tenths of rem: 12→1.2rem ... 24→2.4rem */
     { "type": "range", "id": "subheading_size_tenths", "label": "Subheading size (×0.1rem)", "min": 12, "max": 24, "step": 1, "default": 16 },
 
     { "type": "select", "id": "subheading_weight", "label": "Subheading weight", "default": "500",
@@ -226,7 +223,6 @@
       ]
     },
 
-    /* spacing in hundredths of em: -5→-0.05em ... 20→0.20em */
     { "type": "range", "id": "subheading_letter_spacing_centis", "label": "Subheading letter spacing (×0.01em)", "min": -5, "max": 20, "step": 1, "default": 1 },
 
     { "type": "header", "content": "Card title styles" },
@@ -238,7 +234,6 @@
       ]
     },
 
-    /* sizes in tenths of rem: 12→1.2rem ... 24→2.4rem */
     { "type": "range", "id": "card_title_size_tenths", "label": "Card title size (×0.1rem)", "min": 12, "max": 24, "step": 1, "default": 16 },
 
     { "type": "select", "id": "card_title_weight", "label": "Card title weight", "default": "700",
@@ -258,7 +253,6 @@
       ]
     },
 
-    /* spacing in hundredths of em: -5→-0.05em ... 20→0.20em */
     { "type": "range", "id": "card_title_letter_spacing_centis", "label": "Card title letter spacing (×0.01em)", "min": -5, "max": 20, "step": 1, "default": 1 },
 
     { "type": "header", "content": "Section padding" },
@@ -276,7 +270,15 @@
   ],
   "max_blocks": 50,
   "presets": [
-    { "name": "Collection list" }
+    {
+      "name": "Collection list",
+      "blocks": [
+        { "type": "featured_collection" },
+        { "type": "featured_collection" },
+        { "type": "featured_collection" },
+        { "type": "featured_collection" }
+      ]
+    }
   ]
 }
 {% endschema %}

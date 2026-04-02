@@ -17,21 +17,18 @@
   --color-black: 0, 0, 0;
   --color-white: 255, 255, 255;
 
-  --color-fg: 227, 214, 246;
-  --color-headings: 204, 153, 255;
-  --color-links: 173, 110, 255;
-  --color-bg: 0, 0, 0;
-  --color-accent: 57, 255, 20;
-  --color-surface-1: 18, 18, 18;
-  --color-surface-2: 28, 28, 28;
+  --color-fg: 31, 31, 31;
+  --color-headings: 31, 31, 31;
+  --color-links: 26, 35, 126;
+  --color-bg: 247, 247, 245;
+  --color-accent: 38, 166, 154;
+  --color-surface-1: 255, 255, 255;
+  --color-surface-2: 245, 245, 243;
 
-  --color-button-primary-bg: 255, 0, 255;
-  --color-button-primary-text: 0, 0, 0;
-  --color-button-primary-hover: 255, 255, 0;
-  --color-neon-green: #39FF14;
-  --color-neon-pink: #FF10F0;
-  --color-neon-yellow: #FFFF00;
-  --color-main-text: #E3D6F6;
+  --color-button-primary-bg: 255, 255, 51;
+  --color-button-primary-text: 31, 31, 31;
+  --color-button-primary-hover: 255, 242, 0;
+  --color-main-text: #1F1F1F;
 
   --radius: 14px;
   --radius-sm: 10px;
@@ -216,13 +213,13 @@ input[type="submit"] {
   padding: 1.1rem 2.2rem;
   border-radius: var(--radius-sm);
   border: none;
-  background: linear-gradient(135deg, #00f5ff 0%, #00d4ff 100%);
-  color: #000;
+  background: rgb(var(--color-button-primary-bg));
+  color: rgb(var(--color-button-primary-text));
   font-weight: 700;
   font-size: 1.4rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 0 4px 15px rgba(0, 245, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   text-decoration: none;
   cursor: pointer;
@@ -230,37 +227,37 @@ input[type="submit"] {
 
 .button:hover, .btn:hover, a.button:hover, button.button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 245, 255, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
   text-decoration: none;
 }
 
 .button--secondary,
 .button--outline {
   background: transparent;
-  border: 2px solid #39ff14;
-  color: #39ff14;
-  box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+  border: 1px solid rgb(var(--color-accent));
+  color: rgb(var(--color-accent));
+  box-shadow: none;
 }
 
 .button--secondary:hover {
-  background: rgba(57, 255, 20, 0.1);
-  box-shadow: 0 0 20px rgba(57, 255, 20, 0.5);
+  background: rgba(var(--color-accent), 0.08);
+  box-shadow: none;
 }
 
 .product-form__submit,
 [name="add"],
 .add-to-cart {
-  background: linear-gradient(135deg, #39ff14 0%, #2eff00 100%);
-  color: #000;
-  box-shadow: 0 4px 20px rgba(57, 255, 20, 0.4);
+  background: rgb(var(--color-button-primary-bg));
+  color: rgb(var(--color-button-primary-text));
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 .cart__checkout-button,
 .button--primary[name="checkout"] {
-  background: linear-gradient(90deg, #ff10f0, #39ff14);
-  color: #000;
+  background: rgb(var(--color-button-primary-bg));
+  color: rgb(var(--color-button-primary-text));
   font-weight: 700;
-  box-shadow: 0 0 12px #ff10f0, 0 0 20px #39ff14;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 /* --------------------------------------------------------------------------
@@ -316,7 +313,7 @@ input[type="submit"] {
   content: '➤';
   position: absolute;
   left: 0;
-  color: var(--color-neon-green);
+  color: rgb(var(--color-accent));
 }
 
 /* --------------------------------------------------------------------------
@@ -338,12 +335,12 @@ input[type="submit"] {
 
 .list-social a:hover svg { transform: scale(1.2); }
 
-.social-icon.facebook svg  { fill: #1877F2; filter: drop-shadow(0 0 6px #1877F2); }
-.social-icon.twitter svg   { fill: #1DA1F2; filter: drop-shadow(0 0 6px #1DA1F2); }
-.social-icon.tiktok svg    { fill: #000; background: #fff; border-radius: 6px; padding: 2px; filter: drop-shadow(0 0 6px #00F2EA) drop-shadow(0 0 10px #FF0050); }
-.social-icon.youtube svg   { fill: #FF0000; background: #fff; border-radius: 6px; padding: 2px; filter: drop-shadow(0 0 8px #FF0000); }
-.social-icon.pinterest svg { fill: #E60023; background: #fff; border-radius: 6px; padding: 2px; filter: drop-shadow(0 0 6px #FF1A1A); }
-.social-icon.twitch svg    { fill: #9146FF; filter: drop-shadow(0 0 6px #9146FF); }
+.social-icon.facebook svg  { fill: #1877F2; }
+.social-icon.twitter svg   { fill: #1DA1F2; }
+.social-icon.tiktok svg    { fill: #111; background: #fff; border-radius: 6px; padding: 2px; }
+.social-icon.youtube svg   { fill: #FF0000; background: #fff; border-radius: 6px; padding: 2px; }
+.social-icon.pinterest svg { fill: #E60023; background: #fff; border-radius: 6px; padding: 2px; }
+.social-icon.twitch svg    { fill: #9146FF; }
 
 /* --------------------------------------------------------------------------
    NEON UTILITY
@@ -360,7 +357,7 @@ input[type="submit"] {
 }
 
 .cart__subtotal-price {
-  color: #39ff14;
+  color: rgb(var(--color-fg));
   font-weight: bold;
 }
 
@@ -430,34 +427,34 @@ input[type="submit"] {
    ========================================================================== */
 
 /* --------------------------------------------------------------------------
-   GAMING — Lifestyle | Neon, dark, electric
+   LEGACY GAMING COLLECTIONS — normalized to core brand style
    -------------------------------------------------------------------------- */
 body.template-collection--gaming,
 body[class*="collection--gaming"] {
-  --color-headings: 57, 255, 20;
-  --color-links: 57, 255, 20;
-  --color-accent: 57, 255, 20;
-  background: #050505 !important;
+  --color-headings: 31, 31, 31;
+  --color-links: 38, 166, 154;
+  --color-accent: 38, 166, 154;
+  background: #f7f7f5 !important;
 }
 
 body.template-collection--gaming .collection-hero,
 body[class*="collection--gaming"] .hero {
-  background: radial-gradient(ellipse at top, #0a2a0a 0%, #050505 70%) !important;
+  background: linear-gradient(180deg, #f7f7f5 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--gaming h1,
 body.template-collection--gaming h2,
 body[class*="collection--gaming"] h1,
 body[class*="collection--gaming"] h2 {
-  color: #39FF14;
-  text-shadow: 0 0 20px rgba(57, 255, 20, 0.4);
+  color: #1f1f1f;
+  text-shadow: none;
 }
 
 body.template-collection--gaming .button,
 body[class*="collection--gaming"] .button {
-  background: linear-gradient(135deg, #39FF14, #00ff88) !important;
-  color: #000 !important;
-  box-shadow: 0 4px 20px rgba(57, 255, 20, 0.5) !important;
+  background: var(--color-button-primary-bg, #FFFF33) !important;
+  color: var(--color-button-primary-text, #1F1F1F) !important;
+  box-shadow: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -589,30 +586,54 @@ body[class*="collection--jewelry"] .button {
    -------------------------------------------------------------------------- */
 body.template-collection--americana,
 body[class*="collection--americana"] {
-  --color-headings: 200, 50, 50;
-  --color-links: 100, 150, 255;
-  --color-accent: 200, 50, 50;
-  background: #060608 !important;
+  --color-headings: 26, 35, 126;
+  --color-links: 183, 28, 28;
+  --color-accent: 26, 35, 126;
+  background: #f7f7f5 !important;
+  color: #1f1f1f !important;
 }
 
 body.template-collection--americana .collection-hero,
 body[class*="collection--americana"] .hero {
-  background: radial-gradient(ellipse at top, #1a0606 0%, #060608 70%) !important;
+  background: linear-gradient(180deg, #f7f7f5 0%, #ffffff 58%, #f3f4f8 100%) !important;
+  border-top: 1px solid rgba(26, 35, 126, 0.14);
+  border-bottom: 1px solid rgba(183, 28, 28, 0.14);
 }
 
 body.template-collection--americana h1,
 body.template-collection--americana h2,
 body[class*="collection--americana"] h1,
 body[class*="collection--americana"] h2 {
-  color: #CC3232;
-  text-shadow: 0 0 20px rgba(200, 50, 50, 0.4);
+  color: #1A237E;
+  text-shadow: none;
 }
 
 body.template-collection--americana .button,
 body[class*="collection--americana"] .button {
-  background: linear-gradient(135deg, #CC3232, #3264CC) !important;
+  background: linear-gradient(135deg, #B71C1C, #8E1414) !important;
   color: #fff !important;
-  box-shadow: 0 4px 20px rgba(200, 50, 50, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(183, 28, 28, 0.24) !important;
+}
+
+body.template-collection--americana .button--secondary,
+body.template-collection--americana .button--outline,
+body[class*="collection--americana"] .button--secondary,
+body[class*="collection--americana"] .button--outline {
+  background: transparent !important;
+  color: #1A237E !important;
+  border: 1px solid rgba(26, 35, 126, 0.4) !important;
+  box-shadow: none !important;
+}
+
+body.template-collection--americana .collection-hero__title::after,
+body[class*="collection--americana"] .collection-hero__title::after {
+  content: 'Hometown America 250 Years • 1776-2026';
+  display: block;
+  margin-top: 0.8rem;
+  font-size: 1.4rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #B71C1C;
 }
 
 /* --------------------------------------------------------------------------
@@ -699,4 +720,57 @@ hr.neon-hr,
   border: 0;
   background: linear-gradient(90deg, rgba(255,16,240,.55), rgba(57,255,20,.55));
   margin: 1.6rem 0;
+}
+
+/* Use tokenized brand styling for main content only. */
+#MainContent p {
+  color: var(--color-text-secondary, #555555) !important;
+}
+
+html .button,
+html .btn,
+html a.button,
+html button.button,
+html .shopify-payment-button__button,
+html input[type="submit"],
+html .product-form__submit,
+html [name="add"],
+html .add-to-cart,
+html .cart__checkout-button,
+html .button--primary[name="checkout"] {
+  background: var(--color-button-primary-bg, #FFFF33) !important;
+  color: var(--color-button-primary-text, #1F1F1F) !important;
+  box-shadow: none !important;
+}
+
+html .button:hover,
+html .btn:hover,
+html a.button:hover,
+html button.button:hover {
+  background: var(--color-button-primary-hover, #FFF200) !important;
+  box-shadow: none !important;
+}
+
+html .button--secondary,
+html .button--outline {
+  border: 1px solid var(--color-accent, #26A69A) !important;
+  color: var(--color-accent, #26A69A) !important;
+  box-shadow: none !important;
+}
+
+html .button--secondary:hover {
+  background: rgba(var(--color-accent-rgb, 38,166,154), 0.08) !important;
+}
+
+html hr {
+  border-top: 1px solid var(--color-border-subtle, #E5E7EB) !important;
+}
+
+html .cart__subtotal-price {
+  color: var(--color-main-text, #1F1F1F) !important;
+}
+
+/* Keep structure readable without a cloudy/misty overlay look. */
+#MainContent {
+  background: var(--color-bg, #F7F7F5);
 }
