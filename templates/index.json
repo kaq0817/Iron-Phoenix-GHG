@@ -177,23 +177,6 @@
 				"image_ratio": "adapt"
 			}
 		},
-		"hero_gaming_7GbtYh": {
-			"type": "hero-gaming",
-			"name": "Hero — Gaming Neon",
-			"disabled": true,
-			"settings": {
-				"color_scheme": "",
-				"eyebrow": "Iron Phoenix GHG",
-				"heading": "Level up your gear.",
-				"subheading": "Custom gaming apparel and accessories designed to perform.",
-				"image": "shopify:\/\/shop_images\/gaming-sports-wellness.png",
-				"image_alt": "Gaming showcase",
-				"primary_link": "",
-				"primary_label": "Shop New Drops",
-				"secondary_link": "",
-				"secondary_label": "See VIP perks"
-			}
-		}
 	},
 	"order": [
 		"free_shipping",

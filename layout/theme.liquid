@@ -99,19 +99,19 @@
     <style>
       :root {
         /* Global Palette */
-        --color-primary: #14f1d9;
-        --color-background-dark: #0b0f1a;
-        --color-accent: #14f1d9;
-        --rgb-accent: 20, 241, 217;
-        --color-secondary: #3a86ff;
-        --color-cta: #f5ff3b;
-        --color-text-light: #ffffff;
-        --color-text-muted: #a0a7b8;
-        --color-text-faded: #5a6275;
-        --color-text-highlight: #d0d7e8;
-        --color-border-subtle: #1e2535;
-        --color-border-subtle-dark: #131826;
-        --color-icon-default: #6b7a99;
+        --color-primary: #1a1a1a;
+        --color-background-dark: #f9f7f4;
+        --color-accent: #1a1a1a;
+        --rgb-accent: 26, 26, 26;
+        --color-secondary: #4a5568;
+        --color-cta: #1a1a1a;
+        --color-text-light: #1a1a1a;
+        --color-text-muted: #6b7280;
+        --color-text-faded: #9ca3af;
+        --color-text-highlight: #374151;
+        --color-border-subtle: #e5e7eb;
+        --color-border-subtle-dark: #d1d5db;
+        --color-icon-default: #6b7280;
 
         /* Jewelry / Art Deco */
         --color-navy-deep: #0b1e3d;
@@ -133,10 +133,10 @@
         --color-americana-wheat: #d9c49a;
 
         /* Header */
-        --color-header-gradient-start: #0d1b35;
-        --color-header-gradient-end: #0b0f1a;
-        --color-search-bg: rgba(20, 241, 217, 0.08);
-        --color-search-placeholder: #a0a7b8;
+        --color-header-gradient-start: #ffffff;
+        --color-header-gradient-end: #f9f7f4;
+        --color-search-bg: rgba(26, 26, 26, 0.06);
+        --color-search-placeholder: #9ca3af;
       }
 
       html { box-sizing: border-box; }
@@ -147,8 +147,8 @@
         grid-template-rows: auto auto 1fr auto;
         min-height: 100%;
         margin: 0;
-        background-color: rgb(var(--color-black));
-        color: rgb(var(--color-white));
+        background-color: #ffffff;
+        color: #1a1a1a;
         font-family: var(--font-body-family);
         font-size: 1.5rem;
       }
@@ -156,10 +156,9 @@
         body { font-size: 1.6rem; }
       }
 
-      /* Homepage frame pass: clean black/teal shell with continuous rails */
       body.template-index #MainContent {
         position: relative;
-        background: linear-gradient(180deg, #0b0f1a 0%, #090d17 100%);
+        background: #ffffff;
       }
 
       body.template-index #MainContent::before {
