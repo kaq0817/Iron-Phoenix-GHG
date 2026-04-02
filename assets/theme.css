@@ -484,7 +484,7 @@ body[class*="collection--sports"] h2 {
 body.template-collection--sports .button,
 body[class*="collection--sports"] .button {
   background: linear-gradient(135deg, #FF3C14, #ff6a00) !important;
-  color: #fff !important;
+  color: #f2ede4 !important;
   box-shadow: 0 4px 20px rgba(255, 60, 20, 0.5) !important;
 }
 
@@ -611,7 +611,7 @@ body[class*="collection--americana"] h2 {
 body.template-collection--americana .button,
 body[class*="collection--americana"] .button {
   background: linear-gradient(135deg, #B71C1C, #8E1414) !important;
-  color: #fff !important;
+  color: #f2ede4 !important;
   box-shadow: 0 4px 14px rgba(183, 28, 28, 0.24) !important;
 }
 
