@@ -49,6 +49,8 @@
 <section class="trust-ribbon">
   <h2 class="trust-ribbon__heading">Shop With Confidence</h2>
   {% if section.settings.trust_image %}
+    {% assign trust_image_width = 880 %}
+    {% assign trust_image_height = section.settings.trust_image.height | times: trust_image_width | divided_by: section.settings.trust_image.width %}
     <picture>
       <source
         srcset="{{ section.settings.trust_image | image_url: width: 1760, format: 'webp' }}"
@@ -59,7 +61,8 @@
         class="trust-ribbon__img"
         src="{{ section.settings.trust_image | image_url: width: 880, format: 'webp' }}"
         alt="{{ section.settings.alt_text | escape | default: 'Trust Badges: Gamer Designed, Wellness, Secure, Support' }}"
-        width="880"
+        width="{{ trust_image_width }}"
+        height="{{ trust_image_height }}"
         loading="lazy"
       >
     </picture>
