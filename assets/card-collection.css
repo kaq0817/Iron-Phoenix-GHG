@@ -8,7 +8,9 @@
   --collection-card-title-color: #172239;
   --collection-card-count-color: #5a6275;
   --collection-card-title-font: Georgia, 'Times New Roman', serif;
-  display: block;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   text-decoration: none;
   color: inherit;
   border-radius: var(--product-card-radius, 14px);
@@ -27,6 +29,8 @@
 
 .collection-card__media {
   aspect-ratio: 1 / 1;
+  width: 100%;
+  flex: 0 0 auto;
   overflow: hidden;
 }
 
@@ -42,6 +46,10 @@
 }
 
 .collection-card__info {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   padding: 1.25rem 1.2rem 1.35rem;
   text-align: center;
 }
@@ -70,7 +78,7 @@
   }
 
   .collection-card__media {
-    aspect-ratio: 4 / 3;
+    aspect-ratio: 1 / 1;
   }
 
   .collection-card__info {

@@ -113,11 +113,11 @@ button {
   justify-content: space-between !important;
   padding: 1.2rem 2.4rem !important;
   min-height: 6rem !important;
-  background: rgba(0, 0, 0, 0.95) !important;
+  background: transparent !important;
   position: sticky !important;
   top: 0 !important;
   z-index: 100 !important;
-  border-bottom: 1px solid rgba(57, 255, 20, 0.2) !important;
+  border-bottom: 0 !important;
 }
 
 .header__logo,

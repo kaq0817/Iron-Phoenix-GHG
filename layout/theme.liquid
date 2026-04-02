@@ -161,6 +161,13 @@
         background: var(--color-bg, #F7F7F5);
       }
 
+      /* Kill legacy gaming scanline/rail overlays from old skins */
+      body::before,
+      body::after {
+        content: none !important;
+        background: none !important;
+      }
+
       body.template-index #MainContent::before {
         content: '';
         position: absolute;

@@ -30,7 +30,7 @@
         "heading": "Top departments",
         "subheading": "Browse the store the way most shoppers do.",
         "hide_empty": true,
-        "max_items": 8,
+        "max_items": 12,
         "columns_mobile": "2",
         "columns_desktop": 4,
         "color_scheme": "",
@@ -50,42 +50,6 @@
         "card_title_letter_spacing_centis": 0,
         "padding_top": 32,
         "padding_bottom": 20
-      }
-    },
-    "best_sellers": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Featured products",
-        "collection": "best-sellers",
-        "products_to_show": 8,
-        "color_scheme": "background-1",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "image_ratio": "portrait"
-      }
-    },
-    "fc_bundles": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Latest arrivals",
-        "collection": "bundles",
-        "products_to_show": 8,
-        "color_scheme": "background-1",
-        "padding_top": 24,
-        "padding_bottom": 24,
-        "image_ratio": "adapt"
-      }
-    },
-    "fc_holiday": {
-      "type": "featured-collection",
-      "settings": {
-        "title": "Seasonal picks",
-        "collection": "holiday",
-        "products_to_show": 8,
-        "color_scheme": "background-1",
-        "padding_top": 24,
-        "padding_bottom": 32,
-        "image_ratio": "adapt"
       }
     },
     "about_callout": {
@@ -144,9 +108,6 @@
     "free_shipping",
     "hero_custom_ai3EaM",
     "collection_list_d9zhHQ",
-    "best_sellers",
-    "fc_bundles",
-    "fc_holiday",
     "about_callout",
     "email_banner"
   ]
