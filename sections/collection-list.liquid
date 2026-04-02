@@ -9,6 +9,9 @@
 
 {%- assign sec_id = 'col-list-' | append: section.id -%}
 
+<link rel="stylesheet" href="{{ 'card-collection.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'card-collection.css' | asset_url | stylesheet_tag }}</noscript>
+
 {%- style -%}
 /* ---- Scoped to this section instance ---- */
 #{{ sec_id }}{

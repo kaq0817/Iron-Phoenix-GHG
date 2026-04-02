@@ -12,7 +12,7 @@ Description: Contains the CSS, HTML, Liquid for links, and JavaScript for the un
 menu-drawer#menu-drawer {
   position: fixed;
   inset: 0;
-  z-index: 60; /* High z-index to ensure it sits above the header */
+  z-index: 200; /* Above header + most UI */
   display: block; 
 }
 
@@ -23,6 +23,9 @@ menu-drawer[aria-hidden="true"] {
   transition: visibility 0s linear 300ms; /* Delay visibility until transition is complete */
 }
 
+/* Ensure closed drawer cannot overlay/capture clicks even if other CSS changes. */
+menu-drawer[aria-hidden="true"] { display: none; }
+
 /* Overlay (Darkens the rest of the page) */
 .menu-drawer__overlay {
   position: fixed; 
@@ -30,7 +33,7 @@ menu-drawer[aria-hidden="true"] {
   background: rgba(0, 0, 0, 0.7);
   opacity: 0;
   transition: opacity 300ms ease;
-  pointer-events: auto;
+  pointer-events: none;
 }
 
 /* Panel slides in from the RIGHT */
@@ -65,6 +68,7 @@ menu-drawer[aria-hidden="false"] .menu-drawer__panel {
 
 menu-drawer[aria-hidden="false"] .menu-drawer__overlay {
   opacity: 1; /* Overlay fades in */
+  pointer-events: auto;
 }
 
 /* Header row */
@@ -179,13 +183,15 @@ body.drawer-open {
     
     function closeDrawer() {
       drawer.setAttribute('aria-hidden', 'true');
-      document.body.classList.remove('drawer-open');
+      drawer.classList.remove('active');
+      document.documentElement.classList.remove('menu-drawer-open');
       toggle.setAttribute('aria-expanded', 'false');
     }
     
     function openDrawer() {
       drawer.setAttribute('aria-hidden', 'false');
-      document.body.classList.add('drawer-open');
+      drawer.classList.add('active');
+      document.documentElement.classList.add('menu-drawer-open');
       toggle.setAttribute('aria-expanded', 'true');
     }
 
