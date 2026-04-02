@@ -1,190 +1,153 @@
 {
-	"sections": {
-		"free_shipping": {
-			"type": "free-shipping-bar",
-			"settings": {
-				"show_everywhere": true,
-				"hide_on_cart": false,
-				"default_threshold": "$159.00",
-				"vip_threshold": "$139.00",
-				"legend_free_shipping": true
-			}
-		},
-		"hero_custom_ai3EaM": {
-			"type": "hero-custom",
-			"name": "Hero Custom",
-			"settings": {
-				"background_image": "shopify:\/\/shop_images\/1_2cf68320-d50a-4668-a5d7-4c238fbb8e6e.jpg",
-				"headline": "Curated pieces for home, gifting, and everyday life",
-				"subheadline": "Explore a more refined mix of jewelry, home accents, apparel, wellness, and seasonal finds.",
-				"cta_label": "Explore collections",
-				"cta_link": "shopify:\/\/collections",
-				"title": "Welcome to Our Phoenix Rise",
-				"subtitle": "A more beautiful way to shop the things you live with, wear, gift, and keep close."
-			}
-		},
-		"hero": {
-			"type": "level-up-hero",
-			"disabled": true,
-			"settings": {
-				"color_scheme": "",
-				"kicker": "CURATED FAVORITES",
-				"title": "Beautiful pieces for gifting, home, and everyday life",
-				"subtitle": "<p>From keepsakes and jewelry to home comforts, wellness rituals, and seasonal finds.<\/p>",
-				"primary_label": "Shop all collections",
-				"primary_link": "shopify:\/\/collections",
-				"primary_collection": "",
-				"primary_new_tab": false,
-				"secondary_label": "Browse gift ideas",
-				"secondary_link": "shopify:\/\/collections\/gifts-for-couples",
-				"secondary_collection": "",
-				"secondary_new_tab": false,
-				"overlay_opacity": 20,
-				"enable_particles": false,
-				"enable_parallax": false,
-				"padding_top": 64,
-				"padding_bottom": 64
-			}
-		},
-		"vip": {
-			"type": "vip-callout",
-			"disabled": true,
-			"settings": {
-				"vip_title": "Join Phoenix Elite",
-				"vip_subtitle": "<p>Receive early access, select offers, and collection updates.<\/p>",
-				"vip_link": "\/pages\/vip-program",
-				"vip_cta": "Learn more"
-			}
-		},
-		"collection_list_d9zhHQ": {
-			"type": "collection-list",
-			"name": "Collection list",
-			"settings": {
-				"heading": "Shop by collection",
-				"subheading": "A calmer way to browse the store.",
-				"hide_empty": true,
-				"max_items": 4,
-				"columns_mobile": "1",
-				"columns_desktop": 4,
-				"color_scheme": "",
-				"heading_align": "center",
-				"heading_size_tenths": 24,
-				"heading_weight": "600",
-				"heading_transform": "none",
-				"heading_letter_spacing_centis": 0,
-				"subheading_align": "center",
-				"subheading_size_tenths": 15,
-				"subheading_weight": "500",
-				"subheading_letter_spacing_centis": 1,
-				"card_title_align": "center",
-				"card_title_size_tenths": 16,
-				"card_title_weight": "600",
-				"card_title_transform": "none",
-				"card_title_letter_spacing_centis": 0,
-				"padding_top": 36,
-				"padding_bottom": 24
-			}
-		},
-		"urgency_bar": {
-			"type": "rich-text",
-			"disabled": true,
-			"settings": {
-				"color_scheme": "scheme-1",
-				"full_width": true,
-				"heading": "Made with care for everyday living",
-				"text": "<p>Explore home, gifting, jewelry, apparel, wellness, and seasonal collections gathered with a more considered point of view.<\/p>",
-				"note": "<p>Production timelines vary by item and season. Taxes and shipping are calculated at checkout.<\/p>",
-				"button_label": "Browse collections",
-				"button_link": "shopify:\/\/collections",
-				"button_style_secondary": false
-			}
-		},
-		"email_banner": {
-			"type": "email-signup-banner",
-			"disabled": true,
-			"blocks": {
-				"heading": {
-					"type": "heading",
-					"settings": {
-						"heading": "Enjoy 10% Off Your First Order",
-						"heading_size": "h1"
-					}
-				},
-				"paragraph": {
-					"type": "paragraph",
-					"settings": {
-						"text": "<p>Join Phoenix Elite for early access, collection highlights, and private offers.<\/p>",
-						"text_style": "body"
-					}
-				},
-				"email_form": {
-					"type": "email_form",
-					"settings": {}
-				}
-			},
-			"block_order": [
-				"heading",
-				"paragraph",
-				"email_form"
-			],
-			"settings": {
-				"show_background_image": false,
-				"image_alt": "",
-				"image_overlay_opacity": 15,
-				"image_height": "small",
-				"desktop_content_alignment": "center",
-				"mobile_content_alignment": "center",
-				"show_text_box": true,
-				"show_text_below": true
-			}
-		},
-		"best_sellers": {
-			"type": "featured-collection",
-			"disabled": false,
-			"settings": {
-				"title": "Curated favorites",
-				"collection": "best-sellers",
-				"products_to_show": 4,
-				"color_scheme": "",
-				"padding_top": 20,
-				"padding_bottom": 44,
-				"image_ratio": "square"
-			}
-		},
-		"fc_bundles": {
-			"type": "featured-collection",
-			"disabled": true,
-			"settings": {
-				"title": "Featured Products",
-				"collection": "bundles",
-				"products_to_show": 4,
-				"color_scheme": "",
-				"padding_top": 36,
-				"padding_bottom": 36,
-				"image_ratio": "adapt"
-			}
-		},
-		"fc_holiday": {
-			"type": "featured-collection",
-			"disabled": true,
-			"settings": {
-				"title": "Featured Products",
-				"collection": "holiday",
-				"products_to_show": 8,
-				"color_scheme": "",
-				"padding_top": 36,
-				"padding_bottom": 36,
-				"image_ratio": "adapt"
-			}
-		},
-	},
-	"order": [
-		"free_shipping",
-		"hero_custom_ai3EaM",
-		"collection_list_d9zhHQ",
-		"best_sellers",
-		"vip",
-		"urgency_bar",
-		"email_banner"
-	]
+  "sections": {
+    "free_shipping": {
+      "type": "free-shipping-bar",
+      "settings": {
+        "show_everywhere": true,
+        "hide_on_cart": false,
+        "default_threshold": "$159.00",
+        "vip_threshold": "$139.00",
+        "legend_free_shipping": true
+      }
+    },
+    "hero_custom_ai3EaM": {
+      "type": "hero-custom",
+      "name": "Hero Custom",
+      "settings": {
+        "background_image": "shopify://shop_images/1_2cf68320-d50a-4668-a5d7-4c238fbb8e6e.jpg",
+        "headline": "Seasonal style that still feels timeless",
+        "subheadline": "Shop curated apparel, home accents, gifts, wellness, and family favorites in one easy browse.",
+        "cta_label": "Shop all departments",
+        "cta_link": "shopify://collections",
+        "title": "Welcome to Our Phoenix Rise",
+        "subtitle": "A cleaner, more popular storefront experience inspired by classic general stores."
+      }
+    },
+    "collection_list_d9zhHQ": {
+      "type": "collection-list",
+      "name": "Top departments",
+      "settings": {
+        "heading": "Top departments",
+        "subheading": "Browse the store the way most shoppers do.",
+        "hide_empty": true,
+        "max_items": 8,
+        "columns_mobile": "2",
+        "columns_desktop": 4,
+        "color_scheme": "",
+        "heading_align": "center",
+        "heading_size_tenths": 24,
+        "heading_weight": "600",
+        "heading_transform": "none",
+        "heading_letter_spacing_centis": 0,
+        "subheading_align": "center",
+        "subheading_size_tenths": 15,
+        "subheading_weight": "500",
+        "subheading_letter_spacing_centis": 1,
+        "card_title_align": "center",
+        "card_title_size_tenths": 16,
+        "card_title_weight": "600",
+        "card_title_transform": "none",
+        "card_title_letter_spacing_centis": 0,
+        "padding_top": 32,
+        "padding_bottom": 20
+      }
+    },
+    "best_sellers": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured products",
+        "collection": "best-sellers",
+        "products_to_show": 8,
+        "color_scheme": "background-1",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "image_ratio": "portrait"
+      }
+    },
+    "fc_bundles": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Latest arrivals",
+        "collection": "bundles",
+        "products_to_show": 8,
+        "color_scheme": "background-1",
+        "padding_top": 24,
+        "padding_bottom": 24,
+        "image_ratio": "adapt"
+      }
+    },
+    "fc_holiday": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Seasonal picks",
+        "collection": "holiday",
+        "products_to_show": 8,
+        "color_scheme": "background-1",
+        "padding_top": 24,
+        "padding_bottom": 32,
+        "image_ratio": "adapt"
+      }
+    },
+    "about_callout": {
+      "type": "rich-text",
+      "settings": {
+        "color_scheme": "scheme-1",
+        "full_width": false,
+        "heading": "General store for everyone",
+        "text": "<p>From everyday essentials to gift-worthy finds, our collections are curated to be practical, beautiful, and easy to shop.</p>",
+        "note": "<p>Quality picks across sports, outdoors, home, Americana, gaming/family, jewelry, and more.</p>",
+        "button_label": "About us",
+        "button_link": "/pages/about-us",
+        "button_style_secondary": true
+      }
+    },
+    "email_banner": {
+      "type": "email-signup-banner",
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Stay connected with Our Phoenix Rise",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Get updates on new arrivals, seasonal drops, and members-only offers.</p>",
+            "text_style": "body"
+          }
+        },
+        "email_form": {
+          "type": "email_form",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "heading",
+        "paragraph",
+        "email_form"
+      ],
+      "settings": {
+        "show_background_image": false,
+        "image_alt": "",
+        "image_overlay_opacity": 10,
+        "image_height": "small",
+        "desktop_content_alignment": "center",
+        "mobile_content_alignment": "center",
+        "show_text_box": true,
+        "show_text_below": true
+      }
+    }
+  },
+  "order": [
+    "free_shipping",
+    "hero_custom_ai3EaM",
+    "collection_list_d9zhHQ",
+    "best_sellers",
+    "fc_bundles",
+    "fc_holiday",
+    "about_callout",
+    "email_banner"
+  ]
 }

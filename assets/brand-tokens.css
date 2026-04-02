@@ -1,133 +1,159 @@
-/* Iron Phoenix GHG — Brand Tokens (single source of truth)
-   Uses <html data-brand="customs|gamer"> to switch tokens.
-   Includes both *-rgb and non-rgb variables for backward compatibility. */
+/* Our Phoenix Rise — Brand Token System
+   Usage: <html data-brand="sports|outdoors|home|americana|gaming|jewelry|family">
+   Default (no attribute) = Global Store Theme
+   All variants share the same light base; only accents & CTAs differ. */
 
-/* ==================== CUSTOMS ==================== */
-:root[data-brand="customs"]{
-  /* Identity */
-  --brand-variant: "customs";
-  --color-primary: #26a69a;
+/* ==================== GLOBAL STORE THEME (default) ==================== */
+:root {
+  /* Backgrounds */
+  --color-bg:           #F7F7F5;
+  --color-card-bg:      #FFFFFF;
+  --color-primary-bg:   #F7F7F5;
 
-  /* Backgrounds & text (RGB + non-rgb) */
-  --color-primary-bg-rgb: 255,250,247;
-  --color-body-text-rgb:  31,41,55;
-  --color-headings-rgb:   155,93,229;
-  --color-links-rgb:      241,91,181;
+  /* Text */
+  --color-main-text:      #1F1F1F;
+  --color-body-text:      #1F1F1F;
+  --color-text-secondary: #555555;
+  --color-text-muted:     #555555;
+  --color-body-text-rgb:  31,31,31;
 
-  --color-primary-bg: 255,250,247;
-  --color-body-text:  31,41,55;
-  --color-headings:   155,93,229;
-  --color-links:      241,91,181;
+  /* Universal accent (teal) */
+  --color-primary:          #26A69A;
+  --color-accent:           #26A69A;
+  --color-accent-rgb:       38,166,154;
+  --color-accent-hover:     #6A1B9A;
+  --color-accent-hover-rgb: 106,27,154;
+  --color-deep-accent:      #6A1B9A;
+  --rgb-accent:             38,166,154;
 
-  /* Accent + buttons */
-  --color-accent: #ef476f;
-  --color-accent-rgb: 239,71,111;
-  --color-accent-hover: #9b5de5;
-  --color-accent-hover-rgb: 155,93,229;
+  /* CTA buttons — yellow strike */
+  --color-cta:                   #FFFF33;
+  --color-cta-hover:             #FFF200;
+  --color-button-primary-bg:     #FFFF33;
+  --color-button-primary-text:   #1F1F1F;
+  --color-button-primary-hover:  #FFF200;
 
-  --color-button-primary-bg: 241,91,181;
-  --color-button-primary-text: 255,255,255;
-  --color-button-primary-hover: 155,93,229;
+  /* Borders */
+  --color-border:              #E5E7EB;
+  --color-border-subtle:       #E5E7EB;
+  --color-border-subtle-dark:  #D1D5DB;
 
-  /* Gradients */
-  --color-background-gradient-start: #26a69a;
-  --color-background-gradient-end:   #6a1b9a;
-  --color-background-gradient-start-rgb: 38,166,154;
-  --color-background-gradient-end-rgb:   106,27,154;
+  /* Misc */
+  --color-text-main:      #1F1F1F;
+  --color-text-cta:       #1F1F1F;
+  --color-text-light:     #1F1F1F;
+  --color-text-faded:     #9CA3AF;
+  --color-text-highlight: #374151;
+  --color-icon-default:   #6B7280;
 
-  /* Hex companions some components read directly */
-  --color-bg: #fffaf7;
-  --color-main-text: #3a2f4f;
-  --color-neon-pink:   #f15bb5;
-  --color-neon-yellow: #facc15;
-  --color-neon-green:  #22c55e;
-
-  --color-neon-pink-rgb:   241,91,181;
-  --color-neon-yellow-rgb: 250,204,21;
-  --color-neon-green-rgb:  34,197,94;
-
-  /* Borders & misc */
-  --color-text-main:     #ffffff;
-  --color-text-cta:      #000000;
-  --color-border:        #ffffff;
-  --color-text-main-rgb: 255,255,255;
-  --color-text-cta-rgb:  0,0,0;
-  --color-border-rgb:    255,255,255;
-
-  --buttons-radius: 14px;
+  --buttons-radius: 4px;
 }
 
-/* ==================== GAMER ==================== */
-:root[data-brand="gamer"]{
-  /* Identity */
-  --brand-variant: "gamer";
-  --color-primary: #14f1d9;
+/* ==================== SPORTS — Active Performance Living ==================== */
+:root[data-brand="sports"] {
+  --color-accent:           #00AEEF;
+  --color-accent-rgb:       0,174,239;
+  --color-accent-hover:     #26A69A;
+  --color-accent-hover-rgb: 38,166,154;
+  --color-primary:          #00AEEF;
+  --rgb-accent:             0,174,239;
+  --color-button-primary-bg:    #00AEEF;
+  --color-button-primary-text:  #FFFFFF;
+  --color-button-primary-hover: #0097CC;
+}
 
-  /* Backgrounds & text */
-  --color-primary-bg-rgb: 11,15,26;
-  --color-body-text-rgb:  255,255,255;
-  --color-headings-rgb:   20,241,217;
-  --color-links-rgb:      58,134,255;
+/* ==================== OUTDOORS — Peak Outdoor Living ==================== */
+:root[data-brand="outdoors"] {
+  --color-accent:           #2E7D32;
+  --color-accent-rgb:       46,125,50;
+  --color-accent-hover:     #A1887F;
+  --color-accent-hover-rgb: 161,136,127;
+  --color-primary:          #2E7D32;
+  --rgb-accent:             46,125,50;
+  --color-button-primary-bg:    #2E7D32;
+  --color-button-primary-text:  #FFFFFF;
+  --color-button-primary-hover: #1B5E20;
+}
 
-  --color-primary-bg: 11,15,26;
-  --color-body-text:  255,255,255;
-  --color-headings:   20,241,217;
-  --color-links:      58,134,255;
+/* ==================== HOME DECOR — Cozy Home Living ==================== */
+:root[data-brand="home"] {
+  --color-accent:           #A1887F;
+  --color-accent-rgb:       161,136,127;
+  --color-accent-hover:     #8D6E63;
+  --color-accent-hover-rgb: 141,110,99;
+  --color-primary:          #A1887F;
+  --rgb-accent:             161,136,127;
+  --color-button-primary-bg:    #A1887F;
+  --color-button-primary-text:  #FFFFFF;
+  --color-button-primary-hover: #8D6E63;
+  --color-card-bg:              #FFF8E1;
+}
 
-  /* Accent + buttons */
-  --color-accent: #14f1d9;
-  --color-accent-rgb: 20,241,217;
-  --color-accent-hover: #3a86ff;
-  --color-accent-hover-rgb: 58,134,255;
+/* ==================== AMERICANA — Pure Americana Living ==================== */
+:root[data-brand="americana"] {
+  --color-accent:           #1A237E;
+  --color-accent-rgb:       26,35,126;
+  --color-accent-hover:     #B71C1C;
+  --color-accent-hover-rgb: 183,28,28;
+  --color-primary:          #1A237E;
+  --rgb-accent:             26,35,126;
+  --color-button-primary-bg:    #1A237E;
+  --color-button-primary-text:  #FFFFFF;
+  --color-button-primary-hover: #0D1753;
+  /* Named tokens for Americana-specific components */
+  --color-americana-navy: #1A237E;
+  --color-americana-red:  #B71C1C;
+}
 
-  --color-button-primary-bg: 20,241,217;
-  --color-button-primary-text: 11,15,26;
-  --color-button-primary-hover: 58,134,255;
+/* ==================== GAMING FAMILY — Gaming Family Living ==================== */
+:root[data-brand="gaming"] {
+  --color-accent:           #26A69A;
+  --color-accent-rgb:       38,166,154;
+  --color-accent-hover:     #FFD54F;
+  --color-accent-hover-rgb: 255,213,79;
+  --color-primary:          #26A69A;
+  --rgb-accent:             38,166,154;
+  --color-deep-accent:      #6A1B9A;
+  --color-trim-accent:      #6A1B9A;
+  --color-support-accent:   #FFD54F;
+  --color-button-primary-bg:    #26A69A;
+  --color-button-primary-text:  #FFFFFF;
+  --color-button-primary-hover: #1E8A7E;
+}
 
-  /* Gradients */
-  --color-background-gradient-start: #0d1b35;
-  --color-background-gradient-end:   #0b0f1a;
-  --color-background-gradient-start-rgb: 13,27,53;
-  --color-background-gradient-end-rgb:   11,15,26;
+/* ==================== JEWELRY — Luxury Blue Velour ==================== */
+:root[data-brand="jewelry"] {
+  --color-bg:               #F5F0E6;
+  --color-primary-bg:       #F5F0E6;
+  --color-accent:           #1A2A44;
+  --color-accent-rgb:       26,42,68;
+  --color-accent-hover:     #D8A7A7;
+  --color-accent-hover-rgb: 216,167,167;
+  --color-primary:          #1A2A44;
+  --rgb-accent:             26,42,68;
+  --color-deep-accent:      #0F1C2E;
+  --color-highlight:        #F5F0E6;
+  --color-floral-accent:    #D8A7A7;
+  --color-ribbon-neutral:   #B8AFA6;
+  /* Named tokens for jewelry-specific components */
+  --color-ivory: #F5F0E6;
+  --color-pearl: #F8F5EF;
+  --color-deco-gold: #C9A84C;
+  --color-button-primary-bg:    #1A2A44;
+  --color-button-primary-text:  #F5F0E6;
+  --color-button-primary-hover: #0F1C2E;
+}
 
-  /* Hex companions */
-  --color-bg: #0b0f1a;
-  --color-main-text: #14f1d9;
-  --color-cta: #f5ff3b;
-  --color-cta-rgb: 245,255,59;
-  --color-text-muted: #a0a7b8;
-  --color-neon-pink: #ff4fd8;
-  --color-neon-yellow: #f5ff3b;
-  --color-neon-green: #14f1d9;
-  --color-neon-pink-rgb: 255,79,216;
-  --color-neon-yellow-rgb: 245,255,59;
-  --color-neon-green-rgb: 20,241,217;
-
-  --color-text-main:     #ffffff;
-  --color-text-cta:      #0b0f1a;
-  --color-border:        #1e2535;
-  --color-text-main-rgb: 255,255,255;
-  --color-text-cta-rgb:  11,15,26;
-  --color-border-rgb:    30,37,53;
-
-  /* Jewelry / Art Deco */
-  --color-navy-deep: #0b1e3d;
-  --color-royal-blue: #1a3a8f;
-  --color-jewel-blue: #1e4db7;
-  --color-ice-blue: #a8c4e0;
-  --color-ivory: #f5f0e4;
-  --color-pearl: #f8f5ef;
-  --color-sapphire: #1845c8;
-  --color-deco-gold: #c9a84c;
-
-  /* Americana Front Porch */
-  --color-americana-white: #f2ede4;
-  --color-americana-navy: #1e3466;
-  --color-americana-red: #9e2a2b;
-  --color-americana-sky: #b8d4da;
-  --color-americana-terra: #c1713a;
-  --color-americana-check: #2d4a7a;
-  --color-americana-wheat: #d9c49a;
-
-  --buttons-radius: 12px;
+/* ==================== FAMILY — Family Living ==================== */
+:root[data-brand="family"] {
+  --color-accent:           #64B5F6;
+  --color-accent-rgb:       100,181,246;
+  --color-accent-hover:     #FFD54F;
+  --color-accent-hover-rgb: 255,213,79;
+  --color-primary:          #64B5F6;
+  --rgb-accent:             100,181,246;
+  --color-support-accent:   #FFD54F;
+  --color-button-primary-bg:    #64B5F6;
+  --color-button-primary-text:  #1F1F1F;
+  --color-button-primary-hover: #42A5F5;
 }
