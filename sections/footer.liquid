@@ -16,7 +16,6 @@
       font-family: 'Inter', sans-serif;
     }
     .ipx-wrap {
-  max-width: 1440px;
   width: min(1440px, calc(100vw - 48px));
   margin: 0 auto;
 }
@@ -160,6 +159,10 @@
 }
 
 @media (max-width: 1024px) {
+  .ipx-wrap {
+    width: min(100%, calc(100vw - 32px));
+  }
+
   .ipx-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 28px;

@@ -177,8 +177,8 @@ class SlideshowComponent extends HTMLElement {
   }
   init(){
     if (this.prev && this.next){
-      this.onPrev = () => { this.show(this.i-1); this.resetAuto(); };
-      this.onNext = () => { this.show(this.i+1); this.resetAuto(); };
+      this.onPrev = () => { this.show(this.i-1, { moveFocus: true }); this.resetAuto(); };
+      this.onNext = () => { this.show(this.i+1, { moveFocus: true }); this.resetAuto(); };
       this.prev.addEventListener('click', this.onPrev);
       this.next.addEventListener('click', this.onNext);
     }
@@ -186,11 +186,12 @@ class SlideshowComponent extends HTMLElement {
     this.setupAuto();
     this.updateButtons();
   }
-  show(idx){
+  show(idx, options = {}){
+    const { moveFocus = false } = options;
     if (this.n <= 1){ this.items[0]?.classList.add('is-selected'); this.items[0]?.setAttribute('aria-hidden','false'); return; }
     this.items[this.i]?.classList.remove('is-selected'); this.items[this.i]?.setAttribute('aria-hidden','true');
     this.i = (idx < 0) ? this.n-1 : (idx >= this.n ? 0 : idx);
-    const cur = this.items[this.i]; cur?.classList.add('is-selected'); cur?.setAttribute('aria-hidden','false'); cur?.focus();
+    const cur = this.items[this.i]; cur?.classList.add('is-selected'); cur?.setAttribute('aria-hidden','false'); if (moveFocus) cur?.focus();
   }
   setupAuto(){ if (this.enableAuto && this.n>1) this.t = setInterval(() => this.show(this.i+1), this.ms); }
   resetAuto(){ clearInterval(this.t); if (this.enableAuto && this.n>1) this.t = setInterval(() => this.show(this.i+1), this.ms); }

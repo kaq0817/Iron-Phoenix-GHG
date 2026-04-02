@@ -6,6 +6,7 @@
 :root[data-brand="customs"]{
   /* Identity */
   --brand-variant: "customs";
+  --color-primary: #26a69a;
 
   /* Backgrounds & text (RGB + non-rgb) */
   --color-primary-bg-rgb: 255,250,247;
@@ -60,6 +61,7 @@
 :root[data-brand="gamer"]{
   /* Identity */
   --brand-variant: "gamer";
+  --color-primary: #14f1d9;
 
   /* Backgrounds & text */
   --color-primary-bg-rgb: 11,15,26;
@@ -94,6 +96,12 @@
   --color-cta: #f5ff3b;
   --color-cta-rgb: 245,255,59;
   --color-text-muted: #a0a7b8;
+  --color-neon-pink: #ff4fd8;
+  --color-neon-yellow: #f5ff3b;
+  --color-neon-green: #14f1d9;
+  --color-neon-pink-rgb: 255,79,216;
+  --color-neon-yellow-rgb: 245,255,59;
+  --color-neon-green-rgb: 20,241,217;
 
   --color-text-main:     #ffffff;
   --color-text-cta:      #0b0f1a;

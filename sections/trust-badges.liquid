@@ -4,12 +4,10 @@
     --trust-ribbon-bg-mid: #1a3a8f;
     --trust-ribbon-bg-end: #0d1535;
     --trust-ribbon-gold-soft: rgba(201, 168, 76, 0.3);
-    width: 100vw;
+    box-sizing: border-box;
     position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
+    width: auto;
+    margin-inline: calc(50% - 50vw);
     background: linear-gradient(135deg, var(--trust-ribbon-bg-start) 0%, var(--trust-ribbon-bg-mid) 50%, var(--trust-ribbon-bg-end) 100%);
     border-top: 1px solid var(--color-deco-gold, #c9a84c);
     border-bottom: 1px solid var(--color-deco-gold, #c9a84c);
@@ -62,7 +60,6 @@
         src="{{ section.settings.trust_image | image_url: width: 880, format: 'webp' }}"
         alt="{{ section.settings.alt_text | escape | default: 'Trust Badges: Gamer Designed, Wellness, Secure, Support' }}"
         width="880"
-        height="auto"
         loading="lazy"
       >
     </picture>
