@@ -7,34 +7,17 @@
    VARIABLES — Base
    -------------------------------------------------------------------------- */
 :root {
-  --page-width: 1440px;
-
-  --font-body-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-  --font-heading-family: var(--font-body-family);
-  --font-body-scale: 1;
-  --font-heading-scale: 1;
-
-  --color-black: 0, 0, 0;
-  --color-white: 255, 255, 255;
-
-  --color-fg: 31, 31, 31;
-  --color-headings: 31, 31, 31;
-  --color-links: 26, 35, 126;
-  --color-bg: 247, 247, 245;
-  --color-accent: 38, 166, 154;
-  --color-surface-1: 255, 255, 255;
-  --color-surface-2: 245, 245, 243;
-
-  --color-button-primary-bg: 255, 255, 51;
-  --color-button-primary-text: 31, 31, 31;
-  --color-button-primary-hover: 255, 242, 0;
-  --color-main-text: #1F1F1F;
-
+  /* Keep brand colors/fonts in `assets/brand-tokens.css` + theme settings. */
   --radius: 14px;
   --radius-sm: 10px;
-  --buttons-radius: 12px;
-  --shadow-1: 0 10px 30px rgba(0,0,0,.35);
-  --shadow-2: 0 4px 16px rgba(0,0,0,.45);
+  --radius-lg: 18px;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 10px 28px rgba(0, 0, 0, 0.12);
+  --shadow-lg: 0 24px 60px rgba(0, 0, 0, 0.16);
+
+  --color-surface-1: var(--color-card-bg, #ffffff);
+  --color-surface-2: #f5f5f3;
 
   --page-width-margin: 2rem;
   --spacing-sections-mobile: 3rem;
@@ -54,9 +37,9 @@ html {
 body {
   margin: 0;
   padding: 0;
-  color: rgb(var(--color-fg));
-  background: rgb(var(--color-bg));
-  font-family: var(--font-body-family);
+  color: var(--color-main-text, #1f1f1f);
+  background: var(--color-bg, #f7f7f5);
+  font-family: var(--font-body-family, system-ui, -apple-system, Segoe UI, Roboto, sans-serif);
   font-size: 1.6rem;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
@@ -69,8 +52,10 @@ img, svg, video, canvas {
 }
 
 a {
-  color: rgb(var(--color-links));
+  color: var(--color-links, var(--color-accent, #26a69a));
   text-decoration: none;
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: from-font;
 }
 
 a:hover, a:focus-visible { text-decoration: underline; }
@@ -86,7 +71,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid rgb(var(--color-accent));
+  outline: 2px solid var(--color-accent, #26a69a);
   outline-offset: 2px;
   border-radius: .25rem;
 }
@@ -221,11 +206,11 @@ main {
    TYPOGRAPHY — FIXED: no more site-wide clamp overrides on every tag
    -------------------------------------------------------------------------- */
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading-family);
+  font-family: var(--font-heading-family, var(--font-body-family, system-ui, -apple-system, Segoe UI, Roboto, sans-serif));
   line-height: 1.2;
   margin: 0 0 0.6em;
   letter-spacing: 0.2px;
-  color: rgb(var(--color-headings));
+  color: var(--color-headings, var(--color-main-text, #1f1f1f));
   /* NO !important — let sections override naturally */
 }
 
@@ -247,7 +232,7 @@ h4 { font-size: 1.9rem; }
 /* Body text — NO forced max-width or centering globally */
 p {
   margin: 0 0 1.2em;
-  color: rgba(var(--color-white), .9);
+  color: var(--color-text-secondary, #555555);
   font-size: 1.6rem;
   line-height: 1.7;
 }
@@ -268,51 +253,67 @@ input[type="submit"] {
   padding: 1.1rem 2.2rem;
   border-radius: var(--radius-sm);
   border: none;
-  background: rgb(var(--color-button-primary-bg));
-  color: rgb(var(--color-button-primary-text));
+  background: var(--color-button-primary-bg, #ffff33);
+  color: var(--color-button-primary-text, #1f1f1f);
   font-weight: 700;
   font-size: 1.4rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease, color 0.18s ease;
   text-decoration: none;
   cursor: pointer;
 }
 
 .button:hover, .btn:hover, a.button:hover, button.button:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-md);
+  background: var(--color-button-primary-hover, var(--color-button-primary-bg, #ffff33));
+  color: var(--color-button-primary-text, #1f1f1f);
   text-decoration: none;
+}
+
+.button:active,
+.btn:active,
+a.button:active,
+button.button:active {
+  transform: translateY(0);
+}
+
+.button:focus-visible,
+.btn:focus-visible,
+a.button:focus-visible,
+button.button:focus-visible {
+  outline-offset: 3px;
 }
 
 .button--secondary,
 .button--outline {
   background: transparent;
-  border: 1px solid rgb(var(--color-accent));
-  color: rgb(var(--color-accent));
+  border: 1px solid var(--color-accent, #26a69a);
+  color: var(--color-accent, #26a69a);
   box-shadow: none;
 }
 
 .button--secondary:hover {
-  background: rgba(var(--color-accent), 0.08);
+  background: rgb(var(--color-accent-rgb, var(--rgb-accent, 38, 166, 154)) / 0.08);
   box-shadow: none;
 }
 
 .product-form__submit,
 [name="add"],
 .add-to-cart {
-  background: rgb(var(--color-button-primary-bg));
-  color: rgb(var(--color-button-primary-text));
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  background: var(--color-button-primary-bg, #ffff33);
+  color: var(--color-button-primary-text, #1f1f1f);
+  box-shadow: var(--shadow-sm);
 }
 
 .cart__checkout-button,
 .button--primary[name="checkout"] {
-  background: rgb(var(--color-button-primary-bg));
-  color: rgb(var(--color-button-primary-text));
+  background: var(--color-button-primary-bg, #ffff33);
+  color: var(--color-button-primary-text, #1f1f1f);
   font-weight: 700;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  box-shadow: var(--shadow-sm);
 }
 
 /* --------------------------------------------------------------------------
@@ -368,7 +369,7 @@ input[type="submit"] {
   content: '➤';
   position: absolute;
   left: 0;
-  color: rgb(var(--color-accent));
+  color: var(--color-accent, #26a69a);
 }
 
 /* --------------------------------------------------------------------------
@@ -412,7 +413,7 @@ input[type="submit"] {
 }
 
 .cart__subtotal-price {
-  color: rgb(var(--color-fg));
+  color: var(--color-main-text, #1f1f1f);
   font-weight: bold;
 }
 
@@ -486,15 +487,27 @@ input[type="submit"] {
    -------------------------------------------------------------------------- */
 body.template-collection--gaming,
 body[class*="collection--gaming"] {
-  --color-headings: 31, 31, 31;
-  --color-links: 38, 166, 154;
-  --color-accent: 38, 166, 154;
-  background: #f7f7f5 !important;
+  --color-bg: #F7F7F5;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #26A69A;
+  --rgb-accent: 38, 166, 154;
+  --color-headings: #1F1F1F;
+  --color-links: #26A69A;
+
+  --color-button-primary-bg: #26A69A;
+  --color-button-primary-text: #FFFFFF;
+  --color-button-primary-hover: #1E8A7E;
+
+  background: var(--color-bg) !important;
 }
 
 body.template-collection--gaming .collection-hero,
 body[class*="collection--gaming"] .hero {
-  background: linear-gradient(180deg, #f7f7f5 0%, #ffffff 100%) !important;
+  background: linear-gradient(180deg, var(--color-bg) 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--gaming h1,
@@ -507,8 +520,8 @@ body[class*="collection--gaming"] h2 {
 
 body.template-collection--gaming .button,
 body[class*="collection--gaming"] .button {
-  background: var(--color-button-primary-bg, #FFFF33) !important;
-  color: var(--color-button-primary-text, #1F1F1F) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
   box-shadow: none !important;
 }
 
@@ -517,30 +530,44 @@ body[class*="collection--gaming"] .button {
    -------------------------------------------------------------------------- */
 body.template-collection--sports,
 body[class*="collection--sports"] {
-  --color-headings: 255, 60, 20;
-  --color-links: 255, 100, 20;
-  --color-accent: 255, 60, 20;
-  background: #080808 !important;
+  --color-bg: #F7F7F5;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #00AEEF;
+  --rgb-accent: 0, 174, 239;
+  --color-headings: #1F1F1F;
+  --color-links: #00AEEF;
+  --color-support-accent: #26A69A;
+
+  --color-button-primary-bg: #00AEEF;
+  --color-button-primary-text: #FFFFFF;
+  --color-button-primary-hover: #0097CC;
+
+  background: var(--color-bg) !important;
 }
 
 body.template-collection--sports .collection-hero,
 body[class*="collection--sports"] .hero {
-  background: radial-gradient(ellipse at top, #2a0a00 0%, #080808 70%) !important;
+  background: radial-gradient(1000px 520px at 50% 0%, rgb(var(--rgb-accent) / 0.14) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--sports h1,
 body.template-collection--sports h2,
 body[class*="collection--sports"] h1,
 body[class*="collection--sports"] h2 {
-  color: #FF3C14;
-  text-shadow: 0 0 20px rgba(255, 60, 20, 0.4);
+  color: var(--color-main-text, #1F1F1F);
+  text-shadow: none;
 }
 
 body.template-collection--sports .button,
 body[class*="collection--sports"] .button {
-  background: linear-gradient(135deg, #FF3C14, #ff6a00) !important;
-  color: #f2ede4 !important;
-  box-shadow: 0 4px 20px rgba(255, 60, 20, 0.5) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
+  box-shadow: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -548,30 +575,44 @@ body[class*="collection--sports"] .button {
    -------------------------------------------------------------------------- */
 body.template-collection--outdoor,
 body[class*="collection--outdoor"] {
-  --color-headings: 120, 200, 80;
-  --color-links: 100, 180, 60;
-  --color-accent: 120, 200, 80;
-  background: #060e04 !important;
+  --color-bg: #F7F7F5;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #2E7D32;
+  --rgb-accent: 46, 125, 50;
+  --color-headings: #1F1F1F;
+  --color-links: #2E7D32;
+  --color-support-accent: #A1887F;
+
+  --color-button-primary-bg: #2E7D32;
+  --color-button-primary-text: #FFFFFF;
+  --color-button-primary-hover: #1B5E20;
+
+  background: var(--color-bg) !important;
 }
 
 body.template-collection--outdoor .collection-hero,
 body[class*="collection--outdoor"] .hero {
-  background: radial-gradient(ellipse at top, #0d2208 0%, #060e04 70%) !important;
+  background: radial-gradient(1000px 520px at 50% 0%, rgb(var(--rgb-accent) / 0.12) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--outdoor h1,
 body.template-collection--outdoor h2,
 body[class*="collection--outdoor"] h1,
 body[class*="collection--outdoor"] h2 {
-  color: #78C850;
-  text-shadow: 0 0 20px rgba(120, 200, 80, 0.3);
+  color: var(--color-main-text, #1F1F1F);
+  text-shadow: none;
 }
 
 body.template-collection--outdoor .button,
 body[class*="collection--outdoor"] .button {
-  background: linear-gradient(135deg, #78C850, #4a9e25) !important;
-  color: #000 !important;
-  box-shadow: 0 4px 20px rgba(120, 200, 80, 0.4) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
+  box-shadow: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -579,30 +620,44 @@ body[class*="collection--outdoor"] .button {
    -------------------------------------------------------------------------- */
 body.template-collection--home,
 body[class*="collection--home"] {
-  --color-headings: 255, 200, 120;
-  --color-links: 255, 180, 80;
-  --color-accent: 255, 200, 120;
-  background: #0c0a06 !important;
+  --color-bg: #F7F7F5;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #A1887F;
+  --rgb-accent: 161, 136, 127;
+  --color-headings: #1F1F1F;
+  --color-links: #A1887F;
+  --color-support-accent: #FFF8E1;
+
+  --color-button-primary-bg: #A1887F;
+  --color-button-primary-text: #FFFFFF;
+  --color-button-primary-hover: #8D6E63;
+
+  background: var(--color-bg) !important;
 }
 
 body.template-collection--home .collection-hero,
 body[class*="collection--home"] .hero {
-  background: radial-gradient(ellipse at top, #2a1e08 0%, #0c0a06 70%) !important;
+  background: radial-gradient(1000px 520px at 50% 0%, rgb(var(--rgb-accent) / 0.14) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--home h1,
 body.template-collection--home h2,
 body[class*="collection--home"] h1,
 body[class*="collection--home"] h2 {
-  color: #FFC878;
-  text-shadow: 0 0 20px rgba(255, 200, 120, 0.3);
+  color: var(--color-main-text, #1F1F1F);
+  text-shadow: none;
 }
 
 body.template-collection--home .button,
 body[class*="collection--home"] .button {
-  background: linear-gradient(135deg, #FFC878, #e6920a) !important;
-  color: #000 !important;
-  box-shadow: 0 4px 20px rgba(255, 200, 120, 0.4) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
+  box-shadow: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -610,30 +665,48 @@ body[class*="collection--home"] .button {
    -------------------------------------------------------------------------- */
 body.template-collection--jewelry,
 body[class*="collection--jewelry"] {
-  --color-headings: 220, 180, 100;
-  --color-links: 200, 160, 80;
-  --color-accent: 220, 180, 100;
-  background: #07060a !important;
+  --color-bg: #F5F0E6;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #1A2A44;
+  --rgb-accent: 26, 42, 68;
+  --color-deep-accent: #0F1C2E;
+  --color-highlight: #F5F0E6;
+  --color-floral-accent: #D8A7A7;
+  --color-ribbon-neutral: #B8AFA6;
+
+  --color-headings: #1F1F1F;
+  --color-links: #1A2A44;
+
+  --color-button-primary-bg: #1A2A44;
+  --color-button-primary-text: #F5F0E6;
+  --color-button-primary-hover: #0F1C2E;
+
+  background: var(--color-bg) !important;
 }
 
 body.template-collection--jewelry .collection-hero,
 body[class*="collection--jewelry"] .hero {
-  background: radial-gradient(1200px 600px at 50% -10%, #3146ff 0%, #0b1033 55%, #070914 100%) !important;
+  background: radial-gradient(1100px 560px at 50% 0%, rgb(var(--rgb-accent) / 0.10) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--jewelry h1,
 body.template-collection--jewelry h2,
 body[class*="collection--jewelry"] h1,
 body[class*="collection--jewelry"] h2 {
-  color: #DCC064;
-  text-shadow: 0 0 20px rgba(220, 180, 100, 0.4);
+  color: var(--color-main-text, #1F1F1F);
+  text-shadow: none;
 }
 
 body.template-collection--jewelry .button,
 body[class*="collection--jewelry"] .button {
-  background: linear-gradient(135deg, #DCC064, #a8892a) !important;
-  color: #000 !important;
-  box-shadow: 0 4px 20px rgba(220, 180, 100, 0.4) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
+  box-shadow: none !important;
 }
 
 /* --------------------------------------------------------------------------
@@ -641,11 +714,24 @@ body[class*="collection--jewelry"] .button {
    -------------------------------------------------------------------------- */
 body.template-collection--americana,
 body[class*="collection--americana"] {
-  --color-headings: 26, 35, 126;
-  --color-links: 183, 28, 28;
-  --color-accent: 26, 35, 126;
-  background: #f7f7f5 !important;
-  color: #1f1f1f !important;
+  --color-bg: #F7F7F5;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #1A237E;
+  --rgb-accent: 26, 35, 126;
+  --color-headings: #1F1F1F;
+  --color-links: #1A237E;
+  --color-support-accent: #B71C1C;
+
+  --color-button-primary-bg: #1A237E;
+  --color-button-primary-text: #FFFFFF;
+  --color-button-primary-hover: #0D1753;
+
+  background: var(--color-bg) !important;
+  color: var(--color-main-text) !important;
 }
 
 body.template-collection--americana .collection-hero,
@@ -659,15 +745,15 @@ body.template-collection--americana h1,
 body.template-collection--americana h2,
 body[class*="collection--americana"] h1,
 body[class*="collection--americana"] h2 {
-  color: #1A237E;
+  color: var(--color-accent, #1A237E);
   text-shadow: none;
 }
 
 body.template-collection--americana .button,
 body[class*="collection--americana"] .button {
-  background: linear-gradient(135deg, #B71C1C, #8E1414) !important;
-  color: #f2ede4 !important;
-  box-shadow: 0 4px 14px rgba(183, 28, 28, 0.24) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
+  box-shadow: none !important;
 }
 
 body.template-collection--americana .button--secondary,
@@ -675,8 +761,8 @@ body.template-collection--americana .button--outline,
 body[class*="collection--americana"] .button--secondary,
 body[class*="collection--americana"] .button--outline {
   background: transparent !important;
-  color: #1A237E !important;
-  border: 1px solid rgba(26, 35, 126, 0.4) !important;
+  color: var(--color-accent, #1A237E) !important;
+  border: 1px solid rgb(var(--rgb-accent, 26, 35, 126) / 0.4) !important;
   box-shadow: none !important;
 }
 
@@ -696,30 +782,45 @@ body[class*="collection--americana"] .collection-hero__title::after {
    -------------------------------------------------------------------------- */
 body.template-collection--family,
 body[class*="collection--family"] {
-  --color-headings: 255, 130, 200;
-  --color-links: 200, 100, 255;
-  --color-accent: 255, 130, 200;
-  background: #090608 !important;
+  --color-bg: #F7F7F5;
+  --color-card-bg: #FFFFFF;
+
+  --color-main-text: #1F1F1F;
+  --color-text-secondary: #555555;
+
+  --color-accent: #64B5F6;
+  --rgb-accent: 100, 181, 246;
+  --color-support-accent: #FFD54F;
+
+  --color-headings: #1F1F1F;
+  --color-links: #64B5F6;
+
+  --color-button-primary-bg: #64B5F6;
+  --color-button-primary-text: #1F1F1F;
+  --color-button-primary-hover: #42A5F5;
+
+  background: var(--color-bg) !important;
 }
 
 body.template-collection--family .collection-hero,
 body[class*="collection--family"] .hero {
-  background: radial-gradient(ellipse at top, #200a1e 0%, #090608 70%) !important;
+  background: radial-gradient(1000px 520px at 50% 0%, rgb(var(--rgb-accent) / 0.14) 0%, rgba(255, 255, 255, 0) 60%),
+    linear-gradient(180deg, var(--color-bg) 0%, #ffffff 100%) !important;
 }
 
 body.template-collection--family h1,
 body.template-collection--family h2,
 body[class*="collection--family"] h1,
 body[class*="collection--family"] h2 {
-  color: #FF82C8;
-  text-shadow: 0 0 20px rgba(255, 130, 200, 0.3);
+  color: var(--color-main-text, #1F1F1F);
+  text-shadow: none;
 }
 
 body.template-collection--family .button,
 body[class*="collection--family"] .button {
-  background: linear-gradient(135deg, #FF82C8, #c864ff) !important;
-  color: #000 !important;
-  box-shadow: 0 4px 20px rgba(255, 130, 200, 0.4) !important;
+  background: var(--color-button-primary-bg) !important;
+  color: var(--color-button-primary-text) !important;
+  box-shadow: none !important;
 }
 
 /* Force transparent backgrounds in all collection templates */
@@ -828,4 +929,43 @@ html .cart__subtotal-price {
 /* Keep structure readable without a cloudy/misty overlay look. */
 #MainContent {
   background: var(--color-bg, #F7F7F5);
+}
+
+/* Global mobile containment guardrails. */
+@media (max-width: 749px) {
+  html,
+  body {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden !important;
+  }
+
+  #MainContent,
+  .shopify-section,
+  .page-width,
+  .section,
+  .banner,
+  .hero,
+  .collection-list,
+  .rich-text,
+  .newsletter,
+  .footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box;
+  }
+
+  .shopify-section * {
+    min-width: 0;
+  }
+
+  img,
+  picture,
+  video,
+  canvas,
+  svg,
+  iframe {
+    max-width: 100% !important;
+    height: auto;
+  }
 }
