@@ -10,6 +10,7 @@
   min-height: 260px;
   border-radius: 0;
   overflow: hidden;
+  background: linear-gradient(135deg, #0f2e62 0%, #1e4f96 55%, #5f9ad6 100%);
 }
 
 .email-signup-banner.height--small .banner {
@@ -42,7 +43,7 @@
 .email-signup-banner .banner__overlay {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, var(--overlay, 0.25));
+  background: rgba(8, 22, 44, var(--overlay, 0.2));
 }
 
 .email-signup-banner .banner__content {
@@ -64,17 +65,17 @@
 }
 
 .email-signup-banner .signup__box {
-  width: min(700px, 100%);
+  width: min(1080px, 100%);
   text-align: center;
   color: #fff;
 }
 
 .email-signup-banner.show-text-box .signup__box {
-  background: rgba(8, 12, 16, 0.58);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 16px;
-  padding: clamp(18px, 3vw, 28px);
-  backdrop-filter: blur(8px);
+  background: linear-gradient(130deg, rgba(10, 42, 88, 0.9) 0%, rgba(24, 84, 158, 0.84) 100%);
+  border: 1px solid rgba(200, 224, 255, 0.4);
+  border-radius: 18px;
+  box-shadow: 0 20px 42px rgba(5, 21, 45, 0.28);
+  padding: clamp(22px, 3.2vw, 34px);
 }
 
 .email-signup-banner .signup__heading {
@@ -97,7 +98,7 @@
 .email-signup-banner .signup__subheading {
   margin: 0 0 1rem;
   line-height: 1.55;
-  opacity: 0.95;
+  opacity: 0.98;
 }
 
 .email-signup-banner .newsletter-form__field-wrapper {
@@ -105,6 +106,8 @@
   grid-template-columns: 1fr auto;
   gap: 0.6rem;
   align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
 }
 
 .email-signup-banner .field__input {
@@ -112,13 +115,13 @@
   min-height: 46px;
   padding: 0.7rem 0.9rem;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  border: 1px solid rgba(217, 231, 252, 0.9);
+  background: rgba(245, 250, 255, 0.96);
+  color: #0f2b57;
 }
 
 .email-signup-banner .field__input::placeholder {
-  color: rgba(255, 255, 255, 0.7);
+  color: rgba(28, 78, 150, 0.75);
 }
 
 .email-signup-banner .field__button {
@@ -126,9 +129,14 @@
   padding: 0.7rem 1rem;
   border-radius: 10px;
   border: 0;
-  background: #37ff88;
-  color: #08120f;
+  background: #0d4ea6;
+  color: #f7fbff;
   font-weight: 700;
+}
+
+.email-signup-banner .field__button:hover,
+.email-signup-banner .field__button:focus-visible {
+  background: #0a3d82;
 }
 
 .email-signup-banner .form__message {
