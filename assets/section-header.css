@@ -8,8 +8,15 @@
   padding-left: 3rem;
 }
 
+@media (max-width: 749px) {
+  .header-wrapper .header {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
 .section-header-wrapper {
-  position: sticky;
+  position: relative;
   margin-bottom: var(--header-margin-bottom-mobile);
 }
 

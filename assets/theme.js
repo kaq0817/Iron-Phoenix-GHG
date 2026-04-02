@@ -432,7 +432,7 @@
 
     // Enable features
     MenuDrawer.bind();
-    stickyHeader();
+    // Sticky header intentionally disabled.
     bindQtyControls();
     interceptAddToCart();
     bindMediaZoom(); // Product zoom functionality from global.js
