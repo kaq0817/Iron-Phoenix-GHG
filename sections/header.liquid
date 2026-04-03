@@ -10,12 +10,22 @@
 
 <style>
   .header-wrapper {
-    position: relative;
-    top: auto;
-    z-index: 100;
-    background: #0f1c2e !important; /* Solid dark navy to match your footer */
-    border-bottom: 2px solid #5db3d3; /* A crisp cyan line to separate it from the page */
-    color: #e9eef7;
+    position: relative !important;
+    top: auto !important;
+    z-index: 100 !important;
+    width: 100% !important;
+    background: #160665 !important; /* Forces full-width solid dark navy */
+    border-bottom: 2px solid #26A69A !important; /* Full-width cyan border */
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: nowrap;
+    gap: 10px;
+    padding: var(--header-padding-top-mobile, 16px) 20px var(--header-padding-bottom-mobile, 16px);
+    background: rgba(51, 26, 88, 0) !important; /* Ensures the inner box lets the navy show through */
   }
 
   .header {

@@ -1,5 +1,6 @@
 {%- comment -%}
   Iron Phoenix GHG - Main Product (With FAQ Accordion)
+  Upgraded: Solid borders, block swatches, hardcoded shipping trust tab.
 {%- endcomment -%}
 
 <link rel="stylesheet" href="{{ 'section-main-product.css' | asset_url }}" media="print" onload="this.media='all'">
@@ -23,6 +24,7 @@
     max-width: 140rem;
     margin: 0 auto;
     padding: 2rem;
+    color: #1F1F1F;
   }
 
   .product-grid {
@@ -64,15 +66,15 @@
   .thumb {
     width: 80px;
     height: 80px;
-    border: 2px solid transparent;
+    border: 2px solid #e5e7eb; /* Solid gray border, no cloudy/invisible borders */
     cursor: pointer;
     border-radius: 4px;
     padding: 0;
-    background: none;
+    background: #ffffff;
   }
 
   .thumb.active {
-    border-color: #333;
+    border-color: #1e4db7; /* Bright Jewel Blue */
   }
   .thumb img {
     width: 100%;
@@ -86,36 +88,69 @@
     font-size: 2.8rem;
     font-weight: 700;
     margin-bottom: 1rem;
+    color: #0f1c2e;
   }
   .product__meta-desc {
     font-size: 1.5rem;
     margin-bottom: 2rem;
-    color: rgba(var(--color-base-text), 0.85);
+    color: #555555;
   }
   .product__price {
-    font-size: 2rem;
+    font-size: 2.2rem;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    color: #1F1F1F;
+  }
+
+  /* --- SOLID VARIANT SWATCHES --- */
+  .product__option {
+    margin-bottom: 1.5rem;
+  }
+  .product__option legend {
     font-weight: 600;
-    margin-bottom: 2rem;
-    color: rgb(var(--color-base-accent-1));
+    margin-bottom: 0.8rem;
+    display: block;
   }
-
-  .shipping-meta {
-    font-size: 1.3rem;
-    margin-bottom: 2rem;
-    background: rgba(var(--color-base-text), 0.05);
-    padding: 8px 12px;
+  .product__swatch input:checked + span {
+    background: #1e4db7; /* Bright Jewel Blue background */
+    color: #ffffff;
+    border-color: #1e4db7;
+  }
+  .product__swatch input {
+    display: none; /* Hide default radio buttons */
+  }
+  .product__swatch span {
+    display: inline-block;
+    padding: 10px 18px;
+    border: 1px solid #d1d5db;
     border-radius: 4px;
-    width: fit-content;
+    background: #ffffff;
+    color: #1F1F1F;
+    font-weight: 500;
+    transition: all 0.2s ease;
+  }
+  .product__swatch input:checked + span {
+    background: #0f1c2e;
+    color: #ffffff;
+    border-color: #0f1c2e;
   }
 
+  /* --- ADD TO CART --- */
   .product__add-to-cart {
     width: 100%;
-    padding: 1.5rem;
+    margin-top: 1rem;
+    padding: 1.6rem;
     font-size: 1.6rem;
-    font-weight: bold;
-    background: rgb(var(--color-base-accent-1));
-    color: rgb(var(--color-base-background-1));
-    border-radius: 4px;
+    font-weight: 700;
+    background: #26A69A; /* Cyan accent */
+    color: #1a0c4b; /* Dark navy text */
+  .product__add-to-cart:hover {
+    background: #1e8772;
+  }
+  .product__add-to-cart:disabled {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
   }
 
   .rte {
@@ -128,21 +163,24 @@
   .faq-wrapper {
     margin-top: 3rem;
     padding: 1rem 0;
-    border-top: 1px solid rgba(var(--color-base-text), 0.2);
+    border-top: 1px solid #d1d5db;
   }
   .faq-question {
-    padding: 1rem 0;
+    padding: 1.5rem 0;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 700;
     display: flex;
     justify-content: space-between;
     font-size: 1.6rem;
+    color: #0f1c2e;
+    border-bottom: 1px solid #e5e7eb;
   }
   .faq-answer {
     display: none;
-    padding-bottom: 1rem;
+    padding: 1.5rem 0;
     font-size: 1.4rem;
     line-height: 1.6;
+    color: #374151;
   }
   .faq-arrow {
     transition: transform 0.2s ease;
@@ -154,7 +192,6 @@
 
 <section id="MainProduct-{{ section.id }}" class="product-section">
   <div class="product-grid">
-    <!-- MEDIA SECTION -->
     <div class="product__media-wrapper">
       <div class="product__media-main" id="MainMedia-{{ section.id }}">
         {% if hero_media %}
@@ -189,7 +226,6 @@
       {% endif %}
     </div>
 
-    <!-- INFO SIDE -->
     <div class="product__info-wrapper">
       <h1 class="product__title">{{ p.title | escape }}</h1>
 
@@ -202,13 +238,6 @@
       </div>
 
       <div class="product__price">{{ v.price | money }}</div>
-
-      {% if product.metafields.custom.production_and_shipping != blank %}
-        <div class="shipping-meta">
-          🚚
-          {{ product.metafields.custom.production_and_shipping.value | join: ', ' | replace: 'days', 'business days' }}
-        </div>
-      {% endif %}
 
       <form method="post" action="{{ routes.cart_add_url }}">
         <input type="hidden" name="id" value="{{ v.id }}">
@@ -235,9 +264,9 @@
           {% endfor %}
         {% endunless %}
 
-        <div style="margin-top: 1.5rem;">
-          <label>Quantity</label>
-          <input type="number" name="quantity" value="1" min="1" style="width: 60px; margin-left: 10px;">
+        <div style="margin-top: 1rem; margin-bottom: 1.5rem;">
+          <legend style="font-weight: 600; margin-bottom: 0.8rem; display: block;">Quantity</legend>
+          <input type="number" name="quantity" value="1" min="1" style="width: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 1.6rem;">
         </div>
 
         <button
@@ -251,16 +280,27 @@
         </button>
       </form>
 
-      <!-- PRODUCT DESCRIPTION -->
       <div class="product__description rte">
         {{ p.description }}
       </div>
 
-      <!-- FAQ ACCORDION -->
-      {% if product.metafields.custom.faq != blank %}
-        <div class="faq-wrapper">
-          <h3>FAQs</h3>
+      <div class="faq-wrapper">
+        
+        <div class="faq-item">
+          <div class="faq-question">
+            Crafted Just For You (Shipping Info)
+            <span class="faq-arrow">▶</span>
+          </div>
+          <div class="faq-answer">
+            <strong>Production & Shipping</strong><br>
+            Every piece of apparel is custom-made on demand when you order it. This means your gear is fresh off the press and crafted with care.<br><br>
+            • <strong>Production Time:</strong> 3-5 business days<br>
+            • <strong>Shipping Time:</strong> 5-7 business days (Standard US)<br><br>
+            <em>Note: Other categories—such as drinkware or home goods—may ship separately from our ready-to-ship facilities.</em>
+          </div>
+        </div>
 
+        {% if product.metafields.custom.faq != blank %}
           {% assign faq_lines = product.metafields.custom.faq | split: '\n' %}
 
           {% for line in faq_lines %}
@@ -278,8 +318,9 @@
               </div>
             {% endif %}
           {% endfor %}
-        </div>
-      {% endif %}
+        {% endif %}
+      </div>
+
     </div>
   </div>
 </section>
