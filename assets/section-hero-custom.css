@@ -2,9 +2,11 @@
 
 .hero-custom {
   --hero-text-color: #ffffff;
+  --hero-headline-color: #ffffff;
   --hero-subheadline-color: rgba(255, 255, 255, 0.92);
-  --hero-button-bottom: #0d9488;
-  --hero-button-text: #ffffff;
+  --hero-button-bg-color: #0d9488;
+  --hero-button-text-colorolor: #0d9488;
+  --hero-button-text-color: #ffffff;
   --hero-button-border: rgba(13, 148, 136, 0.6);
   --hero-heading-font: Georgia, 'Times New Roman', serif;
   position: relative;
@@ -83,9 +85,9 @@
   border-radius: 999px;
   text-decoration: none;
   font-weight: 700;
-  letter-spacing: 0.03em;
-  background: linear-gradient(180deg, #26a69a 0%, var(--hero-button-bottom) 100%);
-  color: var(--hero-button-text);
+  letter-spacivar(--hero-button-bg-color);
+  color: var(--hero-button-text-color-bg-color);
+  color: var(--hero-button-text-color);
   border: 1px solid var(--hero-button-border);
   box-shadow: 0 8px 18px rgba(8, 18, 34, 0.16);
   transition: transform 0.16s ease, filter 0.16s ease;

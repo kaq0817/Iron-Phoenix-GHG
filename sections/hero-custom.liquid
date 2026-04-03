@@ -32,6 +32,48 @@ Hero Custom (centered, LCP-friendly)
 
 {{ 'section-hero-custom.css' | asset_url | stylesheet_tag }}
 
+<style>
+  .hero-custom {
+    --hero-headline-color: {{ section.settings.headline_color | default: '#ffffff' }};
+    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#e0f7f5' }};
+    --hero-button-bg-color: {{ section.settings.cta_bg_color | default: '#0d9488' }};
+    --hero-button-text-color: {{ section.settings.cta_text_color | default: '#44166b' }};
+    --hero-min-height: {{ section.settings.min_height | default: 500 }}px;
+    --hero-padding-top: {{ section.settings.padding_top | default: 60 }}px;
+    --hero-padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
+    --hero-content-align: {{ section.settings.content_align | default: 'center' }};
+
+    min-height: var(--hero-min-height);
+    display: flex;
+    align-items: center;
+    justify-content: var(--hero-content-align);
+    padding-top: var(--hero-padding-top);
+    padding-bottom: var(--hero-padding-bottom);
+  }
+
+  .hero-custom__headline {
+    color: var(--hero-headline-color);
+    font-size: {{ section.settings.headline_size | default: 48 }}px;
+    margin-bottom: 0.5em;
+  }
+
+  .hero-custom__subheadline {
+    color: var(--hero-subheadline-color);
+    font-size: {{ section.settings.subheadline_size | default: 18 }}px;
+    margin-bottom: 1.5em;
+  }
+
+  .hero-custom__button {
+    background-color: var(--hero-button-bg-color);
+    color: var(--hero-button-text-color);
+    font-size: {{ section.settings.subheadline_size | default: 18 }}px;
+    padding: 12px 24px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-block;
+  }
+</style>
+
 <section class="hero-custom" aria-label="Hero">
   {%- if has_bg -%}
     <div class="hero-custom__background" aria-hidden="true">
