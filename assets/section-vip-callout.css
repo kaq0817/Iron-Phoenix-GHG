@@ -6,9 +6,9 @@
   --vip-shadow: rgba(8, 18, 34, 0.08);
   --vip-title-font: Georgia, 'Times New Roman', serif;
   --vip-subtitle-color: rgba(255, 255, 255, 0.84);
-  --vip-button-bottom: #ebe3d5;
-  --vip-button-text: #172239;
-  --vip-button-border: rgba(201, 168, 76, 0.55);
+  --vip-button-bottom: #0d9488;
+  --vip-button-text: #ffffff;
+  --vip-button-border: rgba(13, 148, 136, 0.6);
   width: 100%;
   max-width: 960px;
   margin: 0 auto;
@@ -44,7 +44,7 @@
   font-weight: 700;
   border-radius: 999px;
   padding: 0.9rem 1.5rem;
-  background: linear-gradient(180deg, var(--color-ivory, #f5f0e4) 0%, var(--vip-button-bottom) 100%);
+  background: linear-gradient(180deg, #26a69a 0%, var(--vip-button-bottom) 100%);
   color: var(--vip-button-text);
   border: 1px solid var(--vip-button-border);
   text-decoration: none;

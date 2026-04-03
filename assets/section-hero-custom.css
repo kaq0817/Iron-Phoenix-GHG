@@ -10,9 +10,9 @@
   --hero-surface-border: rgba(248, 245, 239, 0.08);
   --hero-shadow: rgba(4, 8, 16, 0.16);
   --hero-subheadline-color: rgba(248, 245, 239, 0.86);
-  --hero-button-bottom: #ebe3d5;
-  --hero-button-text: #172239;
-  --hero-button-border: rgba(201, 168, 76, 0.55);
+  --hero-button-bottom: #0d9488;
+  --hero-button-text: #ffffff;
+  --hero-button-border: rgba(13, 148, 136, 0.6);
   --hero-heading-font: Georgia, 'Times New Roman', serif;
   position: relative;
   min-height: clamp(320px, 52vw, 560px);
@@ -97,7 +97,7 @@
   text-decoration: none;
   font-weight: 700;
   letter-spacing: 0.03em;
-  background: linear-gradient(180deg, var(--color-ivory, #f5f0e4) 0%, var(--hero-button-bottom) 100%);
+  background: linear-gradient(180deg, #26a69a 0%, var(--hero-button-bottom) 100%);
   color: var(--hero-button-text);
   border: 1px solid var(--hero-button-border);
   box-shadow: 0 8px 18px rgba(8, 18, 34, 0.16);
