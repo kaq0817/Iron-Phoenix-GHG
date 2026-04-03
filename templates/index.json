@@ -12,95 +12,52 @@
     },
     "hero_custom_ai3EaM": {
       "type": "hero-custom",
-      "name": "Hero Custom",
+      "name": "Hero Promo",
       "settings": {
         "background_image": "shopify://shop_images/1_2cf68320-d50a-4668-a5d7-4c238fbb8e6e.jpg",
-        "headline": "Seasonal style that still feels timeless",
-        "subheadline": "Shop curated apparel, home accents, gifts, wellness, and family favorites in one easy browse.",
-        "cta_label": "Shop all departments",
-        "cta_link": "shopify://collections",
-        "title": "Welcome to Our Phoenix Rise",
-        "subtitle": "A cleaner, more popular storefront experience inspired by classic general stores."
+        "headline": "Equip Your Next Adventure",
+        "subheadline": "Apparel, gear, and gifts designed for family fun and everyday life.",
+        "cta_label": "Explore the Collections",
+        "cta_link": "shopify://collections"
       }
     },
     "collection_list_d9zhHQ": {
       "type": "collection-list",
-      "name": "Top departments",
+      "name": "Category Links",
       "settings": {
-        "heading": "Top departments",
-        "subheading": "Browse the store the way most shoppers do.",
+        "heading": "",
+        "subheading": "",
         "hide_empty": true,
         "max_items": 12,
         "columns_mobile": "2",
         "columns_desktop": 4,
-        "color_scheme": "",
         "heading_align": "center",
-        "heading_size_tenths": 24,
-        "heading_weight": "600",
-        "heading_transform": "none",
-        "heading_letter_spacing_centis": 0,
-        "subheading_align": "center",
-        "subheading_size_tenths": 15,
-        "subheading_weight": "500",
-        "subheading_letter_spacing_centis": 1,
         "card_title_align": "center",
         "card_title_size_tenths": 16,
         "card_title_weight": "600",
-        "card_title_transform": "none",
-        "card_title_letter_spacing_centis": 0,
         "padding_top": 32,
         "padding_bottom": 20
       }
     },
-    "about_callout": {
-      "type": "rich-text",
+    "hot_products": {
+      "type": "featured-collection",
       "settings": {
-        "color_scheme": "scheme-1",
-        "full_width": false,
-        "heading": "General store for everyone",
-        "text": "<p>From everyday essentials to gift-worthy finds, our collections are curated to be practical, beautiful, and easy to shop.</p>",
-        "note": "<p>Quality picks across sports, outdoors, home, Americana, gaming/family, jewelry, and more.</p>",
-        "button_label": "About us",
-        "button_link": "/pages/about-us",
-        "button_style_secondary": true
+        "title": "HOT PRODUCTS",
+        "collection": "all",
+        "products_to_show": 8,
+        "columns_desktop": 4,
+        "show_view_all": true,
+        "enable_quick_add": true
       }
     },
-    "email_banner": {
-      "type": "email-signup-banner",
-      "blocks": {
-        "heading": {
-          "type": "heading",
-          "settings": {
-            "heading": "Stay connected with Our Phoenix Rise",
-            "heading_size": "h1"
-          }
-        },
-        "paragraph": {
-          "type": "paragraph",
-          "settings": {
-            "text": "<p>Get updates on new arrivals, seasonal drops, and members-only offers.</p>",
-            "text_style": "body"
-          }
-        },
-        "email_form": {
-          "type": "email_form",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "heading",
-        "paragraph",
-        "email_form"
-      ],
+    "americana_front_porch": {
+      "type": "featured-collection",
       "settings": {
-        "show_background_image": false,
-        "image_alt": "",
-        "image_overlay_opacity": 10,
-        "image_height": "small",
-        "desktop_content_alignment": "center",
-        "mobile_content_alignment": "center",
-        "show_text_box": true,
-        "show_text_below": true
+        "title": "Americana Front Porch",
+        "collection": "americana",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "enable_quick_add": true
       }
     }
   },
@@ -108,7 +65,7 @@
     "free_shipping",
     "hero_custom_ai3EaM",
     "collection_list_d9zhHQ",
-    "about_callout",
-    "email_banner"
+    "hot_products",
+    "americana_front_porch"
   ]
 }
