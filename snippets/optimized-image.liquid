@@ -6,8 +6,8 @@
     {%- else -%}{% assign base_target_w = 900 %}
   {%- endcase -%}
 
-  {%- assign max_src_w  = image.width | default: 1200 -%}
-  {%- assign max_gen_w  = 1600 -%}
+  {%- assign max_src_w  = image.width | default: 2048 -%}
+  {%- assign max_gen_w  = 2048 -%}
   {%- assign target_w   = base_target_w -%}
 
   {%- if width_override -%}
@@ -17,7 +17,7 @@
     {%- assign target_w = target_w | at_most: max_gen_w | at_most: max_src_w | at_least: 320 -%}
   {%- endif -%}
 
-  {%- assign available_widths = '360,480,600,720,900,1000,1200,1600' | split: ',' -%}
+  {%- assign available_widths = '360,480,600,720,800,900,1000,1200,1600,2048' | split: ',' -%}
   {%- assign final_widths_string = '' -%}
   {%- for w in available_widths -%}
     {%- assign w_num = w | plus: 0 -%}

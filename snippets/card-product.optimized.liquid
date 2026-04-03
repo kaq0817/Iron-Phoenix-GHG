@@ -18,15 +18,16 @@ Optimized Product Card - FORCE WebP compression
         <a class="card__media" href="{{ card_product.url }}">
           <div class="media media--transparent">
             <img
-              src="{{ card_product.featured_media | image_url: width: 600, format: 'webp' }}"
-              srcset="{{ card_product.featured_media | image_url: width: 300, format: 'webp' }} 300w,
-                      {{ card_product.featured_media | image_url: width: 600, format: 'webp' }} 600w,
-                      {{ card_product.featured_media | image_url: width: 900, format: 'webp' }} 900w"
-              sizes="(max-width: 749px) 50vw, (max-width: 989px) 33vw, 25vw"
+              src="{{ card_product.featured_media | image_url: width: 800, format: 'webp' }}"
+              srcset="{{ card_product.featured_media | image_url: width: 400, format: 'webp' }} 400w,
+                      {{ card_product.featured_media | image_url: width: 800, format: 'webp' }} 800w,
+                      {{ card_product.featured_media | image_url: width: 1200, format: 'webp' }} 1200w,
+                      {{ card_product.featured_media | image_url: width: 2048, format: 'webp' }} 2048w"
+              sizes="(max-width: 749px) 100vw, (max-width: 989px) 50vw, 33vw"
               alt="{{ card_product.featured_media.alt | default: title_words | escape }}"
               loading="{{ card_loading }}"
-              width="600"
-              height="{{ 600 | divided_by: card_product.featured_media.aspect_ratio | round }}"
+              width="800"
+              height="{{ 800 | divided_by: card_product.featured_media.aspect_ratio | round }}"
               class="card__img motion-reduce"
             >
           </div>
