@@ -81,11 +81,12 @@ button {
 }
 
 /* --------------------------------------------------------------------------
-   HEADER FIX — stop it being sucked into a tiny strip
+   HEADER FIX — full-width, edge to edge, no gaps
    -------------------------------------------------------------------------- */
-.header,
-.site-header,
-#shopify-section-header {
+
+/* Outer Shopify wrapper and section wrapper — zero out any default spacing */
+#shopify-section-header,
+.section-header {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
@@ -97,28 +98,20 @@ button {
   border-bottom: 0 !important;
 }
 
-/* Kill sticky/slide behaviors (header should not move) */
-.section-header {
-  position: relative !important;
-  top: auto !important;
+/* The header-wrapper fills the full viewport width */
+.header-wrapper {
+  width: 100% !important;
+  max-width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
-  width: 100% !important;
-  max-width: 100% !important;
+  box-sizing: border-box !important;
 }
 
-#shopify-section-header > * {
+/* The actual header row — do NOT zero padding here, it controls breathing room */
+.header {
   width: 100% !important;
   max-width: 100% !important;
-  margin: 0 !important;
-}
-
-.section-header.shopify-section-header-sticky,
-.section-header.shopify-section-header-hidden {
-  position: relative !important;
-  top: auto !important;
-  transform: none !important;
-  transition: none !important;
+  box-sizing: border-box !important;
 }
 
 .header__logo,
