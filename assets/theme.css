@@ -94,11 +94,26 @@ button {
   justify-content: space-between !important;
   padding: 1.2rem 2.4rem !important;
   min-height: 6rem !important;
-  background: transparent !important;
+  /* Not transparent: keep header readable over hero imagery */
+  background: linear-gradient(90deg, var(--color-header-gradient-start, #ffffff) 0%, var(--color-header-gradient-end, #f9f7f4) 100%) !important;
   position: relative !important;
   top: auto !important;
   z-index: 100 !important;
   border-bottom: 0 !important;
+}
+
+/* Kill sticky/slide behaviors (header should not move) */
+.section-header {
+  position: relative !important;
+  top: auto !important;
+}
+
+.section-header.shopify-section-header-sticky,
+.section-header.shopify-section-header-hidden {
+  position: relative !important;
+  top: auto !important;
+  transform: none !important;
+  transition: none !important;
 }
 
 .header__logo,
