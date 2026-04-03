@@ -135,7 +135,14 @@ button {
 
 @media (max-width: 749px) {
   html {
-    font-size: 56.25%;
+    font-size: 62.5%;
+  }
+
+  /* Prevent any horizontal overflow on the whole page */
+  html, body {
+    overflow-x: hidden;
+    width: 100%;
+    max-width: 100vw;
   }
 
   .header,
@@ -144,42 +151,76 @@ button {
     padding: 0.7rem 1rem !important;
     min-height: auto !important;
     gap: 0.6rem !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
   }
 
+  /* All sections must stay inside viewport */
   .shopify-section,
   .section,
   .banner,
   .hero,
   .collection-list,
   .footer {
-    max-width: 100vw !important;
-    overflow-x: clip;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    overflow-x: hidden;
   }
 
   .page-width {
     width: 100% !important;
     max-width: 100% !important;
-    padding-left: 1.2rem !important;
-    padding-right: 1.2rem !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+    box-sizing: border-box !important;
   }
 
-  .shopify-section .page-width {
-    margin-left: auto;
-    margin-right: auto;
+  /* Typography — readable on phone */
+  h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
+  h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
+  h3 { font-size: clamp(1.5rem, 5vw, 1.9rem); }
+  p  { font-size: 1.5rem; max-width: 100% !important; }
+
+  /* Collection grid: 1 column on phones so cards are full width */
+  .collection-list {
+    grid-template-columns: 1fr !important;
   }
 
-  h1 { font-size: 2.2rem; }
-  h2 { font-size: 1.9rem; }
-  h3 { font-size: 1.7rem; }
-
-  .hero h1,
-  .banner h1,
-  [class*="hero__title"] {
-    font-size: clamp(1.8rem, 7vw, 2.5rem);
+  /* Hero image fills full width, proportional scale */
+  .hero-custom {
+    width: 100% !important;
+    min-height: clamp(240px, 60vw, 380px) !important;
+    padding: 1rem !important;
   }
 
-  p { font-size: 1.45rem; max-width: 100% !important; }
+  .hero-custom__background img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+  }
 
+  .hero-custom__content {
+    width: 100% !important;
+    max-width: calc(100vw - 2rem) !important;
+    box-sizing: border-box !important;
+  }
+
+  .hero-custom__headline {
+    font-size: clamp(1.8rem, 8vw, 2.6rem) !important;
+  }
+
+  .hero-custom__subheadline {
+    font-size: clamp(1.3rem, 4vw, 1.6rem) !important;
+    max-width: 100% !important;
+  }
+
+  .hero-custom__button {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  /* Buttons */
   .button,
   .btn,
   a.button,
@@ -187,7 +228,9 @@ button {
   .shopify-payment-button__button,
   input[type="submit"] {
     padding: 0.9rem 1.25rem;
-    font-size: 1.25rem;
+    font-size: 1.3rem;
+    width: 100%;
+    box-sizing: border-box;
   }
 }
 

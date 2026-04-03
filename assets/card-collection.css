@@ -81,21 +81,31 @@
 @media (max-width: 749px) {
   .collection-card {
     border-radius: 12px;
+    width: 100%;
+    box-sizing: border-box;
   }
 
   .collection-card__media {
-    aspect-ratio: 1 / 1;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+
+  .collection-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   .collection-card__info {
     padding: 1rem 1rem 1.1rem;
+    text-align: center;
   }
 
   .collection-card__title {
-    font-size: 1.25rem;
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
   }
 
   .collection-card__count {
-    font-size: 1.05rem;
+    font-size: 1.2rem;
   }
 }
