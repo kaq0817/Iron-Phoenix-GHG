@@ -1,20 +1,29 @@
 <a href="{{ card_collection.url }}" class="collection-card">
   <div class="collection-card__media">
     {% if card_collection.image %}
-      <img
-        src="{{ card_collection.image | image_url: width: 800 }}"
-        srcset="
-          {{ card_collection.image | image_url: width: 400 }} 400w,
-          {{ card_collection.image | image_url: width: 600 }} 600w,
-          {{ card_collection.image | image_url: width: 800 }} 800w
-        "
-        sizes="100vw"
-        class="collection-card__image"
-        alt="{{ card_collection.image.alt | default: card_collection.title | escape }}"
-        loading="lazy"
-        width="800"
-        height="{{ 800 | divided_by: card_collection.image.aspect_ratio | round }}"
-      >
+      <picture>
+        <source
+          type="image/avif"
+          srcset="{{ card_collection.image | image_url: width: 400, format: 'avif' }} 400w,
+                  {{ card_collection.image | image_url: width: 800, format: 'avif' }} 800w"
+          sizes="(max-width: 749px) 100vw, (max-width: 989px) 50vw, 25vw">
+        <source
+          type="image/webp"
+          srcset="{{ card_collection.image | image_url: width: 400, format: 'webp' }} 400w,
+                  {{ card_collection.image | image_url: width: 800, format: 'webp' }} 800w"
+          sizes="(max-width: 749px) 100vw, (max-width: 989px) 50vw, 25vw">
+        <img
+          src="{{ card_collection.image | image_url: width: 800 }}"
+          srcset="{{ card_collection.image | image_url: width: 400 }} 400w,
+                  {{ card_collection.image | image_url: width: 800 }} 800w"
+          sizes="(max-width: 749px) 100vw, (max-width: 989px) 50vw, 25vw"
+          class="collection-card__image"
+          alt="{{ card_collection.image.alt | default: card_collection.title | escape }}"
+          loading="lazy"
+          width="800"
+          height="{{ 800 | divided_by: card_collection.image.aspect_ratio | round }}"
+        >
+      </picture>
     {% else %}
       {{ 'collection-1' | placeholder_svg_tag }}
     {% endif %}

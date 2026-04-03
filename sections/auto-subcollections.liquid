@@ -68,8 +68,10 @@
       {%- if c1 and c1.handle -%}
         <a href="{{ c1.url }}" class="auto-subcols-card" aria-label="{{ c1.title }}">
           {% if c1.image %}
-            <img src="{{ c1.image | image_url: width: 400 }}" 
-                 alt="{{ c1.title | escape }}" width="400" height="160" loading="lazy">
+            <img src="{{ c1.image | image_url: width: 800 }}"
+                 srcset="{{ c1.image | image_url: width: 400 }} 400w, {{ c1.image | image_url: width: 800 }} 800w"
+                 sizes="(max-width: 749px) 100vw, 33vw"
+                 alt="{{ c1.title | escape }}" width="800" height="{{ 800 | divided_by: c1.image.aspect_ratio | round }}" loading="lazy">
           {% endif %}
           <h3>{{ c1.title }}</h3>
         </a>
@@ -77,8 +79,10 @@
       {%- if c2 and c2.handle -%}
         <a href="{{ c2.url }}" class="auto-subcols-card" aria-label="{{ c2.title }}">
           {% if c2.image %}
-            <img src="{{ c2.image | image_url: width: 400 }}" 
-                 alt="{{ c2.title | escape }}" width="400" height="160" loading="lazy">
+            <img src="{{ c2.image | image_url: width: 800 }}"
+                 srcset="{{ c2.image | image_url: width: 400 }} 400w, {{ c2.image | image_url: width: 800 }} 800w"
+                 sizes="(max-width: 749px) 100vw, 33vw"
+                 alt="{{ c2.title | escape }}" width="800" height="{{ 800 | divided_by: c2.image.aspect_ratio | round }}" loading="lazy">
           {% endif %}
           <h3>{{ c2.title }}</h3>
         </a>
@@ -86,8 +90,10 @@
       {%- if c3 and c3.handle -%}
         <a href="{{ c3.url }}" class="auto-subcols-card" aria-label="{{ c3.title }}">
           {% if c3.image %}
-            <img src="{{ c3.image | image_url: width: 400 }}" 
-                 alt="{{ c3.title | escape }}" width="400" height="160" loading="lazy">
+            <img src="{{ c3.image | image_url: width: 800 }}"
+                 srcset="{{ c3.image | image_url: width: 400 }} 400w, {{ c3.image | image_url: width: 800 }} 800w"
+                 sizes="(max-width: 749px) 100vw, 33vw"
+                 alt="{{ c3.title | escape }}" width="800" height="{{ 800 | divided_by: c3.image.aspect_ratio | round }}" loading="lazy">
           {% endif %}
           <h3>{{ c3.title }}</h3>
         </a>
