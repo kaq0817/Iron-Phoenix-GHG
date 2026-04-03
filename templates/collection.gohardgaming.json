@@ -1,0 +1,58 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "sub_collections_mHPb3y": {
+      "type": "auto-subcollections",
+      "name": "Auto SubCollections",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "show_vendor": false,
+        "products_per_page": 12
+      }
+    },
+    "trust_badges_M7eFxk": {
+      "type": "trust-badges",
+      "name": "Trust Badges",
+      "settings": {
+        "trust_image": "shopify://shop_images/png.png",
+        "alt_text": "Trust Badges: Gamer Designed, Wellness, Secure, Support"
+      }
+    },
+    "featured_blog_48B7UT": {
+      "type": "featured-blog",
+      "name": "Blog thumbnails",
+      "settings": {
+        "blog": "game-reviews",
+        "post_limit": 3,
+        "heading": "From the Phoenix Journal",
+        "heading_size": "h2",
+        "card_style": "rounded",
+        "thumb_size": "sm",
+        "columns_desktop": 3,
+        "columns_mobile": 2,
+        "show_view_all": true,
+        "show_excerpt": false,
+        "color_scheme": "",
+        "padding_top": 24,
+        "padding_bottom": 24
+      }
+    }
+  },
+  "order": [
+    "sub_collections_mHPb3y",
+    "main",
+    "trust_badges_M7eFxk",
+    "featured_blog_48B7UT"
+  ]
+}
