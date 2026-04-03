@@ -1,15 +1,8 @@
 /* assets/section-hero-custom.css */
 
 .hero-custom {
-  --hero-text-color: var(--color-pearl, #f8f5ef);
-  --hero-overlay-top: rgba(8, 15, 28, 0.08);
-  --hero-overlay-bottom: rgba(8, 15, 28, 0.52);
-  --hero-glow: rgba(248, 245, 239, 0.04);
-  --hero-surface-top: rgba(8, 15, 28, 0.26);
-  --hero-surface-bottom: rgba(8, 15, 28, 0.34);
-  --hero-surface-border: rgba(248, 245, 239, 0.08);
-  --hero-shadow: rgba(4, 8, 16, 0.16);
-  --hero-subheadline-color: rgba(248, 245, 239, 0.86);
+  --hero-text-color: #ffffff;
+  --hero-subheadline-color: rgba(255, 255, 255, 0.92);
   --hero-button-bottom: #0d9488;
   --hero-button-text: #ffffff;
   --hero-button-border: rgba(13, 148, 136, 0.6);
@@ -40,22 +33,16 @@
 }
 
 .hero-custom::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background:
-    linear-gradient(180deg, var(--hero-overlay-top) 0%, var(--hero-overlay-bottom) 100%),
-    radial-gradient(circle at top, var(--hero-glow) 0%, rgba(248, 245, 239, 0) 44%);
+  display: none;
 }
 
 .hero-custom__content {
   width: min(760px, 92vw);
   padding: clamp(1.4rem, 2vw, 2rem);
-  border-radius: 22px;
-  background: linear-gradient(180deg, var(--hero-surface-top) 0%, var(--hero-surface-bottom) 100%);
-  border: 1px solid var(--hero-surface-border);
-  box-shadow: 0 12px 36px var(--hero-shadow);
+  border-radius: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
 }
 
 .hero-custom__logo {
@@ -121,9 +108,12 @@
   }
 
   .hero-custom__content {
-    width: min(100%, calc(100vw - 24px));
-    padding: 1.1rem 1rem 1.2rem;
-    border-radius: 16px;
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
   }
 
   .hero-custom__headline {

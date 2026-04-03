@@ -5,7 +5,7 @@
 
 {%- liquid
   assign logo_img = section.settings.logo
-  assign logo_w = settings.logo_width | default: 80
+  assign logo_w = section.settings.logo_size | default: settings.logo_width | default: 80
 -%}
 
 <style>
@@ -14,8 +14,8 @@
     top: auto !important;
     z-index: 100 !important;
     width: 100% !important;
-    background: #160665 !important; /* Forces full-width solid dark navy */
-    border-bottom: 2px solid #26A69A !important; /* Full-width cyan border */
+    background: {{ section.settings.header_bg_color | default: '#160665' }} !important;
+    border-bottom: 2px solid {{ section.settings.header_border_color | default: '#26A69A' }} !important;
   }
 
   .header {
@@ -52,16 +52,15 @@
 
   /* SQUARE LOGO — NO BACKGROUND BOX */
   .header__heading-link img {
-    width: 60px; /* adjust visual size */
-    height: 60px; /* same as width → square */
-    object-fit: contain; /* ensures 1024×1024 shows fully */
+    width: {{ logo_w }}px;
+    height: {{ logo_w }}px;
+    object-fit: contain;
     display: block;
   }
 
   .header__tagline {
-    font-size: 1.1rem;
+    font-size: {{ section.settings.tagline_size | default: 11 }}px;
     font-weight: 600;
-    color: var(--color-accent); /* Cyan for better contrast on dark background */
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -170,7 +169,7 @@
 
 <div class="header-wrapper">
   <header
-    class="header page-width"
+    class="header"
     style="
       --header-padding-top-mobile: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px;
       --header-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px;
@@ -195,7 +194,9 @@
         {% endif %}
       </a>
 
-      <span class="header__tagline"> Reminding You to Use Your Imagination </span>
+      {%- if section.settings.tagline != blank -%}
+    <span class="header__tagline" style="color: {{ section.settings.tagline_color | default: '#26A69A' }}">{{ section.settings.tagline | escape }}</span>
+  {%- endif -%}
     </div>
 
     <!-- ICONS -->
@@ -251,13 +252,41 @@
   "name": "Header",
   "class": "section-header",
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Logo" },
-    { "type": "text", "id": "logo_alt", "label": "Logo Alt Text", "default": "Site logo" },
+    { "type": "header", "content": "Logo" },
+    { "type": "image_picker", "id": "logo", "label": "Logo image" },
+    { "type": "text", "id": "logo_alt", "label": "Logo alt text", "default": "Site logo" },
+    {
+      "type": "range",
+      "id": "logo_size",
+      "min": 40,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "label": "Logo size",
+      "default": 80
+    },
+    { "type": "header", "content": "Tagline" },
+    { "type": "text", "id": "tagline", "label": "Tagline text", "default": "Reminding You to Use Your Imagination" },
+    { "type": "color", "id": "tagline_color", "label": "Tagline color", "default": "#26A69A" },
+    {
+      "type": "range",
+      "id": "tagline_size",
+      "min": 8,
+      "max": 20,
+      "step": 1,
+      "unit": "px",
+      "label": "Tagline font size (px → converted to rem)",
+      "default": 11
+    },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "header_bg_color", "label": "Header background color", "default": "#160665" },
+    { "type": "color", "id": "header_border_color", "label": "Header bottom border color", "default": "#26A69A" },
+    { "type": "header", "content": "Navigation" },
     { "type": "link_list", "id": "menu", "label": "Navigation menu", "default": "main-menu" },
     {
       "type": "select",
       "id": "sticky_header_type",
-      "label": "Sticky header type",
+      "label": "Sticky header",
       "options": [
         { "value": "none", "label": "None" },
         { "value": "on-scroll-up", "label": "On scroll up" },
@@ -266,6 +295,7 @@
       "default": "on-scroll-up"
     },
     { "type": "checkbox", "id": "show_line_separator", "label": "Show line separator", "default": false },
+    { "type": "header", "content": "Spacing" },
     {
       "type": "range",
       "id": "margin_bottom",
@@ -280,7 +310,7 @@
       "type": "range",
       "id": "padding_top",
       "min": 0,
-      "max": 36,
+      "max": 60,
       "step": 4,
       "unit": "px",
       "label": "Padding top",
@@ -290,7 +320,7 @@
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
-      "max": 36,
+      "max": 60,
       "step": 4,
       "unit": "px",
       "label": "Padding bottom",

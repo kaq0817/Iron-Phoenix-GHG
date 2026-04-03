@@ -88,14 +88,9 @@ button {
 #shopify-section-header {
   width: 100% !important;
   max-width: 100% !important;
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  justify-content: space-between !important;
-  padding: 1.2rem 2.4rem !important;
-  min-height: 6rem !important;
-  /* Not transparent: keep header readable over hero imagery */
-  background: linear-gradient(90deg, var(--color-header-gradient-start, #ffffff) 0%, var(--color-header-gradient-end, #f9f7f4) 100%) !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  box-sizing: border-box !important;
   position: relative !important;
   top: auto !important;
   z-index: 100 !important;
@@ -106,6 +101,16 @@ button {
 .section-header {
   position: relative !important;
   top: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+#shopify-section-header > * {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
 }
 
 .section-header.shopify-section-header-sticky,
