@@ -45,7 +45,7 @@
         <h3>{{ section.settings.customer_support_section_title | default: 'Customer Support (Text Only)' | escape }}</h3>
         <p>{{ section.settings.customer_support_section_text | default: 'Questions about products or orders?' | escape }}</p>
         <p>{{ 'contact.form.email' | t }}:
-          <a href="mailto:{{ section.settings.support_email | default: 'support@ironphoenix.store' | escape }}" class="contact-link">{{ section.settings.support_email | default: 'support@ironphoenix.store' | escape }}</a>
+          <a href="mailto:{{ section.settings.support_email | default: 'helpcenter@ourphoenixrise.com' | escape }}" class="contact-link">{{ section.settings.support_email | default: 'helpcenter@ourphoenixrise.com' | escape }}</a>
         </p>
         <p>Text Only:
           <a href="sms:{{ section.settings.support_sms_number_uri | default: '+15184158496' | escape }}" class="contact-link">{{ section.settings.support_sms_number_label | default: '(518) 415-8496 (Text Only)' | escape }}</a>
@@ -55,7 +55,11 @@
         <h3>{{ section.settings.biz_inquiries_section_title | default: 'Business Inquiries (Text Only)' | escape }}</h3>
         <p>{{ section.settings.biz_inquiries_section_text | default: 'For proposals or collaborations:' | escape }}</p>
         <p>{{ 'contact.form.email' | t }}:
-          <a href="mailto:{{ section.settings.biz_email | default: 'shadowseeker@ironphoenix.store' | escape }}" class="contact-link">{{ section.settings.biz_email | default: 'shadowseeker@ironphoenix.store' | escape }}</a>
+          <p>
+  <button type="button" class="ipx-bizbtn" onclick="document.getElementById('ipxBizGate').hidden = false;">
+    {{ section.settings.biz_inquiries_section_title | default: 'Business Inquiries' | escape }}
+  </button>
+</p>
         </p>
         <p>Text Only:
           <a href="sms:{{ section.settings.biz_sms_number_uri | default: '+13074395613' | escape }}" class="contact-link">{{ section.settings.biz_sms_number_label | default: '(307) 439-5613 (Text Only)' | escape }}</a>
