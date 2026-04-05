@@ -33,7 +33,7 @@
           "url": {{ settings.logo_image | image_url: width: 500 | prepend: "https:" | json }}
         },
         {% endif %}
-        "alternateName": "Iron Phoenix GHG",
+        "alternateName": "Our Phoenix Rise",
         "sameAs": [
           "https://facebook.com/GohardgamingIronPhoenix",
           "https://twitter.com/SSgohardgaming",
@@ -61,7 +61,7 @@
           "@type": "Brand",
           "name": {{ product.metafields.custom.brand_override
                       | default: product.vendor
-                      | default: "Iron Phoenix GHG"
+                      | default: "Iron Phoenix GHG LLC"
                       | json }}
         }
         {%- if product.selected_or_first_available_variant.barcode != blank -%}

@@ -1,5 +1,5 @@
 {% comment %}
-  Contact Us (Elite) — Iron Phoenix GHG (Sanitized + Hours Aligned + Voicemail Policy)
+  Contact Us (Elite) — Iron Phoenix GHG LLC (Sanitized + Hours Aligned + Voicemail Policy)
   - Public page shows City/State/Zip only
   - Optional JSON-LD can include full street address (toggle)
   - Rich text fields sanitized to remove legacy placeholders
@@ -127,8 +127,7 @@
 
   <div class="contact-section">
     <h2 class="section-heading">{{ section.settings.company_details_title | default: 'Company Details' | escape }}</h2>
-    <p><strong>Legal name:</strong> {{ section.settings.legal_name | default: 'Go Hard Gaming Discord LLC' | escape }}</p>
-    <p><strong>DBA:</strong> {{ section.settings.business_name | default: 'Iron Phoenix GHG' | escape }}</p>
+    <p><strong>Legal name:</strong> {{ section.settings.legal_name | default: 'Iron Phoenix GHG LLC' | escape }}</p>
     <p><strong>Location:</strong> {{ section.settings.city | default: 'Ballston Spa' | escape }}, {{ section.settings.region | default: 'NY' | escape }} {{ section.settings.postal_code | default: '12020' | escape }}, {{ section.settings.country | default: 'USA' | escape }}</p>
     <p class="note-text">{{ section.settings.single_operator_note | default: 'Note: All inquiries are handled by a single operator.' | escape }}</p>
   </div>

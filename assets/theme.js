@@ -1,5 +1,5 @@
 /* path: assets/theme.js */
-/* Iron Phoenix GHG — lean runtime: drawers, accessibility, AJAX cart, section lifecycle, media zoom */
+/* Iron Phoenix GHG LLC — lean runtime: drawers, accessibility, AJAX cart, section lifecycle, media zoom */
 
 (() => {
   'use strict';

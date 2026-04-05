@@ -1,4 +1,4 @@
-/* Iron Phoenix GHG — Quick Order controller (no dependencies) */
+/* Iron Phoenix GHG LLC — Quick Order controller (no dependencies) */
 /* Works with snippets/quick-order-list.liquid */
 
 (function () {
