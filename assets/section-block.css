@@ -1,0 +1,13 @@
+/* Section block utility classes for easy tweaking */
+.section-block {
+  padding: 64px 0;
+}
+.section-block--soft {
+  background: #0c155c;
+}
+.section-block--warm {
+  background: #1d0565;
+}
+.section-block--teal-tint {
+  background: #EEF6F5;
+}
