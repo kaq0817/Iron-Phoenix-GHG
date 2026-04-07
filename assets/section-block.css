@@ -6,8 +6,22 @@
   background: #0c155c;
 }
 .section-block--warm {
-  background: #1d0565;
+  background: #5b4e81;
 }
 .section-block--teal-tint {
-  background: #EEF6F5;
+  background: #81ebdf;
+}
+
+/* Section title classes */
+.section-title {
+  margin-bottom: 28px;
+}
+.section-title::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin-top: 10px;
+  background: #26A69A;
+  border-radius: 99px;
 }
