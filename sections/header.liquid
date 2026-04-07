@@ -216,6 +216,20 @@
   }
 </style>
 
+/* Clean, unified header color system */
+  .header,
+  .site-header {
+    background-color: #10243D !important;
+    color: #FFFFFF !important;
+    border-bottom: 3px solid #1b3466 !important;
+    box-shadow: none !important;
+  }
+
+.site-footer {
+  background: #10243D !important;
+  color: #FFFFFF !important;
+}
+
 <div class="header-wrapper">
   <header
     class="header"
@@ -409,3 +423,17 @@
     padding-left: 24px;
     padding-right: 24px;
   }
+
+.header,
+.header a,
+.header span,
+.header svg,
+.header__icon,
+.header__tagline,
+.header-search input,
+.header-search input::placeholder {
+  color: #FFFFFF !important;
+  fill: #FFFFFF !important;
+  background: transparent !important;
+  border: none !important;
+}
