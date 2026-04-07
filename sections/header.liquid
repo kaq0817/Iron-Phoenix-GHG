@@ -14,7 +14,7 @@
     top: auto !important;
     z-index: 100 !important;
     width: 100% !important;
-    background: {{ section.settings.header_bg_color | default: '#160665' }} !important;
+    background: {{ section.settings.header_bg_color | default: '#26a69a' }} !important;
     border-bottom: 2px solid {{ section.settings.header_border_color | default: '#26A69A' }} !important;
   }
 
@@ -24,14 +24,12 @@
     align-items: center;
     flex-wrap: nowrap;
     gap: 10px;
-    padding: var(--header-padding-top-mobile, 16px) 20px var(--header-padding-bottom-mobile, 16px);
-    padding: 4rem 5%;
-    background-color: #f8f5ef;
-    color: #48c9e2;
-    border-bottom: 3px solid #bedcd9;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    min-height: 100px !important;
-    padding: 20px 30px !important;
+    min-height: 100px;
+    padding: 20px 30px;
+    background: {{ section.settings.header_bg_color | default: '#26a69a' }} !important;
+    color: #fff !important;
+    border-bottom: none !important;
+    box-shadow: none !important;
   }
 
   .header-inner {
@@ -66,6 +64,7 @@
     font-weight: 600;
     text-transform: uppercase;
     white-space: nowrap;
+    color: #fff !important;
   }
 
   @media screen and (max-width: 600px) {
@@ -85,7 +84,7 @@
   }
 
   .header__icon {
-    color: var(--color-accent);
+    color: #fff;
     background: transparent;
     border: none;
     cursor: pointer;
@@ -98,7 +97,7 @@
   }
 
   .header__icon:hover {
-    background: rgba(var(--rgb-accent), 0.1);
+    background: rgba(255, 255, 255, 0.1);
   }
 
   /* SEARCH INPUT */
@@ -108,12 +107,12 @@
     border-radius: 6px;
     border: none;
     outline: none;
-    background: var(--color-search-bg);
-    color: var(--color-text-light);
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
   }
 
   .header-search input::placeholder {
-    color: var(--color-search-placeholder);
+    color: rgba(255, 255, 255, 0.7);
   }
 
   .header-search {
@@ -169,66 +168,26 @@
     pointer-events: none !important;
   }
 
-  /* --- BOUTIQUE HEADER OVERRIDES --- */
-  .header .logo img {
-    height: 100px !important;
-    width: auto;
-    transition: transform 0.3s ease;
+  .section-block {
+    padding: 64px 0;
   }
-  .header .nav-menu a {
-    font-size: 1.4rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 2px;
+  .section-block--navy {
+    background: #10243D;
   }
-
-  /* --- TEAL HEADER OVERRIDE --- */
-  .header {
-    background-color: #26a69a !important;
-    color: #fff !important;
-    border-bottom: 3px solid #1b3466 !important;
+  .section-block--teal {
+    background: #2F8F83;
+  }
+  .section-block--lightblue {
+    background: #888ec1;
   }
 
-  /* --- FORCE TEAL HEADER, WHITE TEXT, NO WHITE/BLUE/BORDER OVERRIDES --- */
-  .header {
-    background: #26a69a !important;
-    color: #fff !important;
-    border-bottom: none !important;
-    box-shadow: none !important;
-  }
-  .header__tagline,
-  .header__icon,
-  .header__logo,
-  .header__heading-link,
-  .header__heading-link span,
-  .header__heading-link img,
-  .header-search input[type='search'],
-  .header-search input::placeholder,
-  .header .nav-menu a {
-    color: #fff !important;
-    fill: #fff !important;
-    background: transparent !important;
-    border: none !important;
-    text-shadow: none !important;
-  }
-  .header .nav-menu a:hover {
-    color: #e0f7fa !important;
+  .page-width {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding-left: 24px;
+    padding-right: 24px;
   }
 </style>
-
-/* Clean, unified header color system */
-  .header,
-  .site-header {
-    background-color: #10243D !important;
-    color: #FFFFFF !important;
-    border-bottom: 3px solid #1b3466 !important;
-    box-shadow: none !important;
-  }
-
-.site-footer {
-  background: #10243D !important;
-  color: #FFFFFF !important;
-}
 
 <div class="header-wrapper">
   <header
@@ -258,8 +217,8 @@
       </a>
 
       {%- if section.settings.tagline != blank -%}
-    <span class="header__tagline" style="color: {{ section.settings.tagline_color | default: '#26A69A' }}">{{ section.settings.tagline | escape }}</span>
-  {%- endif -%}
+        <span class="header__tagline" style="color: {{ section.settings.tagline_color | default: '#ffffff' }}">{{ section.settings.tagline | escape }}</span>
+      {%- endif -%}
     </div>
 
     <!-- ICONS -->
@@ -277,7 +236,7 @@
         >
           <svg width="24" height="24" fill="none">
             <path d="M16 17v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 5a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                  stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </a>
       {% endif %}
@@ -285,9 +244,9 @@
       <a href="{{ routes.cart_url }}" class="header__icon" aria-label="Cart">
         <svg width="24" height="24" fill="none">
           <path d="M3 3h2l.4 2m0 0L7 13h8l2-8H5.4Z"
-                stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="9" cy="17" r="1" stroke="var(--color-accent)" stroke-width="2"/>
-          <circle cx="15" cy="17" r="1" stroke="var(--color-accent)" stroke-width="2"/>
+                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="17" r="1" stroke="#fff" stroke-width="2"/>
+          <circle cx="15" cy="17" r="1" stroke="#fff" stroke-width="2"/>
         </svg>
       </a>
 
@@ -300,8 +259,8 @@
         aria-expanded="false"
       >
         <svg width="24" height="24" fill="none">
-          <rect x="4" y="7" width="16" height="2" rx="1" fill="var(--color-accent)"/>
-          <rect x="4" y="15" width="16" height="2" rx="1" fill="var(--color-accent)"/>
+          <rect x="4" y="7" width="16" height="2" rx="1" fill="#fff"/>
+          <rect x="4" y="15" width="16" height="2" rx="1" fill="#fff"/>
         </svg>
       </button>
     </div>
@@ -330,7 +289,7 @@
     },
     { "type": "header", "content": "Tagline" },
     { "type": "text", "id": "tagline", "label": "Tagline text", "default": "Reminding You to Use Your Imagination" },
-    { "type": "color", "id": "tagline_color", "label": "Tagline color", "default": "#26A69A" },
+    { "type": "color", "id": "tagline_color", "label": "Tagline color", "default": "#ffffff" },
     {
       "type": "range",
       "id": "tagline_size",
@@ -338,11 +297,11 @@
       "max": 20,
       "step": 1,
       "unit": "px",
-      "label": "Tagline font size (px → converted to rem)",
+      "label": "Tagline font size (px)",
       "default": 11
     },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "header_bg_color", "label": "Header background color", "default": "#160665" },
+    { "type": "color", "id": "header_bg_color", "label": "Header background color", "default": "#26a69a" },
     { "type": "color", "id": "header_border_color", "label": "Header bottom border color", "default": "#26A69A" },
     { "type": "header", "content": "Navigation" },
     { "type": "link_list", "id": "menu", "label": "Navigation menu", "default": "main-menu" },
@@ -392,48 +351,3 @@
   ]
 }
 {% endschema %}
-
-.header img {
-    height: 60px !important;
-    width: auto !important;
-  }
-
-.header-inner {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-.section-block {
-    padding: 64px 0;
-  }
-  .section-block--soft {
-    background: #F7F7F5;
-  }
-  .section-block--warm {
-    background: #FCFAF7;
-  }
-  .section-block--teal-tint {
-    background: #EEF6F5;
-  }
-
-.page-width {
-    max-width: 1240px;
-    margin: 0 auto;
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-.header,
-.header a,
-.header span,
-.header svg,
-.header__icon,
-.header__tagline,
-.header-search input,
-.header-search input::placeholder {
-  color: #FFFFFF !important;
-  fill: #FFFFFF !important;
-  background: transparent !important;
-  border: none !important;
-}
