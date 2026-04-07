@@ -279,6 +279,9 @@
     {%- comment -%} Single JavaScript file - global.js functionality merged into theme.js {%- endcomment -%}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
+      <!-- Bot/Spam Blocker -->
+      <script src="{{ 'bot-blocker.js' | asset_url }}" defer></script>
+
     {%- comment -%} ---- Google gtag.js only (no GTM; no duplicates) ---- {%- endcomment -%}
     {%- assign ga4_id = settings.ga4_id | strip | default: 'G-V6ZP7KWRZN' -%}
     {%- assign gtag_id = settings.google_tag_id | strip | default: 'GT-552Q5J6X' -%}
