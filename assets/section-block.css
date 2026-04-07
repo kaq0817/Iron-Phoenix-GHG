@@ -1,3 +1,9 @@
+body,
+.main-content {
+  background: #120A6B !important;
+  color: #FFFFFF;
+}
+
 /* Section block utility classes for easy tweaking */
 .section-block {
   padding: 64px 0;
@@ -24,4 +30,120 @@
   margin-top: 10px;
   background: #26A69A;
   border-radius: 99px;
+}
+
+/* Section heading classes */
+.section-heading {
+  margin-bottom: 20px !important;
+}
+
+.product-card {
+  background: #E6DED2;
+  border-radius: 12px;
+  color: #1F1F1F;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.collection-card {
+  background: #b9d8f3;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.product-grid {
+  margin-top: 0;
+  gap: 24px;
+}
+
+.home-intro-band {
+  background: #5dd5c7;
+  padding: 36px 0;
+}
+
+.section-alt {
+  background: #48c5a3;
+}
+
+.section-dark {
+  background: #120a6b;
+  color: #F2F2F2;
+}
+
+.button {
+  background: #2F8F83;
+  color: #F2F2F2;
+  border: none;
+}
+
+.button:hover,
+.button-primary:hover {
+  background: #256F66;
+}
+
+.button-primary {
+  background: #2F8F83;
+  color: #F2F2F2;
+  border: none;
+}
+
+.site-header {
+  background: #1A2A44;
+  color: #F2F2F2;
+}
+
+.site-footer {
+  background: #1f0a6c;
+  color: #FFFFFF;
+}
+
+.shopify-section {
+  background: #1f0a6c;
+  color: #FFFFFF;
+}
+
+.shopify-section:nth-of-type(odd) {
+  background: #1A2A44 !important;
+}
+
+.shopify-section:nth-of-type(even) {
+  background: #120A6B !important;
+}
+
+.shopify-section {
+  padding-top: 40px !important;
+  padding-bottom: 40px !important;
+}
+
+h2, .title, .section-header {
+  margin-bottom: 20px !important;
+}
+
+.grid,
+.product-grid,
+.collection-grid {
+  row-gap: 24px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.card,
+.product-card,
+.collection-card {
+  background: #0F1E38 !important;
+  color: #FFFFFF !important;
+  border: none !important;
+}
+
+.blog,
+.featured-blog,
+.article-card {
+  background: #1F0A6C !important;
+  border: none !important;
+}
+
+.article-card h3,
+.article-card a {
+  color: #FFFFFF !important;
 }
