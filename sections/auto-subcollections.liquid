@@ -72,6 +72,16 @@
                  srcset="{{ c1.image | image_url: width: 400 }} 400w, {{ c1.image | image_url: width: 800 }} 800w"
                  sizes="(max-width: 749px) 100vw, 33vw"
                  alt="{{ c1.title | escape }}" width="800" height="{{ 800 | divided_by: c1.image.aspect_ratio | round }}" loading="lazy">
+              {%- assign c1_height = 800 | divided_by: c1.image.aspect_ratio | round -%}
+              {{ c1.image | image_url: width: 800 | image_tag: 
+                alt: c1.title,
+                loading: 'lazy',
+                widths: '400,800',
+                sizes: '(max-width: 749px) 100vw, 33vw',
+                width: 800,
+                height: c1_height,
+                class: 'auto-subcols-img'
+              }}
           {% endif %}
           <h3>{{ c1.title }}</h3>
         </a>
@@ -83,6 +93,16 @@
                  srcset="{{ c2.image | image_url: width: 400 }} 400w, {{ c2.image | image_url: width: 800 }} 800w"
                  sizes="(max-width: 749px) 100vw, 33vw"
                  alt="{{ c2.title | escape }}" width="800" height="{{ 800 | divided_by: c2.image.aspect_ratio | round }}" loading="lazy">
+              {%- assign c2_height = 800 | divided_by: c2.image.aspect_ratio | round -%}
+              {{ c2.image | image_url: width: 800 | image_tag: 
+                alt: c2.title,
+                loading: 'lazy',
+                widths: '400,800',
+                sizes: '(max-width: 749px) 100vw, 33vw',
+                width: 800,
+                height: c2_height,
+                class: 'auto-subcols-img'
+              }}
           {% endif %}
           <h3>{{ c2.title }}</h3>
         </a>
@@ -94,6 +114,16 @@
                  srcset="{{ c3.image | image_url: width: 400 }} 400w, {{ c3.image | image_url: width: 800 }} 800w"
                  sizes="(max-width: 749px) 100vw, 33vw"
                  alt="{{ c3.title | escape }}" width="800" height="{{ 800 | divided_by: c3.image.aspect_ratio | round }}" loading="lazy">
+              {%- assign c3_height = 800 | divided_by: c3.image.aspect_ratio | round -%}
+              {{ c3.image | image_url: width: 800 | image_tag: 
+                alt: c3.title,
+                loading: 'lazy',
+                widths: '400,800',
+                sizes: '(max-width: 749px) 100vw, 33vw',
+                width: 800,
+                height: c3_height,
+                class: 'auto-subcols-img'
+              }}
           {% endif %}
           <h3>{{ c3.title }}</h3>
         </a>
