@@ -1,16 +1,21 @@
 /* component-footer.css — Iron Phoenix GHG LLC • Neon Card Edition */
 
+/* Boutique Footer */
 .footer {
-  background-color: #000;
+  background-color: #18171c;
   color: #fff;
-  padding: 50px 20px 25px;
+  padding: 70px 20px 35px;
   border-top: 2px solid #00ffff;
   font-family: "Roboto", sans-serif;
+  text-align: center;
 }
 
 .footer-wrapper {
   max-width: 1300px;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 /* ===== 4-Column Neon Card Grid ===== */
@@ -38,12 +43,24 @@
 /* ===== Headings ===== */
 .footer-block h3,
 .contact-title {
-  font-size: 1.05rem;
-  font-weight: 700;
+  font-size: 1.5rem;
+  font-weight: 800;
   text-transform: uppercase;
   color: #00ffff;
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+}
+
+/* Mission Statement */
+.footer-mission {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #fff;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* ===== Text + Links ===== */
