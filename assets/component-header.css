@@ -4,10 +4,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 2.5rem 2rem 2.5rem 2rem;
-  background-color: var(--color-header-bg, #1c1c1c);
-  color: var(--color-header-text, #ffffff);
-  box-shadow: 0 4px 32px rgba(0,0,0,0.08);
+  padding: 2rem 4%;
+  background-color: #f8f5ef;
+  color: #1b3466;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+  border-bottom: 2px solid #26a69a;
   position: relative;
 }
 
@@ -26,16 +27,17 @@
 
 .header .nav-menu a {
   text-decoration: none;
-  color: var(--color-header-text, #ffffff);
-  font-weight: 700;
+  color: #1b3466;
+  font-family: "Playfair Display", serif;
+  font-weight: 600;
   font-size: 1.15rem;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
   transition: color 0.2s ease-in-out;
   text-transform: uppercase;
 }
 
 .header .nav-menu a:hover {
-  color: var(--color-accent, #ffff33);
+  color: #26a69a;
 }
 
 .header .cart-icon {
