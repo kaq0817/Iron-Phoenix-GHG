@@ -1,9 +1,9 @@
 :root {
-  --drawer-bg: #121212; /* Dark purple background */
-  --drawer-overlay: rgba(0, 0, 0, 0.7); /* Slightly darker overlay */
-  --drawer-text: #E2D3F9; /* Light lavender for text */
-  --drawer-accent: #FF10F0; /* Neon pink accent */
-  --drawer-shadow: 0 4px 24px rgba(255, 16, 240, 0.25); /* Neon glow shadow */
+  --drawer-bg: #111111;
+  --drawer-overlay: rgba(0, 0, 0, 0.6);
+  --drawer-text: #ffffff;
+  --drawer-accent: #ffffff;
+  --drawer-shadow: 0 4px 24px rgba(0, 0, 0, 0.5);
 }
 
 .header-drawer {
@@ -86,8 +86,8 @@ body.drawer-open .header-drawer__overlay {
 .header-drawer__sublink:hover,
 .header-drawer__sublink:focus {
   color: var(--drawer-accent);
-  background: rgba(255, 16, 240, 0.1); /* Light neon pink glow */
-  outline: 2px solid var(--drawer-accent);
+  background: rgba(255, 255, 255, 0.08);
+  outline: 2px solid rgba(255, 255, 255, 0.3);
   outline-offset: 2px;
 }
 

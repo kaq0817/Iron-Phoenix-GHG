@@ -22,7 +22,7 @@
 .free-shipping-bar .fsb__bar {
   position: absolute; inset: 0 auto 0 0; height: 100%;
   width: var(--fsb-progress, 0%);
-  background: linear-gradient(90deg, var(--fsb-bar), #9d4edd);
+  background: #ffffff;
   border-radius: inherit; transition: width 180ms ease;
 }
 /* tighter in drawers if you ever use an app/cart drawer */

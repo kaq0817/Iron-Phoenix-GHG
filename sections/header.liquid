@@ -14,8 +14,8 @@
     top: auto !important;
     z-index: 100 !important;
     width: 100% !important;
-    background: {{ section.settings.header_bg_color | default: '#26a69a' }} !important;
-    border-bottom: 2px solid {{ section.settings.header_border_color | default: '#26A69A' }} !important;
+    background: {{ section.settings.header_bg_color | default: '#111111' }} !important;
+    border-bottom: 1px solid {{ section.settings.header_border_color | default: '#222222' }} !important;
   }
 
   .header {
@@ -26,7 +26,7 @@
     gap: 10px;
     min-height: 100px;
     padding: 20px 30px;
-    background: {{ section.settings.header_bg_color | default: '#26a69a' }} !important;
+    background: {{ section.settings.header_bg_color | default: '#111111' }} !important;
     color: #fff !important;
     border-bottom: none !important;
     box-shadow: none !important;
@@ -172,10 +172,10 @@
     padding: 64px 0;
   }
   .section-block--navy {
-    background: #10243D;
+    background: #050b12;
   }
-  .section-block--teal {
-    background: #2F8F83;
+  .section-block--purple {
+    background: #36124e;
   }
   .section-block--lightblue {
     background: #888ec1;
@@ -228,39 +228,26 @@
         <input type="hidden" name="contact[Source_ID]" value="phoenix-flow-tracked">
       </form>
 
-      {% if shop.customer_accounts_enabled %}
-        <a
-          href="{% if customer %}{{ routes.account_url }}{% else %}{{ routes.account_login_url }}{% endif %}"
-          class="header__icon"
-          aria-label="Account"
-        >
-          <svg width="24" height="24" fill="none">
-            <path d="M16 17v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2M12 5a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"
-                  stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </a>
-      {% endif %}
-
-      <a href="{{ routes.cart_url }}" class="header__icon" aria-label="Cart">
-        <svg width="24" height="24" fill="none">
-          <path d="M3 3h2l.4 2m0 0L7 13h8l2-8H5.4Z"
-                stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          <circle cx="9" cy="17" r="1" stroke="#fff" stroke-width="2"/>
-          <circle cx="15" cy="17" r="1" stroke="#fff" stroke-width="2"/>
+      <a href="{{ routes.cart_url }}" aria-label="Cart" style="display:flex;align-items:center;justify-content:center;padding:8px;line-height:0;">
+        <svg width="26" height="26" viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M3 3h2l.4 2m0 0L7 13h12l2-8H5.4Z" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="9" cy="18" r="1.5" fill="#ffffff"/>
+          <circle cx="16" cy="18" r="1.5" fill="#ffffff"/>
         </svg>
       </a>
 
       <button
         type="button"
-        class="header__icon header__icon--menu"
         id="menu-drawer-toggle"
-        aria-label="Menu"
+        aria-label="Open menu"
         aria-controls="menu-drawer"
         aria-expanded="false"
+        style="background:none;border:none;cursor:pointer;padding:8px;display:flex;align-items:center;justify-content:center;line-height:0;"
       >
-        <svg width="24" height="24" fill="none">
-          <rect x="4" y="7" width="16" height="2" rx="1" fill="#fff"/>
-          <rect x="4" y="15" width="16" height="2" rx="1" fill="#fff"/>
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="3" y="7" width="22" height="2.5" rx="1.25" fill="#ffffff"/>
+          <rect x="3" y="13" width="22" height="2.5" rx="1.25" fill="#ffffff"/>
+          <rect x="3" y="19" width="22" height="2.5" rx="1.25" fill="#ffffff"/>
         </svg>
       </button>
     </div>
@@ -301,8 +288,8 @@
       "default": 11
     },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "header_bg_color", "label": "Header background color", "default": "#26a69a" },
-    { "type": "color", "id": "header_border_color", "label": "Header bottom border color", "default": "#26A69A" },
+    { "type": "color", "id": "header_bg_color", "label": "Header background color", "default": "#111111" },
+    { "type": "color", "id": "header_border_color", "label": "Header bottom border color", "default": "#222222" },
     { "type": "header", "content": "Navigation" },
     { "type": "link_list", "id": "menu", "label": "Navigation menu", "default": "main-menu" },
     {
