@@ -21,9 +21,9 @@
   --color-primary:          #26A69A;
   --color-accent:           #26A69A;
   --color-accent-rgb:       38,166,154;
-  --color-accent-hover:     #6A1B9A;
-  --color-accent-hover-rgb: 106,27,154;
-  --color-deep-accent:      #6A1B9A;
+  --color-accent-hover:     #1F1F1F;
+  --color-accent-hover-rgb: 31,31,31;
+  --color-deep-accent:      #1F1F1F;
   --rgb-accent:             38,166,154;
 
   /* CTA buttons — yellow strike */
@@ -113,8 +113,8 @@
   --color-accent-hover-rgb: 255,213,79;
   --color-primary:          #26A69A;
   --rgb-accent:             38,166,154;
-  --color-deep-accent:      #6A1B9A;
-  --color-trim-accent:      #6A1B9A;
+  --color-deep-accent:      #1F1F1F;
+  --color-trim-accent:      #1F1F1F;
   --color-support-accent:   #FFD54F;
   --color-button-primary-bg:    #26A69A;
   --color-button-primary-text:  #FFFFFF;

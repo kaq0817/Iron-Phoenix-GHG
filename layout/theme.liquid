@@ -56,21 +56,10 @@
       {% endif %}
     </title>
 
-    <link rel="sitemap" type="application/xml" href="{{ shop.url }}/sitemap.xml">
-
     {%- render 'cart-notification' -%}
     {%- render 'schema-protection' -%}
     {%- render 'meta-tags' -%}
     {%- render 'schema-structured-data' -%}
-
-    {%- if settings.favicon != blank -%}
-      <link
-        rel="icon"
-        type="image/png"
-        sizes="32x32"
-        href="{{ settings.favicon | image_url: width: 32, height: 32 | escape }}"
-      >
-    {%- endif -%}
 
     {%- comment -%} Preconnect to critical origins {%- endcomment -%}
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
@@ -90,28 +79,18 @@
       {{ settings.type_header_font | font_url | preload_tag }}
     {%- endif -%}
 
-    {% comment %} ⚡️ LCP OPTIMIZATION: Conditional Preload for Critical Images (product only) {% endcomment %}
-    {%- liquid
-      assign lcp_image = blank
-      assign lcp_srcset = blank
-      assign lcp_sizes = blank
-
-      if template.name == 'product' and product and product.featured_media
-        assign lcp_image = product.featured_media
-        assign lcp_srcset = lcp_image | image_url: width: 600 | append: ' 600w, ' | append: lcp_image | image_url: width: 900 | append: ' 900w, ' | append: lcp_image | image_url: width: 1200 | append: ' 1200w'
-        assign lcp_sizes = '(min-width: 750px) 50vw, 100vw'
-      endif
-    -%}
-    {%- if lcp_image != blank -%}
-      {{- lcp_image
-        | image_url: width: 900
-        | image_tag: preload: true, srcset: lcp_srcset, sizes: lcp_sizes, alt: lcp_image.alt, class: 'lcp-preload-hide', decoding: 'async'
-      -}}
-      <style>
-        .lcp-preload-hide {
-          display: none !important;
-        }
-      </style>
+    {%- comment -%} ⚡️ LCP OPTIMIZATION: Preload link for critical above-the-fold image {%- endcomment -%}
+    {%- comment -%} theme-check-disable: using manual preload link intentionally — image_tag:preload renders an <img> in <head> which is invalid HTML {%- endcomment -%}
+    {%- if template.name == 'product' and product and product.featured_media -%}
+      {%- assign lcp_img = product.featured_media -%}
+      {%- assign lcp_srcset = lcp_img | image_url: width: 600 | append: ' 600w, ' | append: lcp_img | image_url: width: 900 | append: ' 900w, ' | append: lcp_img | image_url: width: 1200 | append: ' 1200w' -%}
+      {% comment %}theme-check-disable RemoteAsset{% endcomment %}
+      <link rel="preload" as="image"
+        href="{{ lcp_img | image_url: width: 900 }}"
+        imagesrcset="{{ lcp_srcset }}"
+        imagesizes="(min-width: 750px) 50vw, 100vw"
+      >
+      {% comment %}theme-check-enable RemoteAsset{% endcomment %}
     {%- endif -%}
 
     {%- comment -%} Critical CSS {%- endcomment -%}

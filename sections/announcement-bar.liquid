@@ -36,7 +36,7 @@
 {%- assign announcement_bar = false -%}
 {%- unless section.blocks.size > 0 -%}
   {%- assign announcement_bar = true -%}
-  {%- capture default_text -%}Welcome to Forged Phoenix – Shop Now!{%- endcapture -%}
+  {%- capture default_text -%}📦 FREE SHIPPING ON ALL ORDERS OVER $159.00! | SHOP NOW{%- endcapture -%}
 {%- else -%}
   {%- assign announcement_bar = true -%}
 {%- endunless -%}
@@ -232,7 +232,7 @@ customElements.get('localization-form') || customElements.define('localization-f
       "type": "announcement",
       "name": "Announcement",
       "settings": [
-        { "type": "text", "id": "text", "label": "Announcement text", "default": "Welcome to Forged Phoenix – Shop Now!" },
+        { "type": "text", "id": "text", "label": "Announcement text", "default": "📦 FREE SHIPPING ON ALL ORDERS OVER $159.00! | SHOP NOW" },
         { "type": "url", "id": "link", "label": "Link" }
       ]
     }

@@ -2,8 +2,8 @@
 
 .branding-section {
   /* Brand tokens (scoped) */
-  --ip-purple-900: #140a24;     /* deep purple */
-  --ip-purple-800: #1b0e31;     /* softer glow */
+  --ip-purple-900: #121212;     /* deep purple */
+  --ip-purple-800: #1a1a1a;     /* softer glow */
   --ip-black:      #000000;
   --ip-teal-500:   #00f5ff;     /* bright light teal */
   --ip-teal-400:   #33f7ff;

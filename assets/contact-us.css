@@ -33,7 +33,7 @@
 .section-heading {
   font-size: 1.75rem;
   margin-bottom: 1rem;
-  color: #8b7ff5;
+  color: #6B7280;
 }
 
 .contact-details-grid {
@@ -82,7 +82,7 @@
   content: "→";
   position: absolute;
   left: 0;
-  color: #8b7ff5;
+  color: #6B7280;
 }
 
 .note-text {
@@ -98,7 +98,7 @@
 .note-text.important {
   font-weight: 600;
   color: #e0e0e0;
-  border-left-color: #8b7ff5;
+  border-left-color: #6B7280;
 }
 
 .contact-us-container .field {
@@ -139,7 +139,7 @@
 .contact-us-container .button {
   margin-top: 1.5rem;
   padding: 0.85rem 2rem;
-  background-color: #8b7ff5;
+  background-color: #6B7280;
   color: #000;
   border: none;
   border-radius: 8px;

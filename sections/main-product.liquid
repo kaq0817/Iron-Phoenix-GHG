@@ -9,6 +9,8 @@
 <noscript>{{ 'section-main-product.css' | asset_url | stylesheet_tag }}</noscript>
 <noscript>{{ 'component-price.css' | asset_url | stylesheet_tag }}</noscript>
 
+<script src="{{ 'product-tabs.js' | asset_url }}" defer></script>
+
 {%- assign p = product -%}
 {%- assign v = p.selected_or_first_available_variant -%}
 {%- assign hero_media = v.featured_media | default: p.featured_media -%}
@@ -142,8 +144,9 @@
     padding: 1.6rem;
     font-size: 1.6rem;
     font-weight: 700;
-    background: #26A69A; /* Cyan accent */
-    color: #1a0c4b; /* Dark navy text */
+    background: #26A69A;
+    color: #1F1F1F;
+  }
   .product__add-to-cart:hover {
     background: #1e8772;
   }
@@ -153,17 +156,53 @@
     cursor: not-allowed;
   }
 
-  .rte {
-    margin-top: 3rem;
+  /* --- PRODUCT TABS --- */
+  .product-tabs-section {
+    max-width: 140rem;
+    margin: 4rem auto 0;
+    padding: 0 2rem;
+  }
+  .product-tabs__nav {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #e5e7eb;
+    margin-bottom: 0;
+  }
+  .product-tab-button {
+    background: none;
+    border: none;
+    border-bottom: 3px solid transparent;
+    margin-bottom: -2px;
+    padding: 1.2rem 2rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #6b7280;
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .product-tab-button:hover {
+    color: #0f1c2e;
+  }
+  .product-tab-button.is-active {
+    color: #0f1c2e;
+    border-bottom-color: #26A69A;
+  }
+  .product-tab-panel {
+    padding: 2.5rem 0;
     font-size: 1.5rem;
     line-height: 1.7;
+    color: #374151;
+  }
+  .product-tab-panel.is-hidden {
+    display: none;
+  }
+  .product-tab-panel .rte p + p {
+    margin-top: 1em;
   }
 
-  /* --- FAQ ACCORDION --- */
-  .faq-wrapper {
-    margin-top: 3rem;
-    padding: 1rem 0;
-    border-top: 1px solid #d1d5db;
+  /* --- FAQ inside tab --- */
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
   }
   .faq-question {
     padding: 1.5rem 0;
@@ -171,19 +210,20 @@
     font-weight: 700;
     display: flex;
     justify-content: space-between;
-    font-size: 1.6rem;
+    font-size: 1.5rem;
     color: #0f1c2e;
-    border-bottom: 1px solid #e5e7eb;
   }
   .faq-answer {
     display: none;
-    padding: 1.5rem 0;
+    padding: 0 0 1.5rem;
     font-size: 1.4rem;
     line-height: 1.6;
     color: #374151;
   }
   .faq-arrow {
     transition: transform 0.2s ease;
+    flex-shrink: 0;
+    margin-left: 1rem;
   }
   .faq-open .faq-arrow {
     transform: rotate(90deg);
@@ -269,61 +309,124 @@
           <input type="number" name="quantity" value="1" min="1" style="width: 80px; padding: 10px; border: 1px solid #d1d5db; border-radius: 4px; font-size: 1.6rem;">
         </div>
 
+        {%- comment -%}
+          POD products (Printify, Printful, etc.) are made on demand.
+          Never show Sold Out purely because inventory_quantity = 0.
+          Only disable if the vendor explicitly marks the variant unavailable
+          (discontinued/pulled from their catalog) AND it's not a POD vendor.
+          Note: render snippets don't share scope, so we check the vendor here directly.
+        {%- endcomment -%}
+        {%- assign pod_vendors = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble' | split: ',' -%}
+        {%- assign section_is_pod = false -%}
+        {%- for pod_v in pod_vendors -%}
+          {%- if p.vendor == pod_v -%}
+            {%- assign section_is_pod = true -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- assign truly_unavailable = false -%}
+        {%- unless v.available -%}
+          {%- unless section_is_pod -%}
+            {%- assign truly_unavailable = true -%}
+          {%- endunless -%}
+        {%- endunless -%}
+
         <button
           type="submit"
           class="product__add-to-cart"
-          {% unless v.available %}
-            disabled
-          {% endunless %}
+          {% if truly_unavailable %}disabled{% endif %}
         >
-          {% if v.available %}Add to Cart{% else %}Sold Out{% endif %}
+          {%- if truly_unavailable -%}
+            Sold Out
+          {%- elsif section_is_pod -%}
+            Add to Cart
+          {%- elsif v.available -%}
+            Add to Cart
+          {%- else -%}
+            Sold Out
+          {%- endif -%}
         </button>
       </form>
-
-      <div class="product__description rte">
-        {{ p.description }}
-      </div>
-
-      <div class="faq-wrapper">
-        
-        <div class="faq-item">
-          <div class="faq-question">
-            Crafted Just For You (Shipping Info)
-            <span class="faq-arrow">▶</span>
-          </div>
-          <div class="faq-answer">
-            <strong>Production & Shipping</strong><br>
-            Every piece of apparel is custom-made on demand when you order it. This means your gear is fresh off the press and crafted with care.<br><br>
-            • <strong>Production Time:</strong> 3-5 business days<br>
-            • <strong>Shipping Time:</strong> 5-7 business days (Standard US)<br><br>
-            <em>Note: Other categories—such as drinkware or home goods—may ship separately from our ready-to-ship facilities.</em>
-          </div>
-        </div>
-
-        {% if product.metafields.custom.faq != blank %}
-          {% assign faq_lines = product.metafields.custom.faq | split: '\n' %}
-
-          {% for line in faq_lines %}
-            {% assign qa = line | split: 'A:' %}
-            {% if qa.size > 1 %}
-              {% assign q = qa[0] | remove: 'Q:' | strip %}
-              {% assign a = qa[1] | strip %}
-
-              <div class="faq-item">
-                <div class="faq-question">
-                  {{ q }}
-                  <span class="faq-arrow">▶</span>
-                </div>
-                <div class="faq-answer">{{ a }}</div>
-              </div>
-            {% endif %}
-          {% endfor %}
-        {% endif %}
-      </div>
 
     </div>
   </div>
 </section>
+
+<div class="product-tabs-section">
+  <div class="product-tabs" role="tablist">
+    <div class="product-tabs__nav">
+      <button
+        class="product-tab-button is-active"
+        role="tab"
+        aria-selected="true"
+        aria-controls="tab-description-{{ section.id }}"
+        tabindex="0"
+      >Description</button>
+      <button
+        class="product-tab-button"
+        role="tab"
+        aria-selected="false"
+        aria-controls="tab-shipping-{{ section.id }}"
+        tabindex="-1"
+      >Shipping & Returns</button>
+      {%- if product.metafields.custom.faq != blank -%}
+        <button
+          class="product-tab-button"
+          role="tab"
+          aria-selected="false"
+          aria-controls="tab-faq-{{ section.id }}"
+          tabindex="-1"
+        >FAQ</button>
+      {%- endif -%}
+    </div>
+
+    <div
+      id="tab-description-{{ section.id }}"
+      class="product-tab-panel rte"
+      role="tabpanel"
+      aria-hidden="false"
+    >
+      {{ p.description }}
+    </div>
+
+    <div
+      id="tab-shipping-{{ section.id }}"
+      class="product-tab-panel is-hidden"
+      role="tabpanel"
+      aria-hidden="true"
+    >
+      <strong>Production & Shipping</strong>
+      <p>Every piece of apparel is custom-made on demand when you order it. This means your gear is fresh off the press and crafted with care.</p>
+      <p>
+        <strong>Production Time:</strong> 3–5 business days<br>
+        <strong>Shipping Time:</strong> 5–7 business days (Standard US)
+      </p>
+      <p><em>Note: Drinkware and home goods may ship separately from our ready-to-ship facilities.</em></p>
+    </div>
+
+    {%- if product.metafields.custom.faq != blank -%}
+      <div
+        id="tab-faq-{{ section.id }}"
+        class="product-tab-panel is-hidden"
+        role="tabpanel"
+        aria-hidden="true"
+      >
+        {%- assign faq_lines = product.metafields.custom.faq | split: '\n' -%}
+        {%- for line in faq_lines -%}
+          {%- assign qa = line | split: 'A:' -%}
+          {%- if qa.size > 1 -%}
+            {%- assign q = qa[0] | remove: 'Q:' | strip -%}
+            {%- assign a = qa[1] | strip -%}
+            <div class="faq-item">
+              <div class="faq-question">{{ q }}<span class="faq-arrow">▶</span></div>
+              <div class="faq-answer">{{ a }}</div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
 
 <script>
   function changeImage(btn, src) {
