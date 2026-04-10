@@ -309,8 +309,8 @@ input[type="submit"] {
   padding: 1.1rem 2.2rem;
   border-radius: var(--radius-sm);
   border: none;
-  background: var(--color-button-primary-bg, #ffff33);
-  color: var(--color-button-primary-text, #1f1f1f);
+  background: var(--color-button-primary-bg, #111111);
+  color: var(--color-button-primary-text, #ffffff);
   font-weight: 700;
   font-size: 1.4rem;
   text-transform: uppercase;
@@ -324,8 +324,8 @@ input[type="submit"] {
 .button:hover, .btn:hover, a.button:hover, button.button:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
-  background: var(--color-button-primary-hover, var(--color-button-primary-bg, #ffff33));
-  color: var(--color-button-primary-text, #1f1f1f);
+  background: var(--color-button-primary-hover, var(--color-button-primary-bg, #111111));
+  color: var(--color-button-primary-text, #ffffff);
   text-decoration: none;
 }
 
@@ -359,15 +359,15 @@ button.button:focus-visible {
 .product-form__submit,
 [name="add"],
 .add-to-cart {
-  background: var(--color-button-primary-bg, #ffff33);
-  color: var(--color-button-primary-text, #1f1f1f);
+  background: var(--color-button-primary-bg, #111111);
+  color: var(--color-button-primary-text, #ffffff);
   box-shadow: var(--shadow-sm);
 }
 
 .cart__checkout-button,
 .button--primary[name="checkout"] {
-  background: var(--color-button-primary-bg, #ffff33);
-  color: var(--color-button-primary-text, #1f1f1f);
+  background: var(--color-button-primary-bg, #111111);
+  color: var(--color-button-primary-text, #ffffff);
   font-weight: 700;
   box-shadow: var(--shadow-sm);
 }
@@ -950,8 +950,8 @@ html [name="add"],
 html .add-to-cart,
 html .cart__checkout-button,
 html .button--primary[name="checkout"] {
-  background: var(--color-button-primary-bg, #FFFF33) !important;
-  color: var(--color-button-primary-text, #1F1F1F) !important;
+  background: var(--color-button-primary-bg, #111111) !important;
+  color: var(--color-button-primary-text, #ffffff) !important;
   box-shadow: none !important;
 }
 
@@ -959,7 +959,7 @@ html .button:hover,
 html .btn:hover,
 html a.button:hover,
 html button.button:hover {
-  background: var(--color-button-primary-hover, #FFF200) !important;
+  background: var(--color-button-primary-hover, #333333) !important;
   box-shadow: none !important;
 }
 
