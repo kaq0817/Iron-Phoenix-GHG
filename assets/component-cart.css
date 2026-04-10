@@ -1,6 +1,5 @@
 /* Shared button base (Cart + Checkout) */
 .button--primary,
-.header__icon--cart,
 .cart-button {
   position: relative;
   display: flex;
@@ -10,16 +9,23 @@
   height: 44px;
   padding: 0 1.5rem;
   border: none;
-  border-radius: 9999px;
-  background: linear-gradient(135deg, #6a0dad, #8a2be2);
-  color: #fff;
-  font-weight: bold;
+  border-radius: 4px;
+  background: #111111;
+  color: #ffffff;
+  font-weight: 700;
   font-size: 1rem;
   text-transform: uppercase;
   cursor: pointer;
-  /* Keep your original transition properties */
-  transition: transform 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
-  box-shadow: 0 0 10px rgba(138, 43, 226, 0.5);
+  transition: background 0.2s ease;
+  box-shadow: none;
+}
+
+.button--primary:hover,
+.cart-button:hover {
+  background: #333333;
+  transform: none;
+  box-shadow: none;
+  color: #ffffff;
 }
 
 /* Icon inside cart buttons */
@@ -27,24 +33,12 @@
 .cart-button svg {
   width: 22px;
   height: 22px;
-  fill: #fff;
-  transition: fill 0.25s ease;
-}
-
-/* Hover & active states - OPTIMIZED FOR PERFORMANCE (INP/TBT) */
-.button--primary:hover,
-.header__icon--cart:hover,
-.cart-button:hover {
-  /* ⚡️ OPTIMIZATION: translateZ(0) forces GPU/Hardware acceleration 
-     for the scale transform, keeping the main thread free. */
-  transform: translateZ(0) scale(1.05); 
-  box-shadow: 0 0 20px rgba(180, 123, 255, 0.8);
-  color: #b47bff;
+  fill: #ffffff;
 }
 
 .header__icon--cart:hover svg,
 .cart-button:hover svg {
-  fill: #b47bff;
+  fill: #ffffff;
 }
 
 /* Cart count bubble */
@@ -55,13 +49,12 @@
   min-width: 18px;
   height: 18px;
   padding: 0 4px;
-  background: #ff007f; /* hot pink contrast */
-  color: #fff;
+  background: #ffffff;
+  color: #111111;
   font-size: 12px;
   font-weight: bold;
   border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 5px rgba(255, 0, 127, 0.6);
 }

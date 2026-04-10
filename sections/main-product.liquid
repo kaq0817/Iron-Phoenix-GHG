@@ -316,7 +316,7 @@
           (discontinued/pulled from their catalog) AND it's not a POD vendor.
           Note: render snippets don't share scope, so we check the vendor here directly.
         {%- endcomment -%}
-        {%- assign pod_vendors = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble' | split: ',' -%}
+        {%- assign pod_vendors = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS' | split: ',' -%}
         {%- assign section_is_pod = false -%}
         {%- for pod_v in pod_vendors -%}
           {%- if p.vendor == pod_v -%}
