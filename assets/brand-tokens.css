@@ -26,12 +26,12 @@
   --color-deep-accent:      #1F1F1F;
   --rgb-accent:             38,166,154;
 
-  /* CTA buttons — yellow strike */
-  --color-cta:                   #FFFF33;
-  --color-cta-hover:             #FFF200;
-  --color-button-primary-bg:     #FFFF33;
-  --color-button-primary-text:   #1F1F1F;
-  --color-button-primary-hover:  #FFF200;
+  /* CTA buttons — black/white */
+  --color-cta:                   #111111;
+  --color-cta-hover:             #333333;
+  --color-button-primary-bg:     #111111;
+  --color-button-primary-text:   #ffffff;
+  --color-button-primary-hover:  #333333;
 
   /* Borders */
   --color-border:              #E5E7EB;
