@@ -331,6 +331,13 @@
           {%- endunless -%}
         {%- endunless -%}
 
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+          {%- endcase -%}
+        {%- endfor -%}
+
         <button
           type="submit"
           class="product__add-to-cart"
@@ -459,6 +466,9 @@
 {
   "name": "Main Product (With FAQ )",
   "settings": [],
+  "blocks": [
+    { "type": "@app" }
+  ],
   "presets": [{ "name": "Main Product (With FAQ Accordion)" }]
 }
 {% endschema %}
