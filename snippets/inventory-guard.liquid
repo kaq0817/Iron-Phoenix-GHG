@@ -19,7 +19,7 @@
 {%- endif -%}
 
 {%- comment -%} POD vendor list (NO CJ) {%- endcomment -%}
-{%- assign pod_vendor_list = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS' | split: ',' -%}
+{%- assign pod_vendor_list = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS,JetPrint,Jetprint,JETPRINT' | split: ',' -%}
 {%- assign vendor_clean = ig_product.vendor | strip -%}
 {%- assign is_pod_vendor = false -%}
 {%- for v_name in pod_vendor_list -%}
@@ -70,7 +70,7 @@
 {%- comment -%}
   Theme Check usage sink (non-rendering) so assigns count as used.
 {%- endcomment -%}
-{%- if 0 -%}
+{%- if false -%}
   {{ inv_safe_quantity -}}
   {{- inv_availability }}
 {%- endif -%}

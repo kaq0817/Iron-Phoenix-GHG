@@ -41,6 +41,58 @@
   fill: #ffffff;
 }
 
+/* ── Cart page & drawer backgrounds ── */
+.template-cart body,
+body.template-cart {
+  background: #ffffff !important;
+  color: #1f1f1f !important;
+}
+
+.cart-drawer__panel,
+.cart__footer,
+.cart-notification,
+.cart-notification__wrapper {
+  background: #ffffff !important;
+  color: #1f1f1f !important;
+}
+
+.cart-drawer__title,
+.cart-drawer__product-title,
+.cart-drawer__total,
+.cart__title,
+.cart__subtotal {
+  color: #1f1f1f !important;
+}
+
+/* Shopify dynamic checkout buttons wrapper — force light bg */
+.shopify-payment-button,
+.cart__dynamic-checkout-buttons,
+[data-shopify="payment-button"] {
+  background: #ffffff !important;
+}
+
+.cart__checkout-button,
+.cart-drawer__checkout-button {
+  background: #111111 !important;
+  color: #ffffff !important;
+  border: none !important;
+  border-radius: 4px !important;
+  padding: 1.2rem 2rem !important;
+  font-weight: 700 !important;
+  width: 100% !important;
+  font-size: 1.4rem !important;
+  text-align: center !important;
+  text-decoration: none !important;
+  display: block !important;
+  box-shadow: none !important;
+}
+
+.cart__checkout-button:hover,
+.cart-drawer__checkout-button:hover {
+  background: #333333 !important;
+  color: #ffffff !important;
+}
+
 /* Cart count bubble */
 .cart-count-bubble {
   position: absolute;

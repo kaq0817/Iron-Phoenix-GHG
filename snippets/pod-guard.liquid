@@ -10,7 +10,7 @@
 {%- endif -%}
 
 {%- comment -%} Vendor allowlist {%- endcomment -%}
-{%- assign pod_vendor_list = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS' | split: ',' -%}
+{%- assign pod_vendor_list = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS,JetPrint,Jetprint,JETPRINT' | split: ',' -%}
 
 {%- assign is_pod_vendor = false -%}
 {%- assign vendor_clean = pg_product.vendor | strip -%}
@@ -165,7 +165,7 @@
 {%- endif -%}
 
 {%- comment -%} Usage sink for linter {%- endcomment -%}
-{%- if 0 -%}
+{%- if false -%}
   {{ v_oos -}}
   {{- pod_badge_text -}}
   {{- pod_vendor_icon -}}

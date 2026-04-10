@@ -279,8 +279,27 @@
 
       <div class="product__price">{{ v.price | money }}</div>
 
-      <form method="post" action="{{ routes.cart_add_url }}">
-        <input type="hidden" name="id" value="{{ v.id }}">
+      {%- comment -%} Variant data for JS picker {%- endcomment -%}
+      <script type="application/json" id="ProductVariants-{{ section.id }}">
+        [
+          {%- for variant in p.variants -%}
+            {
+              "id": {{ variant.id }},
+              "title": {{ variant.title | json }},
+              "available": {{ variant.available }},
+              "price": {{ variant.price }},
+              "options": [
+                {%- for opt in variant.options -%}
+                  {{ opt | json }}{% unless forloop.last %},{% endunless %}
+                {%- endfor -%}
+              ]
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      </script>
+
+      <form method="post" action="{{ routes.cart_add_url }}" id="ProductForm-{{ section.id }}">
+        <input type="hidden" name="id" id="VariantId-{{ section.id }}" value="{{ v.id }}">
 
         {% unless p.has_only_default_variant %}
           {% for option in p.options_with_values %}
@@ -316,7 +335,7 @@
           (discontinued/pulled from their catalog) AND it's not a POD vendor.
           Note: render snippets don't share scope, so we check the vendor here directly.
         {%- endcomment -%}
-        {%- assign pod_vendors = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS' | split: ',' -%}
+        {%- assign pod_vendors = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,popcustoms,PopCustoms,POPCUSTOMS,JetPrint,Jetprint,JETPRINT' | split: ',' -%}
         {%- assign section_is_pod = false -%}
         {%- for pod_v in pod_vendors -%}
           {%- if p.vendor == pod_v -%}
@@ -354,6 +373,58 @@
           {%- endif -%}
         </button>
       </form>
+
+      <script>
+        (function() {
+          var sectionId = '{{ section.id }}';
+          var variants  = JSON.parse(document.getElementById('ProductVariants-' + sectionId).textContent);
+          var form      = document.getElementById('ProductForm-' + sectionId);
+          var idInput   = document.getElementById('VariantId-' + sectionId);
+          var priceEl   = form.closest('.product__info-wrapper').querySelector('.product__price');
+          var submitBtn = form.querySelector('.product__add-to-cart');
+
+          function getSelectedOptions() {
+            return Array.from(form.querySelectorAll('[name^="option-"]')).map(function(el) {
+              var checked = form.querySelector('[name="' + el.name + '"]:checked');
+              return checked ? checked.value : null;
+            });
+          }
+
+          function findVariant(selectedOptions) {
+            return variants.find(function(v) {
+              return v.options.every(function(opt, i) {
+                return opt === selectedOptions[i];
+              });
+            });
+          }
+
+          function updateForm() {
+            var selected = getSelectedOptions();
+            var variant  = findVariant(selected);
+            if (!variant) return;
+
+            idInput.value = variant.id;
+
+            if (priceEl) {
+              var price = (variant.price / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+              priceEl.textContent = price;
+            }
+
+            var isPod = {{ section_is_pod }};
+            if (!variant.available && !isPod) {
+              submitBtn.disabled = true;
+              submitBtn.textContent = 'Sold Out';
+            } else {
+              submitBtn.disabled = false;
+              submitBtn.textContent = 'Add to Cart';
+            }
+          }
+
+          form.addEventListener('change', function(e) {
+            if (e.target.name && e.target.name.startsWith('option-')) updateForm();
+          });
+        })();
+      </script>
 
     </div>
   </div>
