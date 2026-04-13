@@ -1,124 +1,116 @@
-{%- comment -%}
-Hero Custom (centered, LCP-friendly)
-- Loads CSS via asset (no inline <style>)
-- Background image = only high-priority image
-- Logo is lazy/low to avoid bandwidth contention
-- Uses 'optimized-image' snippet for next-gen + sizes + width/height
-{%- endcomment -%}
-
 {%- liquid
-  assign heading_text = section.settings.headline | default: section.settings.title | default: shop.name
-  assign sub_text     = section.settings.subheadline | default: section.settings.subtitle
+  assign heading_text = section.settings.headline | default: shop.name
+  assign sub_text     = section.settings.subheadline
   assign cta_link     = section.settings.cta_link | default: routes.all_products_collection_url
-  assign bg_loading = 'lazy'
-  assign bg_priority = 'auto'
-
-  assign has_heading = false
-  assign has_bg = false
-  
-  if heading_text != blank
-    assign has_heading = true
-  endif
-  
-  if section.settings.background_image != blank
-    assign has_bg = true
-  endif
-
-  if request.page_type == 'index'
-    assign bg_loading = 'eager'
-    assign bg_priority = 'high'
-  endif
 -%}
 
 {{ 'section-hero-custom.css' | asset_url | stylesheet_tag }}
 
 <style>
   .hero-custom {
-    --hero-headline-color: {{ section.settings.headline_color | default: '#1a2980' }};
-    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#1a2980' }};
-    --hero-button-bg-color: {{ section.settings.cta_bg_color | default: 'transparent' }};
-    --hero-button-text-color: {{ section.settings.cta_text_color | default: '#ffffff' }};
-    --hero-min-height: {{ section.settings.min_height | default: 500 }}px;
-    --hero-padding-top: {{ section.settings.padding_top | default: 60 }}px;
-    --hero-padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
-    --hero-content-align: {{ section.settings.content_align | default: 'center' }};
-
-    min-height: var(--hero-min-height);
+    --hero-headline-color: {{ section.settings.headline_color }};
+    --hero-subheadline-color: {{ section.settings.subheadline_color }};
+    --hero-button-bg-color: {{ section.settings.cta_bg_color }};
+    --hero-button-text-color: {{ section.settings.cta_text_color }};
+    
+    position: relative;
     display: flex;
     align-items: center;
-    justify-content: var(--hero-content-align);
-    padding-top: var(--hero-padding-top);
-    padding-bottom: var(--hero-padding-bottom);
+    justify-content: {{ section.settings.content_align }};
+    min-height: {{ section.settings.min_height }}px;
+    overflow: hidden;
+    background-color: #050b12;
+    color: #ffffff;
+  }
+
+  .hero-custom__background {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-custom__background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-custom__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: {% if section.settings.content_align == 'center' %}center{% else %}flex-start{% endif %};
+    text-align: {% if section.settings.content_align == 'center' %}center{% else %}left{% endif %};
   }
 
   .hero-custom__headline {
     color: var(--hero-headline-color);
-    font-size: {{ section.settings.headline_size | default: 48 }}px;
-    margin-bottom: 0.5em;
+    font-size: {{ section.settings.headline_size }}px;
+    font-weight: 900;
+    line-height: 0.95;
+    text-transform: uppercase;
+    margin: 0 0 0.5rem;
   }
 
   .hero-custom__subheadline {
     color: var(--hero-subheadline-color);
-    font-size: {{ section.settings.subheadline_size | default: 18 }}px;
-    margin-bottom: 1.5em;
+    font-size: {{ section.settings.subheadline_size }}px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 2.5rem;
   }
 
   .hero-custom__button {
-    background: linear-gradient(90deg, #d48a28 0%, #e6a545 100%);
-    color: #000;
-    padding: 12px 24px;
-    border-radius: 4px;
+    background-color: var(--hero-button-bg-color);
+    color: var(--hero-button-text-color);
+    padding: 0.85rem 1.8rem;
+    border-radius: 3px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
   }
 </style>
 
-<section class="hero-custom" aria-label="Hero">
-  {%- if has_bg -%}
-    <div class="hero-custom__background" aria-hidden="true">
-      {% render 'optimized-image',
-        image: section.settings.background_image,
-        width_override: 2000,
-        sizes: '100vw',
-        loading: bg_loading,
-        fetchpriority: bg_priority,
-        alt: heading_text
-      %}
+<section class="hero-custom">
+  {%- if section.settings.background_image != blank -%}
+    <div class="hero-custom__background">
+      {%- comment -%}Adding explicit width/height to satisfy Theme Check {%- endcomment -%}
+      {{ section.settings.background_image | image_url: width: 2000 | image_tag: 
+        loading: 'eager', 
+        width: section.settings.background_image.width,
+        height: section.settings.background_image.height,
+        alt: section.settings.background_image.alt | escape 
+      }}
     </div>
   {%- endif -%}
 
   <div class="hero-custom__content">
-    {%- if section.settings.logo != blank -%}
-      <div class="hero-custom__logo">
-        {% render 'optimized-image',
-          image: section.settings.logo,
-          width_override: 480,
-          sizes: '(max-width: 749px) 200px, 300px',
-          loading: 'lazy',
-          fetchpriority: 'low',
-          alt: shop.name
-        %}
-      </div>
-    {%- endif -%}
-
     {%- if section.settings.eyebrow != blank -%}
-      <p class="hero-custom__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <span class="hero-custom__eyebrow">{{ section.settings.eyebrow | escape }}</span>
     {%- endif -%}
 
-    {%- if has_heading -%}
-    <h2 class="hero-custom__headline">{{ heading_text | escape }}</h2>
+    {%- if heading_text != blank -%}
+      <h2 class="hero-custom__headline">{{ heading_text | escape }}</h2>
     {%- endif -%}
 
     {%- if sub_text != blank -%}
       <p class="hero-custom__subheadline">{{ sub_text | escape }}</p>
     {%- endif -%}
 
-    {%- if section.settings.cta_label != blank and cta_link != blank -%}
-      <div class="hero-custom__cta">
-        <a href="{{ cta_link }}" class="hero-custom__button">
-          {{ section.settings.cta_label | escape }}
-        </a>
-      </div>
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ cta_link }}" class="hero-custom__button">
+        {{ section.settings.cta_label | escape }}
+      </a>
     {%- endif -%}
   </div>
 </section>
@@ -128,71 +120,50 @@ Hero Custom (centered, LCP-friendly)
   "name": "Hero Custom",
   "settings": [
     { "type": "header", "content": "Images" },
-    { "type": "image_picker", "id": "logo", "label": "Hero logo (optional)" },
     { "type": "image_picker", "id": "background_image", "label": "Background image" },
     { "type": "header", "content": "Text content" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow (small text above headline)", "default": "EQUIP YOUR NEXT" },
-    { "type": "text", "id": "headline", "label": "Headline (big display word)", "default": "ADVENTURE" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "EQUIP YOUR NEXT" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "ADVENTURE" },
     { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "APPAREL • ACCESSORIES • LIFESTYLE" },
-    { "type": "header", "content": "Text colors" },
+    { "type": "header", "content": "Colors" },
     { "type": "color", "id": "headline_color", "label": "Headline color", "default": "#ffffff" },
     { "type": "color", "id": "subheadline_color", "label": "Subheadline color", "default": "#ffffff" },
-    { "type": "header", "content": "Text sizes" },
+    { "type": "header", "content": "Sizes" },
     {
       "type": "range",
       "id": "headline_size",
       "min": 20,
-      "max": 80,
+      "max": 120,
       "step": 2,
       "unit": "px",
       "label": "Headline font size",
-      "default": 48
+      "default": 80
     },
     {
       "type": "range",
       "id": "subheadline_size",
-      "min": 12,
-      "max": 36,
+      "min": 10,
+      "max": 40,
       "step": 1,
       "unit": "px",
       "label": "Subheadline font size",
-      "default": 18
+      "default": 14
     },
     { "type": "header", "content": "CTA Button" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop now" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#1a2980" },
+    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#1a3683" },
     { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#ffffff" },
-    { "type": "header", "content": "Section height & spacing" },
+    { "type": "header", "content": "Layout" },
     {
       "type": "range",
       "id": "min_height",
       "min": 200,
-      "max": 800,
+      "max": 1000,
       "step": 20,
       "unit": "px",
       "label": "Minimum height",
-      "default": 500
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 60
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 60
+      "default": 600
     },
     {
       "type": "select",
@@ -200,12 +171,15 @@ Hero Custom (centered, LCP-friendly)
       "label": "Content alignment",
       "options": [
         { "value": "flex-start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Right" }
+        { "value": "center", "label": "Center" }
       ],
-      "default": "center"
-    },
+      "default": "flex-start"
+    }
   ],
-  "presets": [{ "name": "Hero Custom" }]
+  "presets": [
+    {
+      "name": "Hero Custom"
+    }
+  ]
 }
 {% endschema %}
