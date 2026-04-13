@@ -40,7 +40,7 @@
   );
 }
 
-/* Content — left aligned */
+/* Content — left aligned, constrained column */
 .hero-custom__content {
   width: 100%;
   max-width: 1240px;
@@ -50,6 +50,14 @@
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+}
+
+.hero-custom__headline,
+.hero-custom__subheadline,
+.hero-custom__eyebrow,
+.hero-custom__cta {
+  max-width: 480px;
+  width: 100%;
 }
 
 .hero-custom__logo {
@@ -73,28 +81,29 @@
   margin-bottom: 0.5rem;
 }
 
-/* Big bold headline */
+/* Big bold headline — always one line on desktop */
 .hero-custom__headline {
   margin: 0 0 0.6rem;
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
-  line-height: 1.0;
+  font-size: clamp(1.8rem, 3.5vw, 3.2rem);
+  line-height: 1.05;
   font-weight: 800;
   letter-spacing: -0.01em;
   text-transform: uppercase;
   color: #ffffff;
   text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
-  max-width: 12ch;
+  white-space: nowrap;
 }
 
-/* Tagline: APPAREL • ACCESSORIES • LIFESTYLE */
+/* Subheadline — wraps naturally, max 2 lines */
 .hero-custom__subheadline {
   margin: 0 0 2rem;
-  font-size: clamp(0.85rem, 1.3vw, 1rem);
+  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
   font-weight: 500;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.15em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.75);
-  max-width: none;
+  max-width: 40ch;
+  line-height: 1.6;
 }
 
 /* Outlined amber CTA button */
@@ -147,8 +156,8 @@
   }
 
   .hero-custom__headline {
-    font-size: clamp(2.4rem, 11vw, 3.2rem);
-    max-width: none;
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    white-space: normal;
   }
 
   .hero-custom__button {
