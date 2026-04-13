@@ -88,22 +88,22 @@
   font-size: clamp(1rem, 1.4vw, 1.2rem);
   font-weight: 600;
   letter-spacing: 0.05em;
-  color: #ffffff;
-  max-width: 480px;
+  color: #ffffff !important;
+  max-width: 640px;
   line-height: 1.5;
   text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.8);
 }
 
-/* Outlined amber CTA button */
+/* Velvet royal blue CTA button */
 .hero-custom__button {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
   padding: 0.85rem 1.8rem;
-  border: 1.5px solid rgba(255, 190, 80, 0.8);
+  border: 2px solid #1a2980;
   border-radius: 3px;
-  background: transparent;
-  color: #f5c842;
+  background: #1a2980;
+  color: #ffffff;
   font-size: clamp(0.78rem, 1vw, 0.88rem);
   font-weight: 700;
   letter-spacing: 0.18em;
@@ -118,8 +118,8 @@
 }
 
 .hero-custom__button:hover {
-  background: rgba(245, 200, 66, 0.15);
-  border-color: #f5c842;
+  background: #243cb5;
+  border-color: #243cb5;
   color: #ffffff;
 }
 

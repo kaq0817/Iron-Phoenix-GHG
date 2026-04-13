@@ -35,7 +35,7 @@ Hero Custom (centered, LCP-friendly)
 <style>
   .hero-custom {
     --hero-headline-color: {{ section.settings.headline_color | default: '#ffffff' }};
-    --hero-subheadline-color: {{ section.settings.subheadline_color | default: 'rgba(255,255,255,0.75)' }};
+    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#ffffff' }};
     --hero-button-bg-color: {{ section.settings.cta_bg_color | default: 'transparent' }};
     --hero-button-text-color: {{ section.settings.cta_text_color | default: '#f5c842' }};
     --hero-min-height: {{ section.settings.min_height | default: 500 }}px;
@@ -66,7 +66,6 @@ Hero Custom (centered, LCP-friendly)
   .hero-custom__button {
     background-color: var(--hero-button-bg-color);
     color: var(--hero-button-text-color);
-    font-size: {{ section.settings.subheadline_size | default: 18 }}px;
     padding: 12px 24px;
     border-radius: 4px;
     text-decoration: none;
@@ -157,8 +156,8 @@ Hero Custom (centered, LCP-friendly)
     { "type": "header", "content": "CTA Button" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop now" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#111111" },
-    { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#f5c842" },
+    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#1a2980" },
+    { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#ffffff" },
     { "type": "header", "content": "Section height & spacing" },
     {
       "type": "range",
@@ -201,9 +200,6 @@ Hero Custom (centered, LCP-friendly)
       ],
       "default": "center"
     },
-    { "type": "header", "content": "Legacy fallback" },
-    { "type": "text", "id": "title", "label": "Fallback title (legacy)", "default": "Welcome to Our Phoenix Rise" },
-    { "type": "text", "id": "subtitle", "label": "Fallback subtitle (legacy)", "default": "Gaming gear designed with wellness in mind" }
   ],
   "presets": [{ "name": "Hero Custom" }]
 }
