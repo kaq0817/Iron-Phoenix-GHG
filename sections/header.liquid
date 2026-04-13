@@ -14,8 +14,8 @@
     top: auto !important;
     z-index: 100 !important;
     width: 100% !important;
-    background: {{ section.settings.header_bg_color | default: '#111111' }} !important;
-    border-bottom: 1px solid {{ section.settings.header_border_color | default: '#222222' }} !important;
+    background: {{ section.settings.header_bg_color | default: '#050b12' }} !important;
+    border-bottom: 1px solid {{ section.settings.header_border_color | default: '#1a2433' }} !important;
   }
 
   .header {
@@ -26,7 +26,7 @@
     gap: 10px;
     min-height: 100px;
     padding: 20px 30px;
-    background: {{ section.settings.header_bg_color | default: '#111111' }} !important;
+    background: {{ section.settings.header_bg_color | default: '#050b12' }} !important;
     color: #fff !important;
     border-bottom: none !important;
     box-shadow: none !important;
@@ -76,6 +76,44 @@
     }
   }
 
+  /* INLINE NAV */
+  .header__inline-menu {
+    display: none;
+  }
+
+  @media screen and (min-width: 990px) {
+    .header__inline-menu {
+      display: block;
+      flex: 1 1 auto;
+    }
+
+    .list-menu--inline {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .header__menu-item {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.2s ease;
+    }
+
+    .header__menu-item:hover {
+      opacity: 0.7;
+    }
+  }
+
   /* ICON GROUP */
   .header__icons {
     display: flex;
@@ -104,10 +142,10 @@
   .header-search input[type='search'] {
     width: 100%;
     padding: 6px 10px;
-    border-radius: 6px;
-    border: none;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     outline: none;
-    background: rgba(255, 255, 255, 0.15);
+    background: transparent;
     color: #fff;
   }
 
@@ -220,6 +258,20 @@
         <span class="header__tagline" style="color: {{ section.settings.tagline_color | default: '#ffffff' }}">{{ section.settings.tagline | escape }}</span>
       {%- endif -%}
     </div>
+
+    <!-- INLINE NAV -->
+    <nav class="header__inline-menu">
+      <ul class="list-menu list-menu--inline" role="list">
+        {%- for link in section.settings.menu.links -%}
+          <li>
+            <a href="{{ link.url }}" class="header__menu-item {% if link.current %}header__menu-item--active{% endif %}">
+              <span>{{ link.label | escape }}</span>
+              {%- if link.links != blank -%}<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>{%- endif -%}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </nav>
 
     <!-- ICONS -->
     <div class="header__icons">
