@@ -35,9 +35,9 @@ Hero Custom (centered, LCP-friendly)
 <style>
   .hero-custom {
     --hero-headline-color: {{ section.settings.headline_color | default: '#ffffff' }};
-    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#e0f7f5' }};
-    --hero-button-bg-color: {{ section.settings.cta_bg_color | default: '#0d9488' }};
-    --hero-button-text-color: {{ section.settings.cta_text_color | default: '#1F1F1F' }};
+    --hero-subheadline-color: {{ section.settings.subheadline_color | default: 'rgba(255,255,255,0.75)' }};
+    --hero-button-bg-color: {{ section.settings.cta_bg_color | default: 'transparent' }};
+    --hero-button-text-color: {{ section.settings.cta_text_color | default: '#f5c842' }};
     --hero-min-height: {{ section.settings.min_height | default: 500 }}px;
     --hero-padding-top: {{ section.settings.padding_top | default: 60 }}px;
     --hero-padding-bottom: {{ section.settings.padding_bottom | default: 60 }}px;
@@ -132,7 +132,7 @@ Hero Custom (centered, LCP-friendly)
     { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Strength. Resilience. Rebirth." },
     { "type": "header", "content": "Text colors" },
     { "type": "color", "id": "headline_color", "label": "Headline color", "default": "#ffffff" },
-    { "type": "color", "id": "subheadline_color", "label": "Subheadline color", "default": "#e0f7f5" },
+    { "type": "color", "id": "subheadline_color", "label": "Subheadline color", "default": "#ffffff" },
     { "type": "header", "content": "Text sizes" },
     {
       "type": "range",
@@ -157,8 +157,8 @@ Hero Custom (centered, LCP-friendly)
     { "type": "header", "content": "CTA Button" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop now" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
-    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#0d9488" },
-    { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#ffffff" },
+    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#111111" },
+    { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#f5c842" },
     { "type": "header", "content": "Section height & spacing" },
     {
       "type": "range",
