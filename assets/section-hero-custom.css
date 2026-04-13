@@ -61,35 +61,35 @@
   display: block;
 }
 
-/* "EQUIP YOUR NEXT" style eyebrow */
+/* Small eyebrow — "EQUIP YOUR NEXT" */
 .hero-custom__eyebrow {
-  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-size: clamp(0.8rem, 1.1vw, 0.95rem);
   font-weight: 600;
-  letter-spacing: 0.18em;
+  letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-  margin-bottom: 0.5rem;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 0.4rem;
 }
 
-/* Big bold headline — one line on desktop */
+/* Massive display headline — "ADVENTURE" */
 .hero-custom__headline {
-  margin: 0 0 0.6rem;
-  font-size: clamp(1.8rem, 3.5vw, 3.2rem);
-  line-height: 1.05;
-  font-weight: 800;
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+  margin: 0 0 0.5rem;
+  font-size: clamp(4rem, 10vw, 8rem);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
 
-/* Subheadline */
+/* Subheadline — "APPAREL • ACCESSORIES • LIFESTYLE" */
 .hero-custom__subheadline {
-  margin: 0 0 2rem;
-  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  margin: 0 0 2.5rem;
+  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
   max-width: 640px;
   line-height: 1.5;
-  text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.8);
 }
 
 /* Velvet royal blue CTA button */

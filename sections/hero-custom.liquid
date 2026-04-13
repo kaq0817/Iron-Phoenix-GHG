@@ -101,6 +101,10 @@ Hero Custom (centered, LCP-friendly)
       </div>
     {%- endif -%}
 
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="hero-custom__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {%- endif -%}
+
     {%- if has_heading -%}
     <h2 class="hero-custom__headline">{{ heading_text | escape }}</h2>
     {%- endif -%}
@@ -127,8 +131,9 @@ Hero Custom (centered, LCP-friendly)
     { "type": "image_picker", "id": "logo", "label": "Hero logo (optional)" },
     { "type": "image_picker", "id": "background_image", "label": "Background image" },
     { "type": "header", "content": "Text content" },
-    { "type": "text", "id": "headline", "label": "Headline", "default": "Forged Phoenix" },
-    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Strength. Resilience. Rebirth." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow (small text above headline)", "default": "EQUIP YOUR NEXT" },
+    { "type": "text", "id": "headline", "label": "Headline (big display word)", "default": "ADVENTURE" },
+    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "APPAREL • ACCESSORIES • LIFESTYLE" },
     { "type": "header", "content": "Text colors" },
     { "type": "color", "id": "headline_color", "label": "Headline color", "default": "#ffffff" },
     { "type": "color", "id": "subheadline_color", "label": "Subheadline color", "default": "#ffffff" },
