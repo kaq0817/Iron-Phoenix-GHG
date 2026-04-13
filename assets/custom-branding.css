@@ -17,9 +17,6 @@
 
   /* Brand background (low-cost GPU) */
   background:
-    radial-gradient(40rem 30rem at 20% 80%, rgba(27,14,49,0.40) 0%, transparent 60%),
-    radial-gradient(34rem 26rem at 80% 20%, rgba(27,14,49,0.32) 0%, transparent 65%),
-    linear-gradient(180deg, var(--ip-purple-900) 0%, var(--ip-black) 70%);
 
   opacity: 0;
   transform: translateY(24px);
@@ -53,7 +50,7 @@
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: .06em;
-  background: linear-gradient(135deg, #ffffff 0%, var(--ip-teal-500) 60%, var(--ip-teal-400) 100%);
+  
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   text-shadow: 0 0 18px rgba(0,245,255,.25);
 }
@@ -81,7 +78,7 @@
   border-radius: 999px;
   text-decoration: none;
   color: #000;
-  background: linear-gradient(135deg, var(--ip-teal-500), var(--ip-teal-400));
+  
   box-shadow: 0 12px 28px rgba(0,245,255,.28);
   transition: transform .2s ease, box-shadow .2s ease;
 }

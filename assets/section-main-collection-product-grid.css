@@ -25,9 +25,6 @@
   --ip-blur:       10px;
 
   background:
-    radial-gradient(40rem 30rem at 20% 80%, rgba(27,14,49,0.40) 0%, transparent 60%),
-    radial-gradient(34rem 26rem at 80% 20%, rgba(27,14,49,0.32) 0%, transparent 65%),
-    linear-gradient(180deg, var(--ip-purple-900) 0%, var(--ip-black) 70%);
   color:#fff;
   position:relative;
 }
@@ -37,7 +34,7 @@
 .collection-title{
   font-size:clamp(2.5rem,6vw,4rem);
   font-weight:900; text-transform:uppercase; letter-spacing:.1em; margin-bottom:1rem;
-  background: linear-gradient(135deg, #ffffff 0%, var(--ip-teal-500) 50%, var(--ip-teal-300) 100%);
+  
   -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
   text-shadow: 0 0 20px rgba(0,245,255,0.25);
   animation:title-pulse 3s ease-in-out infinite alternate;
@@ -125,7 +122,7 @@
 }
 
 .card__badge{
-  background: linear-gradient(135deg, var(--ip-teal-500), var(--ip-teal-400)) !important;
+  
   color:#000 !important; font-weight:700; text-transform:uppercase; letter-spacing:.05em;
   border-radius:20px; padding:.5rem 1rem; font-size:.8rem;
 }
@@ -134,7 +131,7 @@
 .price--sold-out{color:#8e7aff !important}
 
 .quick-add__btn,.card__btn{
-  background: linear-gradient(135deg, var(--ip-teal-500), var(--ip-teal-400)) !important;
+  
   color:#000 !important; border:none !important; border-radius:25px !important;
   padding:.75rem 1.5rem !important; font-weight:800 !important; text-transform:uppercase !important;
   letter-spacing:.05em !important; transition:.25s !important; position:relative !important; overflow:hidden !important;
@@ -145,7 +142,6 @@
 .collection--empty{text-align:center; padding:6rem 2rem}
 .title--primary{font-size:2rem; color:var(--ip-teal-500)}
 .empty-hint{margin-top:2rem; opacity:.85}
-.loading-overlay{background:radial-gradient(circle, rgba(0,245,255,.12), rgba(27,14,49,.12)) !important}
 
 .pagination{display:flex; justify-content:center; gap:1rem; margin-top:4rem}
 .pagination__item{

@@ -42,7 +42,7 @@
 /* Example color scheme (static) */
 .color-default {
   --color-background: 0,0,0;
-  --gradient-background: linear-gradient(90deg, rgb(var(--color-teal)) 0%, #ffffff 100%);
+  --gradient-background: none;
   --color-foreground: 255,255,255;
   --color-background-contrast: 255,255,255;
   --color-shadow: 0,0,0;

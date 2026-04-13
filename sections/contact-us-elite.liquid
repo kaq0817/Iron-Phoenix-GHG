@@ -76,7 +76,7 @@
     
     {% comment %} NEW: Voicemail Policy Box {% endcomment %}
     {% if section.settings.show_voicemail_policy %}
-      <div class="voicemail-policy-box" style="margin-top: 20px; padding: 16px; background: linear-gradient(135deg, rgba(0,255,255,0.05) 0%, rgba(255,0,255,0.05) 100%); border-left: 3px solid #00ffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,255,255,0.1);">
+      <div class="voicemail-policy-box" style="margin-top: 20px; padding: 16px;  border-left: 3px solid #00ffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,255,255,0.1);">
         <p style="margin: 0 0 10px; font-weight: 700; color: #00ffff; font-size: 1.05em;">📞 {{ section.settings.voicemail_policy_title | default: 'How to Reach Us by Phone' | escape }}</p>
         {% if section.settings.voicemail_policy_text != blank %}
           <p style="margin: 0 0 10px; line-height: 1.6;">{{ section.settings.voicemail_policy_text | escape }}</p>

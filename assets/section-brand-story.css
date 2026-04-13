@@ -11,9 +11,6 @@
   padding: 4rem 0;
 
   background:
-    radial-gradient(36rem 24rem at 15% 75%, rgba(27,14,49,0.35) 0%, transparent 60%),
-    radial-gradient(30rem 22rem at 85% 25%, rgba(27,14,49,0.28) 0%, transparent 65%),
-    linear-gradient(180deg, var(--ip-purple-900) 0%, var(--ip-black) 70%);
 }
 
 .brand-story__content {
@@ -30,7 +27,7 @@
   letter-spacing: .04em;
   text-transform: uppercase;
 
-  background: linear-gradient(135deg, #ffffff 0%, var(--ip-teal-500) 60%, var(--ip-teal-300) 100%);
+  
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   text-shadow: 0 0 16px rgba(0,245,255,.22);
 }

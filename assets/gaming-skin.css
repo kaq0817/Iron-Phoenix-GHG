@@ -22,9 +22,6 @@
 /* ====== Subtle grid + scanlines background ====== */
 body {
   background:
-    radial-gradient(1200px 600px at 50% -100px, rgba(57,255,20,.12), transparent 60%),
-    radial-gradient(800px 400px at 100% 0, rgba(255,16,240,.08), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0) 10%) no-repeat,
     var(--ip-bg);
   position: relative;
   overflow-x: hidden;
@@ -37,12 +34,10 @@ body::before {
   inset: 0;
   pointer-events: none;
   background:
-    repeating-linear-gradient(
       to right,
       rgba(255,255,255,.04) 0 1px,
       transparent 1px 40px
     ),
-    repeating-linear-gradient(
       to bottom,
       rgba(255,255,255,.03) 0 1px,
       transparent 1px 40px
@@ -58,7 +53,6 @@ body::after {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(
     rgba(255,255,255,.02) 1px,
     transparent 1px
   );
@@ -88,7 +82,6 @@ body::after {
 
 /* cart count pill */
 .cart-count-bubble {
-  background: linear-gradient(90deg, var(--ip-pink), var(--ip-neon));
   color: #000;
   border-radius: 999px;
   box-shadow: var(--ip-glow);
@@ -109,7 +102,6 @@ body::after {
   border-left: var(--ip-border);
 }
 .cart-drawer__checkout-button.button {
-  background: linear-gradient(90deg, var(--ip-neon), var(--ip-pink));
   color: #000;
   border: 0;
   box-shadow: var(--ip-glow);
@@ -135,9 +127,7 @@ body::after {
 
 /* ====== Power-up CTA button ====== */
 .button.btn--powerup {
-  --shine: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.6) 30%, transparent 60%);
   position: relative;
-  background: linear-gradient(90deg, var(--ip-neon), var(--ip-pink));
   color: #000;
   border: 0;
   border-radius: 12px;
@@ -168,9 +158,6 @@ body::after {
 .hero-gaming__bg {
   position:absolute; inset:-20% -10%;
   background:
-    radial-gradient(800px 400px at 10% 0, rgba(57,255,20,.25), transparent 60%),
-    radial-gradient(700px 400px at 90% 10%, rgba(255,16,240,.2), transparent 60%),
-    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0) 40%);
   filter: blur(20px);
   z-index:0;
 }

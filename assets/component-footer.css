@@ -28,7 +28,7 @@
 
 /* ===== Card Panels ===== */
 .contact-box {
-  background: linear-gradient(180deg, #0d0d0d 0%, #111111 100%);
+  
   border: 1.5px solid rgba(255, 0, 255, 0.6);
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.2);

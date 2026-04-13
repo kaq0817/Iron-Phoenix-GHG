@@ -10,7 +10,7 @@
   min-height: 260px;
   border-radius: 0;
   overflow: hidden;
-  background: linear-gradient(135deg, #0f2e62 0%, #1e4f96 55%, #5f9ad6 100%);
+  
 }
 
 .email-signup-banner.height--small .banner {
@@ -72,7 +72,7 @@
 }
 
 .email-signup-banner.show-text-box .signup__box {
-  background: linear-gradient(130deg, rgba(10, 42, 88, 0.9) 0%, rgba(24, 84, 158, 0.84) 100%);
+  
   border: 1px solid rgba(200, 224, 255, 0.4);
   border-radius: 18px;
   box-shadow: 0 20px 42px rgba(5, 21, 45, 0.28);

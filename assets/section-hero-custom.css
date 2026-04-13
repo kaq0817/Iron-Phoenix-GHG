@@ -26,18 +26,8 @@
   display: block;
 }
 
-/* Dark gradient overlay — left side darker for text legibility */
 .hero-custom::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(
-    to right,
-    rgba(5, 8, 20, 0.82) 0%,
-    rgba(5, 8, 20, 0.55) 55%,
-    rgba(5, 8, 20, 0.10) 100%
-  );
+  display: none;
 }
 
 /* Content — left aligned, constrained column */
@@ -81,29 +71,27 @@
   margin-bottom: 0.5rem;
 }
 
-/* Big bold headline — always one line on desktop */
+/* Big bold headline — one line on desktop */
 .hero-custom__headline {
   margin: 0 0 0.6rem;
   font-size: clamp(1.8rem, 3.5vw, 3.2rem);
   line-height: 1.05;
   font-weight: 800;
   letter-spacing: -0.01em;
-  text-transform: uppercase;
   color: #ffffff;
-  text-shadow: 0 2px 24px rgba(0, 0, 0, 0.5);
   white-space: nowrap;
 }
 
-/* Subheadline — wraps naturally, max 2 lines */
+/* Subheadline — white with shadow for contrast */
 .hero-custom__subheadline {
   margin: 0 0 2rem;
-  font-size: clamp(0.85rem, 1.1vw, 0.95rem);
-  font-weight: 500;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.75);
-  max-width: 40ch;
-  line-height: 1.6;
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  color: #ffffff;
+  max-width: 480px;
+  line-height: 1.5;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.9), 0 2px 20px rgba(0,0,0,0.8);
 }
 
 /* Outlined amber CTA button */
@@ -142,12 +130,7 @@
   }
 
   .hero-custom::after {
-    background: linear-gradient(
-      to top,
-      rgba(5, 8, 20, 0.92) 0%,
-      rgba(5, 8, 20, 0.55) 60%,
-      rgba(5, 8, 20, 0.10) 100%
-    );
+    display: none;
   }
 
   .hero-custom__content {

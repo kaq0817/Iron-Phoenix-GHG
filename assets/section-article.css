@@ -22,7 +22,7 @@
   margin: 0 0 .5rem 0;
   font-size: clamp(2.2rem, 4.5vw, 3rem);
   line-height: 1.1;
-  background: linear-gradient(135deg, #fff, var(--ipx-teal));
+  
   -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
   text-shadow: 0 0 18px rgba(38,225,210,0.25);
 }

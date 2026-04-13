@@ -43,7 +43,6 @@
 }
 
 .founder-note__card {
-  background: linear-gradient(180deg, rgba(var(--color-white),.03), rgba(var(--color-white),.01)); /* Using --color-white */
   border: var(--ip-border);
   border-radius: var(--ip-radius);
   box-shadow: var(--ip-shadow);
@@ -59,8 +58,6 @@
   top: -20%;
   right: -10%;
   width: 320px; height: 320px;
-  background: radial-gradient(closest-side, rgba(var(--color-neon-green),.18), transparent 70%), /* Using --color-neon-green */
-              radial-gradient(closest-side, rgba(var(--color-neon-pink),.18), transparent 70%); /* Using --color-neon-pink */
   filter: blur(18px);
   pointer-events: none;
   z-index: 0;
@@ -147,7 +144,6 @@
   display: inline-flex;
 }
 .founder-note__cta .button {
-  background: linear-gradient(90deg, var(--ip-neon), var(--ip-pink)); /* Using --ip-neon, --ip-pink */
   color: rgb(var(--color-black)); /* Text is black on neon button */
   border: 0; border-radius: 12px;
   font-weight: 800; letter-spacing: .02em;

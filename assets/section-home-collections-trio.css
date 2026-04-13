@@ -65,7 +65,6 @@
   position: absolute;
   inset: 0;
   z-index: 1;
-  background: linear-gradient(135deg, var(--tile-bg-start), var(--tile-bg-end)); /* Dynamic gradient from Liquid */
   opacity: .85;
 }
 .hc-tile::after {
@@ -73,8 +72,6 @@
   position: absolute;
   inset: 0;
   z-index: 2;
-  background: radial-gradient(1200px 400px at 10% -10%, rgba(var(--color-white), .18), transparent 50%), /* Using --color-white */
-              radial-gradient(1200px 400px at 110% 110%, rgba(var(--color-white), .18), transparent 50%); /* Using --color-white */
   mix-blend-mode: overlay;
   pointer-events: none;
 }

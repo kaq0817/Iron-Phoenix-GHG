@@ -27,9 +27,6 @@
   inset: 0;
   z-index: 0;
   background:
-    radial-gradient(circle at 20% 50%, rgba(138,43,226,0.30) 0%, transparent 50%),
-    radial-gradient(circle at 80% 20%, rgba(255,16,240,0.30) 0%, transparent 50%),
-    radial-gradient(circle at 40% 80%, rgba(57,255,20,0.20) 0%, transparent 50%),
     #000;
 }
 
@@ -64,7 +61,7 @@
   margin-bottom: 2rem;
   border: 2px solid rgb(var(--c-neon-green));
   border-radius: 999px;
-  background: linear-gradient(135deg, rgba(57,255,20,.20), rgba(255,16,240,.20));
+  
   font-weight: 700;
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -83,7 +80,7 @@
   line-height: 1.1;
   font-weight: 900;
   margin: 0 0 1.6rem;
-  background: linear-gradient(135deg, #fff, rgb(var(--c-neon-green)), rgb(var(--c-neon-pink)));
+  
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -127,7 +124,7 @@
 }
 
 [id^="LevelUpHero-"] .btn--primary {
-  background: linear-gradient(135deg, rgb(var(--c-neon-green)), rgb(var(--c-teal)));
+  
   color: rgb(var(--c-black));
   box-shadow: 0 10px 30px rgba(57,255,20,.3);
 }
@@ -192,7 +189,7 @@
 /* Features */
 [id^="LevelUpHero-"] .levelup-hero__features {
   padding: 8rem 2rem;
-  background: linear-gradient(180deg, transparent, rgba(138,43,226,0.1));
+  
 }
 
 [id^="LevelUpHero-"] .features__grid {
@@ -206,7 +203,7 @@
 [id^="LevelUpHero-"] .feature {
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+  
   border: 1px solid rgba(255,255,255,.1);
   border-radius: 25px;
   padding: 3rem;
@@ -218,7 +215,7 @@
   position: absolute;
   inset: 0;
   left: -100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+  
   transition: left .5s ease;
 }
 
@@ -241,7 +238,7 @@
   justify-content: center;
   font-size: 2rem;
   margin-bottom: 1.6rem;
-  background: linear-gradient(135deg, rgb(var(--c-neon-green)), rgb(var(--c-cyan)));
+  
 }
 
 [id^="LevelUpHero-"] .feature__title {

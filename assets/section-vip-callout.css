@@ -14,7 +14,7 @@
   margin: 0 auto;
   text-align: center;
   padding: clamp(24px, 4vw, 40px) clamp(18px, 4vw, 32px);
-  background: linear-gradient(180deg, var(--vip-surface-top), var(--vip-surface-bottom));
+  
   border-top: 1px solid var(--vip-border);
   border-bottom: 1px solid var(--vip-border);
   border-left: 0;
@@ -44,7 +44,7 @@
   font-weight: 700;
   border-radius: 999px;
   padding: 0.9rem 1.5rem;
-  background: linear-gradient(180deg, #26a69a 0%, var(--vip-button-bottom) 100%);
+  
   color: var(--vip-button-text);
   border: 1px solid var(--vip-button-border);
   text-decoration: none;

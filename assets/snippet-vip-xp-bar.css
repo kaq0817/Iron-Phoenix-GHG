@@ -2,5 +2,4 @@
 .vipxp{max-width:520px}
 .vipxp__label{font-weight:700;margin-bottom:.35rem;color:var(--ip-teal,#26a69a)}
 .vipxp__bar{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}
-.vipxp__fill{display:block;height:100%;width:var(--pct,0%);background:linear-gradient(90deg,var(--ip-neon,#39ff14),var(--ip-pink,#ff10f0));box-shadow:0 0 12px rgba(57,255,20,.35)}
 .vipxp__hint{font-size:.9em;opacity:.8;margin-top:.35rem}

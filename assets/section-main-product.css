@@ -307,7 +307,6 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   border: 2px solid rgb(var(--color-accent, 0, 255, 0));
-  background: linear-gradient(135deg,
     rgba(var(--color-accent, 0, 255, 0), 0.9),
     rgba(var(--color-accent, 0, 255, 0), 0.7));
   color: #000;
