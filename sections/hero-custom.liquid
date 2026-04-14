@@ -29,6 +29,29 @@
     object-position: center;
   }
 
+  .hero-custom__nav {
+    display: flex;
+    gap: 2.5rem;
+    justify-content: center;
+    margin-bottom: 2.5rem;
+    z-index: 3;
+    position: relative;
+  }
+  .hero-custom__nav-link {
+    color: {{ section.settings.nav_color | default: '#ffffff' }};
+    font-size: {{ section.settings.nav_size | default: 18 }}px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .hero-custom__nav-link:hover,
+  .hero-custom__nav-link:focus {
+    color: {{ section.settings.nav_hover_color | default: '#ffb300' }};
+  }
+
   .hero-custom__content {
     position: relative;
     z-index: 2;
@@ -41,8 +64,6 @@
     align-items: {% if section.settings.content_align == 'center' %}center{% else %}flex-start{% endif %};
     text-align: {% if section.settings.content_align == 'center' %}center{% else %}left{% endif %};
   }
-
-  
 
   /* FORCED ROYAL BLUE HEADLINE */
   .hero-custom__headline {
@@ -84,6 +105,16 @@
     </div>
   {%- endif -%}
 
+  {%- if section.blocks.size > 0 -%}
+    <nav class="hero-custom__nav" aria-label="Hero collections navigation">
+      {%- for block in section.blocks -%}
+        <a class="hero-custom__nav-link" href="{{ block.settings.collection | default: '#' }}" {{ block.shopify_attributes }}>
+          {{ block.settings.label | escape }}
+        </a>
+      {%- endfor -%}
+    </nav>
+  {%- endif -%}
+
   <div class="hero-custom__content">
     {%- if section.settings.eyebrow != blank -%}
       <span class="hero-custom__eyebrow">{{ section.settings.eyebrow | escape }}</span>
@@ -111,6 +142,10 @@
   "settings": [
     { "type": "header", "content": "Images" },
     { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "header", "content": "Navigation (Collections)" },
+    { "type": "color", "id": "nav_color", "label": "Navigation link color", "default": "#ffffff" },
+    { "type": "color", "id": "nav_hover_color", "label": "Navigation link hover color", "default": "#ffb300" },
+    { "type": "range", "id": "nav_size", "min": 12, "max": 32, "step": 1, "unit": "px", "label": "Navigation font size", "default": 18 },
     { "type": "header", "content": "Text content" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Equip Your Next" },
     { "type": "text", "id": "headline", "label": "Headline", "default": "Adventure" },
@@ -130,6 +165,16 @@
     { "type": "range", "id": "min_height", "min": 200, "max": 1000, "step": 20, "unit": "px", "label": "Minimum height", "default": 600 },
     { "type": "select", "id": "content_align", "label": "Content alignment", "options": [{ "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "flex-start" }
   ],
-  "presets": [{ "name": "Hero Custom" }]
+  "blocks": [
+    {
+      "type": "collection_link",
+      "name": "Collection Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Link label", "default": "Collection" },
+        { "type": "url", "id": "collection", "label": "Collection link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Hero Custom", "blocks": [ { "type": "collection_link" } ] }]
 }
 {% endschema %}

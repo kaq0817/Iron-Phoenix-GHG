@@ -259,14 +259,16 @@
       {%- endif -%}
     </div>
 
-    <!-- INLINE NAV -->
+    <!-- INLINE NAV (Editable Blocks) -->
     <nav class="header__inline-menu">
       <ul class="list-menu list-menu--inline" role="list">
-        {%- for link in section.settings.menu.links -%}
+        {%- for block in section.blocks -%}
           <li>
-            <a href="{{ link.url }}" class="header__menu-item {% if link.current %}header__menu-item--active{% endif %}">
-              <span>{{ link.label | escape }}</span>
-              {%- if link.links != blank -%}<svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>{%- endif -%}
+            <a href="{{ block.settings.link | default: '#' }}" class="header__menu-item" {{ block.shopify_attributes }}>
+              <span>{{ block.settings.label | escape }}</span>
+              {%- if block.settings.show_down_arrow -%}
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5"/></svg>
+              {%- endif -%}
             </a>
           </li>
         {%- endfor -%}
@@ -343,18 +345,6 @@
     { "type": "color", "id": "header_bg_color", "label": "Header background color", "default": "#111111" },
     { "type": "color", "id": "header_border_color", "label": "Header bottom border color", "default": "#222222" },
     { "type": "header", "content": "Navigation" },
-    { "type": "link_list", "id": "menu", "label": "Navigation menu", "default": "main-menu" },
-    {
-      "type": "select",
-      "id": "sticky_header_type",
-      "label": "Sticky header",
-      "options": [
-        { "value": "none", "label": "None" },
-        { "value": "on-scroll-up", "label": "On scroll up" },
-        { "value": "always", "label": "Always" }
-      ],
-      "default": "on-scroll-up"
-    },
     { "type": "checkbox", "id": "show_line_separator", "label": "Show line separator", "default": false },
     { "type": "header", "content": "Spacing" },
     {
@@ -386,6 +376,28 @@
       "unit": "px",
       "label": "Padding bottom",
       "default": 24
+    }
+  ]
+  ,
+  "blocks": [
+    {
+      "type": "nav_link",
+      "name": "Navigation Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Link label", "default": "Menu" },
+        { "type": "url", "id": "link", "label": "Link URL" },
+        { "type": "checkbox", "id": "show_down_arrow", "label": "Show down arrow (dropdown)", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header",
+      "blocks": [
+        { "type": "nav_link" },
+        { "type": "nav_link" },
+        { "type": "nav_link" }
+      ]
     }
   ]
 }
