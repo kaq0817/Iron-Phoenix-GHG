@@ -8,19 +8,13 @@
 
 <style>
   .hero-custom {
-    --hero-headline-color: {{ section.settings.headline_color }};
-    --hero-subheadline-color: {{ section.settings.subheadline_color }};
-    --hero-button-bg-color: {{ section.settings.cta_bg_color }};
-    --hero-button-text-color: {{ section.settings.cta_text_color }};
-    
     position: relative;
     display: flex;
     align-items: center;
     justify-content: {{ section.settings.content_align }};
     min-height: {{ section.settings.min_height }}px;
     overflow: hidden;
-    background-color: #050b12;
-    color: #ffffff;
+    background-color: #050b12; /* Brand solid navy [cite: 30, 52] */
   }
 
   .hero-custom__background {
@@ -28,7 +22,6 @@
     inset: 0;
     z-index: 1;
   }
-
   .hero-custom__background img {
     width: 100%;
     height: 100%;
@@ -49,42 +42,39 @@
     text-align: {% if section.settings.content_align == 'center' %}center{% else %}left{% endif %};
   }
 
+  
+
+  /* FORCED ROYAL BLUE HEADLINE */
   .hero-custom__headline {
-    color: var(--hero-headline-color);
+    color: {{ section.settings.headline_color }} !important;
     font-size: {{ section.settings.headline_size }}px;
     font-weight: 900;
     line-height: 0.95;
-    text-transform: uppercase;
+    text-transform: capitalize;
     margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
   }
 
   .hero-custom__subheadline {
-    color: var(--hero-subheadline-color);
-    font-size: {{ section.settings.subheadline_size }}px;
+    /* Forces the color from your theme editor picker [cite: 18] */
+    color: {{ section.settings.subheadline_color | default: '#4169e1' }} !important;
+    
+    /* Ensures the text is fully opaque and not 'greyed out' */
+    opacity: 1 !important;
+    
+    /* Matches your requested 'capitalize' style [cite: 19] */
+    text-transform: capitalize;
+    
+    /* Keeps the premium spacing for the 'Apparel • Accessories' look [cite: 19] */
+    letter-spacing: 0.15em;
     font-weight: 600;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 2.5rem;
-  }
-
-  .hero-custom__button {
-    background-color: var(--hero-button-bg-color);
-    color: var(--hero-button-text-color);
-    padding: 0.85rem 1.8rem;
-    border-radius: 3px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
+    font-size: {{ section.settings.subheadline_size }}px;
   }
 </style>
 
 <section class="hero-custom">
   {%- if section.settings.background_image != blank -%}
     <div class="hero-custom__background">
-      {%- comment -%}Adding explicit width/height to satisfy Theme Check {%- endcomment -%}
       {{ section.settings.background_image | image_url: width: 2000 | image_tag: 
         loading: 'eager', 
         width: section.settings.background_image.width,
@@ -122,64 +112,24 @@
     { "type": "header", "content": "Images" },
     { "type": "image_picker", "id": "background_image", "label": "Background image" },
     { "type": "header", "content": "Text content" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "EQUIP YOUR NEXT" },
-    { "type": "text", "id": "headline", "label": "Headline", "default": "ADVENTURE" },
-    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "APPAREL • ACCESSORIES • LIFESTYLE" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Equip Your Next" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Adventure" },
+    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Apparel • Accessories • Lifestyle" },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "headline_color", "label": "Headline color", "default": "#ffffff" },
-    { "type": "color", "id": "subheadline_color", "label": "Subheadline color", "default": "#ffffff" },
+    { "type": "color", "id": "headline_color", "label": "Headline & Eyebrow Color", "default": "#4169e1" },
+    { "type": "color", "id": "subheadline_color", "label": "Subheadline Color", "default": "#4169e1" },
     { "type": "header", "content": "Sizes" },
-    {
-      "type": "range",
-      "id": "headline_size",
-      "min": 20,
-      "max": 120,
-      "step": 2,
-      "unit": "px",
-      "label": "Headline font size",
-      "default": 80
-    },
-    {
-      "type": "range",
-      "id": "subheadline_size",
-      "min": 10,
-      "max": 40,
-      "step": 1,
-      "unit": "px",
-      "label": "Subheadline font size",
-      "default": 14
-    },
+    { "type": "range", "id": "headline_size", "min": 20, "max": 120, "step": 2, "unit": "px", "label": "Headline font size", "default": 80 },
+    { "type": "range", "id": "subheadline_size", "min": 10, "max": 40, "step": 1, "unit": "px", "label": "Subheadline font size", "default": 14 },
     { "type": "header", "content": "CTA Button" },
-    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop now" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop Now" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
     { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#1a3683" },
     { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#ffffff" },
     { "type": "header", "content": "Layout" },
-    {
-      "type": "range",
-      "id": "min_height",
-      "min": 200,
-      "max": 1000,
-      "step": 20,
-      "unit": "px",
-      "label": "Minimum height",
-      "default": 600
-    },
-    {
-      "type": "select",
-      "id": "content_align",
-      "label": "Content alignment",
-      "options": [
-        { "value": "flex-start", "label": "Left" },
-        { "value": "center", "label": "Center" }
-      ],
-      "default": "flex-start"
-    }
+    { "type": "range", "id": "min_height", "min": 200, "max": 1000, "step": 20, "unit": "px", "label": "Minimum height", "default": 600 },
+    { "type": "select", "id": "content_align", "label": "Content alignment", "options": [{ "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "flex-start" }
   ],
-  "presets": [
-    {
-      "name": "Hero Custom"
-    }
-  ]
+  "presets": [{ "name": "Hero Custom" }]
 }
 {% endschema %}
