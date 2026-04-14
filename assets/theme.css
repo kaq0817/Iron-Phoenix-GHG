@@ -135,6 +135,7 @@ button {
   html {
     font-size: 62.5%;
   }
+}
 
   /* Prevent any horizontal overflow on the whole page */
   html, body {
@@ -170,91 +171,6 @@ button {
     width: 100% !important;
     max-width: 100% !important;
     padding-left: 1rem !important;
-    padding-right: 1rem !important;
-    box-sizing: border-box !important;
-  }
-
-  /* Typography — readable on phone */
-  h1 { font-size: clamp(2rem, 8vw, 2.8rem); }
-  h2 { font-size: clamp(1.7rem, 6vw, 2.2rem); }
-  h3 { font-size: clamp(1.5rem, 5vw, 1.9rem); }
-  p  { font-size: 1.5rem; max-width: 100% !important; }
-
-  /* Collection grid: 1 column on phones so cards are full width */
-  .collection-list {
-    grid-template-columns: 1fr !important;
-  }
-
-  /* Hero image fills full width, proportional scale */
-  .hero-custom {
-    width: 100% !important;
-    min-height: clamp(240px, 60vw, 380px) !important;
-    padding: 1rem !important;
-  }
-
-  .hero-custom__background img {
-    width: 100% !important;
-    height: 100% !important;
-    object-fit: cover !important;
-  }
-
-  .hero-custom__content {
-    width: 100% !important;
-    max-width: calc(100vw - 2rem) !important;
-    box-sizing: border-box !important;
-  }
-
-  .hero-custom__headline {
-    font-size: clamp(1.8rem, 8vw, 2.6rem) !important;
-  }
-
-  .hero-custom__subheadline {
-    font-size: clamp(1.3rem, 4vw, 1.6rem) !important;
-    max-width: 100% !important;
-  }
-
-  .hero-custom__button {
-    width: 100% !important;
-    max-width: 100% !important;
-  }
-
-  /* Buttons */
-  .button,
-  .btn,
-  a.button,
-  button.button,
-  .shopify-payment-button__button,
-  input[type="submit"] {
-    padding: 0.9rem 1.25rem;
-    font-size: 1.3rem;
-    width: 100%;
-    box-sizing: border-box;
-  }
-}
-
-/* --------------------------------------------------------------------------
-   LAYOUT — page width, sections
-   -------------------------------------------------------------------------- */
-.page-width {
-  max-width: var(--page-width);
-  margin-inline: auto;
-  padding-inline: 2rem;
-  width: 100%;
-}
-
-/* FIXED: No longer forcing flex/center on main content — this was killing the header */
-#MainContent,
-main {
-  width: 100%;
-  display: block !important;
-}
-
-.shopify-section {
-  width: 100%;
-}
-
-.section {
-  padding-top: clamp(3rem, 5vw, 7rem);
   padding-bottom: clamp(3rem, 5vw, 7rem);
 }
 
@@ -492,13 +408,7 @@ button.button:focus-visible {
     overflow-x: hidden;
   }
 
-  /* Header on mobile */
-  .header,
-  .site-header,
-  [class*="header"] {
-    padding: 1rem 1.6rem !important;
-    min-height: 5.6rem !important;
-  }
+
 
   /* Full width everything */
   .shopify-section,
@@ -563,7 +473,6 @@ body[class*="collection--gaming"] {
 
 body.template-collection--gaming .collection-hero,
 body[class*="collection--gaming"] .hero {
-  
 }
 
 body.template-collection--gaming h1,
@@ -1014,4 +923,36 @@ html .cart__subtotal-price {
     max-width: 100% !important;
     height: auto;
   }
+}
+/* 1. Kill the 'Filter' Dimming */
+.hero-custom__background img {
+    filter: none !important;
+    -webkit-filter: none !important;
+    opacity: 1 !important;
+}
+
+/* 2. Kill the 'Overlay' Divs */
+/* This nukes any invisible layers the bots try to slide in front of the image */
+.hero-custom__background::before, 
+.hero-custom__background::after,
+.hero-custom::before,
+.hero-custom::after {
+    display: none !important;
+    content: none !important;
+    background: transparent !important;
+    opacity: 0 !important;
+}
+
+/* 3. Kill the 'Gradient' Backgrounds */
+/* Bots love adding a black-to-transparent gradient. This stops it. */
+.hero-custom, .hero-custom__background {
+    background-image: none !important;
+    background: transparent !important;
+}
+
+/* 4. Ensure the Content is 100% Solid */
+.hero-custom__content {
+    background: transparent !important;
+    /* Forces the text to stay on top without any 'fading' shadows */
+    box-shadow: none !important;
 }
