@@ -3,22 +3,12 @@ User-agent: *
 Disallow: /
 {%- else -%}
 User-agent: *
-Disallow: /search
 Disallow: /cart
-Disallow: /checkout
 Disallow: /carts
+Disallow: /checkout
 Disallow: /orders
+Disallow: /account
 Disallow: /admin
-Disallow: /*preview_theme_id*
-Disallow: /*preview_script_id*
-Disallow: /*?*oseid=*
-Disallow: /*?*sort_by=*
-Disallow: /*?*view=*
-Disallow: /*?*variant=*
-Disallow: /*?*filter_*=*
-Disallow: /*?*utm_*=*
-Disallow: /*?*gclid=*
-Disallow: /*?*fbclid=*
 
 User-agent: AhrefsBot
 Disallow: /
