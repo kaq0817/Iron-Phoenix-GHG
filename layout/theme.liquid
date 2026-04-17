@@ -40,7 +40,11 @@
         {%- assign robots_directive = 'noindex, noimageindex, noarchive, nosnippet' -%}
       {%- endif -%}
     {%- endif -%}
-    <meta name="robots" content="{{ robots_directive | escape }}">
+    {%- if request.path contains 'short-trade-description' -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- else -%}
+      <meta name="robots" content="{{ robots_directive | escape }}">
+    {%- endif -%}
     <link rel="canonical" href="https://www.ourphoenixrise.com{{ request.path }}">
 
     <meta
