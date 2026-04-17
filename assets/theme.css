@@ -135,7 +135,6 @@ button {
   html {
     font-size: 62.5%;
   }
-}
 
   /* Prevent any horizontal overflow on the whole page */
   html, body {
@@ -171,7 +170,9 @@ button {
     width: 100% !important;
     max-width: 100% !important;
     padding-left: 1rem !important;
-  padding-bottom: clamp(3rem, 5vw, 7rem);
+    padding-right: 1rem !important;
+    box-sizing: border-box !important;
+  }
 }
 
 /* --------------------------------------------------------------------------

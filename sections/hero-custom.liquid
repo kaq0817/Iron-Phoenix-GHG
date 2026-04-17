@@ -2,120 +2,55 @@
   assign heading_text = section.settings.headline | default: shop.name
   assign sub_text     = section.settings.subheadline
   assign cta_link     = section.settings.cta_link | default: routes.all_products_collection_url
+  assign fetch_priority = 'high'
 -%}
 
 {{ 'section-hero-custom.css' | asset_url | stylesheet_tag }}
 
-<style>
-  .hero-custom {
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: {{ section.settings.content_align }};
-    min-height: {{ section.settings.min_height }}px;
-    overflow: hidden;
-    background-color: #050b12; /* Brand solid navy [cite: 30, 52] */
-  }
-
-  .hero-custom__background {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-  .hero-custom__background img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-  }
-
-  .hero-custom__nav {
-    display: flex;
-    gap: 2.5rem;
-    justify-content: center;
-    margin-bottom: 2.5rem;
-    z-index: 3;
-    position: relative;
-  }
-  .hero-custom__nav-link {
-    color: {{ section.settings.nav_color | default: '#ffffff' }};
-    font-size: {{ section.settings.nav_size | default: 18 }}px;
-    font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    text-decoration: none;
-    transition: color 0.2s;
-    position: relative;
-  }
-  .hero-custom__nav-link:hover,
-  .hero-custom__nav-link:focus {
-    color: {{ section.settings.nav_hover_color | default: '#ffb300' }};
-  }
-
-  .hero-custom__content {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    max-width: 1240px;
-    margin: 0 auto;
-    padding: 60px 24px;
-    display: flex;
-    flex-direction: column;
-    align-items: {% if section.settings.content_align == 'center' %}center{% else %}flex-start{% endif %};
-    text-align: {% if section.settings.content_align == 'center' %}center{% else %}left{% endif %};
-  }
-
-  /* FORCED ROYAL BLUE HEADLINE */
-  .hero-custom__headline {
-    color: {{ section.settings.headline_color }} !important;
-    font-size: {{ section.settings.headline_size }}px;
-    font-weight: 900;
-    line-height: 0.95;
-    text-transform: capitalize;
-    margin: 0 0 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-custom__subheadline {
-    /* Forces the color from your theme editor picker [cite: 18] */
-    color: {{ section.settings.subheadline_color | default: '#4169e1' }} !important;
-    
-    /* Ensures the text is fully opaque and not 'greyed out' */
-    opacity: 1 !important;
-    
-    /* Matches your requested 'capitalize' style [cite: 19] */
-    text-transform: capitalize;
-    
-    /* Keeps the premium spacing for the 'Apparel • Accessories' look [cite: 19] */
-    letter-spacing: 0.15em;
-    font-weight: 600;
-    font-size: {{ section.settings.subheadline_size }}px;
-  }
-</style>
-
-<section class="hero-custom">
+<section
+  class="hero-custom"
+  style="
+    --hero-min-height: {{ section.settings.min_height }}px;
+    --hero-content-align: {{ section.settings.content_align }};
+    --hero-headline-color: {{ section.settings.headline_color }};
+    --hero-headline-size: {{ section.settings.headline_size }}px;
+    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#4169e1' }};
+    --hero-subheadline-size: {{ section.settings.subheadline_size }}px;
+    --hero-nav-color: {{ section.settings.nav_color | default: '#ffffff' }};
+    --hero-nav-hover-color: {{ section.settings.nav_hover_color | default: '#ffb300' }};
+    --hero-nav-size: {{ section.settings.nav_size | default: 18 }}px;
+    --hero-cta-bg: {{ section.settings.cta_bg_color | default: '#1a3683' }};
+    --hero-cta-color: {{ section.settings.cta_text_color | default: '#ffffff' }};
+  "
+>
   {%- if section.settings.background_image != blank -%}
     <div class="hero-custom__background">
-      {{ section.settings.background_image | image_url: width: 2000 | image_tag: 
-        loading: 'eager', 
-        width: section.settings.background_image.width,
-        height: section.settings.background_image.height,
-        alt: section.settings.background_image.alt | escape 
+      {{
+        section.settings.background_image
+        | image_url: width: 3840
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: fetch_priority,
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+          sizes: '100vw',
+          width: section.settings.background_image.width,
+          height: section.settings.background_image.height,
+          alt: section.settings.background_image.alt | escape
       }}
     </div>
   {%- endif -%}
 
-  {%- if section.blocks.size > 0 -%}
-    <nav class="hero-custom__nav" aria-label="Hero collections navigation">
-      {%- for block in section.blocks -%}
-        <a class="hero-custom__nav-link" href="{{ block.settings.collection | default: '#' }}" {{ block.shopify_attributes }}>
-          {{ block.settings.label | escape }}
-        </a>
-      {%- endfor -%}
-    </nav>
-  {%- endif -%}
-
   <div class="hero-custom__content">
+    {%- if section.blocks.size > 0 -%}
+      <nav class="hero-custom__nav" aria-label="Hero collections navigation">
+        {%- for block in section.blocks -%}
+          <a class="hero-custom__nav-link" href="{{ block.settings.collection | default: '#' }}" {{ block.shopify_attributes }}>
+            {{ block.settings.label | escape }}
+          </a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
+
     {%- if section.settings.eyebrow != blank -%}
       <span class="hero-custom__eyebrow">{{ section.settings.eyebrow | escape }}</span>
     {%- endif -%}
@@ -136,6 +71,130 @@
   </div>
 </section>
 
+{% stylesheet %}
+  .hero-custom {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: var(--hero-content-align, flex-start);
+    min-height: var(--hero-min-height, 600px);
+    overflow: hidden;
+    background-color: #050b12;
+  }
+
+  .hero-custom__background {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-custom__background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-custom__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: var(--hero-content-align, flex-start);
+    text-align: left;
+  }
+
+  .hero-custom__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-custom__nav-link {
+    color: var(--hero-nav-color, #ffffff);
+    font-size: var(--hero-nav-size, 18px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .hero-custom__nav-link:hover,
+  .hero-custom__nav-link:focus {
+    color: var(--hero-nav-hover-color, #ffb300);
+  }
+
+  .hero-custom__headline {
+    color: var(--hero-headline-color, #4169e1) !important;
+    font-size: var(--hero-headline-size, 80px);
+    font-weight: 900;
+    line-height: 0.95;
+    text-transform: capitalize;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-custom__subheadline {
+    color: var(--hero-subheadline-color, #4169e1) !important;
+    opacity: 1 !important;
+    text-transform: capitalize;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    font-size: var(--hero-subheadline-size, 14px);
+  }
+
+  .hero-custom__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.8rem;
+    background: var(--hero-cta-bg, #1a3683);
+    color: var(--hero-cta-color, #ffffff);
+    border-radius: 3px;
+    font-size: clamp(0.78rem, 1vw, 0.88rem);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: filter 0.2s ease;
+  }
+
+  .hero-custom__button::after {
+    content: '→';
+  }
+
+  .hero-custom__button:hover {
+    filter: brightness(1.15);
+    text-decoration: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero-custom__content {
+      padding: 2rem 1.25rem 2.5rem;
+    }
+
+    .hero-custom__headline {
+      font-size: clamp(2rem, 10vw, 3.5rem) !important;
+      white-space: normal;
+    }
+
+    .hero-custom__subheadline {
+      font-size: clamp(0.75rem, 3vw, 1rem) !important;
+    }
+
+    .hero-custom__nav-link {
+      font-size: clamp(0.8rem, 3vw, 1rem);
+    }
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "Hero Custom",
@@ -154,8 +213,8 @@
     { "type": "color", "id": "headline_color", "label": "Headline & Eyebrow Color", "default": "#4169e1" },
     { "type": "color", "id": "subheadline_color", "label": "Subheadline Color", "default": "#4169e1" },
     { "type": "header", "content": "Sizes" },
-    { "type": "range", "id": "headline_size", "min": 20, "max": 120, "step": 2, "unit": "px", "label": "Headline font size", "default": 80 },
-    { "type": "range", "id": "subheadline_size", "min": 10, "max": 40, "step": 1, "unit": "px", "label": "Subheadline font size", "default": 14 },
+    { "type": "range", "id": "headline_size", "min": 20, "max": 120, "step": 2, "unit": "px", "label": "Headline font size (desktop)", "default": 80 },
+    { "type": "range", "id": "subheadline_size", "min": 10, "max": 40, "step": 1, "unit": "px", "label": "Subheadline font size (desktop)", "default": 14 },
     { "type": "header", "content": "CTA Button" },
     { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop Now" },
     { "type": "url", "id": "cta_link", "label": "Button link" },
