@@ -4,14 +4,14 @@
     "settings": [
       {
         "type": "paragraph",
-        "content": "Iron Phoenix GHG LLC — custom high-performance theme (no app reliance)"
+        "content": "Go Hard Gaming Discord LLC DBA Iron Phoenix GHG — custom high-performance theme (no app reliance)"
       }
     ]
   },
   {
     "name": "Brand",
     "settings": [
-      { "type": "text", "id": "store_name", "label": "Store name", "default": "Iron Phoenix GHG LLC" },
+      { "type": "text", "id": "store_name", "label": "Store name", "default": "Go Hard Gaming Discord LLC DBA Iron Phoenix GHG" },
       { "type": "text", "id": "store_email", "label": "Store email", "default": "shadowseeker@ironphoenix.store" },
       { "type": "text", "id": "store_phone", "label": "Store phone", "default": "+1 (555) 555-5555" },
       { "type": "textarea", "id": "store_address", "label": "Store address", "default": "142 W. Milton Rd Trlr 7, Ballston Spa, NY 12020" },

@@ -1,5 +1,5 @@
 /* path: assets/theme.js */
-/* Iron Phoenix GHG LLC — lean runtime: drawers, accessibility, AJAX cart, section lifecycle, media zoom */
+/* Go Hard Gaming Discord LLC DBA Iron Phoenix GHG — lean runtime: drawers, accessibility, AJAX cart, section lifecycle, media zoom */
 
 (() => {
   'use strict';

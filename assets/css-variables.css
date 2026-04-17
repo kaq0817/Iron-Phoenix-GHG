@@ -1,5 +1,5 @@
 /* assets/css-variables.css
-   Single source of truth for global CSS variables (Iron Phoenix GHG LLC)
+   Single source of truth for global CSS variables (Go Hard Gaming Discord LLC DBA Iron Phoenix GHG)
    - Link this file in layout/theme.liquid and layout/password.liquid
    - Remove assets/css-variables.css and snippets/css-variables.liquid
 */
@@ -22,7 +22,7 @@
   --color-black: 0,0,0;
   --color-white: 255,255,255;
 
-  /* Brand accents (Iron Phoenix GHG LLC) */
+  /* Brand accents (Go Hard Gaming Discord LLC DBA Iron Phoenix GHG) */
   --color-neon-pink: 255,16,240;
   --color-neon-yellow: 255,255,0;
   --color-neon-green: 57,255,20;
