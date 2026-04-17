@@ -12,13 +12,13 @@
     --hero-content-align: {{ section.settings.content_align }};
     --hero-headline-color: {{ section.settings.headline_color }};
     --hero-headline-size: {{ section.settings.headline_size }}px;
-    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#4169e1' }};
+    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#44f3db' }};
     --hero-subheadline-size: {{ section.settings.subheadline_size }}px;
     --hero-nav-color: {{ section.settings.nav_color | default: '#ffffff' }};
     --hero-nav-hover-color: {{ section.settings.nav_hover_color | default: '#ffb300' }};
     --hero-nav-size: {{ section.settings.nav_size | default: 18 }}px;
-    --hero-cta-bg: {{ section.settings.cta_bg_color | default: '#1a3683' }};
-    --hero-cta-color: {{ section.settings.cta_text_color | default: '#ffffff' }};
+    --hero-cta-bg: {{ section.settings.cta_bg_color | default: '#7588bc' }};
+    --hero-cta-color: {{ section.settings.cta_text_color | default: '#230c5d' }};
   "
 >
   {%- if section.settings.background_image != blank -%}
@@ -129,6 +129,16 @@
     color: var(--hero-nav-hover-color, #ffb300);
   }
 
+  .hero-custom__eyebrow {
+    font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0 0 0.4rem;
+    display: block;
+  }
+
   .hero-custom__headline {
     color: var(--hero-headline-color, #4169e1) !important;
     font-size: var(--hero-headline-size, 80px);
@@ -152,16 +162,18 @@
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
-    padding: 0.85rem 1.8rem;
-    background: var(--hero-cta-bg, #1a3683);
-    color: var(--hero-cta-color, #ffffff);
+    padding: 0.9rem 2rem;
+    background: var(--hero-cta-bg, #1a3683) !important;
+    color: var(--hero-cta-color, #ffffff) !important;
+    border: none !important;
     border-radius: 3px;
     font-size: clamp(0.78rem, 1vw, 0.88rem);
     font-weight: 700;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    text-decoration: none;
+    text-decoration: none !important;
     transition: filter 0.2s ease;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
   }
 
   .hero-custom__button::after {
