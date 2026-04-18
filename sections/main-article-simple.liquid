@@ -108,6 +108,31 @@
     </div>
   </div>
 </section>
+
+<script>
+  (function () {
+    var body = document.querySelector('#ArticleSimple-{{ section.id }} .article-simple__body');
+    if (!body) return;
+    body.querySelectorAll('img').forEach(function (img) {
+      var src = img.getAttribute('src');
+      if (!src || !src.includes('cdn.shopify.com')) return;
+      // Add loading=lazy if missing
+      if (!img.getAttribute('loading')) img.setAttribute('loading', 'lazy');
+      // Rewrite URL to serve max 900px wide via Shopify CDN
+      if (!src.match(/_\d+x/) && !src.includes('width=')) {
+        img.setAttribute('src', src.replace(/(\.[a-z]{3,4})(\?|$)/i, '_900x$1$2'));
+        var srcset = img.getAttribute('srcset');
+        if (!srcset) {
+          img.setAttribute('srcset',
+            src.replace(/(\.[a-z]{3,4})(\?|$)/i, '_450x$1$2') + ' 450w, ' +
+            src.replace(/(\.[a-z]{3,4})(\?|$)/i, '_900x$1$2') + ' 900w'
+          );
+          img.setAttribute('sizes', '(max-width: 749px) 100vw, 900px');
+        }
+      }
+    });
+  })();
+</script>
 {%- endif -%}
 
 {% schema %}
