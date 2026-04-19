@@ -10,8 +10,8 @@
     {%- if section.settings.show_cover_image and article.image -%}
       {%- assign cover_img = article.image -%}
       {%- assign cover_alt = cover_img.alt | default: article.title | escape -%}
-      {%- assign src_widths = '750,1100,1400,1600' | split: ',' -%}
-      {%- assign max_width = 1600 -%}
+      {%- assign src_widths = '400,600,900,1200' | split: ',' -%}
+      {%- assign max_width = 1200 -%}
       {%- assign intrinsic_w = cover_img.width -%}
       {%- assign intrinsic_h = cover_img.width | divided_by: cover_img.aspect_ratio | round -%}
       <div class="article-simple__media">

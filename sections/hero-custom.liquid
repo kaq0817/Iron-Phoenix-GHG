@@ -25,11 +25,11 @@
     <div class="hero-custom__background">
       {{
         section.settings.background_image
-        | image_url: width: 3840
+        | image_url: width: 2000
         | image_tag:
           loading: 'eager',
           fetchpriority: fetch_priority,
-          widths: '375, 550, 750, 1100, 1500, 1780, 2000, 3000, 3840',
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000',
           sizes: '100vw',
           width: section.settings.background_image.width,
           height: section.settings.background_image.height,
