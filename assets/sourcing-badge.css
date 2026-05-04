@@ -1,9 +1,8 @@
 /* assets/sourcing-badge.css */
-/* Small, GPU-friendly neon badge that works in dark UIs */
 .sourcing-badge {
-  --badge-bg: rgba(0,0,0,0.4);
-  --badge-fg: #e6fff7;
-  --badge-neon: #39ff14;
+  --badge-bg: rgba(249, 246, 241, 0.9);
+  --badge-fg: #3D2B22;
+  --badge-accent: #C9A84C;
   display: inline-flex;
   align-items: center;
   gap: .5rem;
@@ -12,7 +11,7 @@
   border-radius: 999px;
   color: var(--badge-fg);
   background: var(--badge-bg);
-  border: 1px solid rgba(255,255,255,.08);
+  border: 1px solid rgba(201, 168, 76, 0.3);
   letter-spacing: .02em;
   white-space: nowrap;
 }
@@ -20,21 +19,22 @@
 .sourcing-badge__icon { display: inline-block; }
 
 .sourcing-badge--mto {
-  --badge-neon: #ff10f0;           /* neon pink */
-  --badge-fg: #ffe6fb;
-  border-color: rgba(255,16,240,.35);
-  box-shadow: 0 0 .4rem rgba(255,16,240,.35), inset 0 0 .2rem rgba(255,16,240,.25);
+  --badge-accent: #6B2737;
+  --badge-fg: #4F1D28;
+  border-color: rgba(107, 39, 55, 0.3);
+  background: rgba(107, 39, 55, 0.07);
+  box-shadow: 0 0 .4rem rgba(107, 39, 55, 0.12), inset 0 0 .2rem rgba(107, 39, 55, 0.08);
 }
 
 .sourcing-badge--instock {
-  --badge-neon: #39ff14;           /* neon green */
-  --badge-fg: #eaffea;
-  border-color: rgba(57,255,20,.35);
-  box-shadow: 0 0 .4rem rgba(57,255,20,.35), inset 0 0 .2rem rgba(57,255,20,.25);
+  --badge-accent: #C9A84C;
+  --badge-fg: #3D2B22;
+  border-color: rgba(201, 168, 76, 0.35);
+  background: rgba(201, 168, 76, 0.08);
+  box-shadow: 0 0 .4rem rgba(201, 168, 76, 0.2), inset 0 0 .2rem rgba(201, 168, 76, 0.12);
 }
 
 .sourcing-badge--mto .sourcing-badge__icon,
 .sourcing-badge--instock .sourcing-badge__icon {
-  color: var(--badge-neon);
-  filter: drop-shadow(0 0 .25rem var(--badge-neon));
+  color: var(--badge-accent);
 }

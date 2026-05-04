@@ -1,20 +1,19 @@
-/* Product Tabs Section with Go Hard Gaming Discord LLC Theme */
+/* Iron Phoenix GHG — Product Tabs */
 .product-tabs {
-  --ip-purple-900: #121212;
-  --ip-teal-500: #00f5ff;
-  --ip-surface: rgba(255, 255, 255, 0.03);
-  --ip-border: rgba(255, 255, 255, 0.10);
-  --ip-blur: 10px;
+  --ip-wine:    #6B2737;
+  --ip-gold:    #C9A84C;
+  --ip-cream:   #F9F6F1;
+  --ip-surface: rgba(201, 168, 76, 0.05);
+  --ip-border:  rgba(201, 168, 76, 0.18);
 }
 
 .product-tabs-wrapper {
-  background: var(--ip-surface);
-  backdrop-filter: blur(var(--ip-blur));
+  background: #FFFFFF;
   border: 1px solid var(--ip-border);
   border-radius: 15px;
   padding: 20px;
   margin-top: 2rem;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 15px rgba(0,0,0,.06);
 }
 
 .product-tabs-header-list {
@@ -23,7 +22,6 @@
   margin-bottom: 1.5rem;
   padding: 0 10px;
   overflow-x: auto;
-  
   border-radius: 10px;
 }
 
@@ -34,7 +32,7 @@
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #fff;
+  color: #5C4E44;
   white-space: nowrap;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
@@ -43,21 +41,23 @@
 
 .product-tab-button:hover,
 .product-tab-button:focus {
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(201, 168, 76, 0.08);
   border-radius: 5px;
+  color: #1A1310;
 }
 
 .product-tab-button.is-active {
-  border-bottom-color: var(--ip-teal-500);
+  border-bottom-color: var(--ip-gold);
   font-weight: 600;
-  background: rgba(0, 245, 255, 0.2);
+  color: #1C0F14;
+  background: rgba(201, 168, 76, 0.1);
 }
 
 .product-tab-panel {
   line-height: 1.7;
-  color: #e0e0e0;
+  color: #3D2B22;
   padding: 15px;
-  background: rgba(20, 10, 36, 0.8);
+  background: #F9F6F1;
   border-radius: 10px;
 }
 
@@ -71,42 +71,39 @@
   align-items: center;
   gap: 5px;
   margin-bottom: 1rem;
-  color: var(--ip-teal-500);
+  color: var(--ip-gold);
 }
 
 .product-tabs .rating .stars {
   font-size: 1rem;
-  /* Use a star icon font or SVG here (e.g., via CSS content) */
 }
 
 .product-tabs .trust-badge {
   display: inline-block;
   padding: 5px 10px;
-  background: var(--ip-teal-500);
-  color: #fff;
+  background: var(--ip-wine);
+  color: #F9F6F1;
   border-radius: 5px;
   font-size: 0.875rem;
   margin-top: 1rem;
 }
 
-/* Responsive Adjustments */
+/* Responsive */
 @media screen and (max-width: 749px) {
   .product-tabs-header-list {
     justify-content: start;
     padding: 0;
   }
-
   .product-tab-button {
     padding: 8px 15px;
     font-size: 0.9rem;
   }
-
   .product-tab-panel {
     padding: 10px;
   }
 }
 
-/* Utility Classes */
+/* Utility */
 .visually-hidden {
   position: absolute !important;
   overflow: hidden;

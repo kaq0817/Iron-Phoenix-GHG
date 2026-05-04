@@ -1,5 +1,5 @@
 /* ==========================================================================
-   THEME.CSS — Go Hard Gaming Discord LLC Base Theme Styles
+   THEME.CSS — Iron Phoenix GHG Base Theme Styles
    Fixed: header size, typography scale, mobile layout, per-collection themes
    ========================================================================== */
 
@@ -52,7 +52,7 @@ img, svg, video, canvas {
 }
 
 a {
-  color: var(--color-links, var(--color-accent, #26a69a));
+  color: var(--color-links, var(--color-accent, #6B2737));
   text-decoration: none;
   text-underline-offset: 0.22em;
   text-decoration-thickness: from-font;
@@ -71,7 +71,7 @@ button {
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent, #26a69a);
+  outline: 2px solid var(--color-accent, #C9A84C);
   outline-offset: 2px;
   border-radius: .25rem;
 }
@@ -263,13 +263,13 @@ button.button:focus-visible {
 .button--secondary,
 .button--outline {
   background: transparent;
-  border: 1px solid var(--color-accent, #26a69a);
-  color: var(--color-accent, #26a69a);
+  border: 1px solid var(--color-accent, #C9A84C);
+  color: var(--color-accent, #C9A84C);
   box-shadow: none;
 }
 
 .button--secondary:hover {
-  background: rgb(var(--color-accent-rgb, var(--rgb-accent, 38, 166, 154)) / 0.08);
+  background: rgb(var(--color-accent-rgb, var(--rgb-accent, 201, 168, 76)) / 0.08);
   box-shadow: none;
 }
 
@@ -342,7 +342,7 @@ button.button:focus-visible {
   content: '➤';
   position: absolute;
   left: 0;
-  color: var(--color-accent, #26a69a);
+  color: var(--color-accent, #C9A84C);
 }
 
 /* --------------------------------------------------------------------------
@@ -372,17 +372,17 @@ button.button:focus-visible {
 .social-icon.twitch svg    { fill: #9146FF; }
 
 /* --------------------------------------------------------------------------
-   NEON UTILITY
+   UTILITY ACCENTS
    -------------------------------------------------------------------------- */
 .neon-hr {
   height: 1px;
   border: 0;
-  
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
   margin: 1.6rem 0;
 }
 
 .glow-text {
-  text-shadow: 0 0 10px rgba(57,255,20,.35), 0 0 30px rgba(57,255,20,.2);
+  text-shadow: 0 0 10px rgba(201,168,76,.25), 0 0 30px rgba(107,39,55,.15);
 }
 
 .cart__subtotal-price {
@@ -460,20 +460,21 @@ body[class*="collection--gaming"] {
   --color-main-text: #1F1F1F;
   --color-text-secondary: #555555;
 
-  --color-accent: #26A69A;
-  --rgb-accent: 38, 166, 154;
+  --color-accent: #C9A84C;
+  --rgb-accent: 201, 168, 76;
   --color-headings: #1F1F1F;
-  --color-links: #26A69A;
+  --color-links: #6B2737;
 
-  --color-button-primary-bg: #26A69A;
-  --color-button-primary-text: #FFFFFF;
-  --color-button-primary-hover: #1E8A7E;
+  --color-button-primary-bg: #6B2737;
+  --color-button-primary-text: #F9F6F1;
+  --color-button-primary-hover: #4F1D28;
 
   background: var(--color-bg) !important;
 }
 
 body.template-collection--gaming .collection-hero,
 body[class*="collection--gaming"] .hero {
+  border-top: 1px solid rgba(201, 168, 76, 0.15);
 }
 
 body.template-collection--gaming h1,
@@ -517,6 +518,7 @@ body[class*="collection--sports"] {
 
 body.template-collection--sports .collection-hero,
 body[class*="collection--sports"] .hero {
+  border-top: 1px solid rgba(0, 174, 239, 0.15);
 }
 
 body.template-collection--sports h1,
@@ -560,6 +562,7 @@ body[class*="collection--outdoor"] {
 
 body.template-collection--outdoor .collection-hero,
 body[class*="collection--outdoor"] .hero {
+  border-top: 1px solid rgba(46, 125, 50, 0.15);
 }
 
 body.template-collection--outdoor h1,
@@ -603,6 +606,7 @@ body[class*="collection--home"] {
 
 body.template-collection--home .collection-hero,
 body[class*="collection--home"] .hero {
+  border-top: 1px solid rgba(161, 136, 127, 0.15);
 }
 
 body.template-collection--home h1,
@@ -650,6 +654,7 @@ body[class*="collection--jewelry"] {
 
 body.template-collection--jewelry .collection-hero,
 body[class*="collection--jewelry"] .hero {
+  border-top: 1px solid rgba(26, 42, 68, 0.15);
 }
 
 body.template-collection--jewelry h1,
@@ -762,6 +767,7 @@ body[class*="collection--family"] {
 
 body.template-collection--family .collection-hero,
 body[class*="collection--family"] .hero {
+  border-top: 1px solid rgba(100, 181, 246, 0.15);
 }
 
 body.template-collection--family h1,
@@ -820,7 +826,7 @@ body[class*="template-collection"] .product-grid {
 /* Remove neon lines from all plain hr tags */
 hr {
   border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
   margin: 2rem 0;
   background: none;
 }
@@ -865,13 +871,13 @@ html button.button:hover {
 
 html .button--secondary,
 html .button--outline {
-  border: 1px solid var(--color-accent, #26A69A) !important;
-  color: var(--color-accent, #26A69A) !important;
+  border: 1px solid var(--color-accent, #C9A84C) !important;
+  color: var(--color-accent, #C9A84C) !important;
   box-shadow: none !important;
 }
 
 html .button--secondary:hover {
-  background: rgba(var(--color-accent-rgb, 38,166,154), 0.08) !important;
+  background: rgba(var(--color-accent-rgb, 201,168,76), 0.08) !important;
 }
 
 html hr {

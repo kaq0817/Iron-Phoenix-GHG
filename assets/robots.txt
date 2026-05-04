@@ -8,7 +8,10 @@ Disallow: /account
 Disallow: /admin
 
 User-agent: SemrushBot
-Disallow: /
+Allow: /
+
+User-agent: AhrefsBot
+Allow: /
 
 User-agent: MJ12bot
 Disallow: /

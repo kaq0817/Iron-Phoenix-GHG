@@ -33,7 +33,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(249, 246, 241, 0.85);
   z-index: 10;
 }
 
@@ -54,7 +54,7 @@
 
 .collection__description {
   text-align: center;
-  color: #666;
+  color: #5C4E44;
   max-width: 60ch;
   margin: 0 auto 2rem;
 }

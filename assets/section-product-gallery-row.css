@@ -1,8 +1,8 @@
 .gallery-row {
-  --ip-purple-900: #121212;
-  --ip-teal-500: #00f5ff;
-  --ip-surface: rgba(255, 255, 255, 0.03);
-  --ip-border: rgba(255, 255, 255, 0.10);
+  --ip-wine:    #6B2737;
+  --ip-gold:    #C9A84C;
+  --ip-surface: rgba(201, 168, 76, 0.05);
+  --ip-border:  rgba(201, 168, 76, 0.18);
 }
 
 #gallery-row-{{ section.id }} {
@@ -25,12 +25,12 @@
   border: 2px solid transparent;
   border-radius: 5px;
   transition: border-color 0.3s;
-  max-width: 80px; /* Cap thumbnail size */
+  max-width: 80px;
   max-height: 80px;
 }
 
 .gallery-thumb:hover {
-  border-color: var(--ip-teal-500);
+  border-color: var(--ip-gold);
 }
 
 .gallery-thumb img {

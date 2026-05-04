@@ -1,5 +1,0 @@
-/* snippet-vip-xp-bar.css */
-.vipxp{max-width:520px}
-.vipxp__label{font-weight:700;margin-bottom:.35rem;color:var(--ip-teal,#26a69a)}
-.vipxp__bar{height:10px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden}
-.vipxp__hint{font-size:.9em;opacity:.8;margin-top:.35rem}

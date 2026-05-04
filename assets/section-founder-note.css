@@ -1,25 +1,15 @@
 /* assets/section-founder-note.css */
-
-/* ======================================================================
-   /assets/section-founder-note.css
-   Go Hard Gaming Discord LLC — Founder Note section skin (fast, accessible)
-   - Namespaced to .founder-note to avoid collisions
-   - Works on dark or light sections; uses your CSS variables when present
-   - Zero JS; respects prefers-reduced-motion
-   ====================================================================== */
+/* Iron Phoenix GHG — Founder Note section */
 
 :root {
-  /* Falls back if your theme tokens are missing */
-  --ip-bg: rgb(var(--color-black, 0,0,0));
-  --ip-fg: rgb(var(--color-white, 255,255,255));
-  --ip-teal: rgb(var(--color-teal, 38,166,154));
-  --ip-neon: rgb(var(--color-neon-green, 57,255,20));
-  --ip-pink: rgb(var(--color-neon-pink, 255,16,240));
-  --ip-yellow: rgb(var(--color-neon-yellow, 255,255,0));
-  --ip-border: 1px solid rgba(255,255,255,.10);
+  --ip-bg:     #F9F6F1;
+  --ip-fg:     #1A1310;
+  --ip-wine:   #6B2737;
+  --ip-gold:   #C9A84C;
+  --ip-cream:  #F0EAE0;
+  --ip-border: 1px solid rgba(201, 168, 76, 0.2);
   --ip-radius: 16px;
-  --ip-shadow: 0 10px 30px rgba(0,0,0,.35);
-  --ip-glow: 0 0 .6rem rgba(57,255,20,.55), 0 0 1.2rem rgba(255,16,240,.35);
+  --ip-shadow: 0 10px 30px rgba(0,0,0,.08);
 }
 
 .founder-note {
@@ -35,10 +25,10 @@
 
 @media (min-width: 900px) {
   .founder-note__wrap {
-    grid-template-columns: .9fr 1.1fr; /* media | copy */
+    grid-template-columns: .9fr 1.1fr;
   }
   .founder-note--media-right .founder-note__wrap {
-    grid-template-columns: 1.1fr .9fr; /* copy | media */
+    grid-template-columns: 1.1fr .9fr;
   }
 }
 
@@ -47,24 +37,25 @@
   border-radius: var(--ip-radius);
   box-shadow: var(--ip-shadow);
   padding: clamp(18px, 3.2vw, 28px);
+  background: #FFFFFF;
   position: relative;
   overflow: clip;
 }
 
-/* soft neon corner accent */
+/* subtle warm corner accent */
 .founder-note__card::after {
   content: "";
   position: absolute;
   top: -20%;
   right: -10%;
   width: 320px; height: 320px;
-  filter: blur(18px);
+  background: radial-gradient(circle, rgba(201,168,76,0.08) 0%, transparent 70%);
   pointer-events: none;
   z-index: 0;
 }
 
 .founder-note__eyebrow {
-  color: var(--ip-teal); /* Using --ip-teal */
+  color: #C9A84C;
   font-weight: 800;
   letter-spacing: .12em;
   text-transform: uppercase;
@@ -76,10 +67,11 @@
   margin: .15rem 0 .6rem;
   font-size: clamp(1.8rem, 3.2vw, 3rem);
   line-height: 1.15;
+  color: #1C0F14;
 }
 
 .founder-note__subtitle {
-  color: rgba(var(--color-white),.85); /* Using --color-white */
+  color: #3D2B22;
   margin: 0 0 1rem;
   max-width: 60ch;
 }
@@ -88,8 +80,8 @@
   position: relative;
   margin: 1rem 0 1.2rem;
   padding-left: 1.25rem;
-  border-left: 2px solid rgba(var(--color-white),.18); /* Using --color-white */
-  color: rgba(var(--color-white),.92); /* Using --color-white */
+  border-left: 2px solid rgba(201, 168, 76, 0.4);
+  color: #3D2B22;
 }
 
 .founder-note__quote em { font-style: italic; }
@@ -97,14 +89,14 @@
 .founder-note__sig {
   display: flex; align-items: center; gap: .8rem;
   margin-top: .8rem;
-  color: rgba(var(--color-white),.85); /* Using --color-white */
+  color: #5C4E44;
 }
 
 .founder-note__avatar {
   width: 88px; height: 88px; border-radius: 50%;
   overflow: hidden; flex: 0 0 auto;
-  box-shadow: var(--ip-glow);
-  outline: 1px solid rgba(var(--color-white),.14); /* Using --color-white */
+  box-shadow: 0 4px 16px rgba(107,39,55,.2);
+  outline: 1px solid rgba(201, 168, 76, 0.25);
 }
 .founder-note__avatar img { width: 100%; height: 100%; object-fit: cover; }
 
@@ -112,15 +104,15 @@
   display: grid;
   gap: .15rem;
 }
-.founder-note__name { font-weight: 800; }
-.founder-note__role { font-size: .95em; opacity: .85; }
+.founder-note__name { font-weight: 800; color: #1A1310; }
+.founder-note__role { font-size: .95em; opacity: .85; color: #5C4E44; }
 
-/* media block (image or video) */
+/* media block */
 .founder-note__media {
   position: relative;
   border-radius: 18px;
   overflow: hidden;
-  outline: 1px solid rgba(var(--color-white),.10); /* Using --color-white */
+  outline: 1px solid rgba(201, 168, 76, 0.15);
   box-shadow: var(--ip-shadow);
 }
 .founder-note__media img,
@@ -132,9 +124,9 @@
 .founder-note__badge {
   display:inline-flex; align-items:center; gap:.45rem;
   padding:.35rem .65rem; border-radius: 999px;
-  border: 1px solid rgba(var(--color-white),.18); /* Using --color-white */
-  background: rgba(var(--color-white),.06); /* Using --color-white */
-  color: rgb(var(--color-white)); /* Using --color-white */
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  background: rgba(201, 168, 76, 0.07);
+  color: #1A1310;
   font-weight: 600; font-size: .9em;
 }
 
@@ -144,10 +136,14 @@
   display: inline-flex;
 }
 .founder-note__cta .button {
-  color: rgb(var(--color-black)); /* Text is black on neon button */
+  background: #6B2737;
+  color: #F9F6F1;
   border: 0; border-radius: 12px;
   font-weight: 800; letter-spacing: .02em;
-  box-shadow: var(--ip-glow);
+  box-shadow: 0 4px 14px rgba(107,39,55,.25);
+}
+.founder-note__cta .button:hover {
+  background: #4F1D28;
 }
 
 /* reduce motion */
