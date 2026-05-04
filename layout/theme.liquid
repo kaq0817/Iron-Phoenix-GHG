@@ -45,11 +45,11 @@
     {%- else -%}
       <meta name="robots" content="{{ robots_directive | escape }}">
     {%- endif -%}
-    <link rel="canonical" href="https://www.ourphoenixrise.com{{ request.path }}">
+    <link rel="canonical" href="https://ironphoenix.store{{ request.path }}">
 
     <meta
       name="description"
-      content="Our Phoenix Rise ( Iron Phoenix GHG* LLC) offers made-to-order apparel, gifts, and lifestyle products with secure checkout and US-based customer support."
+      content="Iron Phoenix GHG — lifestyle products, apparel, and gifts for parents who work hard and come home ready to relax. Secure checkout, US-based support."
     >
 
     <title>
@@ -101,23 +101,24 @@
     {{ 'css-variables.css' | asset_url | stylesheet_tag }}
     {{ 'brand-tokens.css' | asset_url | stylesheet_tag }}
     {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'product-modal.css' | asset_url | stylesheet_tag }}
 
     <style>
       :root {
-        /* Global Palette — matches Global Store Theme in brand-tokens.css */
-        --color-primary: #26A69A;
-        --color-background-dark: #F7F7F5;
-        --color-accent: #26A69A;
-        --rgb-accent: 38, 166, 154;
-        --color-secondary: #555555;
-        --color-cta: #111111;
-        --color-text-light: #1F1F1F;
-        --color-text-muted: #555555;
-        --color-text-faded: #9CA3AF;
-        --color-text-highlight: #374151;
-        --color-border-subtle: #E5E7EB;
-        --color-border-subtle-dark: #D1D5DB;
-        --color-icon-default: #6B7280;
+        /* Global Palette — matches Iron Phoenix GHG default in brand-tokens.css */
+        --color-primary: #C9A84C;
+        --color-background-dark: #F9F6F1;
+        --color-accent: #C9A84C;
+        --rgb-accent: 201, 168, 76;
+        --color-secondary: #5C4E44;
+        --color-cta: #6B2737;
+        --color-text-light: #1A1310;
+        --color-text-muted: #5C4E44;
+        --color-text-faded: #A8998E;
+        --color-text-highlight: #3D2B22;
+        --color-border-subtle: #EAE0D5;
+        --color-border-subtle-dark: #D8CCB8;
+        --color-icon-default: #8B7B72;
 
         /* Jewelry / Art Deco */
         --color-navy-deep: #0b1e3d;
@@ -167,32 +168,12 @@
         background: var(--color-bg, #F7F7F5);
       }
 
-      /* Kill legacy gaming scanline/rail overlays from old skins */
-      body::before,
-      body::after {
-        content: none !important;
-        background: none !important;
-      }
-
-      body.template-index #MainContent::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        pointer-events: none;
-        border: 0;
-        box-shadow: none;
-      }
-
       body.template-index #MainContent .shopify-section {
         position: relative;
       }
 
       body.template-index #MainContent .shopify-section + .shopify-section {
         border-top: 0;
-      }
-
-      body.template-index #MainContent [id^='LevelUpHero-'] .levelup-hero__bg {
-        background: #070c14;
       }
 
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
@@ -206,24 +187,18 @@
       {
         "@context": "https://schema.org",
         "@type": "Organization",
-        "name": "Our Phoenix Rise",
-        "alternateName": "Our Phoenix Rise",
-        "legalName": "Go Hard Gaming Discord LLC DBA Iron Phoenix GHG",
-        "url": "https://ourphoenixrise.com",
-        "description": "Our Phoenix Rise is operated by Go Hard Gaming Discord LLC DBA Iron Phoenix GHG.",
-        "sameAs": [
-          "https://facebook.com/GohardgamingIronPhoenix",
-          "https://twitter.com/SSgohardgaming",
-          "https://youtube.com/@shadowseekerOG",
-          "https://tiktok.com/@gohardgamingdiscord"
-        ],
+        "name": "Iron Phoenix GHG",
+        "alternateName": "Iron Phoenix GHG",
+        "legalName": "Go Hard Gaming Discord LLC",
+        "url": "https://ironphoenix.store",
+        "description": "Iron Phoenix GHG is operated by Go Hard Gaming Discord LLC.",
         "contactPoint": [
           {
             "@type": "ContactPoint",
             "contactType": "Customer Support",
-            "email": "Helpcenter@ourphoenixrise.com",
+            "email": "support@ironphoenix.store",
             "telephone": "+1-518-415-8496",
-            "url": "https://ourphoenixrise.com/pages/contact",
+            "url": "https://ironphoenix.store/pages/contact",
             "availableLanguage": ["English"],
             "areaServed": "US"
           }

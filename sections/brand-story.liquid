@@ -1,6 +1,6 @@
 <!-- /sections/cj-shipping-returns.liquid -->
 {%- comment -%}
-  Go Hard Gaming Discord LLC DBA Iron Phoenix GHG — Refund & Return Policy
+  Go Hard Gaming Discord LLC — Refund & Return Policy
   - All outputs from settings are escaped.
   - No external CSS/JS to avoid MissingAsset.
   - Explicit rule: refunds only after item is physically returned and verified.
@@ -78,7 +78,7 @@
   <div class="policy__block">
     <h2 class="h3">7) Return Address (Authorized Returns Only)</h2>
     <address>
-      {{ section.settings.return_name | default: 'Go Hard Gaming Discord LLC DBA Iron Phoenix GHG — Returns' | escape }}<br>
+      {{ section.settings.return_name | default: 'Go Hard Gaming Discord LLC — Returns' | escape }}<br>
       {{ section.settings.return_street | default: '142 W. Milton Rd., Trailer 7' | escape }}<br>
       {{ section.settings.return_city | default: 'Ballston Spa' | escape }}, {{ section.settings.return_state | default: 'NY' | escape }} {{ section.settings.return_zip | default: '12020' | escape }}<br>
       {{ section.settings.return_country | default: 'USA' | escape }}
@@ -138,7 +138,7 @@
     { "type": "range", "id": "restocking_fee", "min": 0, "max": 25, "step": 1, "unit": "%", "label": "Restocking fee (non-defective standard returns)", "default": 15 },
     { "type": "text", "id": "support_email", "label": "Support email", "default": "Support@ironphoenix.store" },
     { "type": "text", "id": "support_phone", "label": "Support phone", "default": "(518) 415-8496" },
-    { "type": "text", "id": "return_name", "label": "Return name", "default": "Go Hard Gaming Discord LLC DBA Iron Phoenix GHG — Returns" },
+    { "type": "text", "id": "return_name", "label": "Return name", "default": "Go Hard Gaming Discord LLC — Returns" },
     { "type": "text", "id": "return_street", "label": "Return street", "default": "142 W. Milton Rd., Trailer 7" },
     { "type": "text", "id": "return_city", "label": "Return city", "default": "Ballston Spa" },
     { "type": "text", "id": "return_state", "label": "Return state/region", "default": "NY" },

@@ -10,7 +10,7 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   line-height: 1.5;
-  color: #333;
+  color: #1A1310;
 }
 
 /* Product Hero Section */
@@ -31,13 +31,13 @@ body {
   font-size: 1.5rem;
   font-weight: 700;
   margin-bottom: 10px;
-  color: #000;
+  color: #1A1310;
 }
 
 .product-meta-description {
   font-size: 1rem;
   margin-bottom: 20px;
-  color: #666;
+  color: #5C4E44;
 }
 
 .product-image-main img {
@@ -54,7 +54,7 @@ body {
   font-size: 1.25rem;
   font-weight: 600;
   margin-bottom: 10px;
-  color: #000;
+  color: #1A1310;
 }
 
 .product-form {
@@ -64,8 +64,8 @@ body {
 }
 
 .add-to-cart {
-  background: #4caf50;
-  color: #fff;
+  background: #6B2737;
+  color: #F9F6F1;
   padding: 10px;
   border: none;
   border-radius: 4px;
@@ -75,7 +75,7 @@ body {
 }
 
 .add-to-cart:hover {
-  background: #45a049;
+  background: #4F1D28;
 }
 
 /* Free Shipping Bar (Critical if Above the Fold) */
@@ -83,12 +83,12 @@ body {
   text-align: center;
   margin: 15px 0;
   font-size: 0.9rem;
-  color: #666;
+  color: #5C4E44;
 }
 
 .progress-bar {
   height: 8px;
-  background: #4caf50;
+  background: #C9A84C;
   width: 0; /* Updated dynamically via JS */
   max-width: 100%;
   margin-top: 5px;

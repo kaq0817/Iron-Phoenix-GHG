@@ -19,10 +19,10 @@
   position: absolute;
   inset: 4% 4% auto 4%;
   min-height: 60vh;
-  background: #0b0b0c;
-  color: #fff;
+  background: #1C0F14;
+  color: #F0EAE0;
   border-radius: 16px;
-  box-shadow: 0 10px 40px rgba(0,0,0,.6);
+  box-shadow: 0 10px 40px rgba(0,0,0,.5);
   display: grid;
   grid-template-rows: auto 1fr;
   opacity: 0;
@@ -39,7 +39,7 @@
   justify-content: space-between;
   gap: 1rem;
   padding: 1rem 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
 
 .ip-modal__title {
@@ -50,8 +50,8 @@
 .ip-modal__close {
   appearance: none;
   background: transparent;
-  color: #fff;
-  border: 1px solid rgba(255,255,255,.2);
+  color: #F0EAE0;
+  border: 1px solid rgba(240, 234, 224, 0.25);
   border-radius: 10px;
   font-size: 1.6rem;
   padding: .3rem .7rem;
@@ -77,12 +77,11 @@
 .ip-modal__caption {
   text-align: center;
   font-size: 1.3rem;
-  color: rgba(255,255,255,.75);
+  color: #C4A882;
   margin-top: .8rem;
 }
 
-/* Subtle gamer neon accent */
-.ip-modal__panel { box-shadow: 0 0 0 1px rgba(255,16,240,.2) inset, 0 16px 60px rgba(255,16,240,.08); }
+.ip-modal__panel { box-shadow: 0 0 0 1px rgba(201, 168, 76, 0.15) inset, 0 16px 60px rgba(0,0,0,.4); }
 
 @media (max-width: 700px) {
   .ip-modal__panel { inset: 0; border-radius: 0; }

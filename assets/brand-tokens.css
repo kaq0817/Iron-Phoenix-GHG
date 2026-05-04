@@ -1,37 +1,37 @@
-/* Our Phoenix Rise — Brand Token System
-   Usage: <html data-brand="sports|outdoors|home|americana|gaming|jewelry|family">
-   Default (no attribute) = Global Store Theme
+/* Iron Phoenix GHG — Brand Token System
+   Usage: <html data-brand="sports|outdoors|home|americana|jewelry|family">
+   Default (no attribute) = Iron Phoenix GHG chic/wine lifestyle theme
    All variants share the same light base; only accents & CTAs differ. */
 
-/* ==================== GLOBAL STORE THEME (default) ==================== */
+/* ==================== IRON PHOENIX GHG — Default (chic wine lifestyle) ==================== */
 :root {
   /* Backgrounds */
-  --color-bg:           #F7F7F5;
+  --color-bg:           #F9F6F1;
   --color-card-bg:      #FFFFFF;
-  --color-primary-bg:   #F7F7F5;
+  --color-primary-bg:   #F9F6F1;
 
   /* Text */
-  --color-main-text:      #1F1F1F;
-  --color-body-text:      #1F1F1F;
-  --color-text-secondary: #555555;
-  --color-text-muted:     #555555;
-  --color-body-text-rgb:  31,31,31;
+  --color-main-text:      #1A1310;
+  --color-body-text:      #1A1310;
+  --color-text-secondary: #5C4E44;
+  --color-text-muted:     #5C4E44;
+  --color-body-text-rgb:  26,19,16;
 
-  /* Universal accent (teal) */
-  --color-primary:          #26A69A;
-  --color-accent:           #26A69A;
-  --color-accent-rgb:       38,166,154;
-  --color-accent-hover:     #1F1F1F;
-  --color-accent-hover-rgb: 31,31,31;
-  --color-deep-accent:      #1F1F1F;
-  --rgb-accent:             38,166,154;
+  /* Accent — warm gold */
+  --color-primary:          #C9A84C;
+  --color-accent:           #C9A84C;
+  --color-accent-rgb:       201,168,76;
+  --color-accent-hover:     #6B2737;
+  --color-accent-hover-rgb: 107,39,55;
+  --color-deep-accent:      #6B2737;
+  --rgb-accent:             201,168,76;
 
-  /* CTA buttons — black/white */
-  --color-cta:                   #111111;
-  --color-cta-hover:             #333333;
-  --color-button-primary-bg:     #111111;
-  --color-button-primary-text:   #ffffff;
-  --color-button-primary-hover:  #333333;
+  /* CTA buttons — deep wine */
+  --color-cta:                   #6B2737;
+  --color-cta-hover:             #4F1D28;
+  --color-button-primary-bg:     #6B2737;
+  --color-button-primary-text:   #F9F6F1;
+  --color-button-primary-hover:  #4F1D28;
 
   /* Borders */
   --color-border:              #E5E7EB;
@@ -103,22 +103,6 @@
   /* Named tokens for Americana-specific components */
   --color-americana-navy: #1A237E;
   --color-americana-red:  #B71C1C;
-}
-
-/* ==================== GAMING FAMILY — Gaming Family Living ==================== */
-:root[data-brand="gaming"] {
-  --color-accent:           #26A69A;
-  --color-accent-rgb:       38,166,154;
-  --color-accent-hover:     #FFD54F;
-  --color-accent-hover-rgb: 255,213,79;
-  --color-primary:          #26A69A;
-  --rgb-accent:             38,166,154;
-  --color-deep-accent:      #1F1F1F;
-  --color-trim-accent:      #1F1F1F;
-  --color-support-accent:   #FFD54F;
-  --color-button-primary-bg:    #26A69A;
-  --color-button-primary-text:  #FFFFFF;
-  --color-button-primary-hover: #1E8A7E;
 }
 
 /* ==================== JEWELRY — Luxury Blue Velour ==================== */
