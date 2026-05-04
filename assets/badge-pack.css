@@ -6,14 +6,14 @@
   margin: 0 auto;
 }
 .badge-pack__heading {
-  margin: 0 0 10px;
-  font-size: clamp(1.4rem, 1.2rem + 1vw, 2.2rem);
+  margin: 0 0 8px;
+  font-size: clamp(0.9rem, 0.8rem + 0.4vw, 1.3rem);
   line-height: 1.2;
 }
 .badge-pack__list {
   display: grid;
-  gap: 8px 16px;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 6px 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   padding: 0;
   margin: 0;
   list-style: none;
@@ -21,10 +21,10 @@
 .badge-pack__item {
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 6px;
+  padding: 7px 10px;
   border: 1px solid rgba(0,0,0,.08);
-  border-radius: 10px;
+  border-radius: 8px;
   background: color-mix(in oklab, rgb(var(--color-background)), transparent 10%);
-  font-size: 1.5rem;
+  font-size: 1.2rem;
 }
