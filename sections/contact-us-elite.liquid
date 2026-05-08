@@ -45,7 +45,7 @@
         <h3>{{ section.settings.customer_support_section_title | default: 'Customer Support (Text Only)' | escape }}</h3>
         <p>{{ section.settings.customer_support_section_text | default: 'Questions about products or orders?' | escape }}</p>
         <p>{{ 'contact.form.email' | t }}:
-          <a href="mailto:{{ section.settings.support_email | default: 'helpcenter@ourphoenixrise.com' | escape }}" class="contact-link">{{ section.settings.support_email | default: 'helpcenter@ourphoenixrise.com' | escape }}</a>
+          <a href="mailto:{{ section.settings.support_email | default: 'support@ironphoenixghg.store' | escape }}" class="contact-link">{{ section.settings.support_email | default: 'support@ironphoenixghg.store' | escape }}</a>
         </p>
         <p>Text Only:
           <a href="sms:{{ section.settings.support_sms_number_uri | default: '+15184158496' | escape }}" class="contact-link">{{ section.settings.support_sms_number_label | default: '(518) 415-8496 (Text Only)' | escape }}</a>
@@ -76,8 +76,8 @@
     
     {% comment %} NEW: Voicemail Policy Box {% endcomment %}
     {% if section.settings.show_voicemail_policy %}
-      <div class="voicemail-policy-box" style="margin-top: 20px; padding: 16px;  border-left: 3px solid #00ffff; border-radius: 6px; box-shadow: 0 2px 8px rgba(0,255,255,0.1);">
-        <p style="margin: 0 0 10px; font-weight: 700; color: #00ffff; font-size: 1.05em;">📞 {{ section.settings.voicemail_policy_title | default: 'How to Reach Us by Phone' | escape }}</p>
+      <div class="voicemail-policy-box">
+        <p>📞 {{ section.settings.voicemail_policy_title | default: 'How to Reach Us by Phone' | escape }}</p>
         {% if section.settings.voicemail_policy_text != blank %}
           <p style="margin: 0 0 10px; line-height: 1.6;">{{ section.settings.voicemail_policy_text | escape }}</p>
         {% else %}
@@ -124,8 +124,10 @@
     <ul class="website-list">
       <li>Main store: <a href="{{ shop.url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.main_store_domain | default: shop.domain | escape }}</a></li>
       <li>Etsy: <a href="https://{{ section.settings.etsy_shop_url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.etsy_shop_label | default: 'ironphoenixghg.etsy.com' | escape }}</a></li>
-      <li>Coming soon: {{ section.settings.coming_soon_websites | default: 'ironphoenixghg.store, gohardgaming.store, gohardgaminghq.com' | escape }}</li>
-      <li>Community: <a href="{{ section.settings.community_url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.community_label | default: 'gohardgamingdiscord.com' | escape }}</a> {{ section.settings.community_status_text | default: '(under construction)' | escape }}</li>
+      <li>Coming soon: {{ section.settings.coming_soon_websites | default: 'ironphoenixghg.store' | escape }}</li>
+      {% if section.settings.community_url != blank %}
+      <li>Community: <a href="{{ section.settings.community_url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.community_label | default: section.settings.community_url | escape }}</a> {{ section.settings.community_status_text | escape }}</li>
+      {% endif %}
     </ul>
   </div>
 
@@ -274,7 +276,7 @@
     { "type": "header", "content": "Contact Details" },
     { "type": "text", "id": "customer_support_section_title", "label": "Support Title", "default": "Customer Support (Text Only)" },
     { "type": "text", "id": "customer_support_section_text", "label": "Support Text", "default": "Questions about products or orders?" },
-    { "type": "text", "id": "support_email", "label": "Support Email", "default": "support@ironphoenix.store" },
+    { "type": "text", "id": "support_email", "label": "Support Email", "default": "support@ironphoenixghg.store" },
     { "type": "text", "id": "support_sms_number_label", "label": "Support Phone", "default": "(518) 415-8496 (Text Only)" },
     { "type": "text", "id": "support_sms_number_uri", "label": "Support Phone URI", "default": "+15184158496" },
 
@@ -308,9 +310,9 @@
     { "type": "text", "id": "main_store_domain", "label": "Main Domain", "default": "ironphoenix.store" },
     { "type": "text", "id": "etsy_shop_url", "label": "Etsy Shop URL", "info": "Enter a valid URL (e.g., ironphoenixghg.etsy.com)", "default": "ironphoenixghg.etsy.com" },
     { "type": "text", "id": "etsy_shop_label", "label": "Etsy Label", "default": "ironphoenixghg.etsy.com" },
-    { "type": "text", "id": "coming_soon_websites", "label": "Coming Soon", "default": "ironphoenixghg.store, gohardgaming.store, gohardgaminghq.com" },
-    { "type": "text", "id": "community_url", "label": "Community URL", "default": "https://gohardgamingdiscord.com" },
-    { "type": "text", "id": "community_label", "label": "Community Label", "default": "gohardgamingdiscord.com" },
+    { "type": "text", "id": "coming_soon_websites", "label": "Coming Soon", "default": "ironphoenixghg.store" },
+    { "type": "text", "id": "community_url", "label": "Community URL", "info": "Leave blank to hide this row" },
+    { "type": "text", "id": "community_label", "label": "Community Label" },
     { "type": "text", "id": "community_status_text", "label": "Community Status", "default": "(under construction)" },
 
     { "type": "header", "content": "Company Details" },
@@ -333,7 +335,7 @@
 
     { "type": "header", "content": "Join Community" },
     { "type": "text", "id": "join_community_section_title", "label": "Community Title", "default": "Join Our Community" },
-    { "type": "richtext", "id": "join_community_text_richtext", "label": "Community Text", "default": "<p>Join us on Discord for gaming fun!</p>" },
+    { "type": "richtext", "id": "join_community_text_richtext", "label": "Community Text", "default": "<p>Follow us on social for new drops, lifestyle content, and exclusive member offers.</p>" },
 
     { "type": "header", "content": "JSON-LD" },
     { "type": "checkbox", "id": "include_full_address_in_schema", "label": "Include Full Address", "default": false },
