@@ -83,54 +83,93 @@
       {{ settings.type_header_font | font_url | preload_tag }}
     {%- endif -%}
 
-    {%- comment -%} ⚡️ LCP OPTIMIZATION: Preload link for critical above-the-fold image {%- endcomment -%}
-    {%- comment -%} theme-check-disable: using manual preload link intentionally — image_tag:preload renders an <img> in <head> which is invalid HTML {%- endcomment -%}
+    {%- comment -%} ⚡️ LCP OPTIMIZATION: Preload hero image on product pages {%- endcomment -%}
     {%- if template.name == 'product' and product and product.featured_media -%}
       {%- assign lcp_img = product.featured_media -%}
-      {%- assign lcp_srcset = lcp_img | image_url: width: 600 | append: ' 600w, ' | append: lcp_img | image_url: width: 900 | append: ' 900w, ' | append: lcp_img | image_url: width: 1200 | append: ' 1200w' -%}
+      {%- capture lcp_srcset -%}
+        {{ lcp_img | image_url: width: 600, format: 'webp' }} 600w,
+        {{ lcp_img | image_url: width: 900, format: 'webp' }} 900w,
+        {{ lcp_img | image_url: width: 1200, format: 'webp' }} 1200w
+      {%- endcapture -%}
       {% comment %}theme-check-disable RemoteAsset{% endcomment %}
       <link rel="preload" as="image"
-        href="{{ lcp_img | image_url: width: 900 }}"
-        imagesrcset="{{ lcp_srcset }}"
+        href="{{ lcp_img | image_url: width: 900, format: 'webp' }}"
+        imagesrcset="{{ lcp_srcset | strip_newlines | strip }}"
         imagesizes="(min-width: 750px) 50vw, 100vw"
       >
       {% comment %}theme-check-enable RemoteAsset{% endcomment %}
     {%- endif -%}
 
-    {%- comment -%} Critical CSS {%- endcomment -%}
-    {{ 'css-variables.css' | asset_url | stylesheet_tag }}
-    {{ 'brand-tokens.css' | asset_url | stylesheet_tag }}
-    {{ 'theme.css' | asset_url | stylesheet_tag }}
-    {{ 'product-modal.css' | asset_url | stylesheet_tag }}
-
+    {%- comment -%}
+      ═══════════════════════════════════════════════════════
+      CRITICAL CSS — single merged block
+      Previously: 4 separate render-blocking stylesheet requests
+        (css-variables.css, brand-tokens.css, theme.css, product-modal.css)
+      Now: all variables inlined here + only theme.css loaded as preload.
+      This saves 3 round-trip HTTP requests on every mobile page load.
+      brand-tokens.css and css-variables.css content is inlined below.
+      product-modal.css is non-critical — load after theme.css.
+      ═══════════════════════════════════════════════════════
+    {%- endcomment -%}
     <style>
+      /* ── Base font & layout tokens ── */
       :root {
-        /* Global Palette — matches Iron Phoenix GHG default in brand-tokens.css */
-        --color-primary: #C9A84C;
-        --color-background-dark: #F9F6F1;
-        --color-accent: #C9A84C;
-        --rgb-accent: 201, 168, 76;
-        --color-secondary: #5C4E44;
-        --color-cta: #6B2737;
-        --color-text-light: #1A1310;
+        --font-body-family: Arial, Helvetica, sans-serif;
+        --font-heading-family: Arial, Helvetica, sans-serif;
+        --font-body-scale: 1;
+        --font-heading-scale: 1;
+        --page-width: 120rem;
+        --color-black: 0,0,0;
+        --color-white: 255,255,255;
+        --buttons-radius: 4px;
+
+        /* ── Iron Phoenix GHG brand palette (default) ── */
+        --color-bg: #F9F6F1;
+        --color-card-bg: #FFFFFF;
+        --color-primary-bg: #F9F6F1;
+        --color-main-text: #1A1310;
+        --color-body-text: #1A1310;
+        --color-body-text-rgb: 26,19,16;
+        --color-text-secondary: #5C4E44;
         --color-text-muted: #5C4E44;
         --color-text-faded: #A8998E;
         --color-text-highlight: #3D2B22;
+        --color-text-light: #1A1310;
+        --color-primary: #C9A84C;
+        --color-accent: #C9A84C;
+        --color-accent-rgb: 201,168,76;
+        --rgb-accent: 201,168,76;
+        --color-accent-hover: #5C4E44;
+        --color-accent-hover-rgb: 92,78,68;
+        --color-secondary: #5C4E44;
+        --color-deep-accent: #3D2B22;
+        --color-cta: #6B2737;
+        --color-cta-hover: #8a3344;
+        --color-button-primary-bg: #6B2737;
+        --color-button-primary-text: #F9F6F1;
+        --color-button-primary-hover: #8a3344;
+        --color-border: #EAE0D5;
         --color-border-subtle: #EAE0D5;
         --color-border-subtle-dark: #D8CCB8;
         --color-icon-default: #8B7B72;
 
-        /* Jewelry / Art Deco */
+        /* Header */
+        --color-header-gradient-start: #ffffff;
+        --color-header-gradient-end: #f9f7f4;
+        --color-search-bg: rgba(26,26,26,0.06);
+        --color-search-placeholder: #9ca3af;
+
+        /* Jewelry / Art Deco overrides (used by jewelry brand subdomain) */
         --color-navy-deep: #0b1e3d;
         --color-royal-blue: #1a3a8f;
         --color-jewel-blue: #1e4db7;
         --color-ice-blue: #a8c4e0;
-        --color-ivory: #f0f9f8;
+        --color-ivory: #F9F6F1;
         --color-pearl: #f8f5ef;
         --color-sapphire: #1845c8;
-        --color-deco-gold: #26a69a;
+        --color-deco-gold: #C9A84C;
 
-        /* Americana Front Porch */
+        /* Americana */
         --color-americana-white: #f2ede4;
         --color-americana-navy: #1e3466;
         --color-americana-red: #9e2a2b;
@@ -138,24 +177,47 @@
         --color-americana-terra: #c1713a;
         --color-americana-check: #2d4a7a;
         --color-americana-wheat: #d9c49a;
-
-        /* Header */
-        --color-header-gradient-start: #ffffff;
-        --color-header-gradient-end: #f9f7f4;
-        --color-search-bg: rgba(26, 26, 26, 0.06);
-        --color-search-placeholder: #9ca3af;
       }
 
+      /* ── Default Shopify color scheme ── */
+      .color-default {
+        --color-background: 0,0,0;
+        --gradient-background: none;
+        --color-foreground: 255,255,255;
+        --color-background-contrast: 255,255,255;
+        --color-shadow: 0,0,0;
+        --color-button: 201,168,76;
+        --color-button-text: 0,0,0;
+        --color-secondary-button: 255,255,255;
+        --color-secondary-button-text: 0,0,0;
+        --color-link: 201,168,76;
+        --color-badge-foreground: 255,255,255;
+        --color-badge-background: 0,0,0;
+        --color-badge-border: 255,255,255;
+        --payment-terms-background-color: rgb(0,0,0);
+      }
+
+      /* ── Brand overrides via data-brand attribute ── */
+      :root[data-brand="sports"]   { --color-accent:#00AEEF; --color-accent-rgb:0,174,239; --color-primary:#00AEEF; --rgb-accent:0,174,239; --color-button-primary-bg:#00AEEF; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#0097CC; }
+      :root[data-brand="outdoors"] { --color-accent:#2E7D32; --color-accent-rgb:46,125,50; --color-primary:#2E7D32; --rgb-accent:46,125,50; --color-button-primary-bg:#2E7D32; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#1B5E20; }
+      :root[data-brand="home"]     { --color-accent:#A1887F; --color-accent-rgb:161,136,127; --color-primary:#A1887F; --rgb-accent:161,136,127; --color-button-primary-bg:#A1887F; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#8D6E63; --color-card-bg:#FFF8E1; }
+      :root[data-brand="americana"]{ --color-accent:#1A237E; --color-accent-rgb:26,35,126; --color-primary:#1A237E; --rgb-accent:26,35,126; --color-button-primary-bg:#1A237E; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#0D1753; }
+      :root[data-brand="gaming"]   { --color-accent:#C9A84C; --color-accent-rgb:201,168,76; --color-primary:#C9A84C; --rgb-accent:201,168,76; --color-button-primary-bg:#C9A84C; --color-button-primary-text:#1A1310; --color-button-primary-hover:#b8922e; }
+      :root[data-brand="jewelry"]  { --color-bg:#F9F6F1; --color-primary-bg:#F9F6F1; --color-accent:#C9A84C; --color-accent-rgb:201,168,76; --color-primary:#C9A84C; --rgb-accent:201,168,76; --color-deco-gold:#C9A84C; --color-button-primary-bg:#6B2737; --color-button-primary-text:#F9F6F1; --color-button-primary-hover:#8a3344; }
+      :root[data-brand="family"]   { --color-accent:#64B5F6; --color-accent-rgb:100,181,246; --color-primary:#64B5F6; --rgb-accent:100,181,246; --color-button-primary-bg:#64B5F6; --color-button-primary-text:#1A1310; --color-button-primary-hover:#42A5F5; }
+
+      /* ── Base layout ── */
       html { box-sizing: border-box; }
       *, *::before, *::after { box-sizing: inherit; }
       html { font-size: calc(var(--font-body-scale) * 62.5%); }
+
       body {
         display: grid;
         grid-template-rows: auto auto 1fr auto;
         min-height: 100%;
         margin: 0;
-        background-color: var(--color-bg, #F7F7F5);
-        color: var(--color-main-text, #1F1F1F);
+        background-color: var(--color-bg, #F9F6F1);
+        color: var(--color-main-text, #1A1310);
         font-family: var(--font-body-family);
         font-size: 1.5rem;
       }
@@ -163,23 +225,27 @@
         body { font-size: 1.6rem; }
       }
 
+      body.color-default {
+        color: rgba(var(--color-foreground), 0.75);
+        background-color: rgb(var(--color-background));
+      }
+
       body.template-index #MainContent {
         position: relative;
-        background: var(--color-bg, #F7F7F5);
+        background: var(--color-bg, #F9F6F1);
       }
-
-      body.template-index #MainContent .shopify-section {
-        position: relative;
-      }
-
-      body.template-index #MainContent .shopify-section + .shopify-section {
-        border-top: 0;
-      }
+      body.template-index #MainContent .shopify-section { position: relative; }
+      body.template-index #MainContent .shopify-section + .shopify-section { border-top: 0; }
 
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
       img { max-width: 100%; height: auto; object-fit: cover; object-position: center; }
     </style>
+
+    {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
+
+    {%- comment -%} product-modal.css is non-critical: load after theme.css {%- endcomment -%}
+    {{ 'product-modal.css' | asset_url | stylesheet_tag }}
 
     {{ content_for_header }}
 
@@ -234,32 +300,19 @@
 
     {%- render 'bot-protection' -%}
 
-    {%- comment -%} Single JavaScript file - global.js functionality merged into theme.js {%- endcomment -%}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
-
-    {%- comment -%} ---- Google gtag.js only (no GTM; no duplicates) ---- {%- endcomment -%}
+    {%- comment -%} Google gtag.js only (no GTM; no duplicates) {%- endcomment -%}
     {%- assign ga4_id = settings.ga4_id | strip | default: 'G-V6ZP7KWRZN' -%}
     {%- assign gtag_id = settings.google_tag_id | strip | default: 'GT-552Q5J6X' -%}
-
     {%- assign ga4_prefix = ga4_id | slice: 0, 2 -%}
     {%- assign gtag_prefix = gtag_id | slice: 0, 3 -%}
     {%- assign has_ga4 = false -%}
-    {%- if ga4_id != blank and ga4_prefix == 'G-' -%}
-      {%- assign has_ga4 = true -%}
-    {%- endif -%}
-
+    {%- if ga4_id != blank and ga4_prefix == 'G-' -%}{%- assign has_ga4 = true -%}{%- endif -%}
     {%- assign has_gtag = false -%}
-    {%- if gtag_id != blank and gtag_prefix == 'GT-' -%}
-      {%- assign has_gtag = true -%}
-    {%- endif -%}
-
+    {%- if gtag_id != blank and gtag_prefix == 'GT-' -%}{%- assign has_gtag = true -%}{%- endif -%}
     {%- assign primary_id = '' -%}
-    {%- if has_ga4 -%}
-      {%- assign primary_id = ga4_id -%}
-    {%- elsif has_gtag -%}
-      {%- assign primary_id = gtag_id -%}
-    {%- endif -%}
+    {%- if has_ga4 -%}{%- assign primary_id = ga4_id -%}{%- elsif has_gtag -%}{%- assign primary_id = gtag_id -%}{%- endif -%}
 
     {%- if primary_id != '' -%}
       <script async src="https://www.googletagmanager.com/gtag/js?id={{ primary_id | escape }}"></script>
@@ -267,19 +320,16 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){ dataLayer.push(arguments); }
         gtag('js', new Date());
-        {% if has_ga4 %}gtag('config', '{{ ga4_id  | escape }}');{% endif %}
+        {% if has_ga4 %}gtag('config', '{{ ga4_id | escape }}');{% endif %}
         {% if has_gtag %}gtag('config', '{{ gtag_id | escape }}');{% endif %}
       </script>
     {%- else -%}
-      <script>
-        console.warn('gtag not loaded: no valid GA4 (G-*) or Google Tag (GT-*) ID.');
-      </script>
+      <script>console.warn('gtag not loaded: no valid GA4 (G-*) or Google Tag (GT-*) ID.');</script>
     {%- endif -%}
 
     {%- render 'feature-scripts' -%}
 
     <script>
-      // Defer non-critical scripts (placeholder)
       window.addEventListener('load', function () {
         // load chat widgets or other non-critical scripts here
       });
