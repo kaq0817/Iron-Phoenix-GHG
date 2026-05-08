@@ -36,6 +36,10 @@
           alt: section.settings.background_image.alt | escape
       }}
     </div>
+  {%- elsif section.settings.asset_bg != blank -%}
+    <div class="hero-custom__background">
+      <img src="{{ section.settings.asset_bg | asset_url }}" loading="eager" fetchpriority="high" alt="" width="2000" height="1000">
+    </div>
   {%- endif -%}
 
   <div class="hero-custom__content">
@@ -140,7 +144,7 @@
   }
 
   .hero-custom__headline {
-    color: var(--hero-headline-color, #4169e1) !important;
+    color: var(--hero-headline-color, #ffffff) !important;
     font-size: var(--hero-headline-size, 80px);
     font-weight: 900;
     line-height: 0.95;
@@ -150,7 +154,7 @@
   }
 
   .hero-custom__subheadline {
-    color: var(--hero-subheadline-color, #4169e1) !important;
+    color: var(--hero-subheadline-color, #ffffff) !important;
     opacity: 1 !important;
     text-transform: capitalize;
     letter-spacing: 0.15em;
@@ -163,7 +167,7 @@
     align-items: center;
     gap: 0.6rem;
     padding: 0.9rem 2rem;
-    background: var(--hero-cta-bg, #1a3683) !important;
+    background: var(--hero-cta-bg, #0c126b) !important;
     color: var(--hero-cta-color, #ffffff) !important;
     border: none !important;
     border-radius: 3px;
@@ -210,7 +214,8 @@
   "name": "Hero Custom",
   "settings": [
     { "type": "header", "content": "Images" },
-    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image (uploaded file)" },
+    { "type": "text", "id": "asset_bg", "label": "Theme asset image filename", "info": "Filename from theme assets folder (e.g. luxury-spa.webp). Used when no image is picked above." },
     { "type": "header", "content": "Navigation (Collections)" },
     { "type": "color", "id": "nav_color", "label": "Navigation link color", "default": "#ffffff" },
     { "type": "color", "id": "nav_hover_color", "label": "Navigation link hover color", "default": "#ffb300" },
@@ -220,8 +225,8 @@
     { "type": "text", "id": "headline", "label": "Headline", "default": "Adventure" },
     { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Apparel • Accessories • Lifestyle" },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "headline_color", "label": "Headline & Eyebrow Color", "default": "#4169e1" },
-    { "type": "color", "id": "subheadline_color", "label": "Subheadline Color", "default": "#4169e1" },
+    { "type": "color", "id": "headline_color", "label": "Headline & Eyebrow Color", "default": "#ffffff" },
+    { "type": "color", "id": "subheadline_color", "label": "Subheadline Color", "default": "#ffffff" },
     { "type": "header", "content": "Sizes" },
     { "type": "range", "id": "headline_size", "min": 20, "max": 120, "step": 2, "unit": "px", "label": "Headline font size (desktop)", "default": 80 },
     { "type": "range", "id": "subheadline_size", "min": 10, "max": 40, "step": 1, "unit": "px", "label": "Subheadline font size (desktop)", "default": 14 },
