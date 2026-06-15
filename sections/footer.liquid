@@ -1,144 +1,407 @@
 {% comment %}
-  Footer (secure, escaped)
-  - Escapes merchant-facing text/attributes
-  - Newsletter form values escaped
-  - Menu/link titles escaped
-  - Policy links rendered via snippet (no duplicates)
-  - Styles loaded from existing assets
+  Iron Phoenix GHG — Complete Compliance Footer (Final)
+  - Layout: Grid-based (No boxes)
+  - Identity: Go Hard Gaming Discord LLC (WY + NY)
+  - Compliance: Clickable Tel, Horizontal Pay Icons, Full Social Set
 {% endcomment %}
 
-{{ 'component-footer.css' | asset_url | stylesheet_tag }}
-{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
-{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
-{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+<footer class="ipx-footer" role="contentinfo">
+  <style>
+    .ipx-footer {
+      background: #0B1E36 !important; /* Solid, commanding Deep Navy — zero transparency */
+      background-image: none !important;
+      color: #FFFFFF !important;
+      border-top: 4px solid #A6192E;  /* Solid Flag Red border boundary track */
+      padding: 72px 32px 48px;
+      font-family: 'Inter', sans-serif;
+    }
 
-{%- style -%}
-  /* Dynamic spacing per section settings */
-  .footer.section-{{ section.id }}-padding {
-    --footer-margin-top-mobile: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
-    --footer-padding-top-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    --footer-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    --footer-margin-top-desktop: {{ section.settings.margin_top }}px;
-    --footer-padding-top-desktop: {{ section.settings.padding_top }}px;
-    --footer-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
-  }
-{%- endstyle -%}
+    .ipx-footer,
+    .ipx-footer .ipx-wrap,
+    .ipx-footer .ipx-grid,
+    .ipx-footer .ipx-col,
+    .ipx-footer p,
+    .ipx-footer li,
+    .ipx-footer span,
+    .ipx-footer strong,
+    .ipx-footer em,
+    .ipx-footer a {
+      color: #FFFFFF !important; /* Force high-contrast pure white legibility on text blocks */
+    }
 
-<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
-  <div class="footer__content-top page-width">
-    {% if section.settings.logo %}
-      <div class="footer__logo">
-        {% assign logo_alt = section.settings.logo_alt | default: shop.name | escape %}
-        {{ section.settings.logo | image_url: width: 300 | image_tag: alt: logo_alt, loading: 'lazy' }}
+    .ipx-wrap {
+      width: min(1440px, calc(100vw - 48px));
+      margin: 0 auto;
+    }
+
+    .ipx-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(220px, 1fr));
+      gap: clamp(24px, 2.4vw, 36px);
+      align-items: start;
+      margin-bottom: 48px;
+    }
+
+    .ipx-col {
+      min-width: 0;
+    }
+
+    .ipx-col p {
+      margin: 0 0 16px;
+      line-height: 1.65;
+      color: #FFFFFF !important;
+    }
+
+    .ipx-col h3 {
+      color: #FFFFFF;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 22px;
+      font-size: 1.4rem;
+      font-weight: 800;
+      border-bottom: 2px solid #A6192E; /* Crisp red line divider */
+      padding-bottom: 12px;
+    }
+
+    .ipx-link { 
+      color: #FFFFFF !important; 
+      text-decoration: none; 
+      transition: color 0.15s ease; 
+    }
+    .ipx-link:hover { 
+      color: #A6192E !important; /* Bold Red flash on hover items */
+      text-decoration: underline !important;
+    }
+
+    .ipx-footer a:hover,
+    .ipx-footer .ipx-link:hover,
+    .ipx-footer .ipx-policies a:hover {
+      color: #A6192E !important;
+    }
+    
+    /* Social Panel Link Adjustments */
+    .ipx-social { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 16px; 
+      margin-top: 15px; 
+    }
+    .ipx-sicon { 
+      width: 24px; 
+      height: 24px; 
+      fill: #FFFFFF !important; /* Opaque white icons inside footer */
+      transition: transform 0.15s ease, fill 0.15s ease; 
+    }
+    .ipx-slink:hover .ipx-sicon { 
+      fill: #A6192E !important; /* Pop Red on hover states */
+      transform: scale(1.15); 
+    }
+
+    /* Payments Icon Elements Track */
+    .ipx-pay { 
+      display: flex; 
+      flex-wrap: wrap; 
+      gap: 10px; 
+      margin: 15px 0; 
+    }
+    .ipx-pay svg { 
+      width: 38px; 
+      height: 24px; 
+    }
+
+    /* Legal Anchor Base Layer */
+    .ipx-anchor {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 2px solid #A6192E; /* Red border track alignment block */
+      font-size: 13px;
+      color: #FFFFFF !important;
+    }
+    .ipx-anchor strong { 
+      color: #FFFFFF !important; 
+      font-weight: 800;
+    }
+
+    /* Policy List Layout */
+    .ipx-policies {
+      list-style: none;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      gap: 24px;
+      margin: 20px 0;
+      flex-wrap: wrap;
+    }
+    .ipx-policies a {
+      color: #FFFFFF;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .ipx-policies a:hover { 
+      color: #A6192E !important; 
+      text-decoration: underline !important;
+    }
+
+    /* Supplier Window Button */
+    .ipx-bizbtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 12px 20px;
+      background: transparent;
+      border: 2px solid #FFFFFF;
+      color: #FFFFFF;
+      border-radius: 4px; /* Matches clean block profile */
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      transition: all 0.15s ease;
+      box-shadow: none;
+    }
+    .ipx-bizbtn:hover {
+      background: #FFFFFF !important;
+      color: #0B1E36 !important;
+    }
+
+    .ipx-gate[hidden] { display: none !important; }
+    .ipx-gate {
+      position: fixed;
+      inset: 0;
+      background: #0B1E36 !important; /* Solid Navy modal wrap instead of faded black blend */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 20px;
+    }
+    .ipx-gate-card {
+      max-width: 480px;
+      width: 100%;
+      background: #FFFFFF !important; /* Solid pure white layout card */
+      border: 3px solid #0B1E36;
+      border-radius: 4px;
+      padding: 28px;
+    }
+    .ipx-gate-card h4 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #0B1E36 !important;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .ipx-gate-card p {
+      color: #1A1A1A !important;
+      font-size: 1.4rem;
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+    .ipx-gate-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .ipx-gate-cancel,
+    .ipx-gate-confirm {
+      text-decoration: none;
+      border-radius: 4px;
+      padding: 12px 18px;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+    .ipx-gate-cancel {
+      background: transparent;
+      border: 2px solid #0B1E36;
+      color: #0B1E36 !important;
+    }
+    .ipx-gate-cancel:hover {
+      background: #F7F7F5 !important;
+    }
+    .ipx-gate-confirm {
+      background: #A6192E !important;
+      border: 2px solid #A6192E;
+      color: #FFFFFF !important;
+    }
+    .ipx-gate-confirm:hover {
+      background: #BD1E35 !important;
+    }
+
+    @media (max-width: 1024px) {
+      .ipx-wrap {
+        width: min(100%, calc(100vw - 32px));
+      }
+      .ipx-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 28px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      .ipx-footer {
+        padding: 44px 16px 28px;
+      }
+      .ipx-grid {
+        grid-template-columns: 1fr;
+        gap: 28px;
+      }
+    }
+  </style>
+
+  <div class="ipx-wrap">
+    <div class="ipx-grid">
+      <div class="ipx-col">
+        <h3>Customer Support</h3>
+        <p><a class="ipx-link" href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#115;&#117;&#112;&#112;&#111;&#114;&#116;&#64;&#105;&#114;&#111;&#110;&#112;&#104;&#111;&#101;&#110;&#105;&#120;&#103;&#104;&#103;&#46;&#115;&#116;&#111;&#114;&#101;">support@ironphoenixghg.store</a></p>
+        <p>Text/Call: <a class="ipx-link" href="tel:+15184158496">518-415-8496</a></p>
+        <p><strong>Registered Address:</strong> 30 N Gould St #Ste R, Sheridan, WY, 82801, USA</p>
+        <p><strong>Operations Address:</strong> 142 W Milton Drive, Saratoga County, NY</p>
+        <p><em>Note: GMC requires account address on file for mailing purposes.</em></p>
+        <p>Customer Support Hours: Daily, 9 AM – 10 PM Eastern</p>
+        <p><em>Leave a message and we will get back to you within 8 business hours.</em></p>
       </div>
-    {% endif %}
 
-    <div class="footer__blocks grid grid--1-col grid--2-col-tablet">
-      {% for block in section.blocks %}
-        <div class="footer__block">
-          {% case block.type %}
+      <div class="ipx-col">
+        <h3>Iron Phoenix GHG</h3>
+        <p>Operated by Go Hard Gaming Discord LLC</p>
+        <p>Registered: Sheridan, WY</p>
+        <p>Operations: Saratoga County, NY</p>
+        <p style="margin-top: 20px;">
+          <button type="button" class="ipx-bizbtn" onclick="document.getElementById('ipxBizGate').hidden = false;">Supplier Inquiries</button>
+        </p>
+      </div>
 
-            {% when 'text' %}
-              <div class="footer__text">{{ block.settings.text | escape }}</div>
-
-            {% when 'link_list' %}
-              {% assign footer_menu = linklists[block.settings.menu] %}
-              {% if footer_menu and footer_menu.links.size > 0 %}
-                <h3 class="footer__title">{{ footer_menu.title | escape }}</h3>
-                <ul class="footer__menu" role="list">
-                  {% for link in footer_menu.links %}
-                    <li>
-                      <a href="{{ link.url | escape }}">{{ link.title | escape }}</a>
-                    </li>
-                  {% endfor %}
-                </ul>
-              {% endif %}
-
-            {% when 'newsletter' %}
-              {% if section.settings.newsletter_enable %}
-                <div class="footer-newsletter">
-                  {% if section.settings.newsletter_heading != blank %}
-                    <h2 class="footer-newsletter__heading">{{ section.settings.newsletter_heading | escape }}</h2>
-                  {% endif %}
-                  {% form 'customer', class: 'footer-newsletter__form' %}
-                    <input type="hidden" name="contact[tags]" value="newsletter">
-                    <label class="visually-hidden" for="FooterNewsletter-{{ section.id }}">Email address</label>
-                    <input
-                      id="FooterNewsletter-{{ section.id }}"
-                      type="email"
-                      name="contact[email]"
-                      class="field__input"
-                      value="{{ form.email | escape }}"
-                      autocorrect="off" autocapitalize="off" autocomplete="email"
-                      placeholder="Your email" required
-                      {% if form.errors %} aria-invalid="true" aria-describedby="FooterNewsletter-error--{{ section.id }}"{% endif %}
-                      {% if form.posted_successfully? %} aria-describedby="FooterNewsletter-success--{{ section.id }}"{% endif %}
-                    >
-                    <button type="submit" class="button">
-                      {{ section.settings.newsletter_button_label | default: 'Subscribe' | escape }}
-                    </button>
-
-                    {% if form.errors %}
-                      <small class="form__message" id="FooterNewsletter-error--{{ section.id }}">Please enter a valid email.</small>
-                    {% endif %}
-                    {% if form.posted_successfully? %}
-                      <p class="form__message" id="FooterNewsletter-success--{{ section.id }}" tabindex="-1">Thanks! You’re subscribed.</p>
-                    {% endif %}
-                  {% endform %}
-                </div>
-              {% endif %}
-
-            {% when 'social' %}
-              {% if section.settings.show_social %}
-                {% render 'social-follow' %}
-              {% endif %}
-
-          {% endcase %}
-        </div>
-      {% endfor %}
-    </div>
-  </div>
-
-  <div class="footer__content-bottom page-width">
-    <div class="footer__localization">
-      {% if section.settings.enable_country_selector and localization.available_countries.size > 1 %}
-        {% form 'localization', id: 'FooterCountryForm', class: 'localization-form' %}
-          {% render 'country-localization' %}
-        {% endform %}
-      {% endif %}
-
-      {% if section.settings.enable_language_selector and localization.available_languages.size > 1 %}
-        {% form 'localization', id: 'FooterLanguageForm', class: 'localization-form' %}
-          {% render 'language-localization' %}
-        {% endform %}
-      {% endif %}
-    </div>
-
-    {% if section.settings.payment_enable %}
-      <div class="footer__payment-icons">
-        <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
-        <ul class="list-payment" role="list">
+      <div class="ipx-col">
+        <h3>Secure Payments</h3>
+        <div class="ipx-pay">
           {% for type in shop.enabled_payment_types %}
-            <li class="list-payment__item">{{ type | payment_type_svg_tag }}</li>
+            {{ type | payment_type_svg_tag }}
           {% endfor %}
-        </ul>
+        </div>
+        <p>All transactions are secure and encrypted via Shopify Payments & Stripe.</p>
       </div>
-    {% endif %}
 
-    <div class="footer__copyright">
-      <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. All rights reserved.</small>
-      {% if section.settings.show_policy %}
-        {% render 'policy-links' %}
-      {% endif %}
+      <div class="ipx-col">
+        <h3>Follow The Phoenix</h3>
+        <div class="ipx-social">
+          <a href="https://facebook.com/GohardgamingIronPhoenix" class="ipx-slink" aria-label="Facebook" target="_blank" rel="noopener">
+            <svg class="ipx-sicon" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12S0 5.446 0 12.073c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          </a>
+          <a href="https://twitter.com/SSgohardgaming" class="ipx-slink" aria-label="Twitter" target="_blank" rel="noopener">
+            <svg class="ipx-sicon" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 0 1-2.825.775 4.958 4.958 0 0 0 2.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 0 0-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 0 0-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 0 1-2.228-.616v.06a4.923 4.923 0 0 0 3.946 4.827 4.996 4.996 0 0 1-2.212.085 4.936 4.936 0 0 0 4.604 3.417 9.867 9.867 0 0 1-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 0 0 7.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0 0 24 4.59z"/></svg>
+          </a>
+          <a href="https://youtube.com/@shadowseekerOG" class="ipx-slink" aria-label="YouTube" target="_blank" rel="noopener">
+            <svg class="ipx-sicon" viewBox="0 0 24 24">
+    <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+             </svg>
+          </a>
+          <a href="https://tiktok.com/@gohardgamingdiscord" class="ipx-slink" aria-label="TikTok" target="_blank" rel="noopener">
+            <svg class="ipx-sicon" viewBox="0 0 24 24"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="ipx-anchor">
+      <p>© 2026 <strong>Iron Phoenix GHG</strong>. All rights reserved.</p>
+      <p style="margin-top:10px;"><em>Charges on your statement will appear as: <strong>Go Hard Gaming Discord LLC</strong></em></p>
+      <p style="margin-top:10px;font-size:14px;">Iron Phoenix GHG is operated by Go Hard Gaming Discord LLC, a Wyoming LLC operating in Saratoga County, NY.</p>
+    </div>
+
+    <ul class="ipx-policies">
+      <li><a href="/pages/contact">Contact Us</a></li>
+      <li><a href="/policies/privacy-policy">Privacy Policy</a></li>
+      <li><a href="/policies/terms-of-service">Terms of Service</a></li>
+      <li><a href="/policies/refund-policy">Refund Policy</a></li>
+      {% if shop.shipping_policy %}<li><a href="{{ shop.shipping_policy.url }}">Shipping policy</a></li>{% endif %}
+    </ul>
+  </div>
+
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Iron Phoenix GHG",
+      "legalName": "Go Hard Gaming Discord LLC",
+      "url": "https://ironphoenixghg.store",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+1-518-415-8496",
+        "contactType": "customer service"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "30 N Gould St #Ste R",
+        "addressLocality": "Sheridan",
+        "addressRegion": "WY",
+        "postalCode": "82801",
+        "addressCountry": "US"
+      }
+    }
+  </script>
+
+<div id="ipxBizGate" class="ipx-gate" hidden>
+  <div class="ipx-gate-card" role="dialog" aria-modal="true" aria-labelledby="ipxBizGateTitle">
+    <h4 id="ipxBizGateTitle">Supplier and Approved Business Contact Only</h4>
+
+    <p>
+      This contact route is only for approved suppliers, product sourcing,
+      invoices, purchase orders, and existing vendor matters.
+    </p>
+
+    <p>
+      It is not for customer support, SEO, Shopify services, audits, app pitches,
+      marketing, collaborations, partnerships, owner contact, or access requests.
+    </p>
+
+    <p>
+      Misuse of this contact route will be treated as unsolicited commercial
+      outreach and may be blocked or reported.
+    </p>
+
+    <p>
+      If you are a customer, use the official customer-service contact listed
+      on the store where you placed your order.
+    </p>
+
+    <div class="ipx-gate-actions">
+      <button
+        type="button"
+        class="ipx-gate-cancel"
+        onclick="document.getElementById('ipxBizGate').hidden = true;"
+      >
+        Cancel
+      </button>
+
+      <a
+        class="ipx-gate-confirm ipx-em"
+        data-u="shadowseeker"
+        data-d="ironphoenixghg.store"
+        data-subject="Approved%20Supplier%20Inquiry%20-%20Company%20Name%20Required"
+        href="#"
+        onclick="document.getElementById('ipxBizGate').hidden = true;"
+      >
+        Continue
+      </a>
     </div>
   </div>
-</footer>
+</div>
 
-{% schema %}
-{
-  "name": "Footer",
-  "class": "section-footer"
-}
-{% endschema %}
+  <script>
+    document.querySelectorAll('.ipx-em').forEach(function(el){
+      var email = el.dataset.u + '@' + el.dataset.d;
+      var subject = el.dataset.subject ? '?subject=' + el.dataset.subject : '';
+      if (el.tagName === 'A') el.href = 'mailto:' + email + subject;
+      if (!el.textContent.trim()) el.textContent = email;
+    });
+  </script>
+</footer>
