@@ -150,8 +150,16 @@ Depends on: structured-product, member-price snippets
     color: #fff; border: none; border-radius: 2rem; cursor: pointer;
     transition: background 0.2s;
   }
-  .mp-btn-atc:hover:not(:disabled) { background: #1e8772; }
-  .mp-btn-atc:disabled { background: #999; cursor: not-allowed; }
+  .mp-btn-atc:hover:not([aria-disabled="true"]) { background: #1e8772; }
+  .mp-btn-atc[aria-disabled="true"] { background: #999; cursor: not-allowed; }
+  .mp-btn-atc .loading__spinner {
+    display: inline-block; width: 16px; height: 16px; margin-left: 0.6rem;
+    border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff;
+    border-radius: 50%; animation: mp-spin 0.7s linear infinite; vertical-align: middle;
+  }
+  .mp-btn-atc .loading__spinner.hidden { display: none; }
+  @keyframes mp-spin { to { transform: rotate(360deg); } }
+  .product-form__error-message-wrapper { margin-bottom: 0.8rem; color: #c0392b; font-size: 1.3rem; }
 
   .mp-btn-buy {
     width: 100%; padding: 1.2rem; margin-bottom: 1.4rem;
