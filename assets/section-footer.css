@@ -1,21 +1,2 @@
 /* assets/section-footer.css */
-
-.footer {
-  margin-top: var(--footer-margin-top-mobile);
-}
-.footer-section-padding {
-  padding-top: var(--footer-padding-top-mobile);
-  padding-bottom: var(--footer-padding-bottom-mobile);
-}
-@media (min-width: 750px) {
-  .footer {
-    margin-top: var(--footer-margin-top-desktop);
-  }
-  .footer-section-padding {
-    padding-top: var(--footer-padding-top-desktop);
-    padding-bottom: var(--footer-padding-bottom-desktop);
-  }
-}
-/* Ensure these styles are correctly applied, if they are meant to override component-footer.css defaults */
-/* If component-footer.css already covers these, these might be redundant. */
-/* Keeping them here for now as they were in the original inline block. */
+/* Footer section styling is handled by component-footer.css and inline styles in the section */

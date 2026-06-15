@@ -1,18 +1,5 @@
 /* assets/section-featured-collection.css */
 
-/* Section padding dynamic variables */
-.featured-collection-section-padding {
-  padding-top: var(--featured-collection-padding-top-mobile);
-  padding-bottom: var(--featured-collection-padding-bottom-mobile);
-}
-
-@media screen and (min-width: 750px) {
-  .featured-collection-section-padding {
-    padding-top: var(--featured-collection-padding-top-desktop);
-    padding-bottom: var(--featured-collection-padding-bottom-desktop);
-  }
-}
-
 /* Grid for product cards */
 .featured-collection__grid {
   display: grid;
