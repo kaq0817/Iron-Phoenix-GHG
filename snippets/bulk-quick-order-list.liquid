@@ -1,0 +1,49 @@
+{% comment %}
+  Bulk Quick Order (Snippet)
+  Usage:
+    {% render 'bulk-quick-order-list',
+      collection: collections['your-collection-handle'],
+      title: 'Quick order — New arrivals',
+      limit: 12,
+      show_image: true,
+      show_sku: true
+    %}
+
+  Notes:
+  - Escapes all dynamic text content (title, collection title, product title).
+  - No inline CSS. Add styles in assets/quick-order-list.css if desired.
+  - Requires: snippets/quick-order-list.liquid
+{% endcomment %}
+
+{%- assign col = collection | default: collections.all -%}
+{%- assign item_limit = limit | default: 12 -%}
+{%- assign show_img = show_image | default: true -%}
+{%- assign show_sku_flag = show_sku | default: true -%}
+
+{%- if col and col.products_count > 0 -%}
+  <section class="qo-bulk" aria-labelledby="qo-bulk-title-{{ col.id | default: 'all' }}">
+    <h2 id="qo-bulk-title-{{ col.id | default: 'all' }}" class="qo-bulk__title">
+      {{ title | default: col.title | escape }}
+    </h2>
+
+    <div class="qo-bulk__grid" role="list">
+      {%- for p in col.products limit: item_limit -%}
+        <article class="qo-bulk__item" role="listitem">
+          <h3 class="qo-bulk__product-title">
+            <a href="{{ p.url }}" class="qo-bulk__product-link">
+              {{ p.title | escape }}
+            </a>
+          </h3>
+
+          {%- render 'quick-order-list',
+            product: p,
+            show_image: show_img,
+            show_sku: show_sku_flag
+          -%}
+        </article>
+      {%- endfor -%}
+    </div>
+  </section>
+{%- else -%}
+  <p class="qo-bulk__empty">No products available.</p>
+{%- endif -%}

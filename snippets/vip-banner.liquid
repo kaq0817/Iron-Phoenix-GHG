@@ -1,0 +1,39 @@
+{% comment %} VIP Banner (snippet) — uses assets/vip.css {% endcomment %}
+{{ 'vip.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'vip.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign on = settings.enable_membership -%}
+{%- if on -%}
+  {%- assign is_member = false -%}
+  {%- if customer -%}
+    {%- assign allowed = settings.membership_allowed_tags | default: 'Member,VIP' | split: ',' -%}
+    {%- for t in customer.tags -%}
+      {%- if allowed contains t | strip -%}{%- assign is_member = true -%}{%- break -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if is_member == false and customer.metafields.membership.active and customer.metafields.membership.active.value == true -%}
+      {%- assign is_member = true -%}
+    {%- endif -%}
+    {%- if is_member == false and customer.metafields.membership.expires_on and customer.metafields.membership.expires_on.value -%}
+      {%- assign today = 'now' | date: '%Y-%m-%d' -%}
+      {%- assign exp = customer.metafields.membership.expires_on.value | date: '%Y-%m-%d' -%}
+      {%- if exp >= today -%}{%- assign is_member = true -%}{%- endif -%}
+    {%- endif -%}
+  {%- endif -%}
+
+  {%- unless is_member -%}
+    {%- assign handle = settings.membership_product_handle | default: '' | strip -%}
+    {%- if handle != '' -%}
+      {%- assign dest_url = routes.root_url | append: '/products/' | append: handle -%}
+    {%- else -%}
+      {%- assign dest_url = routes.account_register_url -%}
+    {%- endif -%}
+
+    <div class="vip-banner" role="note" aria-label="VIP membership promotion">
+      <strong class="vip-banner__badge">{{ settings.vip_badge_text | default: 'VIP' | escape }}</strong>
+      <span class="vip-banner__text">
+        members get exclusive discounts{% if settings.gift_enabled %} + a free gift{% endif %}.
+      </span>
+      <a href="{{ dest_url | escape }}" class="vip-banner__link">Join now</a>
+    </div>
+  {%- endunless -%}
+{%- endif -%}

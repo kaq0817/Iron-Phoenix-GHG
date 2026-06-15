@@ -1,0 +1,181 @@
+/* section-main-product.css - Non-critical styles for ironphoenix.store product page */
+
+/* Alternating Boxes Section */
+.alternating-boxes {
+  margin-top: 40px;
+  padding: 0 20px;
+}
+
+.box {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+
+.box-left { flex-direction: row; }
+.box-right { flex-direction: row-reverse; }
+
+.box img {
+  max-width: 50%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.box-content {
+  flex: 1;
+  padding: 10px;
+}
+
+.box-content h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.box-content p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Product Details Bottom Section */
+.product-details-bottom {
+  margin-top: 40px;
+  padding: 0 20px 40px;
+  text-align: center;
+}
+
+.product-details-bottom h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: #000;
+}
+
+.product-details-bottom h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 20px 0 10px;
+  color: #333;
+}
+
+.product-details-bottom p {
+  font-size: 0.95rem;
+  color: #666;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto 20px;
+}
+
+/* Recommended Products Section */
+.recommended-products {
+  margin-top: 30px;
+}
+
+.recommended-products h3 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.product {
+  display: inline-block;
+  width: 23%;
+  margin: 0 1% 20px;
+  text-align: center;
+  vertical-align: top;
+}
+
+.product a {
+  text-decoration: none;
+}
+
+.product img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.product p {
+  font-size: 0.9rem;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+.product button {
+  background: #4caf50;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.product button:hover {
+  background: #45a049;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .product {
+    width: 31%;
+  }
+}
+
+@media (max-width: 768px) {
+  .box {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .box img {
+    max-width: 100%;
+  }
+
+  .product {
+    width: 48%;
+  }
+}
+
+@media (max-width: 480px) {
+  .product {
+    width: 100%;
+  }
+
+  .box-content h2 {
+    font-size: 1.1rem;
+  }
+
+  .box-content p {
+    font-size: 0.9rem;
+  }
+}
+
+/* Theme-Specific Adjustments (Optional) */
+:root {
+  --primary-color: #4caf50;
+  --text-color: #333;
+  --secondary-text: #666;
+}
+
+.add-to-cart,
+.product button {
+  background-color: var(--primary-color);
+}
+
+.box-content h2,
+.product-details-bottom h2 {
+  color: var(--text-color);
+}
+
+.box-content p,
+.product-details-bottom p,
+.product p {
+  color: var(--secondary-text);
+}

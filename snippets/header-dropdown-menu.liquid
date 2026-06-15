@@ -1,0 +1,32 @@
+{%- comment -%}
+  Header Dropdown Menu Snippet
+  Use inside your main header section or directly in theme.liquid
+  Pass a navigation handle (e.g., 'main-menu') as menu_handle:
+    {% render 'header-dropdown-menu', menu_handle: 'main-menu' %}
+{%- endcomment -%}
+
+{% assign menu = linklists[menu_handle] | default: linklists.main-menu %}
+
+<nav class="header-dropdown-nav" role="navigation" aria-label="Main menu">
+  <ul class="header-menu-list">
+    {% for link in menu.links %}
+      <li class="header-menu-item{% if link.links.size > 0 %} has-dropdown{% endif %}">
+        <a href="{{ link.url }}" class="header-menu-link" {% if link.links.size > 0 %}aria-haspopup="true" aria-expanded="false"{% endif %}>
+          {{ link.title | escape }}
+        </a>
+        {% if link.links.size > 0 %}
+          <button class="header-dropdown-toggle" aria-label="Toggle dropdown"></button>
+          <ul class="header-dropdown-list" aria-label="{{ link.title }}">
+            {% for sublink in link.links %}
+              <li>
+                <a href="{{ sublink.url }}" class="header-dropdown-link">
+                  {{ sublink.title | escape }}
+                </a>
+              </li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

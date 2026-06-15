@@ -1,0 +1,30 @@
+{%- comment -%}
+/snippets/policy-organization.liquid
+Organization JSON-LD with dynamic return policy URL (portable).
+{%- endcomment -%}
+{%- assign org_name = shop.name | default: shop.metafields.global.organization_name -%}
+{%- assign logo = settings.logo | default: settings.favicon -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ org_name | default: shop.name | json }},
+  "url": {{ request.origin | json }},
+  {% if logo %}
+  "logo": {{ logo | image_url: width: 512 | json }},
+  {% endif %}
+  {% if shop.policies.refund %}
+  "hasMerchantReturnPolicy": {
+    "@type": "MerchantReturnPolicy",
+    "url": {{ shop.policies.refund.url | json }}
+  },
+  {% endif %}
+  "sameAs": [
+    {% if settings.social_facebook_link != blank %}{{ settings.social_facebook_link | json }}{% endif %}{% if settings.social_instagram_link != blank %},{{
+      settings.social_instagram_link | json }}{% endif %}{% if settings.social_twitter_link != blank %},{{
+      settings.social_twitter_link | json }}{% endif %}{% if settings.social_youtube_link != blank %},{{
+      settings.social_youtube_link | json }}{% endif %}
+  ]
+}
+</script>

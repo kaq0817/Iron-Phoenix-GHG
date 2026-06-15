@@ -1,0 +1,158 @@
+{%- comment -%}
+  Iron Phoenix GHG - Product Tabs Section
+  Displays product information in a tabbed interface.
+  Content is parsed from a single rich text field, using <h3> tags to delineate tabs.
+  Content *before* the first <h3> tag is intentionally discarded for a cleaner presentation.
+
+  Requires assets/section-product-tabs.css for styling.
+  Requires assets/section-product-tabs.js for interactive tab functionality.
+{%- endcomment -%}
+
+{{ 'section-product-tabs.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-product-tabs.css' | asset_url | stylesheet_tag }}</noscript>
+<script src="{{ 'section-product-tabs.js' | asset_url }}" defer></script>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section
+  id="ProductTabs-{{ section.id }}"
+  class="product-tabs color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-width page-width--narrow">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="section-heading h2">{{ section.settings.heading | escape }}</h2>
+    {%- endif -%}
+
+    {%- if section.settings.tabs_content != blank -%}
+      {%- assign description_html = section.settings.tabs_content -%}
+      {%- assign tab_sections = description_html | split: '<h3' -%}
+
+      {%- assign tabs_data = '' -%}
+      {%- assign tab_headers = '' -%}
+      {%- assign tab_panels = '' -%}
+      {%- assign tab_counter = 0 -%}
+
+      {%- for section_content in tab_sections -%}
+        {%- unless forloop.first and section_content contains '</h3>' == false -%} {# Discard content before first H3 #}
+          {%- assign full_card_html = '<h3' | append: section_content -%}
+          {%- assign heading_raw = full_card_html | split: '</h3>' | first -%}
+          {%- assign tab_title = heading_raw | split: '>' | last | strip_html | escape -%}
+          {%- assign tab_body_html = full_card_html | split: '</h3>' | last -%}
+
+          {%- if tab_title != blank or tab_body_html != blank -%}
+            {%- assign tab_counter = forloop.index -%}
+            {%- assign tab_id = 'Tab-' | append: section.id | append: '-' | append: tab_counter -%}
+            {%- assign panel_id = 'Panel-' | append: section.id | append: '-' | append: tab_counter -%}
+
+            {%- capture tab_headers_item -%}
+              <button
+                class="product-tab-button {% if forloop.first %}is-active{% endif %}"
+                role="tab"
+                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                aria-controls="{{ panel_id }}"
+                id="{{ tab_id }}"
+                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                data-tab-id="{{ tab_id }}"
+              >
+                {{ tab_title }}
+              </button>
+            {%- endcapture -%}
+            {%- assign tab_headers = tab_headers | append: tab_headers_item -%}
+
+            {%- capture tab_panels_item -%}
+              <div
+                class="product-tab-panel rte {% if forloop.first == false %}is-hidden{% endif %}"
+                role="tabpanel"
+                id="{{ panel_id }}"
+                aria-labelledby="{{ tab_id }}"
+                aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}"
+                tabindex="0"
+              >
+                {{ tab_body_html }}
+              </div>
+            {%- endcapture -%}
+            {%- assign tab_panels = tab_panels | append: tab_panels_item -%}
+          {%- endif -%}
+        {%- endunless -%}
+      {%- endfor -%}
+
+      {%- if tab_headers != blank -%}
+        <div class="product-tabs-wrapper">
+          <div class="product-tabs-header-list" role="tablist" aria-label="{{ section.settings.heading | escape }}">
+            {{ tab_headers }}
+          </div>
+          <div class="product-tabs-content">
+            {{ tab_panels }}
+          </div>
+        </div>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Product Tabs",
+  "tag": "section",
+  "class": "section-product-tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Product Information"
+    },
+    {
+      "type": "richtext",
+      "id": "tabs_content",
+      "label": "Tabbed Content (use H3 for tab titles)",
+      "info": "Content before the first H3 will be ignored. Each H3 will be a tab title.",
+      "default": "<h3>Product Details</h3><p>Channel the untamed spirit of the wild with this <strong>mystic blue wolf sports bra</strong>. Designed for dreamers, adventurers, and fierce souls, it features a mesmerizing wolf graphic that feels like it was pulled straight from a starlit forest.</p><p>The soft, stretchable fabric hugs you just right, offering breathable comfort and reliable support whether you're flowing through yoga poses, powering up in the gym, or lounging with your favorite playlist on repeat.</p><h3>Key Features</h3><ul><li>Moisture-wicking magic for ultimate comfort.</li><li>Racerback cut for full range of motion.</li><li>Medium support for stability and security.</li><li>Mesmerizing wolf graphic for a fierce look.</li></ul><h3>Fit & Style</h3><p>With a fit that flatters every curve, this bra is both practical and poetic. Slip into this enchanting piece whenever you need a dose of <strong>confidence, courage, or cool-girl energy</strong>. Perfect to pair with leggings, joggers, or worn solo—because when you look this bold, the forest isn’t the only thing watching.</p><p>Let your inner wolf howl, honey—you were born to stand out.</p><h3>Care Instructions</h3><p>Machine wash cold, tumble dry low. Do not bleach. Do not iron directly on the graphic.</p>"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "background-1"
+    },
+    {
+      "type": "header",
+      "content": "Section Padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
+  ],
+  "presets": [{ "name": "Product Tabs" }]
+}
+{% endschema %}

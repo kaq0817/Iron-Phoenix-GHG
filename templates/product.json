@@ -1,0 +1,20 @@
+{
+  "name": "Product",
+  "sections": {
+    "main": { "type": "main-product", "settings": {} },
+    "gallery": { "type": "product-gallery-row", "settings": {} },
+    "below-fold-blocks": { "type": "product-metafields", "settings": {} },
+    "product-story": { "type": "brand-story", "settings": {} },
+    "product-recommendations": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Customers Also Bought",
+        "collection": "related-products",
+        "products_to_show": 4,
+        "columns_desktop": 4
+      }
+    },
+    "featureblocks": { "type": "product-feature-blocks", "settings": {} }
+  },
+  "order": ["main","gallery","below-fold-blocks","product-story","product-recommendations","featureblocks"]
+}

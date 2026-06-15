@@ -1,0 +1,126 @@
+/* assets/section-product-tabs.css */
+
+.product-tabs {
+  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-background));
+  text-align: center;
+}
+
+.product-tabs .section-heading {
+  margin-bottom: 2rem;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: .02em;
+  color: rgb(var(--color-headings, 0, 255, 255)); /* Fallback neon cyan */
+  text-shadow: 0 0 10px rgba(var(--color-accent, 0, 255, 0), 0.5); /* Fallback neon green */
+}
+
+.product-tabs-wrapper {
+  margin-top: 2rem;
+  background: rgba(var(--color-white), 0.03);
+  border: 1px solid rgba(var(--color-white), 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(var(--color-black), 0.3);
+  overflow: hidden; /* Contains tab content borders */
+}
+
+.product-tabs-header-list {
+  display: flex;
+  flex-wrap: wrap; /* Allows tabs to wrap on smaller screens */
+  justify-content: center;
+  border-bottom: 1px solid rgba(var(--color-white), 0.15);
+  background: rgba(var(--color-black), 0.2); /* Slightly darker background for tab headers */
+  padding: 0.5rem;
+}
+
+.product-tab-button {
+  flex-grow: 1; /* Tabs take equal width */
+  min-width: 120px; /* Minimum width before wrapping */
+  max-width: 250px;
+  padding: 1rem 1.2rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: rgba(var(--color-white), 0.7);
+  background: transparent;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0.25rem;
+}
+
+.product-tab-button:hover:not(.is-active) {
+  color: rgb(var(--color-white));
+  background-color: rgba(var(--color-white), 0.08);
+}
+
+.product-tab-button.is-active {
+  color: rgb(var(--color-neon-green, 57, 255, 20)); /* Active tab text color */
+  background: linear-gradient(135deg, rgba(var(--color-neon-green, 57, 255, 20), 0.15), rgba(var(--color-neon-pink, 255, 16, 240), 0.1));
+  box-shadow: 0 0 12px rgba(var(--color-neon-green, 57, 255, 20), 0.3), inset 0 0 8px rgba(var(--color-neon-green, 57, 255, 20), 0.15);
+  border: 1px solid rgba(var(--color-neon-green, 57, 255, 20), 0.4);
+}
+
+.product-tab-button:focus-visible {
+  outline: 2px solid rgb(var(--color-neon-yellow, 255, 255, 0)); /* Accessibility focus ring */
+  outline-offset: 2px;
+}
+
+.product-tabs-content {
+  padding: 1.5rem 2rem;
+  text-align: left; /* Tab content remains left-aligned */
+}
+
+.product-tab-panel.rte {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: rgba(var(--color-white), 0.9);
+}
+
+.product-tab-panel.rte strong {
+  color: rgb(var(--color-neon-pink, 255, 16, 240));
+}
+
+.product-tab-panel.rte em {
+  color: rgb(var(--color-neon-green, 57, 255, 20));
+}
+
+.product-tab-panel.rte ul,
+.product-tab-panel.rte ol {
+  margin-left: 1.5rem;
+  padding-left: 0;
+  list-style-position: inside;
+}
+
+.product-tab-panel.rte ul li {
+  list-style-type: '⚡ '; /* Custom bullet point */
+  margin-bottom: 0.5rem;
+}
+
+.product-tab-panel.rte ol li {
+  list-style-type: decimal;
+  margin-bottom: 0.5rem;
+}
+
+.product-tab-panel.is-hidden {
+  display: none;
+}
+
+/* Responsive adjustments */
+@media (max-width: 749px) {
+  .product-tabs .section-heading {
+    margin-bottom: 1.5rem;
+  }
+  .product-tabs-header-list {
+    flex-direction: column; /* Stack tab headers on mobile */
+    align-items: stretch;
+    padding: 0.25rem;
+  }
+  .product-tab-button {
+    margin: 0.15rem;
+  }
+  .product-tabs-content {
+    padding: 1rem 1.5rem;
+  }
+}

@@ -1,0 +1,13 @@
+{%- comment -%}
+  Cart Notification Toast
+  Shows when an item is added to the cart (AJAX add)
+  Updated: 2025-08-04
+{%- endcomment -%}
+<div id="cart-notification" class="cart-notification" aria-live="polite" aria-atomic="true" aria-hidden="true">
+  <div class="cart-notification__inner">
+    <span class="cart-notification__icon" aria-hidden="true">🛒</span>
+    <span class="cart-notification__message">{{ 'products.product.item_added' | t: title: cart_notification_title }}</span>
+    <a href="/cart" class="cart-notification__view-cart">{{ 'cart.general.view' | t }}</a>
+    <button type="button" class="cart-notification__close" aria-label="Close notification">&times;</button>
+  </div>
+</div>

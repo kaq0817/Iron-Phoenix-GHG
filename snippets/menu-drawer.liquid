@@ -1,0 +1,43 @@
+{%- comment -%}
+  /snippets/menu-drawer.liquid — Pure drawer, matches menu-drawer.js expectations
+  Usage: {% render 'menu-drawer', menu: section.settings.menu %}
+{%- endcomment -%}
+
+{%- assign menu_handle = menu -%}
+{%- if menu_handle == blank and section and section.settings and section.settings.menu -%}
+  {%- assign menu_handle = section.settings.menu -%}
+{%- endif -%}
+{%- assign menu_obj = linklists[menu_handle] -%}
+
+<menu-drawer id="menu-drawer" class="menu-drawer" aria-hidden="true">
+  <div class="menu-drawer__overlay" data-close-menu></div>
+
+  <div class="menu-drawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'sections.header.menu' | t | default: 'Menu' | escape }}" tabindex="-1">
+    <button type="button" class="menu-drawer__close" aria-label="{{ 'accessibility.close' | t | default: 'Close' | escape }}" data-close-menu>
+      <span aria-hidden="true">×</span>
+    </button>
+
+    <nav class="menu-drawer__body" role="navigation">
+      {% if menu_obj and menu_obj.links.size > 0 %}
+        <ul class="menu-drawer__nav" role="list">
+          {% for link in menu_obj.links %}
+            <li class="menu-drawer__item">
+              <a class="menu-drawer__link" href="{{ link.url }}" {% if link.current %}aria-current="page"{% endif %}>{{ link.title | escape }}</a>
+              {% if link.links and link.links.size > 0 %}
+                <ul class="menu-drawer__subnav" role="list">
+                  {% for child in link.links %}
+                    <li>
+                      <a class="menu-drawer__sublink" href="{{ child.url }}" {% if child.current %}aria-current="page"{% endif %}>{{ child.title | escape }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p class="menu-drawer__empty">Add links to your “Navigation menu” in the header settings.</p>
+      {% endif %}
+    </nav>
+  </div>
+</menu-drawer>

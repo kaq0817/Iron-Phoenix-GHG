@@ -1,0 +1,35 @@
+{% comment %} /sections/vip-callout.liquid — styles in assets/section-vip-callout.css {% endcomment %}
+
+{{ 'section-vip-callout.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-vip-callout.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign vip_href = section.settings.vip_link | default: '/pages/vip-program' -%}
+
+<section class="vip-callout page-width">
+  {% if section.settings.vip_title != blank %}
+    <h2 class="vip-callout__title">{{ section.settings.vip_title | escape }}</h2>
+  {% endif %}
+
+  {% if section.settings.vip_subtitle != blank %}
+    <div class="vip-callout__subtitle rte">
+      {{ section.settings.vip_subtitle }}
+    </div>
+  {% endif %}
+
+  <a href="{{ vip_href | escape }}" class="vip-callout__button button">
+    {{ section.settings.vip_cta | default: 'Join now' | escape }}
+  </a>
+</section>
+
+{% schema %}
+{
+  "name": "VIP Callout",
+  "settings": [
+    { "type": "text", "id": "vip_title", "label": "Title", "default": "Join the Iron Phoenix Elite Club" },
+    { "type": "richtext", "id": "vip_subtitle", "label": "Subtitle", "default": "<p>Unlock exclusive discounts and perks.</p>" },
+    { "type": "url", "id": "vip_link", "label": "Link", "default": "/pages/vip-program" },
+    { "type": "text", "id": "vip_cta", "label": "CTA", "default": "Join now" }
+  ],
+  "presets": [{ "name": "VIP Callout" }]
+}
+{% endschema %}

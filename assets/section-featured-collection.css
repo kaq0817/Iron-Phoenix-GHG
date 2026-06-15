@@ -1,0 +1,56 @@
+/* assets/section-featured-collection.css */
+
+/* Section padding dynamic variables */
+.featured-collection-section-padding {
+  padding-top: var(--featured-collection-padding-top-mobile);
+  padding-bottom: var(--featured-collection-padding-bottom-mobile);
+}
+
+@media screen and (min-width: 750px) {
+  .featured-collection-section-padding {
+    padding-top: var(--featured-collection-padding-top-desktop);
+    padding-bottom: var(--featured-collection-padding-bottom-desktop);
+  }
+}
+
+/* Grid for product cards */
+.featured-collection__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Individual product card styling */
+.product-card {
+  background: rgb(var(--color-white)); /* Using theme's white color */
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 8px rgba(var(--color-black), 0.1); /* Using theme's black color */
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.2s ease;
+}
+
+.product-card:hover {
+  transform: translateY(-2px);
+}
+
+.product-card__image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.product-card__title {
+  font-size: 1.1rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.product-card__price {
+  font-size: 1rem;
+  color: rgba(var(--color-foreground), 0.7); /* Muted foreground text */
+}

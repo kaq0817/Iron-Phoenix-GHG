@@ -1,0 +1,112 @@
+/* ========== Customer Forms Styles (Iron Phoenix Neon) ========== */
+
+/* Container */
+.reset-password-page,
+.login-page,
+.register-page,
+.account-page {
+  max-width: 400px;
+  margin: 4rem auto 0;
+  padding: 2rem;
+  background: var(--color-primary-bg, #111);  /* Deep black background */
+  border-radius: 1.5rem;
+  box-shadow: 0 6px 24px 0 rgba(57,255,212,0.10), 0 0 8px #fff; /* Subtle teal glow & white */
+}
+
+/* Headings */
+.reset-password-title,
+.login-title,
+.register-title,
+.account-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+  color: var(--color-main-text, #00BDBD); /* Teal neon */
+  text-shadow: 0 0 6px #fff, 0 0 10px #FF10F0; /* White + pink accent glow */
+  text-align: center;
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Labels */
+.form-label {
+  display: block;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.02em;
+}
+
+/* Inputs */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--color-main-text, #00BDBD);
+  border-radius: 0.75rem;
+  background: #181a1f;
+  color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 0 8px 0 rgba(0,189,189,0.08);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #FF10F0;  /* Neon pink on focus */
+  background: #23232b;
+  box-shadow: 0 0 12px #FF10F0, 0 0 4px #fff;
+}
+
+/* Button */
+.btn {
+  width: 100%;
+  padding: 0.85rem 0;
+  background: linear-gradient(90deg, #FF10F0 0%, #39FF14 100%);
+  color: #111;
+  font-size: 1.125rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 0.75rem;
+  cursor: pointer;
+  box-shadow: 0 0 10px #fff, 0 0 24px #FF10F0;
+  letter-spacing: 0.03em;
+  transition: background 0.2s, box-shadow 0.2s;
+  margin-top: 0.75rem;
+}
+
+.btn:hover,
+.btn:focus {
+  background: linear-gradient(90deg, #FFFF00 0%, #FF10F0 100%);
+  box-shadow: 0 0 16px #fff, 0 0 36px #FFFF00;
+  color: #181a1f;
+}
+
+/* Error Messages */
+.form-errors {
+  background: #ffeded;
+  color: #c00;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1.5px solid #FF10F0;
+  font-size: 1rem;
+  text-align: center;
+  box-shadow: 0 0 6px #fff, 0 0 12px #FF10F0;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .reset-password-page,
+  .login-page,
+  .register-page,
+  .account-page {
+    max-width: 98vw;
+    padding: 1.25rem 0.5rem;
+  }
+}

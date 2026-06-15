@@ -1,0 +1,104 @@
+{%- comment -%}
+snippets/meta-tags.liquid
+- Dynamic Open Graph + Twitter cards (no hardcoded handles)
+- No <title> here (theme.liquid already sets it)
+- Proper escaping for text; URLs left intact
+{%- endcomment -%}
+
+{%- liquid
+  assign is_product    = template contains 'product'
+  assign is_article    = template contains 'article'
+  assign is_collection = template contains 'collection'
+
+  # Title/description for cards
+  assign meta_title = page_title | default: shop.name
+  assign raw_desc   = page_description | default: shop.description
+  assign meta_desc  = raw_desc | strip | truncate: 300, '…'
+
+  # Choose best image
+  assign meta_image = nil
+  if is_product and product
+    assign meta_image = product.featured_image
+  elsif is_article and article
+    assign meta_image = article.image
+  elsif is_collection and collection
+    assign meta_image = collection.image
+  endif
+  if meta_image == nil
+    if settings.share_image
+      assign meta_image = settings.share_image
+    elsif page_image
+      assign meta_image = page_image
+    endif
+  endif
+
+  # Alt fallback
+  assign image_alt = ''
+  if meta_image != nil
+    assign image_alt = meta_image.alt | default: meta_title
+  endif
+
+  # og:type
+  assign og_type = 'website'
+  if is_product
+    assign og_type = 'product'
+  elsif is_article
+    assign og_type = 'article'
+  endif
+
+  # Optional Twitter handle (if your theme settings have one)
+  assign twitter_site = settings.twitter_handle
+  if twitter_site and twitter_site != blank
+    unless twitter_site startswith '@'
+      assign twitter_site = '@' | append: twitter_site
+    endunless
+  endif
+-%}
+
+{%- comment -%} Base Open Graph {%- endcomment -%}
+<meta property="og:site_name" content="{{ shop.name | escape }}">
+<meta property="og:type" content="{{ og_type }}">
+<meta property="og:title" content="{{ meta_title | escape }}">
+<meta property="og:description" content="{{ meta_desc | escape }}">
+<meta property="og:url" content="{{ canonical_url }}">
+
+{%- if meta_image != nil -%}
+  <meta property="og:image" content="{{ meta_image | image_url: width: 1200 }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="{{ image_alt | escape }}">
+{%- endif -%}
+
+{%- comment -%} Twitter Card {%- endcomment -%}
+<meta name="twitter:card" content="summary_large_image">
+{%- if twitter_site and twitter_site != blank -%}
+  <meta name="twitter:site" content="{{ twitter_site | escape }}">
+{%- endif -%}
+<meta name="twitter:title" content="{{ meta_title | escape }}">
+<meta name="twitter:description" content="{{ meta_desc | escape }}">
+{%- if meta_image != nil -%}
+  <meta name="twitter:image" content="{{ meta_image | image_url: width: 1200 }}">
+  <meta name="twitter:image:alt" content="{{ image_alt | escape }}">
+{%- endif -%}
+
+{%- comment -%} Favicon {%- endcomment -%}
+{%- if settings.favicon -%}
+  <link rel="icon" href="{{ settings.favicon | image_url: width: 32 }}">
+{%- endif -%}
+
+{%- comment -%}
+JSON-LD Organization (homepage only). Keep portable: no hardcoded sameAs.
+If you want social profiles here, we can wire from settings in a follow-up.
+{%- endcomment -%}
+{%- if template.name == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  {% if settings.share_image %}"logo": {{ settings.share_image | image_url: width: 600 | json }},{% endif %}
+  "description": {{ shop.description | default: shop.name | json }}
+}
+</script>
+{%- endif -%}

@@ -1,0 +1,334 @@
+{% comment %}
+  Section: Contact Us (Elite) for Iron Phoenix GHG
+  Purpose: Publicly show City/State/Zip only; optional JSON-LD can include full street address (toggle).
+  Extras: Optional native contact form with lightweight anti-bot (honeypot + time-trap).
+  Compliance: Avoids cloaking — visible content omits street; JSON-LD toggle is off by default.
+  -- Refactored: Inline CSS moved to external asset, hardcoded strings converted to translation keys/settings. --
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'section-contact-us-elite.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-contact-us-elite.css' | asset_url | stylesheet_tag }}</noscript>
+
+<section class="contact-us-container" style="--section-pt: {{ section.settings.padding_top }}px; --section-pb: {{ section.settings.padding_bottom }}px;">
+  <h1 class="contact-us-title">{{ section.settings.heading | default: 'sections.contact_us_elite.heading' | t: business_name: section.settings.business_name | default: shop.name | escape }}</h1>
+  <p class="contact-us-intro">
+    {{ section.settings.intro_richtext | default: 'sections.contact_us_elite.intro_text' | t: business_name: section.settings.business_name | default: shop.name | escape }}
+  </p>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ 'products.product.faq.title' | t }} 📚</h2>
+    {{ section.settings.faq_prompt_richtext | default: 'sections.contact_us_elite.faq_prompt_text' | t | replace: '/pages/faq', '<a href="/pages/faq" class="contact-link">' | append: '</a>' }}
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.customer_support_section_title | default: 'sections.contact_us_elite.how_can_we_help_title' | t }} 💬</h2>
+    <div class="contact-details-grid">
+      <div class="contact-detail-item">
+        <h3>{{ section.settings.customer_support_section_title | default: 'sections.contact_us_elite.customer_support_title' | t }}</h3>
+        <p>{{ section.settings.customer_support_section_text | default: 'sections.contact_us_elite.customer_support_text' | t }}</p>
+        <p>
+          {{ 'contact.form.email' | t }}:
+          <a href="mailto:{{ section.settings.support_email | default: 'support@ironphoenix.store' | escape }}" class="contact-link" id="customer-support-email">
+            {{ section.settings.support_email | default: 'support@ironphoenix.store' | escape }}
+          </a>
+        </p>
+        <p>
+          {{ section.settings.text_whatsapp_label | default: 'sections.contact_us_elite.text_whatsapp_label' | t }}:
+          <a href="sms:{{ section.settings.support_sms_number_uri | default: '+15184158496' | escape }}" class="contact-link" id="customer-support-phone">
+            {{ section.settings.support_sms_number_label | default: '(518) 415-8496 (Text Only)' | escape }}
+          </a>
+        </p>
+      </div>
+      <div class="contact-detail-item">
+        <h3>{{ section.settings.biz_inquiries_section_title | default: 'sections.contact_us_elite.business_inquiries_title' | t }}</h3>
+        <p>{{ section.settings.biz_inquiries_section_text | default: 'sections.contact_us_elite.business_inquiries_text' | t }}</p>
+        <p>
+          {{ 'contact.form.email' | t }}:
+          <a href="mailto:{{ section.settings.biz_email | default: 'shadowseeker@ironphoenix.store' | escape }}" class="contact-link" id="business-inquiry-email">
+            {{ section.settings.biz_email | default: 'shadowseeker@ironphoenix.store' | escape }}
+          </a>
+        </p>
+        <p>
+          {{ 'sections.contact_us_elite.text_label' | t }}:
+          <a href="sms:{{ section.settings.biz_sms_number_uri | default: '+13074395613' | escape }}" class="contact-link" id="business-inquiry-phone">
+            {{ section.settings.biz_sms_number_label | default: '(307) 439-5613 (Text Only)' | escape }}
+          </a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.response_time_title | default: 'sections.contact_us_elite.response_time_service_area_title' | t }}</h2>
+    <p>{{ section.settings.our_support_team_message | default: 'sections.contact_us_elite.our_support_team_message' | t }}</p>
+    <p><strong>{{ 'sections.contact_us_elite.customer_support_hours_label' | t }}:</strong> <span aria-label="{{ section.settings.customer_support_hours_aria_label | default: 'sections.contact_us_elite.customer_support_hours_aria_label' | t }}">{{ section.settings.customer_support_hours | default: 'Daily, 9:00 AM – 10:00 PM EST' | escape }}</span></p>
+    <p><strong>{{ 'sections.contact_us_elite.business_inquiries_hours_label' | t }}:</strong> {{ section.settings.business_inquiries_hours | default: 'Monday – Friday, 9:00 AM – 5:00 PM EST' | escape }}</p>
+    <div class="note-text important">
+      {{ section.settings.important_note_1_richtext }}
+    </div>
+    <div class="note-text">
+      {{ section.settings.important_note_2_richtext }}
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.feedback_title | default: 'sections.contact_us_elite.your_feedback_matters_title' | t }}</h2>
+    <div class="rte">
+      {{ section.settings.feedback_text_richtext }}
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.websites_title | default: 'sections.contact_us_elite.our_websites_title' | t }}</h2>
+    <ul class="website-list">
+      <li>{{ 'sections.contact_us_elite.main_store_label' | t }} <a href="{{ shop.url | escape }}" class="contact-link" target="_blank" rel="noopener">{{ shop.domain | escape }}</a></li>
+      <li>{{ 'sections.contact_us_elite.etsy_shop_label' | t }} <a href="{{ section.settings.etsy_shop_url | default: 'https://ironphoenixghg.etsy.com' | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.etsy_shop_label | default: 'ironphoenixghg.etsy.com' | escape }}</a></li>
+      <li>{{ 'sections.contact_us_elite.coming_soon_label' | t }} {{ section.settings.coming_soon_websites | default: 'ironphoenixghg.store, gohardgaming.store, gohardgaminghq.com' | escape }}</li>
+      <li>{{ 'sections.contact_us_elite.community_label' | t }} <a href="{{ section.settings.community_url | default: 'https://gohardgamingdiscord.com' | escape }}" class="contact-link" target="_blank" rel="noopener">{{ section.settings.community_label | default: 'gohardgamingdiscord.com' | escape }}</a> {{ section.settings.community_status_text | default: 'sections.contact_us_elite.community_status' | t }}</li>
+    </ul>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.company_details_title | default: 'sections.contact_us_elite.company_details_title' | t }}</h2>
+    <p><strong>{{ 'sections.contact_us_elite.legal_name_label' | t }}:</strong> {{ section.settings.legal_name | default: 'Go Hard Gaming Discord LLC' | escape }}</p>
+    <p><strong>{{ 'sections.contact_us_elite.dba_label' | t }}:</strong> {{ section.settings.business_name | default: 'Iron Phoenix GHG' | escape }}</p>
+    {%- comment -%}
+      Publicly show only locality and region (no street).
+    {%- endcomment -%}
+    <p><strong>{{ 'sections.contact_us_elite.location_label' | t }}:</strong> {{ section.settings.city | default: 'Ballston Spa' | escape }}, {{ section.settings.region | default: 'NY' | escape }} {{ section.settings.postal_code | default: '12020' | escape }}, {{ section.settings.country | default: 'USA' | escape }}</p>
+    <p class="note-text">{{ section.settings.single_operator_note | default: 'sections.contact_us_elite.single_operator_note' | t }}</p>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.business_proposals_section_title | default: 'sections.contact_us_elite.business_proposals_title' | t }}</h2>
+    <div class="rte">
+      {{ section.settings.email_proposals_richtext }}
+    </div>
+    <div class="note-text important">
+      {{ section.settings.business_proposals_important_note_richtext }}
+    </div>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.store_hours_section_title | default: 'sections.contact_us_elite.store_hours_title' | t }}</h2>
+    <p><strong>{{ 'sections.contact_us_elite.online_store_label' | t }}:</strong> {{ section.settings.online_store_status_text | default: 'sections.contact_us_elite.online_store_status' | t }}</p>
+    <p><strong>{{ 'sections.contact_us_elite.order_processing_label' | t }}:</strong> {{ section.settings.order_processing_status_text | default: 'sections.contact_us_elite.order_processing_status' | t }}</p>
+  </div>
+
+  <div class="contact-section">
+    <h2 class="section-heading">{{ section.settings.join_community_section_title | default: 'sections.contact_us_elite.join_community_title' | t }}</h2>
+    <p>{{ section.settings.join_community_text_richtext | default: 'sections.contact_us_elite.join_community_text' | t }}</p>
+  </div>
+
+  {% if section.settings.show_form %}
+    <div class="contact-section" id="contact-form-block-{{ section.id }}" data-min-dwell="{{ section.settings.min_dwell_ms | default: 2500 }}">
+      <h2 class="section-heading">{{ 'templates.contact.form.title' | t }}</h2>
+
+      {% assign hp_name = 'contact_' | append: section.id | append: '_hp' %}
+
+      {% form 'contact', id: 'ContactForm-' | append: section.id %}
+        {% if form.posted_successfully? %}
+          <p class="form-status form-status--success" role="status" aria-live="polite">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="form-status form-status--error" role="alert" aria-live="assertive">
+            <ul>
+              {% for field in form.errors %}
+                <li>{{ form.errors.messages[field] | escape }}</li>
+              {% endfor %}
+            </ul>
+          </div>
+        {% endif %}
+
+        <div class="field">
+          <label for="ContactForm-name-{{ section.id }}">{{ 'contact.form.name' | t }}</label>
+          <input type="text" id="ContactForm-name-{{ section.id }}" name="contact[name]" required value="{{ form.name | escape }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactForm-email-{{ section.id }}">{{ 'contact.form.email' | t }}</label>
+          <input type="email" id="ContactForm-email-{{ section.id }}" name="contact[email]" required value="{{ form.email | escape }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactForm-phone-{{ section.id }}">{{ 'contact.form.phone' | t }} ({{ 'accessibility.or' | t }})</label>
+          <input type="tel" id="ContactForm-phone-{{ section.id }}" name="contact[phone]" value="{{ form.phone | escape }}">
+        </div>
+
+        <div class="field">
+          <label for="ContactForm-message-{{ section.id }}">{{ 'contact.form.comment' | t }}</label>
+          <textarea id="ContactForm-message-{{ section.id }}" name="contact[body]" rows="6" required>{{ form.body | escape }}</textarea>
+        </div>
+
+        {%- comment -%}
+          Honeypot field: hidden off-screen (not display:none), aria-hidden, no tab stop.
+        {%- endcomment -%}
+        <div class="hp-wrap" aria-hidden="true">
+          <label for="{{ hp_name }}">{{ 'newsletter.bot_protection.human_verification' | t }}</label>
+          <input autocomplete="off" tabindex="-1" type="text" id="{{ hp_name }}" name="{{ hp_name }}" value="">
+        </div>
+
+        {%- comment -%}
+          Time-trap: timestamp set on render; checked on submit in JS.
+        {%- endcomment -%}
+        <input type="hidden" name="ghg_timestamp" value="{{ 'now' | date: '%s' }}">
+
+        <button type="submit" class="button">
+          {{ 'contact.form.send' | t }}
+        </button>
+      {% endform %}
+    </div>
+
+    <script>
+      (function () {
+        var section = document.getElementById('contact-form-block-{{ section.id }}');
+        if (!section) return;
+        var minDwell = parseInt(section.getAttribute('data-min_dwell'), 10) || 2500;
+        var form = section.querySelector('form[id^="ContactForm-"]');
+        if (!form) return;
+
+        var submitting = false;
+
+        form.addEventListener('submit', function (e) {
+          if (submitting) {
+            e.preventDefault(); // Prevent double submission
+            return;
+          }
+          var hp = form.querySelector('input[id$="_hp"]');
+          var ts = form.querySelector('input[name="ghg_timestamp"]');
+          var now = Date.now();
+          var started = ts ? (parseInt(ts.value, 10) * 1000) : now;
+
+          // If honeypot filled or dwell time too short, block submit.
+          if ((hp && hp.value.trim() !== '') || (now - started < minDwell)) {
+            e.preventDefault();
+            alert('{{ 'newsletter.bot_protection.verification_failed' | t }}');
+            return;
+          }
+
+          submitting = true;
+          // Optionally show a loading spinner or disable button here
+        }, { passive: false });
+      })();
+    </script>
+  {% endif %}
+
+  {%- if section.settings.include_full_address_in_schema -%}
+    {%- capture org_name -%}{{ section.settings.business_name | default: shop.name }}{%- endcapture -%}
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": {{ org_name | json }},
+      "url": {{ shop.url | json }},
+      "email": {{ section.settings.support_email | default: shop.email | json }},
+      "telephone": {{ section.settings.public_phone | default: section.settings.support_sms_number_uri | json }},
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": {{ section.settings.street_address | json }},
+        "addressLocality": {{ section.settings.city | json }},
+        "addressRegion": {{ section.settings.region | json }},
+        "postalCode": {{ section.settings.postal_code | json }},
+        "addressCountry": {{ section.settings.country | json }}
+      }
+    }
+    </script>
+    {%- comment -%}
+      COMPLIANCE NOTE: The full street address is included in JSON-LD structured data
+      but is intentionally not visible on the page, as per section settings.
+      Ensure this complies with Google's "Misrepresentation" policy for Merchant Center listings
+      if products on this site directly reference this business location, as the visible
+      information should match the structured data.
+    {%- endcomment -%}
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Contact Us (Elite)",
+  "settings": [
+    { "type": "text", "id": "business_name", "label": "Business/DBA Name", "default": "Iron Phoenix GHG" },
+    { "type": "text", "id": "legal_name", "label": "Legal Name", "default": "Go Hard Gaming Discord LLC" },
+    { "type": "text", "id": "heading", "label": "Main Heading Override", "default": "Contact Us" },
+    { "type": "richtext", "id": "intro_richtext", "label": "Introductory Paragraph", "default": "<p>We’re here to help with your questions, orders, or feedback. At Iron Phoenix GHG, we’re committed to providing excellent support and building a strong community.</p>" },
+    { "type": "richtext", "id": "faq_prompt_richtext", "label": "FAQ Prompt Text", "default": "<p>Visit our <a href=\"/pages/faq\">FAQ page</a> for quick answers to common questions.</p>" },
+
+    { "type": "header", "content": "Public Contact Details" },
+    { "type": "text", "id": "customer_support_section_title", "label": "Customer Support Section Title", "default": "Customer Support (Text Only)" },
+    { "type": "text", "id": "customer_support_section_text", "label": "Customer Support Section Text", "default": "Questions about products, orders, or feedback?" },
+    { "type": "text", "id": "text_whatsapp_label", "label": "Text/WhatsApp Label", "default": "Text/WhatsApp" },
+    { "type": "text", "id": "support_email", "label": "Support Email", "default": "support@ironphoenix.store" },
+    { "type": "text", "id": "support_sms_number_label", "label": "Support Text Label", "default": "(518) 415-8496 (Text Only)" },
+    { "type": "text", "id": "support_sms_number_uri", "label": "Support Text URI (sms:+1...)", "default": "+15184158496" },
+    { "type": "text", "id": "biz_inquiries_section_title", "label": "Business Inquiries Section Title", "default": "Business Inquiries (Text Only)" },
+    { "type": "text", "id": "biz_inquiries_section_text", "label": "Business Inquiries Section Text", "default": "For proposals or collaborations:" },
+    { "type": "text", "id": "biz_email", "label": "Business Inquiries Email", "default": "shadowseeker@ironphoenix.store" },
+    { "type": "text", "id": "biz_sms_number_label", "label": "Business Inquiries Text Label", "default": "(307) 439-5613 (Text Only)" },
+    { "type": "text", "id": "biz_sms_number_uri", "label": "Business Inquiries Text URI (sms:+1...)", "default": "+13074395613" },
+
+    { "type": "header", "content": "Response Time & Service Area" },
+    { "type": "text", "id": "response_time_title", "label": "Response Time Section Title", "default": "Response Time & Service Area 🕒" },
+    { "type": "text", "id": "our_support_team_message", "label": "Support Team Availability Message", "default": "Our customer support team is available during the following hours:" },
+    { "type": "text", "id": "customer_support_hours", "label": "Customer Support Hours", "default": "Daily, 9:00 AM – 10:00 PM EST" },
+    { "type": "text", "id": "customer_support_hours_aria_label", "label": "Customer Support Hours (Aria Label)", "default": "Nine AM to Ten PM Eastern" },
+    { "type": "text", "id": "business_inquiries_hours", "label": "Business Inquiries Hours", "default": "Monday – Friday, 9:00 AM – 5:00 PM EST" },
+    { "type": "richtext", "id": "important_note_1_richtext", "label": "Important Note 1 (Rich Text)", "default": "<p><strong>Important:</strong> We exclusively provide support and engage in business communications within the <strong>United States and during our stated EST business hours.</strong> Inquiries received outside of these parameters, or those deemed irrelevant to our services, will not receive a response.</p>" },
+    { "type": "richtext", "id": "important_note_2_richtext", "label": "Important Note 2 (Rich Text)", "default": "<p>If you are a legitimate customer within the US and have not heard back within 4 business hours during our support times, please check your spam/junk folders. For urgent, valid customer concerns, you may also message us on Facebook, Instagram, or Discord.</p>" },
+
+    { "type": "header", "content": "Your Feedback Matters" },
+    { "type": "text", "id": "feedback_title", "label": "Feedback Section Title", "default": "Your Feedback Matters 🌱" },
+    { "type": "richtext", "id": "feedback_text_richtext", "label": "Feedback Text (Rich Text)", "default": "<p>Share compliments or suggestions via <a href=\"mailto:support@ironphoenix.store\">support@ironphoenix.store</a>. Your input helps us improve!</p>" },
+
+    { "type": "header", "content": "Our Websites" },
+    { "type": "text", "id": "websites_title", "label": "Websites Section Title", "default": "Our Websites" },
+    { "type": "text", "id": "main_store_domain", "label": "Main Store Domain", "default": "ironphoenix.store" },
+    { "type": "url", "id": "etsy_shop_url", "label": "Etsy Shop URL", "default": "https://ironphoenixghg.etsy.com" },
+    { "type": "text", "id": "etsy_shop_label", "label": "Etsy Shop Label", "default": "ironphoenixghg.etsy.com" },
+    { "type": "text", "id": "coming_soon_websites", "label": "Coming Soon Websites List", "default": "ironphoenixghg.store, gohardgaming.store, gohardgaminghq.com" },
+    { "type": "url", "id": "community_url", "label": "Community URL", "default": "https://gohardgamingdiscord.com" },
+    { "type": "text", "id": "community_label", "label": "Community Label", "default": "gohardgamingdiscord.com" },
+    { "type": "text", "id": "community_status_text", "label": "Community Status Text", "default": "(under construction)" },
+
+    { "type": "header", "content": "Company Details" },
+    { "type": "text", "id": "company_details_title", "label": "Company Details Section Title", "default": "Company Details" },
+    { "type": "text", "id": "city", "label": "City", "default": "Ballston Spa" },
+    { "type": "text", "id": "region", "label": "Region/State", "default": "NY" },
+    { "type": "text", "id": "postal_code", "label": "Postal Code", "default": "12020" },
+    { "type": "text", "id": "country", "label": "Country", "default": "USA" },
+    { "type": "text", "id": "single_operator_note", "label": "Single Operator Note", "default": "Note: All inquiries are handled by a single operator." },
+
+    { "type": "header", "content": "Business Proposals" },
+    { "type": "text", "id": "business_proposals_section_title", "label": "Business Proposals Section Title", "default": "Business Proposals" },
+    { "type": "richtext", "id": "email_proposals_richtext", "label": "Email Proposals Text (Rich Text)", "default": "<p>Email proposals to <a href=\"mailto:shadowseeker@ironphoenix.store\">shadowseeker@ironphoenix.store</a>.</p>" },
+    { "type": "richtext", "id": "business_proposals_important_note_richtext", "label": "Business Proposals Important Note (Rich Text)", "default": "<p class=\"note-text important\">Important: We are not seeking new partnerships or unsolicited services. Proposals are reviewed Monday – Friday, 9:00 AM – 5:00 PM EST. Decisions are final, and repeated follow-ups will be filtered as spam.</p>" },
+
+    { "type": "header", "content": "Store Hours" },
+    { "type": "text", "id": "store_hours_section_title", "label": "Store Hours Section Title", "default": "Store Hours" },
+    { "type": "text", "id": "online_store_status_text", "label": "Online Store Status", "default": "Open 24/7." },
+    { "type": "text", "id": "order_processing_status_text", "label": "Order Processing Status", "default": "Within 8 business hours." },
+
+    { "type": "header", "content": "Join Our Community" },
+    { "type": "text", "id": "join_community_section_title", "label": "Join Community Section Title", "default": "Join Our Community" },
+    { "type": "richtext", "id": "join_community_text_richtext", "label": "Join Community Text (Rich Text)", "default": "<p>Connect with us on Discord for gaming updates and fun!</p>" },
+
+    { "type": "header", "content": "Optional JSON-LD (Search Engines)" },
+    { "type": "checkbox", "id": "include_full_address_in_schema", "label": "Include FULL address in JSON-LD (not visible on page)", "default": false, "info": "Enables full street address in structured data. Consider using a virtual business address." },
+    { "type": "text", "id": "street_address", "label": "Street Address (for JSON-LD only)", "default": "" },
+    { "type": "text", "id": "public_phone", "label": "Public Phone (for JSON-LD)", "default": "" },
+
+    { "type": "header", "content": "Embedded Contact Form" },
+    { "type": "checkbox", "id": "show_form", "label": "Show embedded contact form", "default": false },
+    { "type": "range", "id": "min_dwell_ms", "min": 0, "max": 8000, "step": 250, "unit": "ms", "label": "Min time on section before submit (bot trap)", "default": 2500 },
+
+    { "type": "header", "content": "Section Padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding Top", "default": 40 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Padding Bottom", "default": 40 }
+  ],
+  "presets": [
+    { "name": "Contact Us (Elite)" }
+  ]
+}
+{% endschema %}

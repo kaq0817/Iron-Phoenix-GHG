@@ -1,0 +1,7 @@
+<!-- snippets/quick-add-button.liquid -->
+<form method="post" action="{{ routes.cart_add_url }}" class="quick-add-form">
+  <input type="hidden" name="id" value="{{ product.variants.first.id }}">
+  <button type="submit" class="quick-add-button" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title | escape }}">
+    {{ 'products.product.add_to_cart' | t }}
+  </button>
+</form>

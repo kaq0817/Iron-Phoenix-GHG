@@ -1,0 +1,89 @@
+/* section-main-404.css */
+
+/* Root 404 Section */
+.template-404-gamerized {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 70vh;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background-color: rgb(var(--color-primary-bg, 0,0,0)); /* fallback to black */
+  color: rgb(var(--color-body-text, 255,255,255));      /* fallback to white */
+}
+
+.template-404-gamerized__content {
+  max-width: 600px;
+  width: 100%;
+}
+
+/* Image Styles */
+.template-404-gamerized__image {
+  max-width: 250px;
+  width: 100%;
+  height: auto;
+  margin-bottom: 2rem;
+  filter: drop-shadow(0 0 10px rgba(var(--color-accent,255,16,240), 0.5));
+  /* fallback accent color is neon pink */
+}
+
+/* Subtext Styling */
+.template-404-gamerized__subtext {
+  font-size: clamp(1.2rem, 3vw, 1.5rem);
+  color: rgb(var(--color-links, 0,255,255)); /* fallback to neon blue */
+  margin-bottom: 1rem;
+}
+
+/* Main Title Styling */
+.template-404-gamerized__title {
+  font-size: clamp(3rem, 8vw, 5rem);
+  color: rgb(var(--color-headings,255,255,0)); /* fallback neon yellow */
+  text-transform: uppercase;
+  margin-bottom: 2rem;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+}
+
+/* Button Grid */
+.template-404-gamerized__button-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1.5rem;
+  margin-top: 2.5rem;
+}
+
+/* Button Styling */
+.template-404-gamerized__button {
+  background-color: rgb(var(--color-button-primary-bg,57,255,20));    /* neon green fallback */
+  color: rgb(var(--color-button-primary-text,0,0,0));                 /* black fallback */
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: var(--buttons-radius, 12px); /* fallback 12px */
+  text-decoration: none;
+  font-weight: bold;
+  font-family: inherit;
+  transition: background-color 0.2s, transform 0.2s;
+  box-shadow: 0 2px 10px rgba(var(--color-accent,255,16,240), 0.15);
+}
+
+.template-404-gamerized__button:hover,
+.template-404-gamerized__button:focus {
+  background-color: rgb(var(--color-button-primary-hover,38,166,154)); /* fallback teal */
+  color: rgb(var(--color-button-primary-text,255,255,255)); /* fallback white */
+  transform: translateY(-2px) scale(1.03);
+  outline: none;
+}
+
+/* Responsive Styles */
+@media screen and (max-width: 749px) {
+  .template-404-gamerized__button-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+  .template-404-gamerized__button {
+    width: 100%;
+    max-width: 300px;
+  }
+}

@@ -1,0 +1,64 @@
+{%- comment -%}
+  Bot Protection (honeypot + time-to-submit) — allowlist edition
+  Targets only: contact, comments, account forms
+{%- endcomment -%}
+
+{{ 'snippet-bot-protection.css' | asset_url | stylesheet_tag }}
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  // Allowlist of forms to protect
+  var selectors = [
+    'form[action*="/contact"]',
+    'form[action*="/comments"]',
+    'form[action*="/account"]'
+  ];
+  var forms = document.querySelectorAll(selectors.join(','));
+
+  forms.forEach(function(form, idx){
+    if (form.dataset.bpApplied === 'true' || form.hasAttribute('data-bp-optout')) return;
+    form.dataset.bpApplied = 'true';
+
+    // Timestamp (time-trap)
+    var ts = document.createElement('input');
+    ts.type = 'hidden';
+    ts.name = 'form_load_timestamp';
+    ts.value = String(Date.now());
+    form.prepend(ts);
+
+    // Honeypot (unique id per form)
+    var hpId = 'hp_email_' + Date.now() + '_' + idx;
+    var wrapper = document.createElement('div');
+    wrapper.className = 'hp-field';
+    wrapper.setAttribute('aria-hidden', 'true');
+
+    var label = document.createElement('label');
+    label.setAttribute('for', hpId);
+    label.textContent = 'Leave empty';
+
+    var input = document.createElement('input');
+    input.id = hpId;
+    input.name = 'hp_email';
+    input.type = 'text';
+    input.autocomplete = 'off';
+    input.setAttribute('tabindex', '-1');
+
+    wrapper.appendChild(label);
+    wrapper.appendChild(input);
+    form.prepend(wrapper);
+
+    // Block obvious bots: filled honeypot OR submission < 1500ms
+    form.addEventListener('submit', function(e){
+      var hp = form.querySelector('#' + hpId);
+      var start = Number(ts.value || 0);
+      var elapsed = Date.now() - start;
+
+      if ((hp && hp.value.trim() !== '') || elapsed < 1500) {
+        e.preventDefault();
+        e.stopPropagation();
+        console.warn('Blocked suspected bot submission');
+      }
+    }, true);
+  });
+});
+</script>

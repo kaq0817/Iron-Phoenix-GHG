@@ -1,0 +1,99 @@
+{%- comment -%}
+snippets/paywall-gate.liquid (externalized CSS/JS)
+Usage:
+  {% render 'paywall-gate',
+     content_html: article.content,
+      free_paragraphs: 3,
+      allowed_tags: 'Member,VIP',
+      gate_title: 'Members-only Article',
+      gate_subtitle: 'Log in or create a free account to continue reading.',
+      sanitize: 'rich' %}
+{%- endcomment -%}
+
+{{ 'snippet-paywall.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'snippet-paywall.css' | asset_url | stylesheet_tag }}</noscript>
+<script src="{{ 'snippet-paywall.js' | asset_url }}" defer></script>
+
+{%- assign free_paragraphs = free_paragraphs | default: 2 | plus: 0 -%}
+{%- assign allowed_tags_csv = allowed_tags | default: '' -%}
+{%- assign sanitize_mode = sanitize | default: 'rich' -%}
+
+/* ---------- Access evaluation ---------- */
+{%- assign allowed = false -%}
+{%- if customer -%}
+  {%- if allowed_tags_csv != '' -%}
+    {%- assign tag_list = allowed_tags_csv | split: ',' -%}
+    {%- for t in tag_list -%}
+      {%- assign tag_trim = t | strip -%}
+      {%- if customer.tags contains tag_trim -%}
+        {%- assign allowed = true -%}{% break %}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- else -%}
+    {%- assign allowed = true -%}
+  {%- endif -%}
+  {%- if allowed == false and customer.metafields.membership and customer.metafields.membership.active and customer.metafields.membership.active.value == true -%}
+    {%- assign allowed = true -%}
+  {%- endif -%}
+{%- endif -%}
+
+/* ---------- Sanitization (optional) ---------- */
+{%- if sanitize_mode == 'plain' -%}
+  {%- assign content_plain = content_html | strip | strip_html | escape -%}
+{%- endif -%}
+
+/* ---------- Gate or full content ---------- */
+{%- if allowed -%}
+  {%- if sanitize_mode == 'plain' -%}
+    {{- content_plain | newline_to_br -}}
+  {%- else -%}
+    {{- content_html -}}
+  {%- endif -%}
+{%- else -%}
+  {%- assign return_to = request.path | url_encode -%}
+
+  {%- if sanitize_mode == 'plain' -%}
+    {%- assign blocks = content_plain
+        | replace: '\r\n', '\n'
+        | replace: '\r', '\n'
+        | split: '\n\n' -%}
+    <div class="ipx-preview">
+      {%- assign shown = 0 -%}
+      {%- for blk in blocks -%}
+        {%- if shown < free_paragraphs and blk != blank -%}
+          <p>{{ blk }}</p>
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- else -%}
+    {%- assign parts = content_html | split: '</p>' -%}
+    <div class="ipx-preview">
+      {%- assign shown = 0 -%}
+      {%- for part in parts -%}
+        {%- if shown < free_paragraphs and part contains '<p' -%}
+          {{- part | append: '</p>' -}}
+          {%- assign shown = shown | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="ipx-gate" role="region" aria-labelledby="PaywallTitle" aria-describedby="PaywallDesc">
+    <div class="ipx-gate__box">
+      <h3 id="PaywallTitle" class="ipx-gate__title">{{ gate_title | default: 'Premium content' | escape }}</h3>
+      <p id="PaywallDesc" class="ipx-gate__subtitle">{{ gate_subtitle | default: 'Log in or create an account to continue reading.' | escape }}</p>
+      <div class="ipx-gate__cta">
+        <a class="ipx-btn ipx-btn--primary" href="{{ routes.account_login_url | append: '?return_url=' | append: return_to | escape }}">
+          {{ 'customer.login_page.sign_in' | t | default: 'Log in' | escape }}
+        </a>
+        <a class="ipx-btn ipx-btn--ghost" href="{{ routes.account_register_url | escape }}">
+          {{ 'customer.register.submit' | t | default: 'Create account' | escape }}
+        </a>
+      </div>
+      {%- if allowed_tags_csv != '' -%}
+        <p class="ipx-gate__note">{{ 'Access granted to:' | escape }} {{ allowed_tags_csv | escape }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

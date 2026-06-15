@@ -1,0 +1,10 @@
+<section>
+  <h1>{{ 'customer.activate_account.title' | t }}</h1>
+  <p>{{ 'customer.activate_account.subtext' | t }}</p>
+  {% form 'activate_customer_password' %}
+    {{ form.errors | default_errors }}
+    <input type="password" name="customer[password]" placeholder="Password" required>
+    <input type="password" name="customer[password_confirmation]" placeholder="Confirm Password" required>
+    <button type="submit">{{ 'customer.activate_account.submit' | t }}</button>
+  {% endform %}
+</section>

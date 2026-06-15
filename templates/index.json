@@ -1,0 +1,110 @@
+{
+  "sections": {
+    "hero": {
+      "type": "home-lead-hero",
+      "settings": {
+        "kicker": "MADE TO ORDER",
+        "title": "Custom Gifts for Real-Life MVPs",
+        "subtext": "Celebrate your crew with made-to-order gear.",
+        "image": null,
+        "image_mobile": null,
+        "image_alt": "Iron Phoenix hero",
+        "overlay_opacity": 30,
+        "text_align": "center",
+        "color_scheme": "background-1",
+        "primary_label": "Shop Personalized",
+        "primary_link": "/collections/all",
+        "secondary_label": "Gift Finder",
+        "secondary_link": "/collections/all",
+        "cta_new_tab": false
+      }
+    },
+    "vip_callout": {
+      "type": "vip-callout",
+      "settings": {
+        "vip_title": "Join the Iron Phoenix Elite Club",
+        "vip_subtitle": "<p>Unlock exclusive discounts and perks.</p>",
+        "vip_link": "/pages/vip-program",
+        "vip_cta": "Join now"
+      }
+    },
+    "level_up_hero": {
+      "type": "level-up-hero",
+      "settings": {
+        "badge_text": "Level Up Your Gifting",
+        "title": "Neon-Forged Gear for Legends",
+        "subtitle": "Premium mugs, apparel, and gaming-ready gifts. Made fresh for you.",
+        "show_particles": true,
+        "enable_parallax": true,
+        "overlay_opacity": 30
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection-sidebar",
+      "settings": {
+        "heading": "Legendary Gear",
+        "collection": "featured",
+        "enable_quick_add": true,
+        "show_sidebar": true,
+        "products_to_show": 8
+      }
+    },
+    "featured_blog": {
+      "type": "featured-blog",
+      "settings": {
+        "blog": "news",
+        "heading": "From the Phoenix Journal",
+        "articles_count": 3
+      }
+    },
+    "email_banner": {
+      "type": "email-signup-banner",
+      "settings": {
+        "show_background_image": true,
+        "image": null,
+        "image_overlay_opacity": 20,
+        "image_height": "medium",
+        "desktop_content_position": "middle-center",
+        "desktop_content_alignment": "center",
+        "show_text_box": true,
+        "color_scheme": "scheme-1",
+        "mobile_content_alignment": "center",
+        "show_text_below": true
+      },
+      "blocks": {
+        "heading": {
+          "type": "heading",
+          "settings": {
+            "heading": "Join the Phoenix Elite",
+            "heading_size": "h1"
+          }
+        },
+        "paragraph": {
+          "type": "paragraph",
+          "settings": {
+            "text": "<p>Get exclusive drops, tips, and member-only discounts.</p>",
+            "text_style": "body"
+          }
+        },
+        "email_form": {
+          "type": "email_form"
+        }
+      },
+      "block_order": ["heading", "paragraph", "email_form"]
+    },
+    "free_shipping_bar": {
+      "type": "free-shipping-bar",
+      "settings": {}
+    }
+  },
+  "order": [
+    "hero",
+    "vip_callout",
+    "level_up_hero",
+    "featured_collection",
+    "featured_blog",
+    "email_banner",
+    "free_shipping_bar"
+  ]
+}
+

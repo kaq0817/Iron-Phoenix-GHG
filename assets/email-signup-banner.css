@@ -1,0 +1,79 @@
+/* assets/email-signup-banner.css */
+
+/* Base container */
+.email-signup-banner { position: relative; --overlay: 0.2; }
+
+/* Banner shell */
+.email-signup-banner .banner { position: relative; overflow: clip; }
+
+/* Media */
+.email-signup-banner .banner__media { position: absolute; inset: 0; }
+.email-signup-banner .banner__media img { width: 100%; height: 100%; object-fit: cover; }
+
+/* Overlay reads --overlay from section */
+.email-signup-banner .banner__overlay {
+  position: absolute; inset: 0;
+  background: rgba(var(--color-black), var(--overlay));
+  pointer-events: none;
+}
+
+/* Content */
+.email-signup-banner .banner__content {
+  position: relative; z-index: 1;
+  display: grid; place-items: center;
+  min-height: 38rem; padding: 3rem 1.6rem;
+  text-align: center; /* default */
+}
+
+/* Alignment helpers (desktop) */
+.email-signup-banner .banner__content.align-left   { text-align: left; }
+.email-signup-banner .banner__content.align-center { text-align: center; }
+.email-signup-banner .banner__content.align-right  { text-align: right; }
+
+/* Alignment helpers (mobile) */
+@media (max-width: 749px) {
+  .email-signup-banner .banner__content.mobile-align-left   { text-align: left; }
+  .email-signup-banner .banner__content.mobile-align-center { text-align: center; }
+  .email-signup-banner .banner__content.mobile-align-right  { text-align: right; }
+}
+
+/* Heights */
+.email-signup-banner.height--small .banner__content { min-height: 28rem; }
+.email-signup-banner.height--large .banner__content { min-height: 52rem; }
+
+/* Text box option */
+.email-signup-banner .signup__box {
+  width: min(980px, 100%);
+  border-radius: 12px; padding: 2rem;
+  background: transparent; backdrop-filter: none; color: inherit;
+}
+.email-signup-banner.show-text-box .signup__box {
+  background: rgba(var(--color-black), 0.4); backdrop-filter: blur(6px);
+}
+
+/* Headings/subhead */
+.email-signup-banner .signup__heading.h0,
+.email-signup-banner .signup__heading.h1,
+.email-signup-banner .signup__heading.h2 { margin: 0 0 .6rem; }
+
+.email-signup-banner .signup__subheading { opacity: .9; margin: 0 0 1.2rem; }
+
+/* Form */
+.email-signup-banner .newsletter-form {
+  display: grid; grid-template-columns: 1fr auto; gap: .6rem;
+  max-width: 560px; margin-inline: auto;
+}
+@media (max-width: 749px) { .email-signup-banner .newsletter-form { grid-template-columns: 1fr; } }
+
+.email-signup-banner .field__input {
+  width: 100%; padding: 1rem 1.2rem; border-radius: 8px; border: 1px solid rgba(var(--color-white), .25);
+  background: rgba(var(--color-black), .35); color: rgb(var(--color-body-text));
+}
+
+.email-signup-banner .field__button.button { padding: 1rem 1.4rem; border-radius: 8px; font-weight: 700; cursor: pointer; }
+
+.email-signup-banner .form__message { margin-top: .75rem; font-size: .9rem; opacity: .9; }
+
+/* Color-scheme hooks */
+.email-signup-banner.color-scheme--dark  { color: rgb(var(--color-body-text)); }
+.email-signup-banner.color-scheme--light { color: rgb(var(--color-primary-bg)); }

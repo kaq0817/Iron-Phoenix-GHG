@@ -1,0 +1,27 @@
+/* Iron Phoenix GHG — Home Lead Hero (no inline <style>) */
+.home-hero{position:relative;overflow:clip}
+.home-hero__media{position:relative}
+.home-hero__img{display:block;width:100%;height:auto}
+.home-hero__img--mobile{display:none}
+
+.home-hero__overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,var(--overlay,0.3));
+  pointer-events:none;
+}
+
+.home-hero__content{position:relative;margin-top:-12vw;padding-bottom:3rem}
+.home-hero__kicker{letter-spacing:.08em;text-transform:uppercase;opacity:.85;margin-bottom:.6rem}
+.home-hero__title{margin:0 0 1rem;font-size:clamp(2.4rem,6vw,5.6rem)}
+.home-hero__subtext{max-width:60ch;margin:0 auto 1.5rem;opacity:.9;font-size:clamp(1.4rem,2.5vw,1.8rem)}
+.home-hero__actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap}
+
+/* text alignment helpers (paired with text-{{ section.settings.text_align }}) */
+.text-left  { text-align:left; }
+.text-center{ text-align:center; }
+.text-right { text-align:right; }
+
+@media (max-width:749px){
+  .home-hero__img--desktop{display:none}
+  .home-hero__img--mobile{display:block}
+  .home-hero__content{margin-top:-18vw;padding:0 1.6rem 2rem}
+}

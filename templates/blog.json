@@ -1,0 +1,28 @@
+{
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "settings": {
+        "message": "✨ Welcome to the Iron Phoenix GHG Blog! ✨"
+      }
+    },
+    "featured": {
+      "type": "blog-featured-image",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-blog",
+      "settings": {}
+    },
+    "sidebar": {
+      "type": "blog-sidebar",
+      "settings": {}
+    }
+  },
+  "order": [
+    "announcement",
+    "featured",
+    "main",
+    "sidebar"
+  ]
+}

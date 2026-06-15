@@ -1,0 +1,113 @@
+<!-- sections/collection-list.liquid -->
+{% comment %} Collection List (clean) — uses snippets/card-collection.liquid {% endcomment %}
+
+{{ 'section-collection-list.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Section padding via CSS variables passed from schema settings */
+  .section-{{ section.id }}-padding {
+    --section-padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --section-padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --columns-mobile: {{ section.settings.columns_mobile }};
+    --columns-desktop: {{ section.settings.columns_desktop }};
+  }
+  @media (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      --section-padding-top: {{ section.settings.padding_top }}px;
+      --section-padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<section class="section-{{ section.id }}-padding gradient color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+
+    {%- if section.settings.heading != blank or section.settings.subheading != blank -%}
+      <header class="collection-list__header">
+        {%- if section.settings.heading != blank -%}
+          <h2 class="collection-list__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="collection-list__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </header>
+    {%- endif -%}
+
+    {%- comment -%}
+      Preferred: collections chosen via blocks.
+      Fallback: show up to max_items from all collections (excluding 'frontpage') if no blocks set.
+    {%- endcomment -%}
+    <div class="collection-list" role="list">
+      {%- if section.blocks.size > 0 -%}
+        {%- assign shown = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign col = block.settings.collection -%}
+          {%- if col != blank -%}
+            <div role="listitem" {{ block.shopify_attributes }}>
+              {%- render 'card-collection', card_collection: col -%}
+            </div>
+            {%- assign shown = shown | plus: 1 -%}
+            {%- if shown >= section.settings.max_items -%}{%- break -%}{%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {%- if shown == 0 -%}
+          <p>No collections selected yet.</p>
+        {%- endif -%}
+      {%- else -%}
+        {%- assign shown = 0 -%}
+        {%- for col in collections -%}
+          {%- unless col.handle == 'frontpage' -%}
+            <div role="listitem">
+              {%- render 'card-collection', card_collection: col -%}
+            </div>
+            {%- assign shown = shown | plus: 1 -%}
+            {%- if shown >= section.settings.max_items -%}{%- break -%}{%- endif -%}
+          {%- endunless -%}
+        {%- endfor -%}
+        {%- if shown == 0 -%}
+          <p>No collections to show.</p>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Collection list",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by collection" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "" },
+
+    { "type": "range", "id": "max_items", "label": "Max collections to show", "min": 1, "max": 50, "step": 1, "default": 12 },
+
+    { "type": "select", "id": "columns_mobile", "label": "Columns (mobile)", "default": "2",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    { "type": "range", "id": "columns_desktop", "label": "Columns (desktop)", "min": 1, "max": 6, "step": 1, "default": 4 },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+
+    { "type": "header", "content": "Section padding" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Top padding", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Bottom padding", "default": 36 }
+  ],
+  "blocks": [
+    {
+      "type": "featured_collection",
+      "name": "Collection",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Select collection" }
+      ]
+    }
+  ],
+  "max_blocks": 50,
+  "presets": [
+    { "name": "Collection list", "blocks": [] }
+  ]
+}
+{% endschema %}

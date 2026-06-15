@@ -1,0 +1,21 @@
+{%- comment -%}
+  Volume Discount Badge Snippet
+  Display discount info if metafield exists or default logic applies
+{%- endcomment -%}
+
+{%- assign volume_badge = product.metafields.custom.volume_badge -%}
+
+{%- if volume_badge != blank -%}
+  <span class="badge badge--volume">
+    {{ volume_badge | escape }}
+  </span>
+{%- else -%}
+  {%- comment -%}
+    Fallback: simple badge if discount exists (manual logic)
+  {%- endcomment -%}
+  {% if product.tags contains 'volume-discount' %}
+    <span class="badge badge--volume">
+      Buy More, Save More
+    </span>
+  {% endif %}
+{%- endif -%}

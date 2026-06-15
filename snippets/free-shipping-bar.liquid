@@ -1,0 +1,44 @@
+{% comment %}
+  Free Shipping Progress Bar - Iron Phoenix GHG (VIP-Aware)
+{% endcomment %}
+{{ 'free-shipping-bar.css' | asset_url | stylesheet_tag }}
+
+{%- liquid
+  assign default_threshold_cents = 15900
+  assign vip_threshold_cents = 13900
+  assign legend_threshold_cents = 0
+  assign threshold_cents = default_threshold_cents
+
+  if customer
+    if customer.tags contains 'Legend'
+      assign threshold_cents = legend_threshold_cents
+    elsif customer.tags contains 'VIP' or customer.tags contains 'Pro'
+      assign threshold_cents = vip_threshold_cents
+    endif
+  endif
+
+  assign cart_total = cart.total_price | default: 0
+  assign amount_remaining = threshold_cents | minus: cart_total
+  assign progress = 0
+  if threshold_cents > 0
+    assign progress = cart_total | times: 100 | divided_by: threshold_cents
+    if progress > 100
+      assign progress = 100
+    endif
+  else
+    assign progress = 100
+  endif
+-%}
+
+<div class="free-shipping-bar">
+  {% if threshold_cents == 0 %}
+    <p>🎉 You're a Legend — free shipping on every order!</p>
+  {% elsif cart_total >= threshold_cents %}
+    <p>🎉 You qualify for free shipping!</p>
+  {% else %}
+    <p>Add {{ amount_remaining | money }} more for free shipping!</p>
+  {% endif %}
+  <div class="progress-container">
+    <div class="progress-bar" style="width: {{ progress }}%;"></div>
+  </div>
+</div>

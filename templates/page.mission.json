@@ -1,0 +1,12 @@
+{
+  "name": "Mission Statement",
+  "sections": {
+    "main": {
+      "type": "brand-mission",
+      "settings": {
+        "use_page_content": true
+      }
+    }
+  },
+  "order": ["main"]
+}

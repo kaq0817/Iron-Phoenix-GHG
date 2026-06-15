@@ -1,0 +1,6 @@
+/* section-promo-banner.css */
+.promo-banner{background:#1b1b1b;padding:clamp(1.5rem,3vw,2rem) 0}
+.promo-banner__inner{position:relative;z-index:1}
+.promo-banner__heading{font-size:clamp(1.6rem,2.6vw,2rem);margin:0 0 .4rem;text-shadow:0 0 5px #0ff, 0 0 10px #0ff}
+.promo-banner__sub{opacity:.9;margin:0 0 1rem}
+.promo-banner__cta{display:inline-block;margin-top:.5rem}

@@ -1,0 +1,68 @@
+{% comment %}
+  Featured Collection Sidebar Section
+  - Styles externalized to assets/section-featured-collection-sidebar.css
+  - Uses theme's global CSS variables for colors
+{% endcomment %}
+
+{{ 'section-featured-collection-sidebar.css' | asset_url | stylesheet_tag }}
+
+<aside class="blog-sidebar-featured-collections">
+  {% if section.settings.heading != blank %}
+    <h2 class="sidebar-heading">
+      {{ section.settings.heading | escape }}
+    </h2>
+  {% endif %}
+  <div class="sidebar-featured-collections-list">
+    {% for block in section.blocks %}
+      <div class="sidebar-featured-collection-card">
+        <a href="{{ block.settings.collection.url | escape }}">
+          {% if block.settings.collection.image %}
+            {% render 'optimized-image', image: block.settings.collection.image, alt: block.settings.collection.title | escape, width: 60, height: 60, class: 'sidebar-featured-collection-card__image' %}
+          {% endif %}
+          <div>
+            <div>{{ block.settings.collection.title | escape }}</div>
+            <div>
+              {{ block.settings.collection.description | strip_html | truncate: 55 | escape }}
+            </div>
+          </div>
+        </a>
+      </div>
+    {% endfor %}
+    {% if section.blocks.size == 0 %}
+      <div>No featured collections set. Add them in the theme editor!</div>
+    {% endif %}
+  </div>
+</aside>
+
+{% schema %}
+{
+  "name": "Sidebar Collections",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Sidebar Heading",
+      "default": "Shop Collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Sidebar: Featured Collections"
+    }
+  ]
+}
+{% endschema %}

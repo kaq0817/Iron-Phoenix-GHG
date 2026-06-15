@@ -1,0 +1,21 @@
+<div class="price">
+  {% assign now = 'now' | date: "%s" %}
+  {% assign sale_end = product.metafields.custom.sale_end_date | date: "%s" %}
+  {% assign show_sale = false %}
+  {% if product.compare_at_price > product.price and sale_end > now %}
+    {%- assign show_sale = true -%}
+  {% endif %}
+  {% if show_sale %}
+    <span class="price-item price--sale">{{ product.price | money }}</span>
+    <span class="price-item price--compare">{{ product.compare_at_price | money }}</span>
+  {% else %}
+    <span class="price-item price--regular">{{ product.price | money }}</span>
+  {% endif %}
+  {% if product.selected_or_first_available_variant.unit_price %}
+    <span class="unit-price">
+      {{ product.selected_or_first_available_variant.unit_price | money }} /
+      {{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+    </span>
+  {% endif %}
+</div>
+

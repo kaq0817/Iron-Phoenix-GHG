@@ -1,0 +1,190 @@
+/* /assets/gaming-skin.css
+   Iron Phoenix GHG – Gaming Neon Skin (fast, accessible)
+   - Pure CSS (no libs), respects prefers-reduced-motion
+   - Works with your existing header, menu drawer, cart drawer, product cards
+*/
+
+/* ====== Tokens (pulls from your theme vars when present) ====== */
+:root {
+  --ip-bg: rgb(var(--color-black, 0,0,0));
+  --ip-fg: rgb(var(--color-white, 255,255,255));
+  --ip-teal: rgb(var(--color-teal, 38,166,154));
+  --ip-neon: rgb(var(--color-neon-green, 57,255,20));
+  --ip-pink: rgb(var(--color-neon-pink, 255,16,240));
+  --ip-yellow: rgb(var(--color-neon-yellow, 255,255,0));
+
+  --ip-glow: 0 0 0.6rem rgba(57,255,20,.6), 0 0 1.2rem rgba(255,16,240,.45);
+  --ip-border: 1px solid rgba(255,255,255,.08);
+  --ip-radius: 16px;
+  --ip-shadow-card: 0 6px 24px rgba(0,0,0,.35);
+}
+
+/* ====== Subtle grid + scanlines background ====== */
+body {
+  background:
+    radial-gradient(1200px 600px at 50% -100px, rgba(57,255,20,.12), transparent 60%),
+    radial-gradient(800px 400px at 100% 0, rgba(255,16,240,.08), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,0) 10%) no-repeat,
+    var(--ip-bg);
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* grid overlay */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(
+      to right,
+      rgba(255,255,255,.04) 0 1px,
+      transparent 1px 40px
+    ),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,.03) 0 1px,
+      transparent 1px 40px
+    );
+  mix-blend-mode: soft-light;
+  opacity: .35;
+  z-index: 0;
+}
+
+/* scanlines (very light) */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    rgba(255,255,255,.02) 1px,
+    transparent 1px
+  );
+  background-size: 100% 3px;
+  opacity: .25;
+  z-index: 0;
+}
+
+/* ====== Header & Drawer Accents ====== */
+.section-header .header {
+  border-bottom: var(--ip-border);
+  backdrop-filter: saturate(120%) blur(4px);
+}
+
+.header__icon,
+.header__logo .h2,
+.header__menu-item,
+.menu-drawer__link {
+  transition: color .2s ease, transform .2s ease;
+}
+
+.header__icon:hover,
+.menu-drawer__link:hover {
+  color: var(--ip-neon);
+  transform: translateY(-1px);
+}
+
+/* cart count pill */
+.cart-count-bubble {
+  background: linear-gradient(90deg, var(--ip-pink), var(--ip-neon));
+  color: #000;
+  border-radius: 999px;
+  box-shadow: var(--ip-glow);
+  font-weight: 700;
+}
+
+/* menu drawer panel */
+.menu-drawer__panel {
+  background: rgba(10,10,12,.9);
+  border-left: var(--ip-border);
+  box-shadow: var(--ip-shadow-card);
+}
+.menu-drawer__link.is-active { color: var(--ip-neon); }
+
+/* cart drawer */
+.cart-drawer__panel {
+  background: rgba(8,8,10,.96);
+  border-left: var(--ip-border);
+}
+.cart-drawer__checkout-button.button {
+  background: linear-gradient(90deg, var(--ip-neon), var(--ip-pink));
+  color: #000;
+  border: 0;
+  box-shadow: var(--ip-glow);
+}
+.cart-drawer__remove { color: rgba(255,255,255,.65); }
+.cart-drawer__remove:hover { color: var(--ip-pink); }
+
+/* ====== Neon Cards & Chips ====== */
+.card--neon,
+.pmf__block,
+.drawer__inner,
+.menu-drawer__panel {
+  border-radius: var(--ip-radius);
+}
+
+.badge-chip {
+  display:inline-flex;align-items:center;gap:.5rem;
+  padding:.35rem .7rem;border-radius:999px;
+  border:1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.06);
+  color:#fff;
+}
+
+/* ====== Power-up CTA button ====== */
+.button.btn--powerup {
+  --shine: linear-gradient(120deg, transparent 0%, rgba(255,255,255,.6) 30%, transparent 60%);
+  position: relative;
+  background: linear-gradient(90deg, var(--ip-neon), var(--ip-pink));
+  color: #000;
+  border: 0;
+  border-radius: 12px;
+  font-weight: 800;
+  letter-spacing: .02em;
+  box-shadow: var(--ip-glow);
+  overflow: hidden;
+}
+.button.btn--powerup::after {
+  content:"";
+  position:absolute; inset:0;
+  background: var(--shine);
+  background-size: 300% 300%;
+  mix-blend-mode: screen;
+  transform: translateX(-100%);
+}
+.button.btn--powerup:hover::after {
+  animation: shine 900ms ease forwards;
+}
+@keyframes shine { to { transform: translateX(100%); } }
+
+/* ====== Hero ====== */
+.hero-gaming {
+  position: relative;
+  padding: clamp(48px, 7vw, 120px) 0;
+  overflow: clip;
+}
+.hero-gaming__bg {
+  position:absolute; inset:-20% -10%;
+  background:
+    radial-gradient(800px 400px at 10% 0, rgba(57,255,20,.25), transparent 60%),
+    radial-gradient(700px 400px at 90% 10%, rgba(255,16,240,.2), transparent 60%),
+    linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,0) 40%);
+  filter: blur(20px);
+  z-index:0;
+}
+.hero-gaming__wrap { position:relative; z-index:1; display:grid; gap:2.5rem; align-items:center; }
+@media (min-width: 980px){
+  .hero-gaming__wrap { grid-template-columns: 1.1fr .9fr; }
+}
+.hero-gaming__eyebrow { color: var(--ip-teal); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
+.hero-gaming__title { font-size: clamp(2.4rem, 4.5vw, 5rem); line-height: 1.1; margin: .25rem 0 1rem; }
+.hero-gaming__subtitle { color: rgba(255,255,255,.86); max-width: 52ch; }
+.hero-gaming__media img, .hero-gaming__media picture { display:block; width:100%; border-radius: 18px; box-shadow: var(--ip-shadow-card); }
+
+/* ====== Reduced motion ====== */
+@media (prefers-reduced-motion: reduce) {
+  .button.btn--powerup::after,
+  body::after { animation: none !important; }
+}

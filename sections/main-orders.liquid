@@ -1,0 +1,81 @@
+{% comment %}
+  Customer Order History (sections/main-orders.liquid)
+  - Used by templates/customers/orders.json
+  - Lists past orders with status + totals
+{% endcomment %}
+
+<section id="customer-orders" class="account-section account-orders" aria-labelledby="orders-title">
+  <header class="account-header">
+    <a class="account-breadcrumb" href="{{ routes.account_url }}">{{ 'customer.account.return' | t | escape }}</a>
+    <h1 id="orders-title" class="account-title">{{ 'customer.orders.title' | t | escape }}</h1>
+  </header>
+
+  {% paginate customer.orders by section.settings.per_page %}
+    {% if customer.orders_count == 0 %}
+      <p>{{ 'customer.orders.none' | t | escape }}</p>
+    {% else %}
+      <div class="responsive-table">
+        <table role="table" class="orders-table">
+          <thead>
+            <tr>
+              <th scope="col">{{ 'customer.orders.order_number' | t | escape }}</th>
+              <th scope="col">{{ 'customer.orders.date' | t | escape }}</th>
+              <th scope="col">{{ 'customer.order.payment_status' | t | escape }}</th>
+              <th scope="col">{{ 'customer.order.fulfillment_status' | t | escape }}</th>
+              <th scope="col">{{ 'customer.orders.total' | t | default: 'Total' | escape }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for order in customer.orders %}
+              <tr>
+                <td data-label="{{ 'customer.orders.order_number' | t | escape }}">
+                  <a href="{{ order.customer_url }}">
+                    {{ 'customer.orders.order_number_link' | t: number: order.name | escape }}
+                  </a>
+                </td>
+                <td data-label="{{ 'customer.orders.date' | t | escape }}">
+                  {{ order.processed_at | date: format: 'date' }}
+                </td>
+                <td data-label="{{ 'customer.order.payment_status' | t | escape }}">
+                  {{ order.financial_status | capitalize | escape }}
+                </td>
+                <td data-label="{{ 'customer.order.fulfillment_status' | t | escape }}">
+                  {{ order.fulfillment_status | capitalize | escape }}
+                </td>
+                <td data-label="{{ 'customer.orders.total' | t | default: 'Total' | escape }}">
+                  {{ order.total_price | money }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <nav class="pagination" role="navigation" aria-label="Orders pagination">
+        {{ paginate | default_pagination }}
+      </nav>
+    {% endif %}
+  {% endpaginate %}
+</section>
+
+{% schema %}
+{
+  "name": "Order History",
+  "tag": "section",
+  "class": "section-account section-orders",
+  "settings": [
+    {
+      "type": "range",
+      "id": "per_page",
+      "label": "Orders per page",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "default": 20
+    }
+  ],
+  "enabled_on": {
+    "templates": ["customers/account"]
+  }
+}
+{% endschema %}

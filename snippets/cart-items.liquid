@@ -1,0 +1,141 @@
+{%- comment -%}
+Cart items snippet (XSS-hardened)
+- Escapes item URLs, titles, variant titles
+- Sanitizes line item properties (key + value); file upload handling
+- Optional: shows a few product metafields if present (plain text)
+- Owns the cart <form>; no inline CSS/JS
+{%- endcomment -%}
+
+{%- if cart == empty -%}
+  <p class="cart-empty">
+    {{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}
+  </p>
+{%- else -%}
+  <form action="{{ routes.cart_url | escape }}" method="post" novalidate class="cart__form" id="CartForm-Items">
+    <ul class="cart-items" role="list">
+      {%- for item in cart.items -%}
+        <li class="cart-item" role="listitem" data-key="{{ item.key | escape }}">
+          <div class="cart-item__image">
+            <a href="{{ item.url | escape }}" aria-label="{{ item.product.title | escape }}">
+              {%- if item.image -%}
+                {{
+                  item.image
+                  | image_url: width: 300
+                  | image_tag:
+                    class: 'cart-item__img',
+                    widths: '150,200,300',
+                    sizes: '(max-width: 749px) 25vw, 150px',
+                    loading: 'lazy',
+                    decoding: 'async',
+                    alt: item.product.title | escape,
+                    width: item.image.width,
+                    height: item.image.width | divided_by: item.image.aspect_ratio | round
+                }}
+              {%- else -%}
+                {{ 'image' | placeholder_svg_tag: 'cart-item__img cart-item__img--placeholder' }}
+              {%- endif -%}
+            </a>
+          </div>
+
+          <div class="cart-item__details">
+            <a href="{{ item.url | escape }}" class="cart-item__title">
+              {{ item.product.title | escape }}
+            </a>
+
+            {%- if item.product.has_only_default_variant == false and item.variant.title -%}
+              <div class="cart-item__variant">{{ item.variant.title | escape }}</div>
+            {%- endif -%}
+
+            {%- comment -%} Optional plain-text metafields (namespace: custom) {%- endcomment -%}
+            {%- assign mfns = 'custom' -%}
+            {%- assign mf_short = item.product.metafields[mfns].short_desc -%}
+            {%- assign mf_gender = item.product.metafields[mfns].mf_gender -%}
+            {%- assign mf_color  = item.product.metafields[mfns].mf_color  -%}
+            {%- if mf_short != blank -%}
+              <p class="cart-item__meta cart-item__meta--short">{{ mf_short | strip | strip_html | escape }}</p>
+            {%- endif -%}
+            {%- if mf_gender != blank -%}
+              <p class="cart-item__meta cart-item__meta--gender">{{ 'Gender:' | escape }} {{ mf_gender | strip | escape }}</p>
+            {%- endif -%}
+            {%- if mf_color != blank -%}
+              <p class="cart-item__meta cart-item__meta--color">{{ 'Color:' | escape }} {{ mf_color | strip | escape }}</p>
+            {%- endif -%}
+
+            {%- comment -%} Line item properties (sanitized) {%- endcomment -%}
+            {%- if item.properties and item.properties.size > 0 -%}
+              <dl class="cart-item__properties">
+                {%- for p in item.properties -%}
+                  {%- assign key = p.first -%}
+                  {%- assign val = p.last -%}
+                  {%- if val == blank or key contains '_hidden' -%}{% continue %}{%- endif -%}
+
+                  <dt class="cart-item__prop-key">{{ key | strip | escape }}</dt>
+                  <dd class="cart-item__prop-val">
+                    {%- if val contains '/uploads/' -%}
+                      <a href="{{ val | escape }}" target="_blank" rel="nofollow noopener">{{ 'File' | escape }}</a>
+                    {%- else -%}
+                      {{ val | strip | strip_html | escape }}
+                    {%- endif -%}
+                  </dd>
+                {%- endfor -%}
+              </dl>
+            {%- endif -%}
+
+            {%- comment -%} Per-line pricing {%- endcomment -%}
+            <div class="cart-item__price">
+              {%- assign final = item.final_line_price -%}
+              {%- assign original = item.original_line_price -%}
+              {%- if original > final -%}
+                <s class="cart-item__price-compare">{{ original | money_with_currency }}</s>
+              {%- endif -%}
+              <span class="cart-item__price-final">{{ final | money_with_currency }}</span>
+            </div>
+
+            {%- comment -%} Quantity controls (server-side updates) {%- endcomment -%}
+            <div class="cart-item__quantity">
+              {%- assign qid = 'Quantity-' | append: forloop.index -%}
+              <label class="visually-hidden" for="{{ qid | escape }}">{{ 'sections.cart.quantity' | t | default: 'Quantity' }}</label>
+              <input
+                id="{{ qid | escape }}"
+                class="quantity-input"
+                type="number"
+                name="updates[]"
+                value="{{ item.quantity }}"
+                min="0"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                aria-label="{{ 'sections.cart.quantity' | t | default: 'Quantity' }}"
+              >
+            </div>
+
+            {%- comment -%} Remove link via change_url to avoid JS dependency {%- endcomment -%}
+            <a
+              class="cart-item__remove"
+              href="{{ routes.cart_change_url | escape }}?line={{ forloop.index }}&quantity=0"
+              aria-label="{{ 'sections.cart.remove_title' | t: title: item.product.title | default: 'Remove' | escape }}"
+            >
+              {{ 'sections.cart.remove' | t | default: 'Remove' }}
+            </a>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    {%- comment -%} Footer: subtotal + actions {%- endcomment -%}
+    <div class="cart__footer">
+      <div class="cart__subtotal">
+        <span class="cart__subtotal-label">{{ 'sections.cart.subtotal' | t | default: 'Subtotal' }}</span>
+        <strong class="cart__subtotal-price">{{ cart.total_price | money_with_currency }}</strong>
+      </div>
+
+      <div class="cart__actions">
+        <button type="submit" name="update" class="button">
+          {{ 'sections.cart.update' | t | default: 'Update cart' }}
+        </button>
+        <button type="submit" name="checkout" class="button button--primary">
+          {{ 'sections.cart.checkout' | t | default: 'Check out' }}
+        </button>
+      </div>
+    </div>
+  </form>
+{%- endif -%}

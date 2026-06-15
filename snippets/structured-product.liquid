@@ -1,0 +1,63 @@
+{%- comment -%}
+/snippets/structured-product.liquid
+Product JSON-LD aligned with visible availability:
+- POD + v.available → InStock
+- POD + not v.available → PreOrder
+- Non-POD → InStock/OutOfStock based on v.available
+{%- endcomment -%}
+
+{%- assign p = product -%}
+{%- assign v = p.selected_or_first_available_variant -%}
+{%- assign mf = p.metafields.custom -%}
+
+{%- assign vendor = p.vendor | strip -%}
+{%- assign is_pod_vendor = false -%}
+{%- for vn in 'Printify,Printful,AnywherePod' | split: ',' -%}
+  {%- if vendor == vn | strip -%}{%- assign is_pod_vendor = true -%}{%- break -%}{%- endif -%}
+{%- endfor -%}
+
+{%- assign desc_source = '' -%}
+{%- if mf.short_copy and mf.short_copy.value != blank -%}
+  {%- assign desc_source = mf.short_copy.value | strip | strip_html -%}
+{%- else -%}
+  {%- assign desc_source = p.description | strip_html -%}
+{%- endif -%}
+
+{%- assign availability_uri = 'http://schema.org/OutOfStock' -%}
+{%- if is_pod_vendor -%}
+  {%- if v and v.available -%}
+    {%- assign availability_uri = 'http://schema.org/InStock' -%}
+  {%- else -%}
+    {%- assign availability_uri = 'http://schema.org/PreOrder' -%}
+  {%- endif -%}
+{%- else -%}
+  {%- if v and v.available -%}
+    {%- assign availability_uri = 'http://schema.org/InStock' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- capture product_ld -%}
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ p.title | json }},
+  "description": {{ desc_source | truncate: 500 | json }},
+  "sku": {{ v.sku | json }},
+  "brand": {{ p.vendor | json }},
+  "url": {{ p.url | within: collection | json }},
+  "image": {{ p.featured_image | image_url: width: 1500 | prepend: "https:" | json }},
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": {{ v.price | money_without_currency | replace: ',', '' | json }},
+    "availability": "{{ availability_uri }}",
+    "url": {{ p.url | within: collection | json }},
+    "hasMerchantReturnPolicy": {
+      "@type": "MerchantReturnPolicy",
+      "url": "https://ironphoenix.store/pages/return-and-refunded-page"
+    }
+  }
+}
+{%- endcapture -%}
+
+<script type="application/ld+json">{{ product_ld | strip }}</script>

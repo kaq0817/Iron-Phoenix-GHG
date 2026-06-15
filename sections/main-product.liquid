@@ -1,0 +1,244 @@
+{%- comment -%}
+Main product section - Clean version without inline CSS
+Depends on:
+- assets/section-main-product.css
+- assets/css-variables.liquid
+- assets/brand-tokens.liquid
+- layout/theme.liquid loads CSS via stylesheet_tag preload
+{%- endcomment -%}
+
+<section id="MainProduct-{{ section.id }}" class="product-section page-width" data-section-id="{{ section.id }}">
+  {% assign p = product %}
+  {% assign v = p.selected_or_first_available_variant %}
+  {% assign hero = v.featured_media | default: p.featured_media %}
+
+  {% render 'structured-product' %}
+
+  <div class="product grid grid--1-col grid--2-col-tablet">
+    <div class="product__media">
+      {% if p.media.size > 0 %}
+        <div class="product__media-main">
+          {% if hero %}
+            {{
+              hero
+              | image_url: width: 1800
+              | image_tag:
+                class: 'product__img',
+                widths: '600,900,1200,1500,1800',
+                sizes: '(max-width: 749px) 100vw, 60vw',
+                loading: 'eager',
+                preload: true,
+                fetchpriority: 'high',
+                decoding: 'async',
+                alt: hero.alt | default: p.title | escape,
+                width: hero.width,
+                height: hero.width | divided_by: hero.aspect_ratio | round
+            }}
+          {% endif %}
+        </div>
+
+        {% if p.media.size > 1 %}
+          <div class="product__thumbnails" role="list">
+            {% for media in p.media %}
+              <button class="thumb" type="button" data-media-id="{{ media.id }}" aria-label="Show image {{ forloop.index }}">
+                {{
+                  media
+                  | image_url: width: 300
+                  | image_tag:
+                    class: 'product__thumb',
+                    widths: '150,200,300',
+                    sizes: '96px',
+                    loading: 'lazy',
+                    decoding: 'async',
+                    alt: media.alt | default: p.title | escape,
+                    width: media.width,
+                    height: media.width | divided_by: media.aspect_ratio | round
+                }}
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="product__media-placeholder">
+          {{ 'product-1' | placeholder_svg_tag }}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="product__info">
+      {% if section.settings.show_vendor and p.vendor %}
+        <div class="product__vendor">{{ p.vendor | escape }}</div>
+      {% endif %}
+
+      <h1 class="product__title">{{ p.title | escape }}</h1>
+
+      {% render 'member-price', product: p %}
+      {% render 'vip-banner', product: p %}
+      {% render 'pod-availability-badge', product: p %}
+
+      <div class="product__price" id="Price-{{ section.id }}">
+        {% render 'price', product: p %}
+      </div>
+
+      {% if section.settings.show_sku and v.sku %}
+        <div class="product__sku">SKU: <span id="Sku-{{ section.id }}">{{ v.sku | escape }}</span></div>
+      {% endif %}
+
+      {% if p.has_only_default_variant == false %}
+        <form id="VariantForm-{{ section.id }}" class="product__options" onsubmit="return false;">
+          {% for option in p.options_with_values %}
+            <fieldset class="product__option" data-option-index="{{ forloop.index0 }}">
+              <legend class="product__option-name">{{ option.name | escape }}</legend>
+              <div class="product__option-values">
+                {% for value in option.values %}
+                  <label class="product__swatch">
+                    <input type="radio" name="options[{{ option.name | escape }}]" value="{{ value | escape }}" {% if option.selected_value == value %}checked{% endif %} aria-label="{{ option.name | escape }}: {{ value | escape }}">
+                    <span>{{ value | escape }}</span>
+                  </label>
+                {% endfor %}
+              </div>
+            </fieldset>
+          {% endfor %}
+        </form>
+      {% endif %}
+
+      <form method="post" action="{{ routes.cart_add_url }}" id="ProductForm-{{ section.id }}" class="product__form" data-product-handle="{{ p.handle | escape }}">
+        <input type="hidden" name="id" id="VariantId-{{ section.id }}" value="{{ v.id }}">
+        <div class="product__qty">
+          <label for="Quantity-{{ section.id }}" class="visually-hidden">Quantity</label>
+          <input id="Quantity-{{ section.id }}" type="number" name="quantity" value="1" min="1" inputmode="numeric" pattern="[0-9]*">
+        </div>
+
+        <button type="submit" class="button button--primary" id="ATC-{{ section.id }}" {% unless v.available %}disabled{% endunless %} aria-disabled="{% if v.available %}false{% else %}true{% endif %}">
+          {% if v.available %}Add to cart{% else %}Unavailable{% endif %}
+        </button>
+      </form>
+
+      {% if section.settings.show_description and p.description != blank %}
+        <div class="product__description rte">
+          {% if section.settings.description_mode == 'plain' %}
+            {{ p.description | strip_html | escape }}
+          {% else %}
+            {{ p.description }}
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% render 'product-media-templates', product: product %}
+{% render 'product-media-modal' %}
+
+<script>
+(() => {
+  const sectionId = {{ section.id | json }};
+  const product = {{ product | json }};
+  const moneyFmt = new Intl.NumberFormat({{ localization.country.iso_code | json }}, { style: 'currency', currency: {{ cart.currency.iso_code | json }} });
+
+  const formOptions = document.getElementById(`VariantForm-${sectionId}`);
+  const hiddenId = document.getElementById(`VariantId-${sectionId}`);
+  const atcBtn = document.getElementById(`ATC-${sectionId}`);
+  const skuEl = document.getElementById(`Sku-${sectionId}`);
+  const priceWrap = document.getElementById(`Price-${sectionId}`);
+  const mainWrap = document.querySelector('#MainProduct-' + sectionId + ' .product__media-main');
+  const mainImg = mainWrap ? mainWrap.querySelector('img') : null;
+  const thumbs = document.querySelectorAll('#MainProduct-' + sectionId + ' .thumb');
+
+  function findVariant(selectedOptions) {
+    return product.variants.find(v => v.options.every((opt, i) => opt === selectedOptions[i]));
+  }
+
+  function currentSelections() {
+    if (!formOptions) return product.options_with_values.map(o => o.selected_value);
+    const sets = [...formOptions.querySelectorAll('[data-option-index]')].sort((a,b) => +a.dataset.optionIndex - +b.dataset.optionIndex);
+    return sets.map(set => set.querySelector('input[type="radio"]:checked')?.value || '');
+  }
+
+  function updateUI(variant) {
+    if (!variant) {
+      atcBtn.disabled = true;
+      atcBtn.setAttribute('aria-disabled', 'true');
+      atcBtn.textContent = 'Unavailable';
+      return;
+    }
+
+    hiddenId.value = variant.id;
+
+    if (variant.available) {
+      atcBtn.disabled = false;
+      atcBtn.setAttribute('aria-disabled', 'false');
+      atcBtn.textContent = 'Add to cart';
+    } else {
+      atcBtn.disabled = true;
+      atcBtn.setAttribute('aria-disabled', 'true');
+      atcBtn.textContent = 'Unavailable';
+    }
+
+    if (skuEl) skuEl.textContent = (variant.sku || '');
+
+    if (priceWrap) {
+      const price = variant.price / 100;
+      const compare = variant.compare_at_price ? (variant.compare_at_price / 100) : null;
+      priceWrap.innerHTML = `
+        <div class="price">
+          <span class="price__current">${moneyFmt.format(price)}</span>
+          ${compare && compare > price ? `<s class="price__compare">${moneyFmt.format(compare)}</s>` : ``}
+        </div>`;
+    }
+
+    if (variant.featured_media && mainImg) {
+      mainImg.src = variant.featured_media.preview_image.src;
+      mainImg.srcset = '';
+      mainImg.alt = variant.featured_media.alt || product.title || '';
+    }
+  }
+
+  function onOptionChange() {
+    const selected = currentSelections();
+    const variant = findVariant(selected);
+    updateUI(variant);
+    if (variant && history.replaceState) {
+      const url = new URL(window.location.href);
+      url.searchParams.set('variant', variant.id);
+      history.replaceState({}, '', url);
+    }
+  }
+
+  if (formOptions) formOptions.addEventListener('change', onOptionChange);
+
+  thumbs.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const mediaId = btn.getAttribute('data-media-id');
+      const media = product.media.find(m => String(m.id).endsWith(mediaId));
+      if (!media || !mainImg) return;
+      mainImg.src = media.preview_image.src;
+      mainImg.srcset = '';
+      mainImg.alt = media.alt || product.title || '';
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": [
+    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": true },
+    { "type": "checkbox", "id": "show_sku", "label": "Show SKU", "default": true },
+    { "type": "checkbox", "id": "show_description", "label": "Show description", "default": true },
+    {
+      "type": "select",
+      "id": "description_mode",
+      "label": "Description rendering",
+      "default": "richtext",
+      "options": [
+        { "value": "richtext", "label": "Rich text (recommended)" },
+        { "value": "plain", "label": "Plain text (escape HTML)" }
+      ]
+    }
+  ],
+  "blocks": [],
+  "presets": [{ "name": "Main product" }]
+}
+{% endschema %}

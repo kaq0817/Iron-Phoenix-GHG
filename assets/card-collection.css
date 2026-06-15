@@ -1,0 +1,40 @@
+.collection-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  border-radius: var(--product-card-radius);
+  overflow: hidden;
+  background: rgb(var(--color-black));
+  transition: transform 0.2s ease;
+}
+
+.collection-card:hover {
+  transform: scale(1.02);
+}
+
+.collection-card__media {
+  aspect-ratio: 1.5 / 1;
+  overflow: hidden;
+}
+
+.collection-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.collection-card__info {
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.collection-card__title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.collection-card__count {
+  font-size: 1.4rem;
+  opacity: 0.7;
+}

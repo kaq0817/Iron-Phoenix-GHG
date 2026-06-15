@@ -1,0 +1,47 @@
+{% comment %} /sections/members-hub.liquid {% endcomment %}
+<section class="page-width members-hub">
+  {% assign on = settings.enable_membership %}
+  <header class="members-hub__header">
+    <h1>Members</h1>
+    {% if on and customer %}
+      <p>Welcome{% if customer.first_name %}, {{ customer.first_name | escape }}{% endif %}.</p>
+    {% elsif on %}
+      <p>Become a member to unlock exclusive posts and discounts.</p>
+    {% else %}
+      <p>Membership is coming soon.</p>
+    {% endif %}
+  </header>
+
+  {% if on %}
+    {% assign is_member = false %}
+    {% if customer %}
+      {% assign allowed = settings.membership_allowed_tags | default: 'Member,VIP' | split: ',' %}
+      {% for t in customer.tags %}{% if allowed contains t | strip %}{% assign is_member = true %}{% break %}{% endif %}{% endfor %}
+      {% if is_member == false and customer.metafields.membership.active and customer.metafields.membership.active.value == true %}{% assign is_member = true %}{% endif %}
+      {% if is_member == false and customer.metafields.membership.expires_on and customer.metafields.membership.expires_on.value %}
+        {% assign today = 'now' | date: '%Y-%m-%d' %}
+        {% assign exp = customer.metafields.membership.expires_on.value | date: '%Y-%m-%d' %}
+        {% if exp >= today %}{% assign is_member = true %}{% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if is_member %}
+      <div style="display:grid;gap:1rem;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));margin-top:1rem">
+        <a class="card" href="/blogs/news">Exclusive Articles</a>
+        <a class="card" href="/collections/all?filter=member">Member Deals</a>
+        {% if settings.gift_enabled and settings.gift_product_handle != blank %}
+          <a class="card" href="{{ routes.root_url }}/products/{{ settings.gift_product_handle }}">Claim Gift</a>
+        {% endif %}
+      </div>
+    {% else %}
+      <div style="display:flex;gap:.5rem;margin-top:1rem">
+        <a class="button" href="{{ routes.account_login_url }}">Log in</a>
+        <a class="button button--secondary" href="{{ routes.account_register_url }}">Create account</a>
+      </div>
+    {% endif %}
+  {% endif %}
+</section>
+
+{% schema %}
+{ "name": "Members hub", "settings": [], "presets": [{ "name": "Members hub" }] }
+{% endschema %}

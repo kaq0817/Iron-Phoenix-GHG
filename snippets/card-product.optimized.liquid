@@ -1,0 +1,41 @@
+{%- comment -%}
+Optimized Product Card (evaluation only)
+- Title limited to 5 words
+- Image via 'optimized-image' snippet (adds width/height, srcset)
+- Price via Dawn 'price' snippet
+{%- endcomment -%}
+
+{%- if card_product and card_product != empty -%}
+  {%- liquid
+    assign title_words = card_product.title | split: ' ' | slice: 0, 5 | join: ' '
+  -%}
+
+  <div class="card-wrapper product-card-wrapper underline-links-hover">
+    <div class="card card--{{ settings.card_style | default: 'standard' }} card--media card--extend-height">
+
+      {%- if card_product.featured_media -%}
+        <a class="card__media" href="{{ card_product.url }}">
+          <div class="media media--transparent">
+            {% render 'optimized-image',
+              image: card_product.featured_media,
+              alt: card_product.featured_media.alt | default: title_words,
+              sizes: '(max-width: 749px) 50vw, (min-width: 750px) 25vw',
+              class: 'card__img motion-reduce'
+            %}
+          </div>
+        </a>
+      {%- endif -%}
+
+      <div class="card__content">
+        <h3 class="card__heading h4">
+          <a href="{{ card_product.url }}">{{ title_words }}</a>
+        </h3>
+        {% render 'price', product: card_product, price_class: 'price--listing' %}
+      </div>
+    </div>
+  </div>
+{%- else -%}
+  <div class="card-wrapper product-card-wrapper placeholder">
+    {{ 'product-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+  </div>
+{%- endif -%}

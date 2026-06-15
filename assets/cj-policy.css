@@ -1,0 +1,35 @@
+/* assets/cj-policy.css */
+:root{
+  --ipx-purple:#2b0a3d; /* dark purple */
+  --ipx-black:#000000;
+  --ipx-teal:#26e6e6;   /* bright teal */
+}
+
+.section-policy .policy{padding:2rem 0;}
+.section-policy .policy__header .h1{letter-spacing:.01em;}
+.section-policy .policy__updated{opacity:.8;margin:.25rem 0 1rem;}
+
+.section-policy .policy__lede{
+  background: linear-gradient(180deg, rgba(38,230,230,.08), rgba(38,230,230,.02));
+  border:1px solid rgba(38,230,230,.25);
+  border-radius:12px; padding:1rem 1.25rem; margin:0 0 1.25rem;
+}
+
+.section-policy .policy__block{margin:1.25rem 0 1.75rem;}
+.section-policy .policy__block h2{color:var(--ipx-teal); margin:0 0 .5rem;}
+.section-policy .policy__block ul,
+.section-policy .policy__block ol{margin:.25rem 0 0 1.25rem; padding:0; line-height:1.6;}
+
+.section-policy a{color:var(--ipx-teal); text-underline-offset:2px;}
+.section-policy a:hover{opacity:.9;}
+
+.section-policy address{font-style:normal; line-height:1.6;}
+.section-policy .note{font-size:.92rem; opacity:.85; margin-top:.25rem;}
+
+@media (prefers-color-scheme: dark){
+  .section-policy .policy{
+    background: linear-gradient(180deg, var(--ipx-purple), var(--ipx-black));
+    color:#fff;
+    border-radius:16px;
+  }
+}

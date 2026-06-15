@@ -1,0 +1,54 @@
+{% comment %} /snippets/member-price.liquid {% endcomment %}
+{% assign show_ui = settings.enable_membership and settings.vip_show_member_price %}
+{% if show_ui %}
+  {% assign p = product %}
+  {% assign v = p.selected_or_first_available_variant | default: p.variants.first %}
+  {% if v %}
+    {% assign base_price = v.price | default: 0 %}
+
+    {%- comment -%} Membership status (tags or metafields) {%- endcomment -%}
+    {% assign is_member = false %}
+    {% if customer %}
+      {% assign allowed = settings.membership_allowed_tags | default: 'Member,VIP' | split: ',' %}
+      {% for t in customer.tags %}
+        {% if allowed contains t | strip %}{% assign is_member = true %}{% break %}{% endif %}
+      {% endfor %}
+      {% if is_member == false and customer.metafields.membership.active and customer.metafields.membership.active.value == true %}
+        {% assign is_member = true %}
+      {% endif %}
+      {% if is_member == false and customer.metafields.membership.expires_on and customer.metafields.membership.expires_on.value %}
+        {% assign today = 'now' | date: '%Y-%m-%d' %}
+        {% assign exp = customer.metafields.membership.expires_on.value | date: '%Y-%m-%d' %}
+        {% if exp >= today %}{% assign is_member = true %}{% endif %}
+      {% endif %}
+    {% endif %}
+
+    {% if is_member %}
+      {% assign member_price = blank %}
+      {% if p.metafields.custom.member_price and p.metafields.custom.member_price.value != blank %}
+        {% assign member_price = p.metafields.custom.member_price.value %}
+      {% elsif p.metafields.custom.member_discount_percent and p.metafields.custom.member_discount_percent.value != blank %}
+        {% assign pct = p.metafields.custom.member_discount_percent.value | plus: 0 %}
+        {% assign member_price = v.price | times: 100 | divided_by: 100 %}{% comment %}normalize{% endcomment %}
+        {% assign one_hundred = 100 %}
+        {% assign factor = one_hundred | minus: pct %}
+        {% assign member_price = v.price | times: factor | divided_by: 100 %}
+      {% else %}
+        {% assign pct = settings.vip_discount_percent | default: 0 | plus: 0 %}
+        {% if pct > 0 %}
+          {% assign one_hundred = 100 %}
+          {% assign factor = one_hundred | minus: pct %}
+          {% assign member_price = v.price | times: factor | divided_by: 100 %}
+        {% endif %}
+      {% endif %}
+
+      {% if member_price %}
+        <div class="member-price" style="margin:.25rem 0 0">
+          <span class="member-price__label" style="font-weight:600">{{ settings.vip_badge_text | default: 'VIP' }} price</span>
+          <span class="member-price__value" style="margin-left:.5rem">{{ member_price | money }}</span>
+          <s class="member-price__compare" style="margin-left:.5rem;opacity:.7">{{ base_price | money }}</s>
+        </div>
+      {% endif %}
+    {% endif %}
+  {% endif %}
+{% endif %}

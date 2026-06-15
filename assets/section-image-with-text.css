@@ -1,0 +1,63 @@
+/* assets/section-image-with-text.css */
+
+.image-with-text__container {
+  display: grid;
+  gap: 2rem;
+  align-items: center;
+}
+@media (min-width: 990px) {
+  .image-with-text__container {
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+  }
+  .image-with-text__reverse {
+    direction: rtl; /* For text_first layout */
+  }
+  .image-with-text__reverse > * {
+    direction: ltr; /* Reset text direction for children */
+  }
+}
+.image-with-text__img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: .6rem;
+}
+.image-with-text__content .image-with-text__heading {
+  margin: 0 0 .5rem;
+}
+.image-with-text__caption {
+  opacity: .85;
+  margin: 0 0 .5rem;
+}
+.image-with-text__desc {
+  margin: 0 0 1rem;
+}
+.image-with-text__button {
+  margin-top: .5rem;
+}
+/* width presets (feel free to adjust in theme CSS) */
+.image-width-small {
+  max-width: 420px;
+}
+.image-width-medium {
+  max-width: 640px;
+}
+.image-width-large {
+  max-width: none;
+}
+/* simple motion options */
+.image-animation-zoom-in .image-with-text__img {
+  transform: scale(1.02);
+  transition: transform .6s ease;
+}
+.image-animation-zoom-in .image-with-text__img:hover {
+  transform: scale(1.05);
+}
+.image-animation-ambient .image-with-text__img {
+  animation: ambientFloat 12s ease-in-out infinite alternate;
+}
+@keyframes ambientFloat {
+  from { transform: translateY(-2%); }
+  to { transform: translateY(2%); }
+}

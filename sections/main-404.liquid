@@ -1,0 +1,118 @@
+{% comment %}
+  theme-check-disable ImgWidthAndHeight SchemaInNonSection
+{% endcomment %}
+{%- comment -%}
+  Template: 404.liquid (Gamerized for Iron Phoenix GHG)
+  Purpose: Displays a custom 404 (Page Not Found) error page with gaming theme and SEO recovery schema.
+{%- endcomment -%}
+
+{%- comment -%} SEO Penalty Recovery Schema: WebPage - for 404 pages {%- endcomment -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Game Over - Page Not Found",
+  "description": "Lost in the digital abyss? This level doesn't exist. Return to base!",
+  "url": "{{ shop.url }}{{ request.path }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ shop.url }}"
+  }
+}
+</script>
+
+{{ 'section-main-404.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Styles for the Gamerized 404 page */
+  .template-404-gamerized {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 70vh; /* Ensure it takes up significant screen space */
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background-color: rgb(var(--color-primary-bg)); /* Use your theme's primary background */
+    color: rgb(var(--color-body-text)); /* Use your theme's body text color */
+  }
+
+  .template-404-gamerized__content {
+    max-width: 600px;
+  }
+
+  .template-404-gamerized__image {
+    max-width: 250px; /* Adjust size of your image */
+    height: auto;
+    margin-bottom: 2rem;
+    filter: drop-shadow(0 0 10px rgba(var(--color-accent), 0.5)); /* Add a cool glow */
+  }
+
+  .template-404-gamerized__subtext {
+    font-size: clamp(1.2rem, 3vw, 1.5rem);
+    color: rgb(var(--color-links)); /* Use your theme's link color for emphasis */
+    margin-bottom: 1rem;
+  }
+
+  .template-404-gamerized__title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    color: rgb(var(--color-headings)); /* Use your theme's heading color */
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+  }
+
+  .template-404-gamerized__button-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 2.5rem;
+  }
+
+  .template-404-gamerized__button {
+    background-color: rgb(var(--color-button-primary-bg));
+    color: rgb(var(--color-button-primary-text));
+    padding: 1rem 2rem;
+    border: none;
+    border-radius: var(--buttons-radius); /* Use global button radius */
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .template-404-gamerized__button:hover {
+    background-color: rgb(var(--color-button-primary-hover));
+    transform: translateY(-2px);
+  }
+
+  @media screen and (max-width: 749px) {
+    .template-404-gamerized__button-grid {
+      flex-direction: column;
+      align-items: center;
+    }
+    .template-404-gamerized__button {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="template-404-gamerized">
+  <div class="template-404-gamerized__content">
+    <img src="{{ '404-image-ghg.webp' | asset_url }}" alt="Player Disconnected - Error 404" class="template-404-gamerized__image" loading="eager" width="250" height="250">
+    {% render 'optimized-image', image: product.featured_image, alt: product.title %}
+
+    <p class="template-404-gamerized__subtext">ERROR 404: LEVEL NOT FOUND.</p>
+    <h1 class="template-404-gamerized__title">GAME OVER.</h1>
+    <p>You've ventured off the map! This area is still under construction or perhaps it's a secret boss fight we haven't released yet. Don't worry, we'll get you back in the game.</p>
+
+    <div class="template-404-gamerized__button-grid">
+      <a href="{{ routes.root_url }}" class="template-404-gamerized__button">RETURN TO BASE</a>
+      <a href="{{ routes.collections_url }}" class="template-404-gamerized__button">EXPLORE ALL LOOT</a>
+      <a href="{{ routes.search_url }}" class="template-404-gamerized__button">SEARCH FOR QUESTS</a>
+      <a href="{{ pages.contact.url }}" class="template-404-gamerized__button">REPORT A BUG</a>
+    </div>
+  </div>
+</div>

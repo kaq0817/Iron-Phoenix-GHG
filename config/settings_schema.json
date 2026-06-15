@@ -1,0 +1,187 @@
+[
+  {
+    "name": "Design",
+    "settings": [
+      { "type": "header", "content": "Typography" },
+      { "type": "font_picker", "id": "type_body_font", "label": "Body font", "default": "system-ui" },
+      { "type": "font_picker", "id": "type_header_font", "label": "Heading font", "default": "system-ui" },
+
+      { "type": "header", "content": "Sizing" },
+      { "type": "range", "id": "body_scale", "label": "Body scale (%)", "min": 90, "max": 120, "step": 1, "default": 100 },
+      { "type": "range", "id": "heading_scale", "label": "Heading scale (%)", "min": 80, "max": 160, "step": 1, "default": 100 },
+      { "type": "range", "id": "page_width", "label": "Page width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
+
+      { "type": "header", "content": "Animation" },
+      { "type": "checkbox", "id": "animations_reveal_on_scroll", "label": "Reveal on scroll", "default": false },
+      {
+        "type": "select",
+        "id": "animations_hover_elements",
+        "label": "Hover effect",
+        "default": "none",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "grow", "label": "Grow" },
+          { "value": "shrink", "label": "Shrink" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      { "type": "color_scheme", "id": "color_schemes", "label": "Color schemes" }
+    ]
+  },
+  {
+    "name": "Cart & Search",
+    "settings": [
+      {
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "default": "drawer",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Cart page" }
+        ]
+      },
+      { "type": "checkbox", "id": "predictive_search_enabled", "label": "Enable predictive search", "default": true }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "select",
+        "id": "brand_variant",
+        "label": "Brand variant",
+        "default": "",
+        "options": [
+          { "value": "", "label": "Auto (by domain)" },
+          { "value": "gamer", "label": "Gamer (ironphoenix.store)" },
+          { "value": "customs", "label": "Customs (ironphoenixghg.store)" }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Iron Phoenix Optimizations",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "use_optimized_card",
+        "label": "Use optimized product card (evaluation)",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "General",
+    "settings": [
+      { "type": "text", "id": "store_name", "label": "Store name", "default": "My Store" },
+      { "type": "text", "id": "store_email", "label": "Store email", "default": "email@example.com" },
+      { "type": "text", "id": "store_phone", "label": "Store phone", "default": "+1 (555) 555-5555" },
+      { "type": "textarea", "id": "store_address", "label": "Store address", "default": "123 Main St, Anytown, USA" },
+      {
+        "type": "textarea",
+        "id": "mission_statement",
+        "label": "Mission statement",
+        "default": "We spark resilience and joy with bold, mindfully crafted gear that inspires imagination and equips our community to build mental strength, elevate gaming performance, and unleash athletic spirit—no matter the challenge."
+      },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
+      { "type": "image_picker", "id": "share_image", "label": "Default share image (OG/Twitter)" }
+    ]
+  },
+  {
+    "name": "Social media",
+    "settings": [
+      { "type": "url", "id": "facebook_url", "label": "Facebook URL", "default": "https://www.facebook.com/" },
+      { "type": "url", "id": "twitter_url", "label": "Twitter URL", "default": "https://www.twitter.com/" },
+      { "type": "url", "id": "instagram_url", "label": "Instagram URL", "default": "https://www.instagram.com/" },
+      { "type": "url", "id": "linkedin_url", "label": "LinkedIn URL", "default": "https://www.linkedin.com/" },
+      { "type": "text", "id": "twitter_handle", "label": "Twitter @handle (for cards)", "default": "@IronPhoenixGHG" }
+    ]
+  },
+  {
+    "name": "Checkout",
+    "settings": [
+      { "type": "checkbox", "id": "enable_guest_checkout", "label": "Enable guest checkout", "default": true },
+      { "type": "checkbox", "id": "require_phone_number", "label": "Require phone number", "default": false },
+      { "type": "checkbox", "id": "enable_order_notes", "label": "Enable order notes", "default": true }
+    ]
+  },
+  {
+    "name": "Shipping",
+    "settings": [
+      {
+        "type": "radio",
+        "id": "shipping_origin",
+        "label": "Shipping origin",
+        "default": "shop_address",
+        "options": [
+          { "value": "shop_address", "label": "Shop address" },
+          { "value": "custom_address", "label": "Custom address" }
+        ]
+      },
+      { "type": "text", "id": "custom_shipping_address", "label": "Custom shipping address", "default": "" },
+      { "type": "checkbox", "id": "enable_free_shipping", "label": "Enable free shipping", "default": false },
+      { "type": "text", "id": "free_shipping_minimum", "label": "Free shipping minimum order amount", "default": "50.00" }
+    ]
+  },
+  {
+    "name": "Payments",
+    "settings": [
+      { "type": "checkbox", "id": "enable_paypal", "label": "Enable PayPal", "default": true },
+      { "type": "checkbox", "id": "enable_stripe", "label": "Enable Stripe", "default": true },
+      { "type": "checkbox", "id": "enable_bank_transfer", "label": "Enable bank transfer", "default": false }
+    ]
+  },
+  {
+    "name": "Marketing",
+    "settings": [
+      { "type": "checkbox", "id": "enable_google_analytics", "label": "Enable Google Analytics (legacy)", "default": false },
+      { "type": "text", "id": "google_analytics_id", "label": "Google Analytics UA ID (legacy)", "default": "" },
+
+      { "type": "text", "id": "gtm_id", "label": "Main GTM ID", "default": "GTM-TQD686VL" },
+      { "type": "text", "id": "ga4_id", "label": "Main GA4 ID", "default": "G-C6E01GLSZW" },
+      { "type": "text", "id": "gtm_id_baby", "label": "Baby GTM ID", "default": "GTM-MBXZB3HQ" },
+      { "type": "text", "id": "ga4_id_baby", "label": "Baby GA4 ID", "default": "G-630YS12KSN" },
+
+      { "type": "checkbox", "id": "enable_facebook_pixel", "label": "Enable Meta Pixel", "default": false },
+      { "type": "text", "id": "facebook_pixel_id", "label": "Meta Pixel ID", "default": "" },
+      { "type": "text", "id": "facebook_domain_verification", "label": "Facebook domain verification", "default": "" }
+    ]
+  },
+  {
+    "name": "Notifications",
+    "settings": [
+      { "type": "checkbox", "id": "enable_order_notifications", "label": "Enable order notifications", "default": true },
+      { "type": "checkbox", "id": "enable_shipping_notifications", "label": "Enable shipping notifications", "default": true },
+      { "type": "checkbox", "id": "enable_marketing_notifications", "label": "Enable marketing notifications", "default": false }
+    ]
+  },
+  {
+    "name": "Legal",
+    "settings": [
+      { "type": "textarea", "id": "terms_and_conditions", "label": "Terms and conditions", "default": "" },
+      { "type": "textarea", "id": "privacy_policy", "label": "Privacy policy", "default": "" },
+      { "type": "textarea", "id": "refund_policy", "label": "Refund policy", "default": "" }
+    ]
+  },
+  {
+    "name": "Membership / VIP",
+    "settings": [
+      { "type": "checkbox", "id": "enable_membership", "label": "Enable membership features", "default": false },
+      { "type": "text", "id": "membership_allowed_tags", "label": "Allowed tags (comma-separated)", "default": "Member,VIP" },
+      { "type": "range", "id": "membership_term_months", "label": "Membership term (months)", "min": 1, "max": 36, "step": 1, "default": 12 },
+      { "type": "text", "id": "membership_product_handle", "label": "Membership product handle", "default": "membership" },
+
+      { "type": "checkbox", "id": "vip_show_member_price", "label": "Show member price on PDP if available", "default": true },
+      { "type": "range", "id": "vip_discount_percent", "label": "Fallback VIP % off (display only)", "default": 15, "min": 0, "max": 50, "step": 1 },
+
+      { "type": "checkbox", "id": "gift_enabled", "label": "Enable free gift with membership", "default": false },
+      { "type": "text", "id": "gift_product_handle", "label": "Gift product handle (tee/hoodie)", "default": "vip-gift-tee" },
+      { "type": "text", "id": "vip_badge_text", "label": "VIP badge text", "default": "VIP" }
+    ]
+  }
+]

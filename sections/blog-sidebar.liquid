@@ -1,0 +1,19 @@
+
+
+<aside class="blog-sidebar">
+  <h2>Sidebar</h2>
+  <ul>
+    {% for article in blog.articles limit: 5 %}
+      <li>
+        <a href="{{ article.url }}">{{ article.title | escape }}</a>
+      </li>
+    {% endfor %}
+  </ul>
+</aside>
+
+{% schema %}
+{
+  "name": "Blog Sidebar",
+  "settings": []
+}
+{% endschema %}

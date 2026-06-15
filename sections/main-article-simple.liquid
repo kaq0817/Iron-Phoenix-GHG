@@ -1,0 +1,79 @@
+{%- comment -%}
+  Iron Phoenix GHG — Main Article (Simple)
+  - Non-paywalled article section
+  - No inline CSS or extra asset includes to avoid MissingAsset warnings
+  - Optional plain-text rendering for maximum safety
+{%- endcomment -%}
+
+<section id="ArticleSimple-{{ section.id }}" class="article-section color-{{ section.settings.color_scheme }}" itemscope itemtype="https://schema.org/Article">
+  <div class="page-width article__inner">
+    <header class="article__header">
+      <h1 class="article__title" itemprop="headline">{{ article.title | escape }}</h1>
+
+      {%- if section.settings.show_meta -%}
+        <div class="article__meta">
+          <span class="article__author" itemprop="author" itemscope itemtype="https://schema.org/Person">
+            <span itemprop="name">{{ article.author | escape }}</span>
+          </span>
+          <span class="article__sep" aria-hidden="true">•</span>
+          <time class="article__date" itemprop="datePublished" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+            {{ article.published_at | date: '%B %d, %Y' }}
+          </time>
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.show_cover_image and article.image -%}
+        <div class="article__media">
+          {{
+            article.image
+            | image_url: width: 1600
+            | image_tag:
+              widths: '750,1100,1400,1600',
+              sizes: '(max-width: 749px) 100vw, 1000px',
+              loading: 'eager',
+              fetchpriority: 'high',
+              decoding: 'async',
+              alt: article.image.alt | default: article.title | escape,
+              class: 'article__image',
+              width: article.image.width,
+              height: article.image.width | divided_by: article.image.aspect_ratio | round
+          }}
+        </div>
+      {%- endif -%}
+    </header>
+
+    <div class="article__body rte" itemprop="articleBody">
+      {%- if section.settings.render_plain_text -%}
+        {{ article.content | strip_html | escape | newline_to_br }}
+      {%- else -%}
+        {{ article.content }}
+      {%- endif -%}
+    </div>
+
+    {%- if section.settings.show_tags and article.tags.size > 0 -%}
+      <div class="article__tags">
+        <strong>Tags:</strong>
+        {%- for tag in article.tags -%}
+          <a class="article__tag" href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag | escape }}</a>{% unless forloop.last %}, {% endunless %}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Main article (simple)",
+  "class": "section-article-simple",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
+    { "type": "checkbox", "id": "show_meta", "label": "Show date & author", "default": true },
+    { "type": "checkbox", "id": "show_cover_image", "label": "Show cover image (if set)", "default": true },
+    { "type": "checkbox", "id": "render_plain_text", "label": "Render content as plain text (strip & escape)", "default": false },
+    { "type": "checkbox", "id": "show_tags", "label": "Show tags", "default": true }
+  ],
+  "presets": [
+    { "name": "Main article (simple)" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,60 @@
+{% comment %}
+  Quick Order (Bulk) — Section wrapper for Iron Phoenix GHG
+  - Full replacement (clean rewrite)
+  - No inline CSS here; uses assets/quick-order-list.css
+  - Defer JS; uses assets/quick-order-list.js
+  - Escapes all dynamic text in this section
+  - Renders per-product UI via snippets/quick-order-list.liquid
+{% endcomment %}
+
+{{ 'quick-order-list.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<script src="{{ 'quick-order-list.js' | asset_url }}" defer></script>
+
+{%- assign col = section.settings.collection -%}
+{%- assign item_limit = section.settings.limit | default: 12 -%}
+{%- assign show_img = section.settings.show_image | default: true -%}
+{%- assign show_sku_flag = section.settings.show_sku | default: true -%}
+
+<section id="QuickOrderBulk-{{ section.id }}" class="quick-order-bulk color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    <header class="quick-order-bulk__header">
+      <h2 class="quick-order-bulk__title">
+        {{ section.settings.title | default: col.title | escape }}
+      </h2>
+    </header>
+
+    {%- if col and col.products_count > 0 -%}
+      <div class="quick-order-bulk__grid" role="list">
+        {%- for p in col.products limit: item_limit -%}
+          <article class="quick-order-bulk__item" role="listitem">
+            {%- render 'quick-order-list',
+              product: p,
+              show_image: show_img,
+              show_sku: show_sku_flag
+            -%}
+          </article>
+        {%- endfor -%}
+      </div>
+    {%- else -%}
+      <p class="quick-order-bulk__empty">No products available.</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Quick order (Bulk)",
+  "class": "section-quick-order-bulk",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
+    { "type": "text", "id": "title", "label": "Heading", "default": "Quick order" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 1, "max": 48, "step": 1, "default": 12 },
+    { "type": "checkbox", "id": "show_image", "label": "Show product image", "default": true },
+    { "type": "checkbox", "id": "show_sku", "label": "Show SKU", "default": true }
+  ],
+  "presets": [
+    { "name": "Quick order (Bulk)" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,70 @@
+/* assets/section-header.css */
+
+/* Dynamic padding set by Liquid via CSS variables */
+.header-wrapper .header {
+  padding-top: var(--header-padding-top-mobile);
+  padding-right: 3rem; /* Keeping original fixed value */
+  padding-bottom: var(--header-padding-bottom-mobile);
+  padding-left: 3rem;  /* Keeping original fixed value */
+}
+.section-header-wrapper {
+  position: sticky;
+  margin-bottom: var(--header-margin-bottom-mobile);
+}
+
+@media (min-width: 750px) {
+  .section-header-wrapper {
+    margin-bottom: var(--header-margin-bottom-desktop);
+  }
+}
+@media (min-width: 990px) {
+  .header-wrapper .header {
+    padding-top: var(--header-padding-top-desktop);
+    padding-bottom: var(--header-padding-bottom-desktop);
+  }
+}
+
+/* Header bar layout */
+.header__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+/* Logo styling */
+.header__logo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Icons container */
+.header__icons {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+
+/* Individual icon wrapper styling */
+.header__icon .svg-wrapper svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+
+/* Cart count bubble specific styles */
+.cart-count-bubble {
+  position: absolute;
+  transform: translate(-30%, -40%);
+  min-width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: .1rem .35rem;
+  background: rgb(var(--color-neon-green)); /* Using --color-neon-green from css-variables */
+  color: rgb(var(--color-black)); /* Using --color-black from css-variables */
+}

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html class="no-js" lang="{{ request.locale.iso_code | escape }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+
+    <meta name="theme-color" content="{{ settings.color_background | default: '#000000' | escape }}">
+
+    {%- comment -%} Robots — block password, checkout, search; paywalled/premium articles {%- endcomment -%}
+    {%- assign robots_directive = 'index, follow' -%}
+    {%- if shop.password_enabled or template.name == 'search' or request.path contains '/checkout' -%}
+      {%- assign robots_directive = 'noindex, nofollow' -%}
+    {%- elsif template.name == 'article' and article -%}
+      {%- if (article.metafields.content.paywalled and article.metafields.content.paywalled.value) or (article.tags contains 'premium') -%}
+        {%- assign robots_directive = 'noindex, noimageindex, noarchive, nosnippet' -%}
+      {%- endif -%}
+    {%- endif -%}
+    <meta name="robots" content="{{ robots_directive | escape }}">
+
+    <link rel="canonical" href="{{ canonical_url | escape }}">
+
+    <title>
+      {% if page_title %}
+        {{ page_title | escape }}
+      {% else %}
+        {{ shop.name | escape }}
+      {% endif %}
+    </title>
+
+    {%- render 'meta-tags' -%}
+    {%- render 'schema-structured-data' -%}
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 | escape }}">
+    {%- endif -%}
+
+    {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
+      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+    {%- endunless -%}
+
+    {%- comment -%} Helpful preconnects for analytics (perf); still remote by design {%- endcomment -%}
+    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
+    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+
+    {%- capture body_json -%}{{ settings.type_body_font | json }}{%- endcapture -%}
+    {%- capture head_json -%}{{ settings.type_header_font | json }}{%- endcapture -%}
+    {%- if body_json contains '"family":' -%}
+      {{ settings.type_body_font | font_url | preload_tag }}
+    {%- endif -%}
+    {%- if head_json contains '"family":' -%}
+      {{ settings.type_header_font | font_url | preload_tag }}
+    {%- endif -%}
+
+    {%- comment -%} Load CSS variables first (ensure this asset is .css or .css.liquid) {%- endcomment -%}
+    {{ 'css-variables.css' | asset_url | stylesheet_tag }}
+
+    <style>
+      /* Base resets and font faces — no :root variables here */
+      html{box-sizing:border-box}
+      *,*::before,*::after{box-sizing:inherit}
+      html{font-size:calc(var(--font-body-scale) * 62.5%)}
+      body{
+        display:grid;grid-template-rows:auto auto 1fr auto;min-height:100%;
+        margin:0;background-color:rgb(var(--color-black));color:rgb(var(--color-white));
+        font-family:var(--font-body-family);font-size:1.5rem;
+      }
+      @media (min-width:750px){body{font-size:1.6rem}}
+      {{ settings.type_body_font | font_face: font_display: 'swap' }}
+      {{ settings.type_header_font | font_face: font_display: 'swap' }}
+      img{max-width:100%;height:auto;object-fit:cover;object-position:center}
+    </style>
+
+    {{ 'brand-tokens.css' | asset_url | stylesheet_tag }}
+    {{ 'theme.css' | asset_url | stylesheet_tag }}
+    {{ 'section-main-product.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+    <noscript>{{ 'section-main-product.css' | asset_url | stylesheet_tag }}</noscript>
+
+    {%- comment -%} Choose GTM / GA4 IDs (fallbacks per host) {%- endcomment -%}
+    {%- assign chosen_gtm = settings.gtm_id -%}
+    {%- assign chosen_ga4 = settings.ga4_id -%}
+    {%- if chosen_gtm == blank or chosen_ga4 == blank -%}
+      {%- if request.host contains 'ironphoenixghg.store' -%}
+        {%- if chosen_gtm == blank -%}{%- assign chosen_gtm = 'GTM-MBXZB3HQ' -%}{%- endif -%}
+        {%- if chosen_ga4 == blank -%}{%- assign chosen_ga4 = 'G-630YS12KSN' -%}{%- endif -%}
+      {%- else -%}
+        {%- if chosen_gtm == blank -%}{%- assign chosen_gtm = 'GTM-TQD686VL' -%}{%- endif -%}
+        {%- if chosen_ga4 == blank -%}{%- assign chosen_ga4 = 'G-C6E01GLSZW' -%}{%- endif -%}
+      {%- endif -%}
+    {%- endif -%}
+
+    {%- if chosen_ga4 != blank -%}
+      <!-- Google Analytics 4 -->
+      {% comment %} theme-check-disable RemoteAsset {% endcomment %}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ chosen_ga4 | escape }}"></script>
+      {% comment %} theme-check-enable RemoteAsset {% endcomment %}
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', '{{ chosen_ga4 | escape }}');
+      </script>
+    {%- endif -%}
+
+    {%- if chosen_gtm != blank -%}
+      <!-- Google Tag Manager -->
+      {% comment %} theme-check-disable RemoteAsset {% endcomment %}
+      <script>
+        (function(w,d,s,l,i){
+          w[l]=w[l]||[];
+          w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+          var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
+          j.async=true;
+          j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent('{{ chosen_gtm | escape }}')+dl;
+          f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','{{ chosen_gtm | escape }}');
+      </script>
+      {% comment %} theme-check-enable RemoteAsset {% endcomment %}
+    {%- endif -%}
+
+    {%- comment -%}
+      IMPORTANT: Place content_for_header at the end of <head>.
+      Many apps rely on injecting right before </head>.
+    {%- endcomment -%}
+    {{ content_for_header }}
+  </head>
+
+  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
+    <script>document.documentElement.classList.replace('no-js','js');</script>
+
+    {%- if chosen_gtm != blank -%}
+      <!-- Google Tag Manager (noscript) -->
+      {% comment %} theme-check-disable RemoteAsset {% endcomment %}
+      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ chosen_gtm | escape }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+      {% comment %} theme-check-enable RemoteAsset {% endcomment %}
+    {%- endif -%}
+
+    {%- unless template.name == 'password' -%}
+      {%- if settings.cart_type == 'drawer' -%}{% render 'cart-drawer' %}{%- endif -%}
+      {% section 'header' %}
+    {%- endunless -%}
+
+    <main id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {%- unless template.name == 'password' -%}
+      {% section 'footer' %}
+    {%- endunless -%}
+
+    <ul hidden>
+      <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t | escape }}</li>
+      <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t | escape }}</li>
+    </ul>
+
+    {%- render 'bot-protection' -%}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+  </body>
+</html>

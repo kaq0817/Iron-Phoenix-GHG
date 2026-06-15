@@ -1,0 +1,7 @@
+{
+  "name": "Login",
+  "sections": {
+    "main": { "type": "main-login", "settings": {} }
+  },
+  "order": ["main"]
+}

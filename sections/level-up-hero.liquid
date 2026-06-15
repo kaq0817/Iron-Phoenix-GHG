@@ -1,0 +1,164 @@
+{% comment %}
+  Level Up Hero (Gaming + Wellness)
+  - Drawer-safe, Dawn-compatible structure, no custom filters
+  - Externalized CSS/JS for performance, scoped by section id
+{% endcomment %}
+
+<link rel="stylesheet" href="{{ 'section-level-up-hero.css' | asset_url }}" media="print" onload="this.media='all'">{% comment %}no-JS fallback{% endcomment %}
+<noscript>{{ 'section-level-up-hero.css' | asset_url | stylesheet_tag }}</noscript>
+<script src="{{ 'section-level-up-hero.js' | asset_url }}" defer></script>
+
+{%- assign sec_id = 'LevelUpHero-' | append: section.id -%}
+
+<section id="{{ sec_id }}" class="levelup-hero color-{{ section.settings.color_scheme }}">
+  <div class="levelup-hero__bg">
+    <div class="levelup-hero__particles" aria-hidden="true"></div>
+  </div>
+
+  <div class="levelup-hero__content">
+    {%- if section.settings.kicker != blank -%}
+      <div class="levelup-hero__badge">{{ section.settings.kicker | escape }}</div>
+    {%- endif -%}
+
+    {%- if section.settings.title != blank -%}
+      <h1 class="levelup-hero__title">{{ section.settings.title | escape }}</h1>
+    {%- endif -%}
+
+    {%- if section.settings.subtitle != blank -%}
+      <p class="levelup-hero__subtitle">{{ section.settings.subtitle }}</p>
+    {%- endif -%}
+
+    <div class="levelup-hero__ctas">
+      {%- if section.settings.primary_label != blank and section.settings.primary_link != blank -%}
+        <a class="btn btn--primary"
+           href="{{ section.settings.primary_link }}"
+           {% if section.settings.primary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+          {{ section.settings.primary_label | escape }}
+        </a>
+      {%- endif -%}
+      {%- if section.settings.secondary_label != blank and section.settings.secondary_link != blank -%}
+        <a class="btn btn--secondary"
+           href="{{ section.settings.secondary_link }}"
+           {% if section.settings.secondary_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+          {{ section.settings.secondary_label | escape }}
+        </a>
+      {%- endif -%}
+    </div>
+
+    {%- assign stat_blocks = section.blocks | where: 'type', 'stat' -%}
+    {%- if stat_blocks.size > 0 -%}
+      <div class="levelup-hero__stats" role="list">
+        {%- for block in stat_blocks -%}
+          <div class="stat" role="listitem" {{ block.shopify_attributes }}>
+            <span class="stat__number"
+                  data-number="{{ block.settings.number | escape }}"
+                  data-suffix="{{ block.settings.suffix | escape }}">{{ block.settings.number | escape }}{{ block.settings.suffix | escape }}</span>
+            <span class="stat__label">{{ block.settings.label | escape }}</span>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
+  {%- if feature_blocks.size > 0 -%}
+    <div class="levelup-hero__features">
+      <div class="features__grid">
+        {%- for block in feature_blocks -%}
+          <div class="feature" {{ block.shopify_attributes }}>
+            {%- if block.settings.icon != blank -%}
+              <div class="feature__icon" aria-hidden="true">{{ block.settings.icon }}</div>
+            {%- endif -%}
+            {%- if block.settings.title != blank -%}
+              <h3 class="feature__title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <p class="feature__desc">{{ block.settings.text }}</p>
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script>
+  window.LevelUpHeroQueue = window.LevelUpHeroQueue || [];
+  window.LevelUpHeroQueue.push({
+    id: '{{ sec_id }}',
+    particles: {{ section.settings.enable_particles | json }},
+    parallax: {{ section.settings.enable_parallax | json }},
+    overlay_opacity: {{ section.settings.overlay_opacity | plus: 0 }},
+    colors: {
+      neonGreen: 'rgb(57,255,20)',
+      neonPink: 'rgb(255,16,240)',
+      cyan: 'rgb(0,255,255)',
+      yellow: 'rgb(255,255,0)'
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Level Up Hero",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "kicker", "label": "Badge / Kicker", "default": "🎮 Gaming • 💪 Wellness • ⚡ Performance" },
+    { "type": "textarea", "id": "title", "label": "Title", "default": "LEVEL UP<br>YOUR LIFE" },
+    { "type": "richtext", "id": "subtitle", "label": "Subtitle", "default": "<p>Where gaming meets wellness. Optimize your performance and dominate in-game and IRL.</p>" },
+
+    { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "🚀 Start Your Journey" },
+    { "type": "url",  "id": "primary_link",  "label": "Primary button link", "default": "/" },
+    { "type": "checkbox", "id": "primary_new_tab", "label": "Open primary in new tab", "default": false },
+
+    { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "📊 View Products" },
+    { "type": "url",  "id": "secondary_link",  "label": "Secondary button link", "default": "/collections/all" },
+    { "type": "checkbox", "id": "secondary_new_tab", "label": "Open secondary in new tab", "default": false },
+
+    { "type": "range", "id": "overlay_opacity", "label": "Ambient overlay intensity", "min": 0, "max": 60, "step": 5, "default": 40 },
+    { "type": "checkbox", "id": "enable_particles", "label": "Enable floating particles", "default": true },
+    { "type": "checkbox", "id": "enable_parallax", "label": "Enable subtle parallax", "default": true },
+
+    { "type": "range", "id": "padding_top", "label": "Padding top", "min": 0, "max": 120, "step": 4, "default": 64 },
+    { "type": "range", "id": "padding_bottom", "label": "Padding bottom", "min": 0, "max": 120, "step": 4, "default": 64 }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Stat",
+      "limit": 6,
+      "settings": [
+        { "type": "text", "id": "number", "label": "Number", "default": "50K" },
+        { "type": "text", "id": "suffix", "label": "Suffix (e.g., +, %, 24/7)", "default": "+" },
+        { "type": "text", "id": "label", "label": "Label", "default": "Gamers Transformed" }
+      ]
+    },
+    {
+      "type": "feature",
+      "name": "Feature card",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icon (emoji or short text)", "default": "🎯" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Gaming Performance" },
+        { "type": "textarea", "id": "text", "label": "Description", "default": "Elite gear and accessories designed for domination." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Level Up Hero",
+      "blocks": [
+        { "type": "stat", "settings": { "number": "50K", "suffix": "+", "label": "Gamers Transformed" } },
+        { "type": "stat", "settings": { "number": "98",  "suffix": "%", "label": "Performance Boost" } },
+        { "type": "stat", "settings": { "number": "24/7", "suffix": "",  "label": "Expert Support" } },
+        { "type": "stat", "settings": { "number": "500", "suffix": "+", "label": "Premium Products" } },
+
+        { "type": "feature", "settings": { "icon": "🎯", "title": "Gaming Performance", "text": "Pro-grade accessories, tuned for speed." } },
+        { "type": "feature", "settings": { "icon": "💊", "title": "Health & Supplements", "text": "Science-backed focus and recovery." } },
+        { "type": "feature", "settings": { "icon": "🏃", "title": "Fitness & Recovery", "text": "Ergonomics for long sessions." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

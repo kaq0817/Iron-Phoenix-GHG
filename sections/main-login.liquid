@@ -1,0 +1,11 @@
+<section>
+  <h1>{{ 'customer.login.title' | t }}</h1>
+  {% form 'customer_login' %}
+    {{ form.errors | default_errors }}
+    <input type="email" name="customer[email]" placeholder="Email" required>
+    <input type="password" name="customer[password]" placeholder="Password" required>
+    <button type="submit">{{ 'customer.login.sign_in' | t }}</button>
+  {% endform %}
+  <a href="{{ routes.account_register_url }}">{{ 'customer.login.create_account' | t }}</a>
+  <a href="{{ routes.account_reset_password_url }}">{{ 'customer.login.forgot_password' | t }}</a>
+</section>

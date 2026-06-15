@@ -1,0 +1,27 @@
+{
+  "name": "iron-phoenix-ghg",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "echo \"shopify theme dev… (whatever your command is)\"",
+    "lint:liquid": "node scripts/liquid-safe-guard.mjs",
+    "lint:liquid:fix": "node scripts/liquid-safe-guard.mjs --write",
+    "lint:inline-styles": "node scripts/no-inline-styles.mjs",
+    "lint:dupes": "node scripts/no-duplication.mjs",
+    "lint:js": "eslint assets/**/*.js",
+    "lint:css": "stylelint \"assets/**/*.{css,scss}\"",
+    "precommit": "npm run lint:js && npm run lint:css && npm run lint:inline-styles && npm run lint:dupes && npm run lint:liquid",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "eslint": "^9.9.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-import": "^2.29.1",
+    "eslint-plugin-n": "^17.10.3",
+    "husky": "^9.1.5",
+    "micromatch": "^4.0.7",
+    "prettier": "^3.3.3",
+    "stylelint": "^16.8.1",
+    "stylelint-config-standard": "^36.0.0"
+  }
+}

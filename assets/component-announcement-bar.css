@@ -1,0 +1,7 @@
+.announcement-bar {
+  background-color: var(--announcement-bg, #26a69a);
+  color: var(--announcement-text, #fff);
+  text-align: center;
+  padding: 0.5rem;
+  font-weight: 600;
+}

@@ -1,0 +1,21 @@
+{%- comment -%}
+  Iron Phoenix GHG — Safe Article Body
+  Usage:
+    {% render 'main-article', article: article %}                      {# rich text #}
+    {% render 'main-article', article: article, plain_text: true %}    {# hard-sanitized #}
+
+  Params:
+    - article: Article object (required)
+    - plain_text: boolean (optional, default false)
+{%- endcomment -%}
+
+{%- assign a = article -%}
+{%- assign as_plain = plain_text | default: false -%}
+
+<div class="article__body rte" itemprop="articleBody">
+  {%- if as_plain -%}
+    {{ a.content | default: '' | strip | strip_html | escape | newline_to_br }}
+  {%- else -%}
+    {{ a.content }}
+  {%- endif -%}
+</div>

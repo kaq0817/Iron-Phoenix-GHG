@@ -1,0 +1,160 @@
+/* assets/section-contact-us-elite.css */
+
+/* General container styling */
+.contact-us-container {
+  padding-top: var(--section-pt);
+  padding-bottom: var(--section-pb);
+  background-color: rgb(var(--color-background)); /* Use theme's background color */
+  color: rgb(var(--color-foreground)); /* Use theme's foreground color for text */
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Titles and intros */
+.contact-us-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.contact-us-intro {
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+}
+
+/* Individual contact sections */
+.contact-section {
+  margin-bottom: 2.5rem;
+}
+
+.section-heading {
+  font-size: 1.75rem;
+  margin-bottom: 1rem;
+}
+
+/* Grid for contact details */
+.contact-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.contact-detail-item h3 {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Links */
+.contact-link {
+  color: rgb(var(--color-links)); /* Use theme's link color */
+  text-decoration: underline;
+}
+
+.contact-link:hover {
+  color: rgb(var(--color-accent)); /* Use theme's accent color on hover */
+}
+
+/* Website list */
+.website-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.website-list li {
+  margin-bottom: 0.5rem;
+}
+
+/* Notes and important messages */
+.note-text {
+  font-size: 0.95rem;
+  color: rgba(var(--color-foreground), 0.7); /* Muted foreground for notes */
+}
+
+.note-text.important {
+  font-weight: bold;
+  color: rgb(var(--color-neon-pink)); /* Use neon pink for important notes */
+}
+
+/* Contact form fields */
+.contact-us-container .field {
+  margin-bottom: 1.5rem;
+}
+.contact-us-container .field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+}
+.contact-us-container .field input[type="text"],
+.contact-us-container .field input[type="email"],
+.contact-us-container .field input[type="tel"],
+.contact-us-container .field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(var(--color-foreground), 0.2); /* Light border */
+  border-radius: 8px;
+  background-color: rgba(var(--color-background), 0.8); /* Slightly lighter background for inputs */
+  color: rgb(var(--color-foreground));
+}
+.contact-us-container .field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+.contact-us-container .field input:focus,
+.contact-us-container .field textarea:focus {
+  border-color: rgb(var(--color-accent)); /* Accent color on focus */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(var(--color-accent), 0.3);
+}
+
+/* Submit button */
+.contact-us-container .button {
+  margin-top: 1.5rem;
+  padding: 0.85rem 2rem;
+  background-color: rgb(var(--color-button-primary-bg)); /* Use theme's primary button bg */
+  color: rgb(var(--color-button-primary-text)); /* Use theme's primary button text */
+  border: none;
+  border-radius: var(--buttons-radius, 8px); /* Use theme's button radius */
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.2s ease;
+}
+.contact-us-container .button:hover {
+  background-color: rgb(var(--color-button-primary-hover)); /* Use theme's primary button hover bg */
+  transform: translateY(-1px);
+}
+
+/* Form status messages */
+.form-status {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+.form-status--success {
+  background-color: rgba(var(--color-neon-green), 0.1);
+  color: rgb(var(--color-neon-green));
+  border: 1px solid rgba(var(--color-neon-green), 0.3);
+}
+.form-status--error {
+  background-color: rgba(var(--color-neon-pink), 0.1);
+  color: rgb(var(--color-neon-pink));
+  border: 1px solid rgba(var(--color-neon-pink), 0.3);
+}
+.form-status ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.form-status li {
+  margin-bottom: 0.5rem;
+}
+
+/* Honeypot field - critical to be hidden correctly for bot protection */
+.hp-wrap {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}

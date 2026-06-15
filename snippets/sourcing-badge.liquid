@@ -1,0 +1,88 @@
+{%- comment -%}
+  snippets/sourcing-badge.liquid
+  Decides whether an item is "Made to order" or "Ready to ship" based on:
+  1) Explicit metafield override: product.metafields.custom.made_to_order (boolean)
+  2) Supplier hint (metafield): product.metafields.supply.source (string)
+  3) Vendor keywords (CJdropshipping patterns)
+  4) Tag overrides: 'made-to-order' (force MTO) or 'in-stock'/'not-made-to-order' (force ready)
+
+  Usage:
+    {% render 'sourcing-badge', product: product %}
+
+  Safe by default (escapes and no HTML in user inputs).
+{%- endcomment -%}
+
+{%- liquid
+  assign p = product
+  if p == blank
+    render 'sourcing-badge--error'
+    break
+  endif
+
+  assign vendor_down = p.vendor | default: '' | downcase
+  assign tags_down = p.tags | join: '|' | downcase
+
+  assign mf_custom = p.metafields.custom
+  assign mf_supply = p.metafields.supply
+
+  # 1) Explicit boolean override via metafield custom.made_to_order (true/false)
+  assign has_mto_bool = false
+  assign mto_bool = false
+  if mf_custom and mf_custom.made_to_order != blank
+    assign has_mto_bool = true
+    # Liquid booleans can be raw "true"/"false" or typed; handle both safely:
+    assign val_str = mf_custom.made_to_order.value | downcase | strip
+    if val_str == 'true' or val_str == '1'
+      assign mto_bool = true
+    endif
+  endif
+
+  # 2) Supplier hint via metafield, e.g., supply.source = 'cjdropshipping'
+  assign supplier_hint = ''
+  if mf_supply and mf_supply.source
+    assign supplier_hint = mf_supply.source.value | downcase | strip
+  endif
+
+  # 3) Detect CJdropshipping by vendor/supplier keyword
+  assign cj_detected = false
+  if vendor_down contains 'cjdropshipping' or vendor_down contains 'cj dropshipping'
+    assign cj_detected = true
+  elsif supplier_hint contains 'cjdropshipping' or supplier_hint contains 'cj dropshipping'
+    assign cj_detected = true
+  endif
+
+  # 4) Tag overrides
+  assign force_mto  = false
+  assign force_in   = false
+  if tags_down contains 'made-to-order' or tags_down contains 'made to order'
+    assign force_mto = true
+  endif
+  if tags_down contains 'in-stock' or tags_down contains 'not-made-to-order'
+    assign force_in = true
+  endif
+
+  # Final decision tree (priority):
+  # tag force > explicit metafield > CJ detection > default MTO
+  assign is_mto = true
+  if force_mto
+    assign is_mto = true
+  elsif force_in
+    assign is_mto = false
+  elsif has_mto_bool
+    assign is_mto = mto_bool
+  elsif cj_detected
+    assign is_mto = false
+  else
+    assign is_mto = true
+  endif
+-%}
+
+<span class="sourcing-badge{% if is_mto %} sourcing-badge--mto{% else %} sourcing-badge--instock{% endif %}" aria-label="{% if is_mto %}Made to order{% else %}Ready to ship{% endif %}">
+  {% if is_mto %}
+    <svg class="sourcing-badge__icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21 16V8l-9-5l-9 5v8l9 5l9-5Zm-9 3.09L5 15.47V9.53l7 3.62l7-3.62v5.94l-7 3.62Z"/></svg>
+    <span class="sourcing-badge__text">Made to order</span>
+  {% else %}
+    <svg class="sourcing-badge__icon" width="14" height="14" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="m9 16.17l-3.88-3.88L3.7 13.71l5.3 5.29l11.3-11.29l-1.41-1.42L9 16.17Z"/></svg>
+    <span class="sourcing-badge__text">Ready to ship</span>
+  {% endif %}
+</span>

@@ -1,0 +1,23 @@
+{
+  "name": "Locked Article",
+  "sections": {
+    "main": {
+      "type": "main-article-locked",
+      "settings": {
+        "free_paragraphs": 3,
+        "allowed_tags": "Member,VIP",
+        "gate_title": "Members-only Article",
+        "gate_subtitle": "Log in or create a free account to continue reading.",
+        "show_social": true,
+        "show_meta": true,
+        "show_cover_image": true,
+        "show_excerpt": true,
+        "show_login_btn": true,
+        "login_label": "Log in",
+        "show_register_btn": true,
+        "register_label": "Create account"
+      }
+    }
+  },
+  "order": ["main"]
+}

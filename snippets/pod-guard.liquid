@@ -1,0 +1,163 @@
+{%- comment -%}
+/snippets/pod-guard.liquid
+Purpose: Define safe helper variables for POD detection & messaging.
+Policy: POD vendors are made-to-order; do not mark out-of-stock due to quantity.
+Output: No HTML here. Escape when rendering in caller.
+
+Usage in a template/snippet (escaped rendering):
+  {% render 'pod-guard', product: product %}
+  {% if is_pod_vendor %}
+    <div class="{{ pod_status_class | escape }}">
+      <span class="pod-badge">{{ pod_badge_text | escape }}</span>
+    </div>
+    <div class="pod-info">
+      <p class="pod-shipping">{{ pod_vendor_icon | escape }} {{ pod_shipping_estimate | escape }}</p>
+      {% if pod_quality_message != blank %}<p class="pod-quality">{{ pod_quality_message | escape }}</p>{% endif %}
+      {% if gaming_performance_tags != blank %}<p class="gaming-tags">{{ gaming_performance_tags | escape }}</p>{% endif %}
+    </div>
+  {% endif %}
+{%- endcomment -%}
+
+{%- assign pg_product = product -%}
+{%- if pg_product == nil and product and product.handle -%}
+  {%- assign pg_product = all_products[product.handle] -%}
+{%- endif -%}
+
+{%- comment -%} Vendor allowlist (NO CJ) {%- endcomment -%}
+{%- assign pod_vendor_list = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble' 
+  | split: ',' | map: 'strip' -%}
+
+{%- assign is_pod_vendor = false -%}
+{%- assign vendor_clean = pg_product.vendor | strip -%}
+{%- for v_name in pod_vendor_list -%}
+  {%- if vendor_clean == v_name -%}
+    {%- assign is_pod_vendor = true -%}
+    {%- break -%}
+  {%- endif -%}
+{%- endfor -%}
+
+{%- comment -%} Variant basics {%- endcomment -%}
+{%- assign v = pg_product.selected_or_first_available_variant -%}
+{%- assign v_is_available = v and v.available -%}
+
+{%- comment -%} Inventory signal can be blank/unreliable; ignored for POD OOS logic {%- endcomment -%}
+{%- assign v_qty_zero = false -%}
+{%- if v and v.inventory_quantity != blank and v.inventory_quantity <= 0 -%}
+  {%- assign v_qty_zero = true -%}
+{%- endif -%}
+
+{%- comment -%} OOS determination (POD never OOS due to qty) {%- endcomment -%}
+{%- assign v_oos = 'Out of stock' %} {# intentionally unused: for future logic #}
+{%- if is_pod_vendor -%}
+  {%- assign v_oos = false -%}
+{%- else -%}
+  {%- if v_is_available == false or v_qty_zero -%}{%- assign v_oos = true -%}{%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Gaming detection {%- endcomment -%}
+{%- assign is_gaming_pod = false -%}
+{%- if is_pod_vendor -%}
+  {%- assign product_tags_lower = pg_product.tags | join: ',' | downcase -%}
+  {%- assign product_title_lower = pg_product.title | downcase -%}
+  {%- assign gaming_keywords = 'gaming,gamer,esports,console,pc,controller,headset,mouse,keyboard' | split: ',' -%}
+  {%- for keyword in gaming_keywords -%}
+    {%- if product_tags_lower contains keyword or product_title_lower contains keyword -%}
+      {%- assign is_gaming_pod = true -%}{%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- comment -%} Badge text {%- endcomment -%}
+{%- assign pod_badge_text = 'Made to order' %} {# intentionally unused: for future logic #}
+{%- if is_pod_vendor -%}
+  {%- if v_is_available == false -%}
+    {%- assign pod_badge_text = '⏳ Made to Order' -%}
+  {%- elsif is_gaming_pod -%}
+    {%- assign pod_badge_text = '🎮 Custom Gaming Gear' -%}
+  {%- else -%}
+    {%- assign pod_badge_text = '✨ Print on Demand' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Vendor icon + shipping message {%- endcomment -%}
+{%- assign pod_vendor_icon = 'icon-pod.png' %} {# intentionally unused: for future logic #}
+{%- assign pod_shipping_message = '3-7 business days' -%}
+{%- case vendor_clean -%}
+  {%- when 'Printify' -%}{%- assign pod_vendor_icon = '🖨️' -%}{%- assign pod_shipping_message = '2-5 business days' -%}
+  {%- when 'Printful' -%}{%- assign pod_vendor_icon = '📦' -%}{%- assign pod_shipping_message = '3-7 business days' -%}
+  {%- when 'CustomCat' -%}{%- assign pod_vendor_icon = '🐱' -%}{%- assign pod_shipping_message = '3-5 business days' -%}
+  {%- when 'Gooten' -%}{%- assign pod_vendor_icon = '🚀' -%}{%- assign pod_shipping_message = '3-8 business days' -%}
+  {%- when 'Teespring' or 'Spring' -%}{%- assign pod_vendor_icon = '🌱' -%}{%- assign pod_shipping_message = '4-10 business days' -%}
+  {%- when 'Redbubble' -%}{%- assign pod_vendor_icon = '🔴' -%}{%- assign pod_shipping_message = '1-2 weeks' -%}
+{%- endcase -%}
+
+{%- comment -%} Status class (never 'unavailable' due to qty for POD) {%- endcomment -%}
+{%- assign pod_status_class = 'pod-status' %} {# intentionally unused: for future logic #}
+{%- if is_pod_vendor -%}
+  {%- if v_is_available == false -%}
+    {%- assign pod_status_class = 'pod-status pod-status--unavailable' -%}
+  {%- elsif is_gaming_pod -%}
+    {%- assign pod_status_class = 'pod-status pod-status--gaming' -%}
+  {%- else -%}
+    {%- assign pod_status_class = 'pod-status pod-status--available' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Shipping estimate (always \"Made fresh\" for POD) {%- endcomment -%}
+{%- assign pod_shipping_estimate = 'Ships in 5-7 days' %} {# intentionally unused: for future logic #}
+{%- if is_pod_vendor -%}
+  {%- if v_is_available == false -%}
+    {%- assign pod_shipping_estimate = 'Made to order • Ships when enabled' -%}
+  {%- else -%}
+    {%- assign pod_shipping_estimate = 'Made fresh for you • Ships in ' | append: pod_shipping_message -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Quality + eco messages {%- endcomment -%}
+{%- assign pod_quality_message = 'Premium quality' %} {# intentionally unused: for future logic #}
+{%- if is_gaming_pod -%}
+  {%- assign pod_quality_message = 'Premium quality materials • Designed for gamers' -%}
+{%- elsif is_pod_vendor -%}
+  {%- assign pod_quality_message = 'High-quality print • Made to order' -%}
+{%- endif -%}
+
+{%- assign pod_eco_message = '' -%}
+{%- if is_pod_vendor -%}{%- assign pod_eco_message = '🌱 Eco-friendly • No waste production' -%}{%- endif -%}
+
+{%- comment -%} Availability summary (POD favors available) {%- endcomment -%}
+{%- assign pod_availability_status = 'Available' %} {# intentionally unused: for future logic #}
+{%- if is_pod_vendor -%}
+  {%- if v_is_available -%}
+    {%- assign pod_availability_status = 'available' -%}
+  {%- else -%}
+    {%- assign pod_availability_status = 'unavailable' -%}
+  {%- endif -%}
+{%- else -%}
+  {%- if v_is_available and v_qty_zero == false -%}
+    {%- assign pod_availability_status = 'available' -%}
+  {%- elsif v_is_available == false -%}
+    {%- assign pod_availability_status = 'unavailable' -%}
+  {%- elsif v_qty_zero -%}
+    {%- assign pod_availability_status = 'out_of_stock' -%}
+  {%- else -%}
+    {%- assign pod_availability_status = 'limited' -%}
+  {%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Bulk pricing signal {%- endcomment -%}
+{%- assign pod_has_bulk_pricing = 'Bulk pricing available' %} {# intentionally unused: for future logic #}
+{%- if is_pod_vendor and pg_product.variants.size > 1 -%}
+  {%- assign price_ranges = pg_product.variants | map: 'price' | uniq -%}
+  {%- if price_ranges.size > 1 -%}{%- assign pod_has_bulk_pricing = true -%}{%- endif -%}
+{%- endif -%}
+
+{%- comment -%} Gaming performance tags {%- endcomment -%}
+{%- assign gaming_performance_tags = 'High performance' %} {# intentionally unused: for future logic #}
+{%- if is_gaming_pod -%}
+  {%- assign perf_accumulator = '' -%}
+  {%- if pg_product.tags contains 'pro-gaming' or pg_product.tags contains 'esports' -%}{%- assign perf_accumulator = perf_accumulator | append: '⚡ Pro Performance ' -%}{%- endif -%}
+  {%- if pg_product.tags contains 'rgb' or pg_product.tags contains 'led' -%}{%- assign perf_accumulator = perf_accumulator | append: '🌈 RGB Ready ' -%}{%- endif -%}
+  {%- if pg_product.tags contains 'wireless' -%}{%- assign perf_accumulator = perf_accumulator | append: '📡 Wireless ' -%}{%- endif -%}
+  {%- if pg_product.tags contains 'mechanical' -%}{%- assign perf_accumulator = perf_accumulator | append: '⚙️ Mechanical ' -%}{%- endif -%}
+  {%- assign gaming_performance_tags = perf_accumulator | strip -%}
+{%- endif -%}

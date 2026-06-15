@@ -1,0 +1,26 @@
+
+{% assign rating = product.metafields.reviews.rating.value %}
+{% assign max_rating = product.metafields.reviews.rating.value.scale_max | default: 5 %}
+
+{% if rating %}
+  <div
+    class="rating"
+    role="img"
+    aria-label="{{ 'accessibility.star_reviews_info' | t: rating_value: rating.rating, rating_max: max_rating }}"
+  >
+    <span
+      aria-hidden="true"
+      class="rating-star"
+      style="--rating: {{ rating.rating | floor }}; --rating-max: {{ max_rating }};"
+    ></span>
+  </div>
+  <p class="rating-text caption">
+    <span aria-hidden="true">{{ rating.rating }} / {{ max_rating }}</span>
+  </p>
+  <p class="rating-count caption">
+    <span aria-hidden="true">({{ rating.rating_count }})</span>
+    <span class="visually-hidden">
+      {{ rating.rating_count }} {{ 'accessibility.total_reviews' | t }}
+    </span>
+  </p>
+{% endif %}

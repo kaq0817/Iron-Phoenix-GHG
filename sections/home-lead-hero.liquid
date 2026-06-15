@@ -1,0 +1,125 @@
+{%- comment -%}
+/sections/home-lead-hero.liquid
+Mobile-first, LCP-optimized hero
+- Uses snippets/optimized-image.liquid
+- Preload via image_tag (Theme Check compliant)
+- Desktop & optional mobile image
+- All merchant text escaped
+- All CSS extracted to assets/section-home-lead-hero.css
+{%- endcomment -%}
+
+{{ 'section-home-lead-hero.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-home-lead-hero.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- assign hero_desktop = section.settings.image -%}
+{%- assign hero_mobile  = section.settings.image_mobile | default: section.settings.image -%}
+
+{%- if hero_desktop -%}
+  {%- assign preload_widths = "900, 1200, 1500, 1800, 2160" -%}
+  {{ hero_desktop
+    | image_url: width: 2160
+    | image_tag:
+      widths: preload_widths,
+      sizes: "(max-width: 989px) 100vw, 100vw",
+      alt: (section.settings.image_alt | default: section.settings.title) | escape,
+      preload: true,
+      fetchpriority: "high",
+      loading: "eager",
+      class: "visually-hidden"
+  }}
+{%- endif -%}
+
+<section class="home-hero color-{{ section.settings.color_scheme }}">
+  <div class="home-hero__media">
+    {% if hero_desktop %}
+      {% render 'optimized-image',
+        image: hero_desktop,
+        alt: (section.settings.image_alt | default: section.settings.title) | escape,
+        class: 'home-hero__img home-hero__img--desktop',
+        sizes: '(max-width: 989px) 100vw, 100vw',
+        width_override: 2160,
+        loading: 'eager',
+        fetchpriority: 'high',
+        decoding: 'async'
+      %}
+    {% endif %}
+
+    {% if hero_mobile %}
+      {% render 'optimized-image',
+        image: hero_mobile,
+        alt: (section.settings.image_alt | default: section.settings.title) | escape,
+        class: 'home-hero__img home-hero__img--mobile',
+        sizes: '(max-width: 749px) 100vw, 100vw',
+        width_override: 1200,
+        loading: 'lazy',
+        decoding: 'async'
+      %}
+    {% endif %}
+
+    {% if section.settings.overlay_opacity > 0 %}
+      <div class="home-hero__overlay" style="--overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+    {% endif %}
+  </div>
+
+  <div class="home-hero__content page-width text-{{ section.settings.text_align }}">
+    {% if section.settings.kicker != blank %}
+      <p class="home-hero__kicker">{{ section.settings.kicker | escape }}</p>
+    {% endif %}
+
+    {% if section.settings.title != blank %}
+      <h1 class="home-hero__title h0">{{ section.settings.title | escape }}</h1>
+    {% endif %}
+
+    {% if section.settings.subtext != blank %}
+      <p class="home-hero__subtext">{{ section.settings.subtext | escape }}</p>
+    {% endif %}
+
+    <div class="home-hero__actions">
+      {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
+        <a class="button button--primary" href="{{ section.settings.primary_link }}" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.primary_label | escape }}
+        </a>
+      {% endif %}
+      {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
+        <a class="button button--secondary" href="{{ section.settings.secondary_link }}" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
+          {{ section.settings.secondary_label | escape }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home lead hero",
+  "class": "section-home-lead-hero",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "MADE TO ORDER" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Custom Gifts for Real-Life MVPs" },
+    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Celebrate your crew with made-to-order gear." },
+
+    { "type": "image_picker", "id": "image", "label": "Desktop image" },
+    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text" },
+
+    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 80, "step": 5, "default": 30 },
+    { "type": "select", "id": "text_align", "label": "Text alignment", "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
+
+    { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Shop Personalized" },
+    { "type": "url",  "id": "primary_link",  "label": "Primary button link",  "default": "/collections/all" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "Gift Finder" },
+    { "type": "url",  "id": "secondary_link",  "label": "Secondary button link",  "default": "/collections/all" },
+    { "type": "checkbox", "id": "cta_new_tab", "label": "Open buttons in new tab", "default": false }
+  ],
+  "presets": [
+    { "name": "Home lead hero" }
+  ]
+}
+{% endschema %}

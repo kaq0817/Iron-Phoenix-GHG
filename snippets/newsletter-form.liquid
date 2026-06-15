@@ -1,0 +1,25 @@
+<form method="post" action="/contact#newsletter" accept-charset="UTF-8" class="newsletter-form" id="ContactForm">
+  <input type="hidden" name="form_type" value="customer" />
+  <input type="hidden" name="utf8" value="✓" />
+  <input type="hidden" name="contact[tags]" value="newsletter-tiered-sale" />
+  
+  <label for="Email" class="visually-hidden">Email</label>
+  <input type="email" name="contact[email]" id="Email" class="input" placeholder="Enter your email" required>
+
+  <label>
+    <input type="checkbox" name="contact[tags]" value="Product Updates">
+    Product Updates
+  </label>
+  <label>
+    <input type="checkbox" name="contact[tags]" value="Blog News">
+    Blog News
+  </label>
+
+  <button type="submit" class="button">Subscribe</button>
+
+  {% if form.posted_successfully? %}
+    <p class="success-message" aria-live="polite">Thanks for subscribing!</p>
+  {% elsif form.errors %}
+    <p class="error-message" aria-live="polite">{{ form.errors | default_errors }}</p>
+  {% endif %}
+</form>

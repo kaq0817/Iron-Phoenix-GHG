@@ -1,0 +1,96 @@
+{% comment %}
+Home Categories Nav — styles in assets/section-home-categories-nav.css
+Grid of category links (icons/images + labels)
+- Styles externalized to assets/section-home-categories-nav.css
+- Uses theme's global CSS variables for colors
+{% endcomment %}
+
+{{ 'section-home-categories-nav.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-home-categories-nav.css' | asset_url | stylesheet_tag }}</noscript>
+
+<section class="home-categories-nav page-width color-{{ section.settings.color_scheme }}">
+  {% if section.settings.heading != blank or section.settings.subheading != blank %}
+    <header class="home-categories-nav__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="home-categories-nav__title">{{ section.settings.heading | escape }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="home-categories-nav__sub">{{ section.settings.subheading | escape }}</p>
+      {% endif %}
+    </header>
+  {% endif %}
+
+  <ul class="home-categories-nav__grid" role="list">
+    {% for block in section.blocks %}
+      {% assign href = block.settings.link | default: routes.all_products_collection_url %}
+      <li class="home-categories-nav__item" {{ block.shopify_attributes }}>
+        <a class="home-categories-nav__link" href="{{ href | escape }}">
+          <span class="home-categories-nav__media" aria-hidden="true">
+            {% if block.settings.image %}
+              {{ block.settings.image
+                | image_url: width: 320
+                | image_tag:
+                    alt: block.settings.title | escape,
+                    width: block.settings.image.width,
+                    height: block.settings.image.height,
+                    loading: 'lazy',
+                    class: 'home-categories-nav__img' }}
+            {% elsif block.settings.icon != 'none' %}
+              <span class="home-categories-nav__icon">
+                {% case block.settings.icon %}
+                  {% when 'gamepad' %}🎮
+                  {% when 'spa' %}🧘
+                  {% when 'dumbbell' %}🏋️
+                  {% when 'bolt' %}⚡
+                  {% else %}⭐
+                {% endcase %}
+              </span>
+            {% endif %}
+          </span>
+          <span class="home-categories-nav__label">{{ block.settings.title | default: 'Browse' | escape }}</span>
+        </a>
+      </li>
+    {% endfor %}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Home categories nav",
+  "class": "section-home-categories-nav",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "" },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Label", "default": "Category" },
+        { "type": "url", "id": "link", "label": "Link" },
+        { "type": "image_picker", "id": "image", "label": "Image (optional)" },
+        { "type": "select", "id": "icon", "label": "Emoji icon (fallback)", "default": "gamepad",
+          "options": [
+            { "value": "none", "label": "None" },
+            { "value": "gamepad", "label": "Gamepad" },
+            { "value": "spa", "label": "Lotus" },
+            { "value": "dumbbell", "label": "Dumbbell" },
+            { "value": "bolt", "label": "Bolt" },
+            { "value": "star", "label": "Star" }
+          ]
+        }
+      ]
+    }
+  ],
+  "max_blocks": 12,
+  "presets": [
+    { "name": "Home categories nav", "blocks": [
+      { "type": "category", "settings": { "title": "Gaming" } },
+      { "type": "category", "settings": { "title": "Wellness" } },
+      { "type": "category", "settings": { "title": "Sports" } }
+    ] }
+  ]
+}
+{% endschema %}

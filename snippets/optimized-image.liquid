@@ -1,0 +1,59 @@
+{%- comment -%}
+/snippets/optimized-image.liquid
+Optimized responsive image (CLS-safe)
+Usage:
+  {% render 'optimized-image',
+     image: section.settings.image,
+     alt: section.settings.image_alt,
+     class: 'home-hero__img',
+     sizes: '(max-width: 749px) 100vw, 100vw',
+     width_override: 1600,
+     loading: 'eager',         # or 'lazy' (default)
+     fetchpriority: 'high',    # optional (good for LCP/hero)
+     decoding: 'async' %}
+{%- endcomment -%}
+
+{%- if image == blank -%}{% comment %} nothing to render {% endcomment %}{%- else -%}
+  {%- assign img_format = settings.image_format | default: 'webp' -%}
+  {%- assign opt_level  = settings.image_optimization_level | default: 'smart' -%}
+
+  {%- assign target_w = 1200 -%}
+  {%- if opt_level == 'aggressive' -%}{% assign target_w = 600 %}
+  {%- elsif opt_level == 'smart' -%}{% assign target_w = 900 %}
+  {%- elsif opt_level == 'original' -%}{% assign target_w = 2048 %}
+  {%- endif -%}
+  {%- if width_override %}{% assign target_w = width_override %}{% endif -%}
+
+  {%- assign intrinsic_w = image.width | default: target_w -%}
+  {%- assign intrinsic_h = image.height | default: target_w -%}
+  {%- assign target_h = intrinsic_h | times: target_w | divided_by: intrinsic_w | round -%}
+
+  {%- assign widths_csv = '360,533,720,940,1200,1600,2000,2160' -%}
+  {%- assign widths = widths_csv | split: ',' -%}
+
+  {%- capture srcset -%}
+    {%- for w in widths -%}
+      {%- assign w_num = w | plus: 0 -%}
+      {%- if w_num <= intrinsic_w -%}
+        {{ image | image_url: width: w_num, format: img_format }} {{ w_num }}w{% unless forloop.last %}, {% endunless %}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+
+  {%- assign sizes_attr = sizes | default: '(max-width: 749px) 100vw, 100vw' -%}
+  {%- assign loading_attr = loading | default: 'lazy' -%}
+  {%- assign decoding_attr = decoding | default: 'async' -%}
+
+  <img
+    src="{{ image | image_url: width: target_w, format: img_format }}"
+    srcset="{{ srcset | strip }}"
+    sizes="{{ sizes_attr }}"
+    width="{{ target_w }}"
+    height="{{ target_h }}"
+    alt="{{ alt | default: image.alt | escape }}"
+    loading="{{ loading_attr }}"
+    decoding="{{ decoding_attr }}"
+    {% if fetchpriority %}fetchpriority="{{ fetchpriority }}"{% endif %}
+    {% if class %}class="{{ class }}"{% endif %}
+  />
+{%- endif -%}

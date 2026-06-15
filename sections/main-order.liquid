@@ -1,0 +1,182 @@
+{% comment %}
+  Customer Order Details (sections/main-order.liquid)
+  - Used by templates/customers/order.json
+  - Accessible, theme-check friendly (no Liquid inside {% javascript %})
+{% endcomment %}
+
+<section id="customer-order" class="account-section account-order" aria-labelledby="order-title">
+  <header class="account-header">
+    <a class="account-breadcrumb" href="{{ routes.account_url }}">{{ 'customer.account.return' | t | escape }}</a>
+    <h1 id="order-title" class="account-title">
+      {{ 'customer.order.title' | t: name: order.name | escape }}
+    </h1>
+    <p class="account-subtitle">
+      {{ 'customer.order.date_html' | t: date: order.processed_at | escape }}
+    </p>
+  </header>
+
+  <div class="account-order-status">
+    <span class="badge">
+      {{ 'customer.order.payment_status' | t | escape }}:
+      <strong>{{ order.financial_status | capitalize | escape }}</strong>
+    </span>
+    <span class="badge">
+      {{ 'customer.order.fulfillment_status' | t | escape }}:
+      <strong>{{ order.fulfillment_status | capitalize | escape }}</strong>
+    </span>
+  </div>
+
+  <div class="account-order-grid">
+    <div class="account-card">
+      <h2 class="account-card__title">{{ 'customer.order.shipping_address' | t | escape }}</h2>
+      <div class="address-block">
+        {% if order.shipping_address %}
+          {{ order.shipping_address | format_address }}
+        {% else %}
+          <em>{{ 'customer.order.shipping_address' | t | escape }} — {{ 'templates.404.subtext' | t | escape }}</em>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="account-card">
+      <h2 class="account-card__title">{{ 'customer.order.billing_address' | t | escape }}</h2>
+      <div class="address-block">
+        {% if order.billing_address %}
+          {{ order.billing_address | format_address }}
+        {% else %}
+          <em>{{ 'customer.order.billing_address' | t | escape }} — {{ 'templates.404.subtext' | t | escape }}</em>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="account-card">
+    <h2 class="account-card__title">{{ 'customer.order.product' | t | escape }}</h2>
+
+    <div class="responsive-table">
+      <table role="table" class="order-lines">
+        <thead>
+          <tr>
+            <th scope="col">{{ 'customer.order.product' | t | escape }}</th>
+            <th scope="col">{{ 'products.product.price.regular_price' | t | default: 'Price' | escape }}</th>
+            <th scope="col">{{ 'products.product.quantity.label' | t | default: 'Quantity' | escape }}</th>
+            <th scope="col">{{ 'customer.order.total' | t | escape }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for line in order.line_items %}
+            <tr>
+              <td>
+                <div class="order-line__title">
+                  {% if line.product and line.product.url %}
+                    <a href="{{ line.product.url }}">{{ line.title | escape }}</a>
+                  {% else %}
+                    {{ line.title | escape }}
+                  {% endif %}
+                </div>
+                {% if line.variant_title %}
+                  <div class="order-line__variant">{{ line.variant_title | escape }}</div>
+                {% endif %}
+                {% if line.sku %}
+                  <div class="order-line__sku">{{ 'customer.order.sku' | t | default: 'SKU' | escape }}: {{ line.sku | escape }}</div>
+                {% endif %}
+                {% if line.properties and line.properties.size > 0 %}
+                  <dl class="order-line__properties">
+                    {% for p in line.properties %}
+                      {% assign key = p.first %}
+                      {% assign val = p.last %}
+                      {% if val != blank %}
+                        <div class="property">
+                          <dt>{{ key | escape }}</dt>
+                          <dd>{{ val | escape }}</dd>
+                        </div>
+                      {% endif %}
+                    {% endfor %}
+                  </dl>
+                {% endif %}
+                {% if line.fulfillment %}
+                  <div class="order-line__fulfillment">
+                    {{ 'customer.order.fulfilled_at_html' | t: date: line.fulfillment.created_at | escape }}
+                    {% if line.fulfillment.tracking_company %}
+                      <div>{{ 'customer.order.tracking_company' | t | escape }}: {{ line.fulfillment.tracking_company | escape }}</div>
+                    {% endif %}
+                    {% if line.fulfillment.tracking_number %}
+                      <div>{{ 'customer.order.tracking_number' | t | escape }}: {{ line.fulfillment.tracking_number | escape }}</div>
+                    {% endif %}
+                    {% if line.fulfillment.tracking_url %}
+                      <div><a href="{{ line.fulfillment.tracking_url }}" rel="nofollow noopener" target="_blank">{{ 'customer.order.tracking_url' | t | escape }}</a></div>
+                    {% endif %}
+                  </div>
+                {% endif %}
+              </td>
+              <td data-label="{{ 'products.product.price.regular_price' | t | default: 'Price' | escape }}">
+                {{ line.original_price | money }}
+              </td>
+              <td data-label="{{ 'products.product.quantity.label' | t | default: 'Quantity' | escape }}">
+                {{ line.quantity }}
+              </td>
+              <td data-label="{{ 'customer.order.total' | t | escape }}">
+                {{ line.final_line_price | money }}
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+        <tfoot>
+          <tr>
+            <th scope="row" colspan="3" class="text-right">{{ 'customer.order.subtotal' | t | default: 'Subtotal' | escape }}</th>
+            <td>{{ order.subtotal_price | money }}</td>
+          </tr>
+
+          {% if order.total_discounts > 0 %}
+            <tr>
+              <th scope="row" colspan="3" class="text-right">{{ 'customer.order.discount' | t | escape }}</th>
+              <td>-{{ order.total_discounts | money }}</td>
+            </tr>
+          {% endif %}
+
+          {% if order.shipping_lines.size > 0 %}
+            {% for s in order.shipping_lines %}
+              <tr>
+                <th scope="row" colspan="3" class="text-right">
+                  {{ 'customer.order.shipping' | t | escape }} — {{ s.title | default: 'Shipping' | escape }}
+                </th>
+                <td>{{ s.price | money }}</td>
+              </tr>
+            {% endfor %}
+          {% endif %}
+
+          {% if order.total_tax > 0 %}
+            <tr>
+              <th scope="row" colspan="3" class="text-right">{{ 'customer.order.tax' | t | escape }}</th>
+              <td>{{ order.total_tax | money }}</td>
+            </tr>
+          {% endif %}
+
+          <tr>
+            <th scope="row" colspan="3" class="text-right">{{ 'customer.order.total' | t | escape }}</th>
+            <td><strong>{{ order.total_price | money }}</strong></td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Order Details",
+  "tag": "section",
+  "class": "section-account section-order",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_status_badges",
+      "label": "Show status badges",
+      "default": true
+    }
+  ],
+  "enabled_on": {
+    "templates": ["customers/order"]
+  }
+}
+{% endschema %}

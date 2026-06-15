@@ -1,0 +1,115 @@
+{% comment %}
+  Displays a row of top-level collections for the landing page.
+  Combines dynamic blocks and hardcoded fallback for flexibility.
+  - Styles externalized to assets/section-featured-collection.css
+  - Uses theme's global CSS variables for colors
+{% endcomment %}
+
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}</noscript>
+
+{%- liquid
+  assign collection = collections[section.settings.collection]
+  assign products_to_show = section.settings.products_to_show | default: 8
+-%}
+
+{%- style -%}
+  .featured-collection.section-{{ section.id }}-padding {
+    --featured-collection-padding-top-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --featured-collection-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --featured-collection-padding-top-desktop: {{ section.settings.padding_top }}px;
+    --featured-collection-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<div class="featured-collection section-{{ section.id }}-padding color-{{ section.settings.color_scheme }}">
+  <div class="page-width">
+    {% if section.settings.title != blank %}
+      <h2 class="featured-collection__title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {% if collection.products.size > 0 %}
+      <div class="featured-collection__grid">
+        {% for product in collection.products limit: products_to_show %}
+          <a href="{{ product.url | escape }}" class="product-card">
+            {% if product.featured_image %}
+         <img
+            src="{{ product.featured_image | image_url: width: 300 }}"
+             alt="{{ product.title | escape }}"
+            class="product-card__image"
+           loading="lazy"
+            width="300"
+            height="300"
+  >
+        {% endif %}
+
+            <div class="product-card__title">{{ product.title | escape }}</div>
+            <div class="product-card__price">{{ product.price | money }}</div>
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p>No products in this collection.</p>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 25,
+      "step": 1,
+      "label": "Products to show",
+      "default": 8
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,72 @@
+{% comment %}
+Home Hero + CTA (fast + accessible) — styles in assets/section-home-hero-optin.css
+{% endcomment %}
+
+{{ 'section-home-hero-optin.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<noscript>{{ 'section-home-hero-optin.css' | asset_url | stylesheet_tag }}</noscript>
+
+<section class="home-hero color-{{ section.settings.color_scheme }}">
+  <div class="home-hero__media" aria-hidden="true">
+    {% assign img = section.settings.desktop_image %}
+    {% if img %}
+      {{ img
+        | image_url: width: 2000
+        | image_tag:
+            loading: 'eager',
+            fetchpriority: 'high',
+            decoding: 'async',
+            widths: '750,1100,1500,2000',
+            sizes: '100vw',
+            alt: (section.settings.alt_text | default: section.settings.heading) | escape,
+            width: img.width,
+            height: img.height,
+            class: 'home-hero__img'
+      }}
+    {% endif %}
+  </div>
+
+  <div class="page-width home-hero__inner text-{{ section.settings.text_align }}">
+    {% if section.settings.eyebrow != blank %}
+      <p class="home-hero__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+    {% endif %}
+    {% if section.settings.heading != blank %}
+      <h1 class="home-hero__heading">{{ section.settings.heading | escape }}</h1>
+    {% endif %}
+    {% if section.settings.subheading != blank %}
+      <p class="home-hero__sub">{{ section.settings.subheading }}</p>
+    {% endif %}
+
+    <div class="home-hero__ctas">
+      {% if section.settings.primary_label and section.settings.primary_link %}
+        <a class="btn btn--primary" href="{{ section.settings.primary_link | escape }}">{{ section.settings.primary_label | escape }}</a>
+      {% endif %}
+      {% if section.settings.secondary_label and section.settings.secondary_link %}
+        <a class="btn btn--ghost" href="{{ section.settings.secondary_link | escape }}">{{ section.settings.secondary_label | escape }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Home hero",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "New arrivals" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Rise. Play. Thrive." },
+    { "type": "richtext", "id": "subheading", "label": "Subheading", "default": "<p>Gaming • Sports & Wellness • Creator Tools</p>" },
+    { "type": "image_picker", "id": "desktop_image", "label": "Background image" },
+    { "type": "text", "id": "alt_text", "label": "Background alt text" },
+    { "type": "url", "id": "primary_link", "label": "Primary link" },
+    { "type": "text", "id": "primary_label", "label": "Primary label", "default": "Shop featured" },
+    { "type": "url", "id": "secondary_link", "label": "Secondary link" },
+    { "type": "text", "id": "secondary_label", "label": "Secondary label", "default": "Join free" },
+    { "type": "select", "id": "text_align", "label": "Text alignment", "default": "center", "options": [
+      { "value": "left", "label": "Left" },
+      { "value": "center", "label": "Center" },
+      { "value": "right", "label": "Right" }
+    ]},
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" }
+  ],
+  "presets": [{ "name": "Home hero" }]
+}
+{% endschema %}

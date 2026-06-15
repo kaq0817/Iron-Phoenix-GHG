@@ -1,0 +1,21 @@
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var seen = {};
+    document.querySelectorAll('script[type="application/ld+json"]').forEach(function(tag) {
+      try {
+        var obj = JSON.parse(tag.textContent);
+        if (obj && obj['@type'] && ['Product', 'Organization'].includes(obj['@type'])) {
+          var key = obj['@type'] + (obj.sku || obj.name || obj['@id'] || '');
+          if (seen[key]) {
+            tag.remove(); // Remove duplicate schema block
+          } else {
+            seen[key] = true;
+          }
+        }
+      } catch (e) {
+        // Ignore invalid JSON
+      }
+    });
+  });
+</script>
+

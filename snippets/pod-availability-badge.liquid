@@ -1,0 +1,52 @@
+{%- comment -%}
+/snippets/pod-availability-badge.liquid
+POD availability guard (UI only)
+- Never show "Sold out / 0 in stock" for POD vendors
+- PDP + collection cards: “Made to order — ships soon” when unavailable
+- Accepts `product:` param (falls back to global `product` or `card_product`)
+{%- endcomment -%}
+
+{%- assign prod = product -%}
+{%- if prod == blank and card_product -%}{%- assign prod = card_product -%}{%- endif -%}
+{%- if prod == blank and product_param -%}{%- assign prod = product_param -%}{%- endif -%}
+
+{%- if prod -%}
+  {%- assign vendor = prod.vendor | strip -%}
+  {%- assign is_pod_vendor = false -%}
+  {%- for vn in 'Printify,Printful,AnywherePod' | split: ',' -%}
+    {%- if vendor == vn | strip -%}{%- assign is_pod_vendor = true -%}{%- break -%}{%- endif -%}
+  {%- endfor -%}
+
+  {%- assign v = prod.selected_or_first_available_variant -%}
+  {%- assign v_available = false -%}
+  {%- if v and v.available -%}{%- assign v_available = true -%}{%- endif -%}
+
+  {%- assign qty_zero = false -%}
+  {%- if v and v.inventory_quantity != blank and v.inventory_quantity <= 0 -%}
+    {%- assign qty_zero = true -%}
+  {%- endif -%}
+
+  {%- assign show_mto = is_pod_vendor and (not v_available or qty_zero) -%}
+
+  <div class="pod-availability" role="status" aria-live="polite">
+    {%- if is_pod_vendor -%}
+      {%- if show_mto -%}
+        <span class="pod-availability__state pod-availability__state--mto">
+          Made to order — ships soon
+        </span>
+      {%- else -%}
+        <span class="pod-availability__state pod-availability__state--in">
+          In stock — made to order
+        </span>
+      {%- endif -%}
+    {%- else -%}
+      {%- comment -%} Non-POD: stay quiet (don’t change your theme’s native labels) {%- endcomment -%}
+    {%- endif -%}
+  </div>
+
+  {% style %}
+  .pod-availability__state { display:inline-flex; align-items:center; gap:.5rem; padding:.35rem .6rem; border-radius:.5rem; font-weight:600; }
+  .pod-availability__state--mto { background: rgba(255,223,94,.12); color:#ffdf5e; border:1px dashed rgba(255,223,94,.45); }
+  .pod-availability__state--in  { background: rgba(57,255,20,.12); color:#39ff14; border:1px dashed rgba(57,255,20,.45); }
+  {% endstyle %}
+{%- endif -%}

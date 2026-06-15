@@ -1,0 +1,11 @@
+/* Styles for rich text editor content */
+.rte {
+  line-height: 1.6;
+  color: inherit;
+}
+.rte h1, .rte h2, .rte h3, .rte h4, .rte h5, .rte h6 {
+  font-weight: bold;
+}
+.rte ul, .rte ol {
+  margin-left: 1.5em;
+}

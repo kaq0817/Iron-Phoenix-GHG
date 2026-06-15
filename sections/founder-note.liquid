@@ -1,0 +1,38 @@
+<!-- /sections/founder-note.liquid -->
+{% comment %}
+  Founder Note – branded story block
+  Styles externalized to assets/section-founder-note.css
+  Uses theme's global CSS variables for colors
+{% endcomment %}
+
+{{ 'section-founder-note.css' | asset_url | stylesheet_tag }}
+
+<section class="founder-note color-{{ section.settings.color_scheme }}">
+  <div class="founder-note__inner page-width">
+    <h2 class="founder-note__heading">{{ section.settings.heading | escape }}</h2>
+    <div class="founder-note__body rte">
+      {{ section.settings.body }}
+    </div>
+    {% if section.settings.signature != blank %}
+      <p class="founder-note__sig">— <em>{{ section.settings.signature | escape }}</em></p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Founder note",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "A Real Brand, Built By a Real Person" },
+    {
+      "type": "richtext",
+      "id": "body",
+      "label": "Body",
+      "default": "<p>Hi, I’m the founder of Iron Phoenix.<br><br>I went to Eisenberg School of Business, left to raise my sons after losing my mother, and later worked in home healthcare. After a tough relapse in 2016, I needed a new path. I discovered design, learned the hard way that big platforms favor big budgets, and decided to build something real—this brand. Every order supports a real person, not a corporation. Thank you for being here and proving small brands still matter.</p>"
+    },
+    { "type": "text", "id": "signature", "label": "Signature line", "default": "Your Founder" }
+  ],
+  "presets": [{ "name": "Founder note" }]
+}
+{% endschema %}

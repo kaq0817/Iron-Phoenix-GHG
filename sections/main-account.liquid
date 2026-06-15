@@ -1,0 +1,35 @@
+{% schema %}
+{
+  "name": "Customer Account Main",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "welcome_text",
+      "label": "Welcome message",
+      "default": "Welcome back!"
+    }
+  ]
+}
+{% endschema %}
+
+<main id="customer-account" class="customer-account-section" role="main" aria-label="Customer account">
+  <header>
+    <h1>{{ 'customer.account.title' | t | escape }}</h1>
+    <p>{{ section.settings.welcome_text | escape }}</p>
+  </header>
+  <nav aria-label="{{ 'customer.account.navigation' | t | escape }}">
+    <ul class="account-links">
+      <li>
+        <a href="{{ routes.account_addresses_url }}" class="account-link">
+          {{ 'customer.account.view_addresses' | t | escape }}
+        </a>
+      </li>
+      <li>
+        <a href="{{ routes.account_logout_url }}" class="account-link">
+          {{ 'layout.customer.log_out' | t | escape }}
+        </a>
+      </li>
+    </ul>
+  </nav>
+</main>

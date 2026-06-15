@@ -1,0 +1,92 @@
+{%- comment -%}
+/sections/brand-story.liquid
+Refactor: styles extracted to /assets/section-brand-story.css
+- Keeps two blocks: Branding + Brand Story
+- Escapes plain text; richtext is intentionally rendered
+{%- endcomment -%}
+
+{{ 'custom-branding.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'section-brand-story.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-brand-story.css' | asset_url | stylesheet_tag }}</noscript>
+
+{{ section.settings.logo
+  | image_url: width: 360
+  | image_tag:
+    class: 'branding-logo',
+    alt: (section.settings.logo_alt | default: shop.name) | escape,
+    loading: 'lazy',
+    width: section.settings.logo.width,
+    height: section.settings.logo.height
+}}
+
+<section class="branding-section page-width color-{{ section.settings.color_scheme }} text-{{ section.settings.text_alignment }}">
+  {% if section.settings.logo != blank %}
+    {{ section.settings.logo
+      | image_url: width: 360
+      | image_tag:
+        class: 'branding-logo',
+        alt: alt_text | escape,
+        loading: 'lazy',
+        width: section.settings.logo.width,
+        height: section.settings.logo.height
+    }}
+  {% endif %}
+
+  <div class="branding-block">
+    <h2 class="branding-heading h1">{{ section.settings.heading | escape }}</h2>
+
+    <div class="branding-content rte">
+      {{ section.settings.content }}
+    </div>
+
+    {% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+      <a class="branding-cta-btn" href="{{ section.settings.cta_link | escape }}">
+        {{ section.settings.cta_label | escape }}
+      </a>
+    {% endif %}
+  </div>
+</section>
+
+<section class="brand-story">
+  <div class="page-width">
+    <div class="brand-story__content">
+      <h2 class="brand-story__title">{{ section.settings.title | default: "Our Story" | escape }}</h2>
+      <div class="brand-story__text rte">
+        {{ section.settings.story_content | default: "<p>At Iron Phoenix GHG, we believe gaming and wellness go hand in hand. Our carefully curated products support both your gaming performance and mental health.</p>" }}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Story",
+  "class": "branding-section",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Brand Logo" },
+    { "type": "text", "id": "logo_alt", "label": "Logo Alt Text", "default": "Iron Phoenix Logo" },
+
+    { "type": "text", "id": "heading", "label": "Branding Heading", "default": "Our Story" },
+    { "type": "richtext", "id": "content", "label": "Branding Content", "default": "<p>Iron Phoenix GHG is dedicated to empowering gamers, athletes, and creators. Rise from the ashes stronger than ever.</p>" },
+    { "type": "text", "id": "cta_label", "label": "CTA Label", "default": "Explore Now" },
+    { "type": "url", "id": "cta_link", "label": "CTA Link", "default": "/collections/all" },
+
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left",   "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right",  "label": "Right" }
+      ]
+    },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
+
+    { "type": "text", "id": "title", "label": "Story Title", "default": "Our Story" },
+    { "type": "richtext", "id": "story_content", "label": "Story Content (below)", "default": "<p>At Iron Phoenix GHG, we believe gaming and wellness go hand in hand. Our carefully curated products support both your gaming performance and mental health.</p>" }
+  ],
+  "presets": [{ "name": "Brand Story" }]
+}
+{% endschema %}

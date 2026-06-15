@@ -1,0 +1,176 @@
+{% comment %}
+  Footer (secure, escaped)
+  - Escapes merchant-facing text/attributes
+  - Newsletter form values escaped
+  - Menu/link titles escaped
+  - Policy links rendered via snippet (no duplicates)
+  - Styles loaded from existing assets
+{% endcomment %}
+
+{{ 'component-footer.css' | asset_url | stylesheet_tag }}
+{{ 'component-newsletter.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-menu.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-payment.css' | asset_url | stylesheet_tag }}
+{{ 'component-list-social.css' | asset_url | stylesheet_tag }}
+{{ 'section-footer.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  /* Dynamic spacing per section settings */
+  .footer.section-{{ section.id }}-padding {
+    --footer-margin-top-mobile: {{ section.settings.margin_top | times: 0.75 | round: 0 }}px;
+    --footer-padding-top-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    --footer-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+    --footer-margin-top-desktop: {{ section.settings.margin_top }}px;
+    --footer-padding-top-desktop: {{ section.settings.padding_top }}px;
+    --footer-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
+  }
+{%- endstyle -%}
+
+<footer class="footer color-{{ section.settings.color_scheme }} gradient section-{{ section.id }}-padding">
+  <div class="footer__content-top page-width">
+    {% if section.settings.logo %}
+      <div class="footer__logo">
+        {% assign logo_alt = section.settings.logo_alt | default: shop.name | escape %}
+        {{ section.settings.logo | image_url: width: 300 | image_tag: alt: logo_alt, loading: 'lazy' }}
+      </div>
+    {% endif %}
+
+    <div class="footer__blocks grid grid--1-col grid--2-col-tablet">
+      {% for block in section.blocks %}
+        <div class="footer__block">
+          {% case block.type %}
+
+            {% when 'text' %}
+              <div class="footer__text">{{ block.settings.text | escape }}</div>
+
+            {% when 'link_list' %}
+              {% assign footer_menu = linklists[block.settings.menu] %}
+              {% if footer_menu and footer_menu.links.size > 0 %}
+                <h3 class="footer__title">{{ footer_menu.title | escape }}</h3>
+                <ul class="footer__menu" role="list">
+                  {% for link in footer_menu.links %}
+                    <li>
+                      <a href="{{ link.url | escape }}">{{ link.title | escape }}</a>
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% endif %}
+
+            {% when 'newsletter' %}
+              {% if section.settings.newsletter_enable %}
+                <div class="footer-newsletter">
+                  {% if section.settings.newsletter_heading != blank %}
+                    <h2 class="footer-newsletter__heading">{{ section.settings.newsletter_heading | escape }}</h2>
+                  {% endif %}
+                  {% form 'customer', class: 'footer-newsletter__form' %}
+                    <input type="hidden" name="contact[tags]" value="newsletter">
+                    <label class="visually-hidden" for="FooterNewsletter-{{ section.id }}">Email address</label>
+                    <input
+                      id="FooterNewsletter-{{ section.id }}"
+                      type="email"
+                      name="contact[email]"
+                      class="field__input"
+                      value="{{ form.email | escape }}"
+                      autocorrect="off" autocapitalize="off" autocomplete="email"
+                      placeholder="Your email" required
+                      {% if form.errors %} aria-invalid="true" aria-describedby="FooterNewsletter-error--{{ section.id }}"{% endif %}
+                      {% if form.posted_successfully? %} aria-describedby="FooterNewsletter-success--{{ section.id }}"{% endif %}
+                    >
+                    <button type="submit" class="button">
+                      {{ section.settings.newsletter_button_label | default: 'Subscribe' | escape }}
+                    </button>
+
+                    {% if form.errors %}
+                      <small class="form__message" id="FooterNewsletter-error--{{ section.id }}">Please enter a valid email.</small>
+                    {% endif %}
+                    {% if form.posted_successfully? %}
+                      <p class="form__message" id="FooterNewsletter-success--{{ section.id }}" tabindex="-1">Thanks! You’re subscribed.</p>
+                    {% endif %}
+                  {% endform %}
+                </div>
+              {% endif %}
+
+            {% when 'social' %}
+              {% if section.settings.show_social %}
+                {% render 'social-follow' %}
+              {% endif %}
+
+          {% endcase %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <div class="footer__content-bottom page-width">
+    <div class="footer__localization">
+      {% if section.settings.enable_country_selector and localization.available_countries.size > 1 %}
+        {% form 'localization', id: 'FooterCountryForm', class: 'localization-form' %}
+          {% render 'country-localization' %}
+        {% endform %}
+      {% endif %}
+
+      {% if section.settings.enable_language_selector and localization.available_languages.size > 1 %}
+        {% form 'localization', id: 'FooterLanguageForm', class: 'localization-form' %}
+          {% render 'language-localization' %}
+        {% endform %}
+      {% endif %}
+    </div>
+
+    {% if section.settings.payment_enable %}
+      <div class="footer__payment-icons">
+        <span class="visually-hidden">{{ 'sections.footer.payment' | t }}</span>
+        <ul class="list-payment" role="list">
+          {% for type in shop.enabled_payment_types %}
+            <li class="list-payment__item">{{ type | payment_type_svg_tag }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endif %}
+
+    <div class="footer__copyright">
+      <small>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. All rights reserved.</small>
+      {% if section.settings.show_policy %}
+        {% render 'policy-links' %}
+      {% endif %}
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "class": "section-footer",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "text", "id": "logo_alt", "label": "Logo alt text" },
+
+    { "type": "checkbox", "id": "newsletter_enable", "label": "Enable newsletter block", "default": true },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join our list" },
+    { "type": "text", "id": "newsletter_button_label", "label": "Newsletter button label", "default": "Subscribe" },
+
+    { "type": "checkbox", "id": "enable_country_selector", "label": "Enable country selector", "default": false },
+    { "type": "checkbox", "id": "enable_language_selector", "label": "Enable language selector", "default": false },
+
+    { "type": "checkbox", "id": "payment_enable", "label": "Show payment icons", "default": true },
+    { "type": "checkbox", "id": "show_social", "label": "Show social icons block", "default": true },
+    { "type": "checkbox", "id": "show_policy", "label": "Show policy links", "default": true },
+
+    { "type": "range", "id": "margin_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "Margin top", "default": 40 },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Padding top", "default": 36 },
+    { "type": "range", "id": "padding_bottom", "min": 0, "max": 80, "step": 4, "unit": "px", "label": "Padding bottom", "default": 36 }
+  ],
+  "blocks": [
+    { "type": "text", "name": "Text", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "Made-to-order, delivered with care." }
+    ]},
+    { "type": "link_list", "name": "Menu", "settings": [
+      { "type": "link_list", "id": "menu", "label": "Footer menu" }
+    ]},
+    { "type": "newsletter", "name": "Newsletter", "limit": 1, "settings": []},
+    { "type": "social", "name": "Social", "limit": 1, "settings": []}
+  ],
+  "presets": [ { "name": "Footer" } ]
+}
+{% endschema %}

@@ -1,0 +1,74 @@
+/* assets/section-hero-custom.css */
+
+/* Wrapper */
+.hero-custom {
+  position: relative;
+  display: grid;
+  place-items: center;
+  padding: clamp(3rem, 6vw, 8rem) 1.6rem;
+  text-align: center;
+  background-color: rgb(var(--color-background)); /* Use theme's background color */
+  background-image: var(--hero-bg, none); /* Dynamic background image from Liquid */
+  background-size: cover;
+  background-position: center;
+  isolation: isolate; /* Creates a new stacking context */
+  color: rgb(var(--color-foreground)); /* Use theme's foreground color for text */
+}
+
+/* Media */
+.hero-logo {
+  margin-bottom: 1.5rem;
+  object-fit: contain;
+  max-width: 200px;
+  height: auto;
+}
+
+/* Text */
+.hero-headline {
+  margin: 0 0 .5rem;
+  font-size: clamp(2.2rem, 4.5vw, 4rem);
+  line-height: 1.05;
+}
+.hero-subheadline {
+  margin: 0 0 1.25rem;
+  opacity: .9;
+  max-width: 72ch;
+}
+
+/* Neon accents (using core brand accents from css-variables.css.liquid) */
+.hero-headline.neon-glow {
+  text-shadow:
+    0 0 10px rgba(var(--color-neon-pink), .5), /* Using --color-neon-pink */
+    0 0 30px rgba(var(--color-neon-pink), .35);
+}
+.hero-custom .button--neon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .9rem 1.25rem;
+  border-radius: 12px;
+  font-weight: 700;
+  color: rgb(var(--color-black)); /* Text is black on neon button */
+  background: linear-gradient(90deg, rgb(var(--color-neon-pink)), rgb(var(--color-neon-green))); /* Neon gradient */
+  box-shadow:
+    0 0 16px rgba(var(--color-neon-pink), .35),
+    0 0 10px rgba(var(--color-neon-green), .25);
+  text-decoration: none;
+  transition: transform .15s ease, filter .15s ease;
+}
+.hero-custom .button--neon:hover {
+  transform: translateY(-2px);
+  filter: saturate(1.05);
+}
+.hero-custom .button--neon:focus-visible {
+  outline: 2px solid rgb(var(--color-white)); /* White outline for focus */
+  outline-offset: 2px;
+}
+
+/* Responsive niceties */
+@media (min-width: 990px) {
+  .hero-custom {
+    padding: clamp(6rem, 9vw, 12rem) 2rem;
+  }
+}

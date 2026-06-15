@@ -1,0 +1,6 @@
+{
+  "name": "Order Details",
+  "sections": { "main": { "type": "main-order", "settings": {} } },
+  "order": ["main"]
+}
+

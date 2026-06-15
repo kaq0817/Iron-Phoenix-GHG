@@ -1,0 +1,35 @@
+/* Payment icons list */
+.list-payment{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:.5rem;                 /* replaces item padding + negative margins */
+  list-style:none;           /* reset */
+  margin:0;                  /* reset */
+  padding:1rem 0 0;          /* keep your top padding on mobile */
+  padding-left:0;            /* if this UL inherits left padding anywhere */
+}
+
+@media (min-width:750px){
+  .list-payment{
+    justify-content:flex-end;
+    padding-top:0;
+  }
+}
+
+.list-payment__item{
+  display:flex;
+  align-items:center;
+}
+
+/* Optional: normalize the SVGs output by payment_type_svg_tag */
+.list-payment svg{
+  height:24px;
+  width:auto;
+}
+
+/* Optional fallback for very old browsers without flex gap support */
+@supports not (gap: .5rem){
+  .list-payment{ margin:-.5rem; }
+  .list-payment__item{ padding:.5rem; }
+}

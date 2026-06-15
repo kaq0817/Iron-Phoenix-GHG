@@ -1,0 +1,73 @@
+<!-- /sections/cart-drawer.liquid -->
+{% comment %}
+Cart Drawer (OS 2.0 section)
+- Matches custom element JS: #CartDrawer, .drawer__inner, #CartDrawer-Overlay
+- Server-renders contents so AJAX "sections" updates can swap .drawer__inner
+{% endcomment %}
+
+<cart-drawer class="cart-drawer" aria-hidden="true">
+  <div id="CartDrawer-Overlay" class="cart-drawer__overlay" data-close-drawer></div>
+
+  <div id="CartDrawer" class="cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawer-Title">
+    <div class="cart-drawer__header">
+      <h2 id="CartDrawer-Title" class="cart-drawer__title">{{ 'sections.cart.title' | t | default: 'Your cart' }}</h2>
+      {% render 'vip-banner' %}
+      <button type="button" class="cart-drawer__close" data-close-drawer aria-label="{{ 'accessibility.close' | t | default: 'Close cart' }}">×</button>
+    </div>
+
+    <div class="cart-drawer__loading" hidden>Loading…</div>
+
+    <cart-drawer-items class="drawer__inner{% if cart == empty %} is-empty{% endif %}">
+      {% if cart == empty %}
+        <div class="drawer__inner-empty">
+          <p>{{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}</p>
+        </div>
+      {% else %}
+        <ul class="cart-drawer__items" role="list">
+          {% for item in cart.items %}
+            <li class="cart-drawer__item">
+              <a href="{{ item.url }}" class="cart-drawer__image">
+                {{
+                  item.image
+                  | image_url: width: 180
+                  | image_tag:
+                    loading: 'lazy',
+                    widths: '180,360',
+                    sizes: '(max-width: 480px) 33vw, 180px',
+                    alt: item.title | escape
+                }}
+              </a>
+              <div class="cart-drawer__meta">
+                <a href="{{ item.url }}" class="cart-drawer__product-title">{{ item.product.title | escape }}</a>
+                {% unless item.product.has_only_default_variant %}
+                  <div class="cart-drawer__variant">{{ item.variant.title | escape }}</div>
+                {% endunless %}
+                <div class="cart-drawer__qty-price">
+                  <span class="cart-drawer__qty">× {{ item.quantity }}</span>
+                  <span class="cart-drawer__line-price">{{ item.final_line_price | money }}</span>
+                </div>
+                <a class="cart-drawer__remove" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">
+                  {{ 'sections.cart.remove' | t | default: 'Remove' }}
+                </a>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </cart-drawer-items>
+
+    <div class="cart-drawer__footer" data-cart-footer {% if cart == empty %}hidden{% endif %}>
+      <div class="cart-drawer__total">
+        <span>{{ 'sections.cart.subtotal' | t | default: 'Subtotal' }}</span>
+        <span data-cart-subtotal>{{ cart.total_price | money }}</span>
+      </div>
+      <a href="{{ routes.cart_url }}" class="cart-drawer__checkout-button button">
+        {{ 'sections.cart.checkout' | t | default: 'Checkout' }}
+      </a>
+    </div>
+  </div>
+</cart-drawer>
+
+{% schema %}
+{ "name": "Cart drawer", "settings": [] }
+{% endschema %}

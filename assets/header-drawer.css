@@ -1,0 +1,120 @@
+:root {
+  --drawer-bg: #fff;
+  --drawer-overlay: rgba(0, 0, 0, 0.52);
+  --drawer-text: #1a222a;
+  --drawer-accent: #1abc9c; /* Teal example */
+  --drawer-shadow: 0 4px 24px rgba(0,0,0,0.22);
+}
+
+.header-drawer {
+  position: fixed;
+  z-index: 3001;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 320px;
+  max-width: 90vw;
+  background: var(--drawer-bg);
+  color: var(--drawer-text);
+  box-shadow: var(--drawer-shadow);
+  transform: translateX(-110%);
+  transition: transform 0.32s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-y: auto;
+  outline: none;
+  will-change: transform;
+}
+.header-drawer[aria-hidden="false"] {
+  transform: translateX(0);
+}
+.header-drawer__overlay {
+  position: fixed;
+  z-index: 3000;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: var(--drawer-overlay);
+  opacity: 1;
+  pointer-events: auto;
+  transition: opacity 0.2s;
+  cursor: pointer;
+  display: none;
+}
+.header-drawer[aria-hidden="false"] ~ .header-drawer__overlay,
+body.drawer-open .header-drawer__overlay {
+  display: block;
+}
+
+.header-drawer__nav {
+  padding: 1.5rem 1.25rem 1.5rem 1.25rem;
+  min-height: 100vh;
+  height: 100%;
+}
+.header-drawer__close {
+  background: transparent;
+  border: none;
+  font-size: 2.2rem;
+  font-weight: bold;
+  color: var(--drawer-accent);
+  cursor: pointer;
+  margin-bottom: 1rem;
+  margin-left: -0.2rem;
+}
+.header-drawer__menu,
+.header-drawer__submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.header-drawer__menu > li {
+  margin-bottom: 0.7em;
+}
+.header-drawer__link,
+.header-drawer__sublink {
+  display: block;
+  font-size: 1.11rem;
+  color: var(--drawer-text);
+  padding: 0.55em 0;
+  text-decoration: none;
+  transition: color 0.15s;
+  border-radius: 3px;
+}
+.header-drawer__link:focus,
+.header-drawer__sublink:focus,
+.header-drawer__link:hover,
+.header-drawer__sublink:hover {
+  color: var(--drawer-accent);
+  background: #f8f8f8;
+  outline: 2px solid var(--drawer-accent);
+}
+.header-drawer__submenu {
+  padding-left: 1.25em;
+  margin-top: 0.25em;
+}
+.header-drawer-toggle {
+  background: none;
+  border: none;
+  color: var(--drawer-accent);
+  font-size: 2.1rem;
+  cursor: pointer;
+  position: relative;
+  z-index: 3100;
+  margin-left: 0.5rem;
+}
+.header-drawer__hamburger {
+  display: inline-block;
+  font-size: 2.1rem;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+/* Hide drawer toggle button on desktop (show it mobile only) */
+@media (min-width: 1024px) {
+  .header-drawer,
+  .header-drawer-toggle,
+  .header-drawer__overlay {
+    display: none !important;
+  }
+}
+
+/* Prevent body scroll when drawer is open */
+body.drawer-open {
+  overflow: hidden;
+}

@@ -1,0 +1,115 @@
+{% comment %}
+  Iron Phoenix Facets Section
+  Optimized for SEO, performance, and native filtering
+{% endcomment %}
+
+{% assign results = collection | default: search %}
+
+<section id="Facets" class="facets-wrapper">
+  <facet-filters-form class="facets">
+    <form id="FacetFiltersForm" class="facets__form">
+      <div class="facets__fields">
+        <input type="hidden" name="sort_by" value="{{ results.sort_by | escape }}" />
+
+        {% for filter in results.filters %}
+          <details class="facets__details" data-index="{{ forloop.index }}">
+            <summary class="facets__summary">
+              <span>{{ filter.label | escape }}</span>
+              <span class="facets__summary-icon">+</span>
+            </summary>
+            <div class="facets__display">
+              <ul class="facets__list">
+                {% for value in filter.values %}
+                  <li class="facets__item">
+                    <label for="Filter-{{ filter.param_name }}-{{ forloop.index }}" class="facets__label">
+                      <input type="checkbox"
+                             name="{{ filter.param_name }}"
+                             value="{{ value.value | escape }}"
+                             id="Filter-{{ filter.param_name }}-{{ forloop.index }}"
+                             {% if value.active %}checked{% endif %}
+                             {% if value.count == 0 and value.active == false %}disabled{% endif %}>
+                      <span class="facets__label-text">{{ value.label | escape }} ({{ value.count }})</span>
+                    </label>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </details>
+        {% endfor %}
+
+        {% if results.current_vendor or results.current_type %}
+          <input type="hidden" name="q" value="{{ results.current_vendor | default: results.current_type | escape }}">
+        {% endif %}
+      </div>
+
+      <noscript>
+        <button type="submit" class="facets__submit button">Apply Filters</button>
+      </noscript>
+    </form>
+
+    <div class="facets__active">
+      {% for filter in results.filters %}
+        {% for value in filter.active_values %}
+          <facet-remove>
+            <a href="{{ value.url_to_remove }}" class="active-facet-remove" data-value="{{ value.value }}">
+              {{ value.label | escape }} ✕
+            </a>
+          </facet-remove>
+        {% endfor %}
+      {% endfor %}
+
+      {% if results.filters.size > 0 and results.has_active_filters %}
+        <a href="{{ results.url }}" class="facets__clear">Clear all</a>
+      {% endif %}
+    </div>
+  </facet-filters-form>
+</section>
+
+{% schema %}
+{
+  "name": "Faceted Filters",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Faceted Filters",
+      "category": "Collection"
+    }
+  ]
+}
+{% endschema %}
+
+{% javascript %}
+class FacetFiltersForm extends HTMLElement {
+  constructor() {
+    super();
+    this.form = this.querySelector('form');
+    this.onChangeHandler = this.onChange.bind(this);
+    this.form.addEventListener('input', this.onChangeHandler);
+  }
+
+  onChange(event) {
+    const formData = new FormData(this.form);
+    const searchParams = new URLSearchParams(formData).toString();
+    this.renderPage(searchParams);
+  }
+
+  renderPage(searchParams) {
+    const url = `${window.location.pathname}?${searchParams}`;
+    history.pushState({ searchParams }, '', url);
+
+    fetch(url)
+      .then((response) => response.text())
+      .then((html) => {
+        const doc = new DOMParser().parseFromString(html, 'text/html');
+        const newResults = doc.querySelector('#ProductGrid');
+        const currentResults = document.querySelector('#ProductGrid');
+        if (newResults && currentResults) currentResults.innerHTML = newResults.innerHTML;
+
+        const newFacets = doc.querySelector('#Facets');
+        const currentFacets = document.querySelector('#Facets');
+        if (newFacets && currentFacets) currentFacets.innerHTML = newFacets.innerHTML;
+      });
+  }
+}
+customElements.define('facet-filters-form', FacetFiltersForm);
+{% endjavascript %}
