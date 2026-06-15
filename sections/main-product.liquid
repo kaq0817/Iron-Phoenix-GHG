@@ -274,8 +274,9 @@ Depends on: structured-product, member-price snippets
           <span class="mp-stars">
             {%- assign full_s = rating_val.rating | floor -%}
             {%- assign half_s = rating_val.rating | minus: full_s -%}
+            {%- assign next_s = full_s | plus: 1 -%}
             {%- for i in (1..5) -%}
-              {%- if i <= full_s -%}★{%- elsif half_s >= 0.5 and i == full_s | plus: 1 -%}⯨{%- else -%}☆{%- endif -%}
+              {%- if i <= full_s -%}★{%- elsif half_s >= 0.5 and i == next_s -%}⯨{%- else -%}☆{%- endif -%}
             {%- endfor -%}
           </span>
           <span class="mp-rating-val">{{ rating_val.rating | round: 1 }}</span>
