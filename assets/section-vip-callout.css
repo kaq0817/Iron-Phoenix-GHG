@@ -1,24 +1,63 @@
-/* section-vip-callout.css */
-.vip-callout{
-  text-align:center;
-  padding:clamp(24px,4vw,40px) 20px;
-  background: rgba(255,255,255,.03);
-  border-radius: 16px;
+/* Iron Phoenix GHG — VIP Callout */
+.vip-callout {
+  --vip-title-font:     Georgia, 'Times New Roman', serif;
+  --vip-border:         rgba(201, 168, 76, 0.22);
+  --vip-shadow:         rgba(28, 15, 20, 0.08);
+  --vip-subtitle-color: #5C4E44;
+  --vip-button-bg:      #6B2737;
+  --vip-button-text:    #F9F6F1;
+  --vip-button-border:  rgba(107, 39, 55, 0.5);
+
+  width: 100%;
+  max-width: 960px;
+  margin: 0 auto;
+  text-align: center;
+  padding: clamp(24px, 4vw, 40px) clamp(18px, 4vw, 32px);
+  border-top: 1px solid var(--vip-border);
+  border-bottom: 1px solid var(--vip-border);
+  border-left: 0;
+  border-right: 0;
+  border-radius: 0;
+  box-shadow: none;
 }
-.vip-callout__title{
-  margin:0 0 .4rem;
-  font-size:clamp(1.6rem,3.2vw,2.2rem);
-  font-weight:800;
-  letter-spacing:.01em;
+
+.vip-callout__title {
+  margin: 0 0 0.6rem;
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  font-family: var(--vip-title-font);
+  color: #1C0F14;
 }
-.vip-callout__subtitle{
-  opacity:.95;
-  max-width:70ch;
-  margin:0 auto 1rem;
+
+.vip-callout__subtitle {
+  color: var(--vip-subtitle-color);
+  max-width: 62ch;
+  margin: 0 auto 1.3rem;
+  font-size: clamp(0.98rem, 1.5vw, 1.08rem);
+  line-height: 1.58;
 }
-.vip-callout__button{
-  display:inline-block;
-  font-weight:700;
-  border-radius:10px;
-  padding:.8rem 1.25rem;
+
+.vip-callout__button {
+  display: inline-block;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.9rem 1.5rem;
+  background: var(--vip-button-bg);
+  color: var(--vip-button-text);
+  border: 1px solid var(--vip-button-border);
+  text-decoration: none;
+  transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
+}
+
+.vip-callout__button:hover {
+  transform: translateY(-1px);
+  background: #4F1D28;
+  box-shadow: 0 8px 18px rgba(107, 39, 55, 0.2);
+}
+
+.vip-callout__button:focus-visible {
+  outline: 2px solid #C9A84C;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(201, 168, 76, 0.2);
 }

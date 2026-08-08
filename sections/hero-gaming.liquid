@@ -1,41 +1,42 @@
-{%- comment -%} /sections/hero-gaming.liquid — Neon gaming hero {%- endcomment -%}
+{%- comment -%} /sections/hero-gaming.liquid — Neon gaming hero (optimized) {%- endcomment -%}
 <section class="hero-gaming page-width color-{{ section.settings.color_scheme }}">
   <div class="hero-gaming__bg" aria-hidden="true"></div>
   <div class="hero-gaming__wrap">
     <div class="hero-gaming__copy">
-      <div class="hero-gaming__eyebrow">{{ section.settings.eyebrow | default: 'Iron Phoenix GHG' | escape }}</div>
-      <h1 class="hero-gaming__title">{{ section.settings.heading | default: 'Level up your gear.' | escape }}</h1>
+      <div class="hero-gaming__eyebrow">{{ section.settings.eyebrow | default: 'Go Hard Gaming Discord LLC' | escape }}</div>
+      <h2 class="hero-gaming__title">{{ section.settings.heading | default: 'Level up your gear.' | escape }}</h2>
+
       {%- if section.settings.subheading != blank -%}
         <p class="hero-gaming__subtitle">{{ section.settings.subheading | escape }}</p>
       {%- endif -%}
+
       <div style="margin-top:1.25rem;display:flex;gap:1rem;flex-wrap:wrap;">
-        {% render 'cta-powerup', href: section.settings.primary_link, label: section.settings.primary_label, icon: 'bolt' %}
-        {%- if section.settings.secondary_label and section.settings.secondary_link -%}
-          <a href="{{ section.settings.secondary_link }}" class="badge-chip">{{ section.settings.secondary_label | escape }}</a>
+        {%- if section.settings.primary_label != blank and section.settings.primary_link != blank -%}
+          <a href="{{ section.settings.primary_link | escape }}" class="button button--primary">
+            {{ section.settings.primary_label | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_label != blank and section.settings.secondary_link != blank -%}
+          <a href="{{ section.settings.secondary_link | escape }}" class="badge-chip">
+            {{ section.settings.secondary_label | escape }}
+          </a>
         {%- endif -%}
       </div>
-      <div style="margin-top:1.25rem;">
-        {%- if snippet_exists 'vip-xp-bar' -%}{% render 'vip-xp-bar' %}{%- endif -%}
-      </div>
+
     </div>
 
     {%- if section.settings.image != blank -%}
       <div class="hero-gaming__media">
-        {%- if snippet_exists 'optimized-image' -%}
-          {% render 'optimized-image',
-            image: section.settings.image,
-            alt: section.settings.image_alt | default: section.settings.heading,
-            widths: '480,720,960,1200,1600',
-            sizes: '(max-width: 980px) 100vw, 46vw',
-            loading: 'eager',
-            fetchpriority: 'high'
-          %}
-        {%- else -%}
-          {{ section.settings.image
-             | image_url: width: 1600
-             | image_tag: widths: '480,720,960,1200,1600', sizes: '(max-width: 980px) 100vw, 46vw',
-               alt: section.settings.image_alt | default: section.settings.heading, loading: 'eager', fetchpriority: 'high' }}
-        {%- endif -%}
+        {%
+          render 'optimized-image',
+          image: section.settings.image,
+          width_override: 1200,
+          sizes: '(max-width: 749px) 100vw, 50vw',
+          loading: 'lazy',
+          fetchpriority: 'low',
+          alt: section.settings.image_alt | default: section.settings.heading,
+          class: 'hero-gaming__image'
+        %}
       </div>
     {%- endif -%}
   </div>
@@ -43,19 +44,24 @@
 
 {% schema %}
 {
-  "name": "Hero — Gaming Neon",
+  "name": "Hero — Featured",
   "settings": [
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Iron Phoenix GHG" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Go Hard Gaming Discord LLC" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Level up your gear." },
-    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Custom gaming apparel and accessories designed to perform." },
+    {
+      "type": "textarea",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Handcrafted products for life's biggest moments."
+    },
     { "type": "image_picker", "id": "image", "label": "Hero image" },
-    { "type": "text", "id": "image_alt", "label": "Hero image alt", "default": "Gaming showcase" },
+    { "type": "text", "id": "image_alt", "label": "Hero image alt", "default": "Go Hard Gaming Discord LLC featured collection" },
     { "type": "url", "id": "primary_link", "label": "Primary button link" },
     { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Shop New Drops" },
     { "type": "url", "id": "secondary_link", "label": "Secondary link" },
     { "type": "text", "id": "secondary_label", "label": "Secondary label", "default": "See VIP perks" }
   ],
-  "presets": [{ "name": "Hero — Gaming Neon" }]
+  "presets": [{ "name": "Hero — Featured" }]
 }
 {% endschema %}

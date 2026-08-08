@@ -1,9 +1,7 @@
 {%- comment -%}
-  snippets/product-media-modal.liquid
-  Accessible modal for zooming product images/videos
-  Usage: render this near the end of sections/main-product.liquid (once)
+Accessible modal for zooming product media.
+Used by global.js click handler and product-modal.js controller.
 {%- endcomment -%}
-
 <div
   id="ProductMediaModal"
   class="ip-modal"
@@ -16,19 +14,17 @@
 
   <div class="ip-modal__panel" role="document">
     <header class="ip-modal__header">
-      <h2 id="ip-modal-title" class="ip-modal__title">{{ product.title | escape }}</h2>
+      <h2 id="ip-modal-title" class="ip-modal__title">{{ product.title | default: shop.name | escape }}</h2>
       <button
         type="button"
         class="ip-modal__close"
-        aria-label="{{ 'general.share.close' | t | default: 'Close' }}"
+        aria-label="{{ 'general.share.close' | t | default: 'Close' | escape }}"
         data-ip-modal-close
-      >
-        &times;
-      </button>
+      >&times;</button>
     </header>
 
     <div class="ip-modal__body" id="ip-modal-body" tabindex="-1" data-ip-modal-body>
-      {%- comment -%} Content injected from templates at runtime {%- endcomment -%}
+      {%- comment -%} Content injected at runtime {%- endcomment -%}
     </div>
   </div>
 </div>

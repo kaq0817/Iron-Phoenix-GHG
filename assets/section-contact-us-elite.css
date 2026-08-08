@@ -4,10 +4,12 @@
 .contact-us-container {
   padding-top: var(--section-pt);
   padding-bottom: var(--section-pb);
-  background-color: rgb(var(--color-background)); /* Use theme's background color */
-  color: rgb(var(--color-foreground)); /* Use theme's foreground color for text */
+  background-color: #F9F6F1;
+  color: #1A1310;
   max-width: 1200px;
   margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 /* Titles and intros */
@@ -15,44 +17,59 @@
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 1.5rem;
+  color: #1C0F14;
 }
 
 .contact-us-intro {
   text-align: center;
   font-size: 1.2rem;
   margin-bottom: 2rem;
+  color: #3D2B22;
 }
 
 /* Individual contact sections */
 .contact-section {
   margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
 
 .section-heading {
   font-size: 1.75rem;
   margin-bottom: 1rem;
+  color: #6B2737;
 }
 
 /* Grid for contact details */
 .contact-details-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
+  margin-top: 1.5rem;
 }
 
 .contact-detail-item h3 {
   font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #C9A84C;
+  font-weight: 600;
+}
+
+.contact-detail-item p {
+  color: #3D2B22;
+  line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
 /* Links */
 .contact-link {
-  color: rgb(var(--color-links)); /* Use theme's link color */
+  color: #6B2737;
   text-decoration: underline;
+  transition: color 0.2s;
 }
 
 .contact-link:hover {
-  color: rgb(var(--color-accent)); /* Use theme's accent color on hover */
+  color: #C9A84C;
 }
 
 /* Website list */
@@ -62,66 +79,88 @@
 }
 
 .website-list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #3D2B22;
+}
+
+.website-list li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #C9A84C;
 }
 
 /* Notes and important messages */
 .note-text {
   font-size: 0.95rem;
-  color: rgba(var(--color-foreground), 0.7); /* Muted foreground for notes */
+  color: #5C4E44;
+  padding: 1rem;
+  background: rgba(201, 168, 76, 0.06);
+  border-left: 3px solid rgba(201, 168, 76, 0.4);
+  margin: 1rem 0;
+  line-height: 1.6;
 }
 
 .note-text.important {
-  font-weight: bold;
-  color: rgb(var(--color-neon-pink)); /* Use neon pink for important notes */
+  font-weight: 600;
+  color: #1A1310;
+  border-left-color: #6B2737;
 }
 
 /* Contact form fields */
 .contact-us-container .field {
   margin-bottom: 1.5rem;
 }
+
 .contact-us-container .field label {
   display: block;
   margin-bottom: 0.5rem;
   font-weight: 500;
+  color: #1A1310;
 }
+
 .contact-us-container .field input[type="text"],
 .contact-us-container .field input[type="email"],
 .contact-us-container .field input[type="tel"],
 .contact-us-container .field textarea {
   width: 100%;
   padding: 0.75rem;
-  border: 1px solid rgba(var(--color-foreground), 0.2); /* Light border */
+  border: 1px solid #D8CCB8;
   border-radius: 8px;
-  background-color: rgba(var(--color-background), 0.8); /* Slightly lighter background for inputs */
-  color: rgb(var(--color-foreground));
+  background-color: #FFFFFF;
+  color: #1A1310;
 }
+
 .contact-us-container .field textarea {
   resize: vertical;
   min-height: 100px;
 }
+
 .contact-us-container .field input:focus,
 .contact-us-container .field textarea:focus {
-  border-color: rgb(var(--color-accent)); /* Accent color on focus */
+  border-color: #C9A84C;
   outline: none;
-  box-shadow: 0 0 0 2px rgba(var(--color-accent), 0.3);
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.2);
 }
 
 /* Submit button */
 .contact-us-container .button {
   margin-top: 1.5rem;
   padding: 0.85rem 2rem;
-  background-color: rgb(var(--color-button-primary-bg)); /* Use theme's primary button bg */
-  color: rgb(var(--color-button-primary-text)); /* Use theme's primary button text */
+  background-color: #6B2737;
+  color: #F9F6F1;
   border: none;
-  border-radius: var(--buttons-radius, 8px); /* Use theme's button radius */
+  border-radius: 8px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s ease, transform 0.2s ease;
+  transition: all 0.2s ease;
 }
+
 .contact-us-container .button:hover {
-  background-color: rgb(var(--color-button-primary-hover)); /* Use theme's primary button hover bg */
-  transform: translateY(-1px);
+  background-color: #4F1D28;
+  transform: translateY(-2px);
 }
 
 /* Form status messages */
@@ -130,31 +169,57 @@
   border-radius: 8px;
   margin-bottom: 1.5rem;
 }
+
 .form-status--success {
-  background-color: rgba(var(--color-neon-green), 0.1);
-  color: rgb(var(--color-neon-green));
-  border: 1px solid rgba(var(--color-neon-green), 0.3);
+  background-color: rgba(201, 168, 76, 0.1);
+  color: #6B2737;
+  border: 1px solid rgba(201, 168, 76, 0.3);
 }
+
 .form-status--error {
-  background-color: rgba(var(--color-neon-pink), 0.1);
-  color: rgb(var(--color-neon-pink));
-  border: 1px solid rgba(var(--color-neon-pink), 0.3);
+  background-color: rgba(107, 39, 55, 0.08);
+  color: #6B2737;
+  border: 1px solid rgba(107, 39, 55, 0.3);
 }
+
 .form-status ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
+
 .form-status li {
   margin-bottom: 0.5rem;
 }
 
-/* Honeypot field - critical to be hidden correctly for bot protection */
-.hp-wrap {
+/* Honeypot field - hidden for bot protection */
+.hp-wrap,
+.visually-hidden,
+.contact__decoy {
   position: absolute !important;
   left: -10000px !important;
   top: auto !important;
   width: 1px !important;
   height: 1px !important;
   overflow: hidden !important;
+}
+
+.contact__error {
+  color: #6B2737;
+  margin-top: 1rem;
+}
+
+/* Mobile responsive */
+@media screen and (max-width: 749px) {
+  .contact-details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-us-title {
+    font-size: 2rem;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
+  }
 }

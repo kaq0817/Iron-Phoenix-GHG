@@ -1,33 +1,43 @@
 {% comment %}
-  Featured Collection Sidebar Section
-  - Styles externalized to assets/section-featured-collection-sidebar.css
-  - Uses theme's global CSS variables for colors
+  Sidebar: Featured Collections (safe)
 {% endcomment %}
 
-{{ 'section-featured-collection-sidebar.css' | asset_url | stylesheet_tag }}
+<link rel="stylesheet" href="{{ 'section-featured-collection-sidebar.css' | asset_url }}" media="print" onload="this.media='all'">
+<noscript>{{ 'section-featured-collection-sidebar.css' | asset_url | stylesheet_tag }}</noscript>
 
 <aside class="blog-sidebar-featured-collections">
   {% if section.settings.heading != blank %}
-    <h2 class="sidebar-heading">
-      {{ section.settings.heading | escape }}
-    </h2>
+    <h2 class="sidebar-heading">{{ section.settings.heading | escape }}</h2>
   {% endif %}
+
   <div class="sidebar-featured-collections-list">
     {% for block in section.blocks %}
-      <div class="sidebar-featured-collection-card">
-        <a href="{{ block.settings.collection.url | escape }}">
-          {% if block.settings.collection.image %}
-            {% render 'optimized-image', image: block.settings.collection.image, alt: block.settings.collection.title | escape, width: 60, height: 60, class: 'sidebar-featured-collection-card__image' %}
-          {% endif %}
-          <div>
-            <div>{{ block.settings.collection.title | escape }}</div>
+      {% assign col = block.settings.collection %}
+      <div class="sidebar-featured-collection-card" {{ block.shopify_attributes }}>
+        {% if col %}
+          <a href="{{ col.url | escape }}">
+            {% if col.image %}
+              {%- render 'optimized-image',
+                image: col.image,
+                alt: col.title,
+                width_override: 120,
+                class: 'sidebar-featured-collection-card__image'
+              -%}
+            {% endif %}
             <div>
-              {{ block.settings.collection.description | strip_html | truncate: 55 | escape }}
+              <div>{{ col.title | escape }}</div>
+              <div>{{ col.description | strip_html | truncate: 55 | escape }}</div>
             </div>
+          </a>
+        {% else %}
+          <div>
+            <div>Choose a collection</div>
+            <div class="muted">Add one in the block settings.</div>
           </div>
-        </a>
+        {% endif %}
       </div>
     {% endfor %}
+
     {% if section.blocks.size == 0 %}
       <div>No featured collections set. Add them in the theme editor!</div>
     {% endif %}
@@ -48,21 +58,15 @@
   ],
   "blocks": [
     {
-      "type": "collection",
+      "type": "collection_item",
       "name": "Collection",
       "settings": [
-        {
-          "type": "collection",
-          "id": "collection",
-          "label": "Collection"
-        }
+        { "type": "collection", "id": "collection", "label": "Collection" }
       ]
     }
   ],
   "presets": [
-    {
-      "name": "Sidebar: Featured Collections"
-    }
+    { "name": "Sidebar Collections" }
   ]
 }
 {% endschema %}

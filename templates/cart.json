@@ -1,12 +1,1 @@
-{
-  "name": "Cart",
-  "sections": {
-    "main": {
-      "type": "main-cart-items",
-      "settings": {}
-    }
-  },
-  "order": [
-    "main"
-  ]
-}
+{"sections":{"free_shipping_bar_4kmWeY":{"type":"free-shipping-bar","name":"Free Shipping Bar","settings":{"show_everywhere":true,"hide_on_cart":false,"default_threshold":"$159.00","vip_threshold":"$139.00","legend_free_shipping":true}},"main":{"type":"main-cart-items","custom_css":[".cart__checkout-button,.cart__ctas .button{background:linear-gradient(90deg,#6a0dad,#8a2be2)!important;color:#fff!important;border-radius:8px!important;font-weight:700!important;padding:1rem 2rem!important}"],"settings":{}}},"order":["free_shipping_bar_4kmWeY","main"]}

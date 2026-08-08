@@ -1,0 +1,151 @@
+body,
+.main-content {
+  background: #F9F6F1 !important;
+  color: #1A1310;
+}
+
+/* Section block utility classes */
+.section-block {
+  padding: 64px 0;
+}
+.section-block--soft {
+  background: #F2EDE5;
+}
+.section-block--warm {
+  background: #EDE0D0;
+}
+.section-block--teal-tint {
+  background: #F5ECD8;
+}
+
+/* Section title classes */
+.section-title {
+  margin-bottom: 28px;
+}
+.section-title::after {
+  content: "";
+  display: block;
+  width: 64px;
+  height: 3px;
+  margin-top: 10px;
+  background: #C9A84C;
+  border-radius: 99px;
+}
+
+/* Section heading classes */
+.section-heading {
+  margin-bottom: 20px !important;
+}
+
+.product-card {
+  background: #FFFFFF;
+  border-radius: 12px;
+  color: #1A1310;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.collection-card {
+  background: #F0E8DA;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.06);
+  overflow: hidden;
+}
+
+.product-grid {
+  margin-top: 0;
+  gap: 24px;
+}
+
+.home-intro-band {
+  background: #6B2737;
+  color: #F9F6F1;
+  padding: 36px 0;
+}
+
+.section-alt {
+  background: #4F1D28;
+  color: #F9F6F1;
+}
+
+.section-dark {
+  background: #1C0F14;
+  color: #F0EAE0;
+}
+
+.button {
+  background: #6B2737;
+  color: #F9F6F1;
+  border: none;
+}
+
+.button:hover,
+.button-primary:hover {
+  background: #4F1D28;
+}
+
+.button-primary {
+  background: #6B2737;
+  color: #F9F6F1;
+  border: none;
+}
+
+.site-header {
+  background: #F9F6F1;
+  color: #1A1310;
+}
+
+.site-footer {
+  background: #1C0F14;
+  color: #F0EAE0;
+}
+
+.shopify-section {
+  background: #F9F6F1;
+  color: #1A1310;
+}
+
+.shopify-section:nth-of-type(odd) {
+  background: #F9F6F1 !important;
+}
+
+.shopify-section:nth-of-type(even) {
+  background: #F2EDE5 !important;
+}
+
+.shopify-section {
+  padding-top: 40px !important;
+  padding-bottom: 40px !important;
+}
+
+h2, .title, .section-header {
+  margin-bottom: 20px !important;
+}
+
+.grid,
+.product-grid,
+.collection-grid {
+  row-gap: 24px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+.card,
+.product-card,
+.collection-card {
+  background: #FFFFFF !important;
+  color: #1A1310 !important;
+  border: none !important;
+}
+
+.blog,
+.featured-blog,
+.article-card {
+  background: #F2EDE5 !important;
+  border: none !important;
+}
+
+.article-card h3,
+.article-card a {
+  color: #1A1310 !important;
+}

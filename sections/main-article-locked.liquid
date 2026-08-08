@@ -1,140 +1,111 @@
 {%- comment -%}
-  Iron Phoenix GHG — Locked Article Section
-  - Gates content unless the signed-in customer has any of `allowed_tags`
-  - Shows first N paragraphs free (configurable)
-  - No inline CSS; add assets/section-main-article-locked.css if desired
+  Go Hard Gaming Discord LLC — Locked Article Template
+  Uses 'paywall-gate' snippet to restrict content to members.
 {%- endcomment -%}
 
-<section id="ArticleLocked-{{ section.id }}" class="article-locked color-{{ section.settings.color_scheme }}">
-  <div class="page-width article-locked__inner">
-    {%- if article -%}
-      <header class="article-locked__header">
+{%- if article -%}
+  <section id="ArticleLocked-{{ section.id }}" class="article-locked color-{{ section.settings.color_scheme }}">
+    <div class="page-width article-locked__inner">
+      {%- if section.settings.show_cover_image and article.image -%}
+        {%- assign cover_img = article.image -%}
+        <div class="article-locked__media" style="margin-bottom: 2rem;">
+          <img
+            src="{{ cover_img | image_url: width: 1200 }}"
+            sizes="(max-width: 749px) 100vw, 1200px"
+            alt="{{ cover_img.alt | default: article.title | escape }}"
+            loading="lazy"
+            class="article-locked__image"
+            width="{{ cover_img.width }}"
+            height="{{ cover_img.width | divided_by: cover_img.aspect_ratio | round }}"
+            style="border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);"
+          >
+        </div>
+      {%- endif -%}
+
+      <header class="article-locked__header" style="text-align: center; margin-bottom: 3rem;">
         <h1 class="article-locked__title">{{ article.title | escape }}</h1>
         {%- if section.settings.show_meta -%}
-          <p class="article-locked__meta">
-            <span class="article-locked__date">{{ article.published_at | date: format: 'long' }}</span>
+          <p class="article-locked__meta" style="opacity: 0.7;">
+            {{ article.published_at | date: '%B %d, %Y' }}
             {%- if article.author -%}
-              <span class="article-locked__sep" aria-hidden="true">•</span>
-              <span class="article-locked__author">{{ article.author | escape }}</span>
+              &nbsp;•&nbsp;{{ article.author | escape }}
             {%- endif -%}
           </p>
         {%- endif -%}
       </header>
 
-      {%- if section.settings.show_cover_image and article.image -%}
-        <div class="article-locked__media">
-          {{ article.image
-            | image_url: width: 1600
-            | image_tag:
-              widths: '750,1100,1400,1600',
-              sizes: '(max-width: 749px) 100vw, 1000px',
-              alt: article.image.alt | default: article.title | escape,
-              loading: 'lazy',
-              decoding: 'async',
-              class: 'article-locked__image'
-          }}
-        </div>
-      {%- endif -%}
-
-      {%- comment -%}
-        Access logic:
-        - If the customer has any allowed tag → full content (rich).
-        - Else → show first N paragraphs, then gate.
-      {%- endcomment -%}
-      {%- assign allow = false -%}
-      {%- assign allowed_csv = section.settings.allowed_tags | default: '' -%}
-      {%- assign allowed_list = allowed_csv | split: ',' -%}
-      {%- if customer and allowed_list.size > 0 -%}
-        {%- for t in allowed_list -%}
-          {%- assign t_clean = t | strip -%}
-          {%- if t_clean != blank and customer.tags contains t_clean -%}
-            {%- assign allow = true -%}{%- break -%}
-          {%- endif -%}
-        {%- endfor -%}
-      {%- endif -%}
-
-      {%- if allow -%}
-        <div class="article-locked__body rte" itemprop="articleBody">
-          {{ article.content }}
-        </div>
-      {%- else -%}
-        <div class="article-locked__body rte" itemprop="articleBody">
-          {%- assign para_limit = section.settings.free_paragraphs | default: 3 -%}
-          {%- assign parts = article.content | default: '' | split: '</p>' -%}
-          {%- assign printed = 0 -%}
-          {%- for chunk in parts -%}
-            {%- if printed >= para_limit -%}{%- break -%}{%- endif -%}
-            {%- assign trimmed = chunk | strip -%}
-            {%- if trimmed != blank -%}
-              {{ trimmed }}</p>
-              {%- assign printed = printed | plus: 1 -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-
-        <div class="article-locked__gate">
-          <div class="article-locked__icon" aria-hidden="true">🔒</div>
-
-          <h2 class="article-locked__heading">
-            {{ section.settings.gate_title | default: 'Members-only Article' | escape }}
-          </h2>
-          <p class="article-locked__message">
-            {{ section.settings.gate_subtitle | default: 'Log in or create a free account to continue reading.' | escape }}
-          </p>
-
-          <div class="article-locked__actions">
-            {%- if section.settings.show_login_btn -%}
-              <a class="button button--secondary" href="{{ routes.account_login_url }}">
-                {{ section.settings.login_label | default: 'Log in' | escape }}
-              </a>
-            {%- endif -%}
-            {%- if section.settings.show_register_btn -%}
-              <a class="button button--primary" href="{{ routes.account_register_url }}">
-                {{ section.settings.register_label | default: 'Create account' | escape }}
-              </a>
-            {%- endif -%}
-          </div>
-
-          {%- if section.settings.show_social -%}
-            <div class="article-locked__share">
-              {%- comment -%} Use your existing share snippet if you have one {%- endcomment -%}
-              {%- if snippet_exists and false -%}{% render 'social-sharing', share_title: article.title %}{%- endif -%}
-              <a class="link" href="https://www.facebook.com/sharer/sharer.php?u={{ canonical_url | url_encode }}" rel="noopener" target="_blank">Share</a>
-            </div>
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-    {%- endif -%}
-  </div>
-</section>
+      <div class="article-locked__content rte">
+        {%- render 'paywall-gate',
+          content_html: article.content,
+          free_paragraphs: section.settings.free_paragraphs,
+          allowed_tags: section.settings.allowed_tags,
+          gate_title: section.settings.gate_title,
+          gate_subtitle: section.settings.gate_subtitle
+        -%}
+      </div>
+    </div>
+  </section>
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Locked article",
-  "class": "section-article-locked",
   "settings": [
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
-
-    { "type": "checkbox", "id": "show_meta", "label": "Show date/author", "default": true },
-    { "type": "checkbox", "id": "show_cover_image", "label": "Show cover image (if set)", "default": true },
-    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt (not used in lock body)", "default": true },
-
-    { "type": "range", "id": "free_paragraphs", "min": 0, "max": 8, "step": 1, "label": "Free paragraphs", "default": 3 },
-    { "type": "text", "id": "allowed_tags", "label": "Customer tags that unlock (comma-separated)", "default": "Member,VIP" },
-
-    { "type": "text", "id": "gate_title", "label": "Gate title", "default": "Members-only Article" },
-    { "type": "text", "id": "gate_subtitle", "label": "Gate subtitle", "default": "Log in or create a free account to continue reading." },
-
-    { "type": "checkbox", "id": "show_login_btn", "label": "Show login button", "default": true },
-    { "type": "text", "id": "login_label", "label": "Login button label", "default": "Log in" },
-
-    { "type": "checkbox", "id": "show_register_btn", "label": "Show create account button", "default": true },
-    { "type": "text", "id": "register_label", "label": "Create account button label", "default": "Create account" },
-
-    { "type": "checkbox", "id": "show_social", "label": "Show a simple Share link", "default": true }
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_meta",
+      "label": "Show date/author",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cover_image",
+      "label": "Show cover image",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Paywall Settings"
+    },
+    {
+      "type": "range",
+      "id": "free_paragraphs",
+      "label": "Free paragraphs to show",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "text",
+      "id": "allowed_tags",
+      "label": "Allowed customer tags (CSV)",
+      "default": "Member,VIP",
+      "info": "Comma-separated list of tags that can view full content."
+    },
+    {
+      "type": "text",
+      "id": "gate_title",
+      "label": "Gate title",
+      "default": "Members-only Article"
+    },
+    {
+      "type": "textarea",
+      "id": "gate_subtitle",
+      "label": "Gate subtitle",
+      "default": "Log in or create a free account to continue reading."
+    }
   ],
   "presets": [
-    { "name": "Locked article" }
+    {
+      "name": "Locked article"
+    }
   ]
 }
 {% endschema %}

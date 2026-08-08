@@ -1,34 +1,43 @@
-{% comment %} /sections/vip-callout.liquid — styles in assets/section-vip-callout.css {% endcomment %}
+{% comment %}
+/sections/vip-callout.liquid — styles in assets/section-vip-callout.css
+Renders a blank VIP Callout section unless content is added via theme editor, preserving richtext bolding.
+Note: If bolding doesn't work, check section-vip-callout.css for overriding styles (e.g., font-weight: normal).
+Add !important to .vip-callout__subtitle strong { font-weight: bold !important; } if needed.
+{% endcomment %}
 
-{{ 'section-vip-callout.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+<link rel="stylesheet" href="{{ 'section-vip-callout.css' | asset_url }}" media="print" onload="this.media='all'" preload>
 <noscript>{{ 'section-vip-callout.css' | asset_url | stylesheet_tag }}</noscript>
 
-{%- assign vip_href = section.settings.vip_link | default: '/pages/vip-program' -%}
+{%- assign vip_href = section.settings.vip_link | default: '/pages/vip-program' | escape -%}
 
 <section class="vip-callout page-width">
-  {% if section.settings.vip_title != blank %}
-    <h2 class="vip-callout__title">{{ section.settings.vip_title | escape }}</h2>
-  {% endif %}
+  {% if section.settings.vip_title != blank or section.settings.vip_subtitle != blank or section.settings.vip_cta != blank %}
+    {% if section.settings.vip_title != blank %}
+      <h2 class="vip-callout__title">{{ section.settings.vip_title | escape }}</h2>
+    {% endif %}
 
-  {% if section.settings.vip_subtitle != blank %}
-    <div class="vip-callout__subtitle rte">
-      {{ section.settings.vip_subtitle }}
-    </div>
-  {% endif %}
+    {% if section.settings.vip_subtitle != blank %}
+      <div class="vip-callout__subtitle rte">
+        {{ section.settings.vip_subtitle }}
+      </div>
+    {% endif %}
 
-  <a href="{{ vip_href | escape }}" class="vip-callout__button button">
-    {{ section.settings.vip_cta | default: 'Join now' | escape }}
-  </a>
+    {% if section.settings.vip_cta != blank and vip_href != blank %}
+      <a href="{{ vip_href }}" class="vip-callout__button button">
+        {{ section.settings.vip_cta | escape }}
+      </a>
+    {% endif %}
+  {% endif %}
 </section>
 
 {% schema %}
 {
   "name": "VIP Callout",
   "settings": [
-    { "type": "text", "id": "vip_title", "label": "Title", "default": "Join the Iron Phoenix Elite Club" },
-    { "type": "richtext", "id": "vip_subtitle", "label": "Subtitle", "default": "<p>Unlock exclusive discounts and perks.</p>" },
-    { "type": "url", "id": "vip_link", "label": "Link", "default": "/pages/vip-program" },
-    { "type": "text", "id": "vip_cta", "label": "CTA", "default": "Join now" }
+    { "type": "text", "id": "vip_title", "label": "Title" },
+    { "type": "richtext", "id": "vip_subtitle", "label": "Subtitle" },
+    { "type": "url", "id": "vip_link", "label": "Link" },
+    { "type": "text", "id": "vip_cta", "label": "CTA" }
   ],
   "presets": [{ "name": "VIP Callout" }]
 }

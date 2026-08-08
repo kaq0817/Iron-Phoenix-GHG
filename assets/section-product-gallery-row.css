@@ -1,32 +1,46 @@
-/* assets/section-product-gallery-row.css */
-
-/* Top-level section margin */
 .gallery-row {
-  margin: var(--gallery-row-margin); /* Dynamic margin from Liquid */
+  --ip-wine:    #6B2737;
+  --ip-gold:    #C9A84C;
+  --ip-surface: rgba(201, 168, 76, 0.05);
+  --ip-border:  rgba(201, 168, 76, 0.18);
 }
 
-/* Container for the image row */
-.gallery-row .row {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(90px, 1fr);
-  gap: .5rem;
-  overflow: auto;
-  padding-bottom: .25rem;
+#gallery-row-{{ section.id }} {
+  margin: var(--gallery-row-margin);
+  padding: 10px;
+  background: var(--ip-surface);
+  border: 1px solid var(--ip-border);
+  border-radius: 10px;
 }
 
-/* Individual image styling */
-.gallery-row img {
+.row {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 5px;
+}
+
+.gallery-thumb {
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  transition: border-color 0.3s;
+  max-width: 80px;
+  max-height: 80px;
+}
+
+.gallery-thumb:hover {
+  border-color: var(--ip-gold);
+}
+
+.gallery-thumb img {
   width: 100%;
-  height: 80px; /* Fixed height for consistency in the row */
+  height: 100%;
   object-fit: cover;
-  border: 1px solid rgb(var(--color-border-rgb), 0.5); /* Using global border color with opacity */
-  border-radius: 8px;
 }
 
-/* Responsive height adjustment for desktop images */
-@media (min-width: 990px) {
-  .gallery-row img {
-    height: 110px;
+@media screen and (max-width: 749px) {
+  .row {
+    justify-content: center;
   }
 }

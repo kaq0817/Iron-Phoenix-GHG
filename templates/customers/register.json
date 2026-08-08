@@ -1,7 +1,0 @@
-{
-  "name": "Register",
-  "sections": {
-    "main": { "type": "main-register", "settings": {} }
-  },
-  "order": ["main"]
-}

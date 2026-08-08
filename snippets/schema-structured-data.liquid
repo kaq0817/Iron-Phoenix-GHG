@@ -1,20 +1,118 @@
 {%- comment -%}
-  Structured Data (Non-Conflicting)
-  - This file intentionally emits ONLY WebSite JSON-LD.
-  - Product JSON-LD: handled exclusively by product templates/snippets (e.g., 'structured-product').
-  - Organization JSON-LD: handled exclusively by meta-tags.liquid (per store preference).
+  schema-structured-data.liquid
+  Provides JSON-LD structured data for SEO:
+  - WebSite
+  - Organization (+ social profiles for brand consistency ✅)
+  - Product (on product pages, with brand override metafield support)
+  Safe for Google Merchant Center & Search Console.
 {%- endcomment -%}
 
+{%- capture search_target -%}{{ shop.url }}{{ routes.search_url }}?q={search_term_string}{%- endcapture -%}
+
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "name": {{ shop.name | json }},
-  "url": {{ shop.url | json }},
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {{ shop.url | append: "/search?q={search_term_string}" | json }},
-    "query-input": "required name=search_term_string"
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebSite",
+        "url": {{ shop.url | json }},
+        "name": {{ shop.name | json }},
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {{ search_target | json }},
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@type": "Organization",
+        "name": {{ shop.name | json }},
+        "url": {{ shop.url | json }},
+        {% if settings.logo_image != blank %}
+        "logo": {
+          "@type": "ImageObject",
+          "url": {{ settings.logo_image | image_url: width: 500 | prepend: "https:" | json }}
+        },
+        {% endif %}
+        "alternateName": "Iron Phoenix GHG",
+        "sameAs": [
+          "https://facebook.com/GohardgamingIronPhoenix",
+          "https://twitter.com/SSgohardgaming",
+          "https://lovelifefunfamily.tumblr.com",
+          "https://tiktok.com/@gohardgamingdiscord",
+          "https://pinterest.com/karenbrandmeyer",
+          "https://www.youtube.com/@ssgohardgaming",
+          "https://twitch.tv/shadowseeker_1"
+        ]
+      }
+      {%- if template.name == 'product' and product -%}
+      ,{
+        "@type": "Product",
+        "name": {{ product.title | json }},
+        "image": [
+          {%- if product.featured_media -%}
+            {{ product.featured_media | image_url: width: 800 | prepend: "https:" | json }}
+          {%- else -%}
+            {{ "https://cdn.shopify.com/s/files/1/0599/0547/4633/files/placeholder.png?v=1758807731" | json }}
+          {%- endif -%}
+        ],
+        "description": {{ product.description | strip_html | truncate: 200 | json }},
+        "sku": {{ product.selected_or_first_available_variant.sku | json }},
+        "brand": {
+          "@type": "Brand",
+          "name": {{ product.metafields.custom.brand_override
+                      | default: product.vendor
+                      | default: "Go Hard Gaming Discord LLC"
+                      | json }}
+        }
+        {%- if product.selected_or_first_available_variant.barcode != blank -%}
+        ,"gtin": {{ product.selected_or_first_available_variant.barcode | json }}
+        {%- endif -%}
+        ,"offers": {
+          "@type": "Offer",
+          "url": {{ product.url | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "price": {{ product.selected_or_first_available_variant.price | divided_by: 100.0 | json }},
+          {%- liquid
+            assign is_pod = false
+            assign pod_vendors = 'Printify,Printful,AnywherePod,CustomCat,Gooten,Teespring,Redbubble,Printy6,Gelato' | split: ','
+            assign vendor_strip = product.vendor | strip
+            for vn in pod_vendors
+              assign v_strip = vn | strip
+              if vendor_strip == v_strip
+                assign is_pod = true
+                break
+              endif
+            endfor
+
+            assign availability = 'OutOfStock'
+            if product.available or is_pod
+              assign availability = 'InStock'
+            endif
+
+            assign safe_qty = product.selected_or_first_available_variant.inventory_quantity | default: 0
+            if is_pod or safe_qty <= 0
+              if is_pod
+                assign safe_qty = 999
+              else
+                assign safe_qty = 1
+              endif
+            endif
+          -%}
+          "availability": "https://schema.org/{{ availability }}",
+          "inventoryLevel": {
+            "@type": "QuantitativeValue",
+            "value": {{ safe_qty }}
+          }
+        }
+        {%- if product.metafields.reviews.rating.value != blank -%}
+        ,"aggregateRating": {
+          "@type": "AggregateRating",
+          "ratingValue": {{ product.metafields.reviews.rating.value | json }},
+          "reviewCount": {{ product.metafields.reviews.rating_count | default: 1 | json }}
+        }
+        {%- endif -%}
+      }
+      {%- endif -%}
+    ]
   }
-}
 </script>

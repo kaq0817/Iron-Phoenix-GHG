@@ -1,19 +1,13 @@
-/* Iron Phoenix GHG – Brand Story (extracted, brand-correct) */
+/* Iron Phoenix GHG – Brand Story */
 
 .brand-story {
-  --ip-purple-900:#140a24;
-  --ip-purple-800:#1b0e31;
-  --ip-black:#000000;
-  --ip-teal-500:#00f5ff;
-  --ip-teal-300:#66f9ff;
+  --ip-wine: #6B2737;
+  --ip-gold: #C9A84C;
+  --ip-cream: #F9F6F1;
 
-  color:#fff;
+  color: #1A1310;
   padding: 4rem 0;
-
-  background:
-    radial-gradient(36rem 24rem at 15% 75%, rgba(27,14,49,0.35) 0%, transparent 60%),
-    radial-gradient(30rem 22rem at 85% 25%, rgba(27,14,49,0.28) 0%, transparent 65%),
-    linear-gradient(180deg, var(--ip-purple-900) 0%, var(--ip-black) 70%);
+  background: #F2EDE5;
 }
 
 .brand-story__content {
@@ -29,22 +23,19 @@
   font-weight: 900;
   letter-spacing: .04em;
   text-transform: uppercase;
-
-  background: linear-gradient(135deg, #ffffff 0%, var(--ip-teal-500) 60%, var(--ip-teal-300) 100%);
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 16px rgba(0,245,255,.22);
+  color: #1C0F14;
 }
 
 .brand-story__text {
   font-size: clamp(1.05rem, 2.6vw, 1.2rem);
   line-height: 1.75;
   opacity: .92;
-  color: #eafcff;
+  color: #3D2B22;
 }
 
 /* Richtext links */
-.brand-story__text a { color: var(--ip-teal-500); text-decoration: underline; }
-.brand-story__text strong { color: #ffffff; }
+.brand-story__text a { color: var(--ip-wine); text-decoration: underline; }
+.brand-story__text strong { color: #1C0F14; }
 
 /* Mobile */
 @media (max-width: 749px){

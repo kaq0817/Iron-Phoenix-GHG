@@ -1,0 +1,91 @@
+<aside class="shop-sidebar">
+  <h2 class="shop-sidebar__title">Shop Featured</h2>
+  <ul class="shop-sidebar__list">
+    {% assign sidebar_collection = collections[section.settings.sidebar_collection] %}
+    {% if sidebar_collection %}
+      {% for product in sidebar_collection.products limit: 5 %}
+        <li class="shop-sidebar__item">
+          <a href="{{ product.url }}" class="shop-sidebar__link">
+            {% if product.featured_image %}
+              {{ product.featured_image
+                | image_url: width: 200
+                | image_tag:
+                  class: 'shop-sidebar__image',
+                  alt: product.title,
+                  loading: 'lazy',
+                  decoding: 'async',
+                  widths: '100,200,400',
+                  sizes: '(max-width: 400px) 100vw, 200px',
+                  width: product.featured_image.width,
+                  height: product.featured_image.height
+              }}
+            {% endif %}
+            <span class="shop-sidebar__title-text">{{ product.title | escape }}</span>
+            <span class="shop-sidebar__price">{{ product.price | money }}</span>
+          </a>
+        </li>
+      {% endfor %}
+    {% else %}
+      <li>No collection selected.</li>
+    {% endif %}
+  </ul>
+</aside>
+
+{% schema %}
+{
+  "name": "Shop Sidebar",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "sidebar_collection",
+      "label": "Sidebar collection"
+    }
+  ]
+}
+{% endschema %}
+
+{% stylesheet %}
+.shop-sidebar {
+  background: rgba(18,18,18,0.95);
+  border-radius: 12px;
+  padding: 1.5rem;
+  color: #fff;
+}
+.shop-sidebar__title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  color: #39ff14; /* neon green */
+  text-shadow: 0 0 8px #39ff14;
+}
+.shop-sidebar__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.shop-sidebar__item {
+  margin-bottom: 1.2rem;
+}
+.shop-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+.shop-sidebar__image {
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255,16,240,0.6);
+  max-width: 60px;
+  max-height: 60px;
+  object-fit: cover;
+}
+.shop-sidebar__title-text {
+  flex: 1;
+  font-size: 1.4rem;
+}
+.shop-sidebar__price {
+  font-weight: bold;
+  color: #ff10f0; /* neon pink */
+}
+{% endstylesheet %}

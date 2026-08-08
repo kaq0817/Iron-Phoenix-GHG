@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin language editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "accessibility": {
     "close": "Close",
@@ -233,7 +242,8 @@
       },
       "related_products": "Related products",
       "no_related_products": "No related products found.",
-      "gender": "Gender"
+      "gender": "Gender",
+      "item_added": "Item added to your cart"
     },
     "modal": {
       "label": "Media gallery"
@@ -347,7 +357,8 @@
       "estimated_total": "Estimated total",
       "quantity": "Quantity",
       "update": "Update",
-      "continue_shopping": "Continue shopping"
+      "continue_shopping": "Continue shopping",
+      "view": "View cart"
     },
     "footer": {
       "payment": "Payment methods"
@@ -516,6 +527,12 @@
       "title": "Login",
       "sign_in": "Sign in"
     },
+    "login": {
+      "title": "Log in",
+      "sign_in": "Sign in",
+      "create_account": "Create account",
+      "forgot_password": "Forgot your password?"
+    },
     "order": {
       "title": "Order {{ name }}",
       "date_html": "Placed on {{ date }}",
@@ -571,9 +588,6 @@
       "password": "Password",
       "password_confirm": "Confirm password",
       "submit": "Reset password"
-    },
-    "login": {
-      "title": "Log in"
     }
   },
   "gift_cards": {
@@ -590,6 +604,13 @@
       "copy_code_success": "Code copied successfully",
       "expired": "Expired"
     }
+  },
+  "gift_card": {
+    "expired": "This gift card has expired or is invalid.",
+    "expires_on": "Expires on {{ expires_on }}",
+    "card": "Gift card image",
+    "use_at_checkout": "To use this gift card, copy the code above and paste it into the gift card field at checkout.",
+    "add_to_apple_wallet": "Add to Apple Wallet"
   },
   "recipient": {
     "form": {
@@ -637,5 +658,27 @@
     "add_selected_to_cart": "Add selected to cart",
     "sold_out": "Sold out",
     "unavailable": "Unavailable"
+  },
+  "policies": {
+    "privacy": "Privacy Policy",
+    "terms_of_service": "Terms of Service",
+    "refund": "Return & Refund Policy",
+    "shipping": "Shipping Information"
+  },
+  "shipping_bar": {
+    "legend": "🎉 You're a Legend — free shipping on every order!",
+    "qualified": "🎉 You qualify for free shipping!",
+    "add_more": "Add {{ amount }} more for free shipping!"
+  },
+  "collections": {
+    "general": {
+      "no_matches": "No products found in this collection",
+      "reset": "Reset"
+    }
+  },
+  "layout": {
+    "customer": {
+      "log_out": "Log out"
+    }
   }
 }

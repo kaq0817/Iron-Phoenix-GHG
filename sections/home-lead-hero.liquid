@@ -1,125 +1,496 @@
 {%- comment -%}
-/sections/home-lead-hero.liquid
-Mobile-first, LCP-optimized hero
-- Uses snippets/optimized-image.liquid
-- Preload via image_tag (Theme Check compliant)
-- Desktop & optional mobile image
-- All merchant text escaped
-- All CSS extracted to assets/section-home-lead-hero.css
+  FILE 4 of 4: home-lead-hero.liquid
+  Location: sections/home-lead-hero.liquid
+  Copy everything below this line
 {%- endcomment -%}
 
-{{ 'section-home-lead-hero.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
-<noscript>{{ 'section-home-lead-hero.css' | asset_url | stylesheet_tag }}</noscript>
-
-{%- assign hero_desktop = section.settings.image -%}
-{%- assign hero_mobile  = section.settings.image_mobile | default: section.settings.image -%}
-
-{%- if hero_desktop -%}
-  {%- assign preload_widths = "900, 1200, 1500, 1800, 2160" -%}
-  {{ hero_desktop
-    | image_url: width: 2160
-    | image_tag:
-      widths: preload_widths,
-      sizes: "(max-width: 989px) 100vw, 100vw",
-      alt: (section.settings.image_alt | default: section.settings.title) | escape,
-      preload: true,
-      fetchpriority: "high",
-      loading: "eager",
-      class: "visually-hidden"
-  }}
-{%- endif -%}
-
-<section class="home-hero color-{{ section.settings.color_scheme }}">
-  <div class="home-hero__media">
-    {% if hero_desktop %}
-      {% render 'optimized-image',
-        image: hero_desktop,
-        alt: (section.settings.image_alt | default: section.settings.title) | escape,
-        class: 'home-hero__img home-hero__img--desktop',
-        sizes: '(max-width: 989px) 100vw, 100vw',
-        width_override: 2160,
-        loading: 'eager',
-        fetchpriority: 'high',
-        decoding: 'async'
-      %}
+<section class="home-lead-hero hero--{{ section.settings.height }} color-{{ section.settings.color_scheme }}">
+  <div
+    class="home-lead-hero__media"
+    {% if section.settings.image %}
+      role="img"
+      aria-label="{{ section.settings.image_alt | default: section.settings.title | escape }}"
+    {% else %}
+      aria-hidden="true"
     {% endif %}
+  >
+    {% if section.settings.image %}
+      {%- assign desktop_image = section.settings.image -%}
+      {%- assign mobile_image = section.settings.mobile_image | default: section.settings.image -%}
 
-    {% if hero_mobile %}
-      {% render 'optimized-image',
-        image: hero_mobile,
-        alt: (section.settings.image_alt | default: section.settings.title) | escape,
-        class: 'home-hero__img home-hero__img--mobile',
-        sizes: '(max-width: 749px) 100vw, 100vw',
-        width_override: 1200,
-        loading: 'lazy',
-        decoding: 'async'
-      %}
-    {% endif %}
+      <picture>
+        {%- comment -%} Mobile image (up to 749px) {%- endcomment -%}
+        <source
+          media="(max-width: 749px)"
+          srcset="
+            {{ mobile_image | image_url: width: 750 }} 750w,
+            {{ mobile_image | image_url: width: 1100 }} 1100w
+          "
+          sizes="100vw"
+        >
 
-    {% if section.settings.overlay_opacity > 0 %}
-      <div class="home-hero__overlay" style="--overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};"></div>
+        {%- comment -%} Desktop image (750px and up) {%- endcomment -%}
+        <source
+          media="(min-width: 750px)"
+          srcset="
+            {{ desktop_image | image_url: width: 1400 }} 1400w,
+            {{ desktop_image | image_url: width: 1650 }} 1650w,
+            {{ desktop_image | image_url: width: 2000 }} 2000w,
+            {{ desktop_image | image_url: width: 2800 }} 2800w
+          "
+          sizes="100vw"
+        >
+
+        {%- comment -%} Fallback {%- endcomment -%}
+        <img
+          src="{{ desktop_image | image_url: width: 1650 }}"
+          alt=""
+          class="home-lead-hero__img"
+          width="{{ desktop_image.width }}"
+          height="{{ desktop_image.height }}"
+          {% if section.index <= 1 %}
+            loading="eager"
+            fetchpriority="high"
+          {% else %}
+            loading="lazy"
+          {% endif %}
+        >
+      </picture>
+      <div
+        class="home-lead-hero__overlay"
+        style="--hero-overlay: {{ section.settings.overlay_opacity | default: 30 }};"
+      ></div>
+    {% else %}
+      {%- comment -%} Fallback gradient when no image {%- endcomment -%}
+      <div class="home-lead-hero__gradient"></div>
     {% endif %}
   </div>
 
-  <div class="home-hero__content page-width text-{{ section.settings.text_align }}">
-    {% if section.settings.kicker != blank %}
-      <p class="home-hero__kicker">{{ section.settings.kicker | escape }}</p>
-    {% endif %}
+  <div class="home-lead-hero__container page-width">
+    {% if section.settings.title == blank and section.settings.kicker == blank and section.settings.subtext == blank %}
+      {%- comment -%} Theme editor placeholder {%- endcomment -%}
+      <div class="home-lead-hero__placeholder">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/>
+        </svg>
+        <p>Add hero content in the section settings</p>
+      </div>
+    {% else %}
+      <div class="home-lead-hero__inner home-lead-hero__inner--{{ section.settings.text_align }}">
+        {% if section.settings.kicker != blank %}
+          <p class="home-lead-hero__kicker">{{ section.settings.kicker | escape }}</p>
+        {% endif %}
 
-    {% if section.settings.title != blank %}
-      <h1 class="home-hero__title h0">{{ section.settings.title | escape }}</h1>
-    {% endif %}
+        {% if section.settings.title != blank %}
+          <h2 class="home-lead-hero__title">{{ section.settings.title | escape }}</h2>
+        {% endif %}
 
-    {% if section.settings.subtext != blank %}
-      <p class="home-hero__subtext">{{ section.settings.subtext | escape }}</p>
-    {% endif %}
+        {% if section.settings.subtext != blank %}
+          <div class="home-lead-hero__subtext rte">
+            {{ section.settings.subtext }}
+          </div>
+        {% endif %}
 
-    <div class="home-hero__actions">
-      {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
-        <a class="button button--primary" href="{{ section.settings.primary_link }}" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-          {{ section.settings.primary_label | escape }}
-        </a>
-      {% endif %}
-      {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
-        <a class="button button--secondary" href="{{ section.settings.secondary_link }}" {% if section.settings.cta_new_tab %}target="_blank" rel="noopener"{% endif %}>
-          {{ section.settings.secondary_label | escape }}
-        </a>
-      {% endif %}
-    </div>
+        <div class="home-lead-hero__cta">
+          {% if section.settings.primary_label != blank and section.settings.primary_link != blank %}
+            <a
+              href="{{ section.settings.primary_link }}"
+              class="button button--primary"
+              {% if section.settings.primary_new_tab %}
+                target="_blank" rel="noopener"
+              {% endif %}
+            >
+              {{ section.settings.primary_label | escape }}
+            </a>
+          {% endif %}
+          {% if section.settings.secondary_label != blank and section.settings.secondary_link != blank %}
+            <a
+              href="{{ section.settings.secondary_link }}"
+              class="button button--secondary"
+              {% if section.settings.secondary_new_tab %}
+                target="_blank" rel="noopener"
+              {% endif %}
+            >
+              {{ section.settings.secondary_label | escape }}
+            </a>
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
   </div>
 </section>
 
+<style>
+  /* ========================================
+   Home Lead Hero - Iron Phoenix
+   ======================================== */
+
+  /* Base layout */
+  .home-lead-hero {
+    position: relative;
+    display: block;
+    width: 100%;
+    overflow: clip;
+    color: var(--color-foreground, #fff);
+  }
+
+  /* Media container */
+  .home-lead-hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .home-lead-hero__img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .home-lead-hero__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, calc(var(--hero-overlay, 30) / 100));
+    pointer-events: none;
+  }
+
+  .home-lead-hero__gradient {
+    position: absolute;
+    inset: 0;
+      135deg,
+      rgba(var(--color-base-accent-1, 18, 18, 18), 0.95) 0%,
+      rgba(var(--color-base-background-1, 18, 18, 18), 0.95) 100%
+    );
+  }
+
+  /* Content container */
+  .home-lead-hero__container {
+    position: relative;
+    z-index: 1;
+    height: 100%;
+    margin-inline: auto;
+  }
+
+  .home-lead-hero__inner {
+    min-height: inherit;
+    display: grid;
+    gap: 16px;
+    align-content: center;
+    padding-inline: clamp(12px, 3vw, 24px);
+    padding-top: clamp(60px, 8vh, 120px);
+    padding-bottom: clamp(32px, 6vh, 80px);
+  }
+
+  /* Text alignment variants */
+  .home-lead-hero__inner--left {
+    justify-items: start;
+    text-align: left;
+  }
+
+  .home-lead-hero__inner--center {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .home-lead-hero__inner--center > * {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .home-lead-hero__inner--right {
+    justify-items: end;
+    text-align: right;
+  }
+
+  /* Content elements */
+  .home-lead-hero__kicker {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    opacity: 0.9;
+    font-size: clamp(12px, 1.8vw, 16px);
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .home-lead-hero__title {
+    margin: 0;
+    font-size: clamp(32px, 6.5vw, 72px);
+    line-height: 1.05;
+    font-weight: 800;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  .home-lead-hero__subtext {
+    margin: 0;
+    opacity: 0.92;
+    max-width: 72ch;
+    font-size: clamp(14px, 2vw, 18px);
+    line-height: 1.6;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Reset richtext styles */
+  .home-lead-hero__subtext.rte * {
+    margin: 0;
+    padding: 0;
+    font-size: inherit;
+    line-height: inherit;
+    color: inherit;
+  }
+
+  .home-lead-hero__subtext.rte p + p {
+    margin-top: 0.5em;
+  }
+
+  /* Prevent rich text from breaking layout */
+  .home-lead-hero__subtext.rte img,
+  .home-lead-hero__subtext.rte iframe,
+  .home-lead-hero__subtext.rte video {
+    display: none;
+  }
+
+  .home-lead-hero__cta {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+  }
+
+  .home-lead-hero__inner--center .home-lead-hero__cta {
+    justify-content: center;
+  }
+
+  .home-lead-hero__inner--right .home-lead-hero__cta {
+    justify-content: flex-end;
+  }
+
+  .home-lead-hero__cta .button {
+    min-height: 44px;
+    padding: 12px 24px;
+  }
+
+  /* Focus indicators for buttons */
+  .home-lead-hero__cta .button:focus-visible {
+    outline: 3px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  /* Theme editor placeholder */
+  .home-lead-hero__placeholder {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    min-height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .home-lead-hero__placeholder svg {
+    opacity: 0.3;
+    margin-bottom: 1rem;
+  }
+
+  .home-lead-hero__placeholder p {
+    margin: 0;
+    opacity: 0.6;
+    font-size: 1.4rem;
+  }
+
+  /* Height options */
+  .hero--small {
+    min-height: 40vh;
+  }
+  .hero--medium {
+    min-height: 56vh;
+  }
+  .hero--large {
+    min-height: 72vh;
+  }
+  .hero--fullscreen {
+    min-height: 100vh;
+  }
+
+  /* Z-index fix for following sections */
+  .home-lead-hero + .shopify-section {
+    position: relative;
+    z-index: 1;
+  }
+
+  /* Defensive overflow fix */
+  :where(main, #MainContent, .shopify-section) {
+    overflow: visible;
+  }
+
+  /* High contrast mode support */
+  @media (prefers-contrast: high) {
+    .home-lead-hero__overlay {
+      background: rgba(0, 0, 0, 0.7) !important;
+    }
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    .home-lead-hero * {
+      animation: none !important;
+      transition: none !important;
+    }
+  }
+
+  /* Mobile optimization */
+  @media (max-width: 749px) {
+    .home-lead-hero__inner {
+      padding-top: clamp(40px, 6vh, 80px);
+      padding-bottom: clamp(24px, 4vh, 48px);
+    }
+
+    .home-lead-hero__title {
+      font-size: clamp(28px, 8vw, 48px);
+    }
+
+    .home-lead-hero__cta {
+      flex-direction: column;
+      width: 100%;
+    }
+
+    .home-lead-hero__cta .button {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+  }
+</style>
+
 {% schema %}
 {
-  "name": "Home lead hero",
-  "class": "section-home-lead-hero",
+  "name": "Home Lead Hero",
   "settings": [
-    { "type": "text", "id": "kicker", "label": "Kicker", "default": "MADE TO ORDER" },
-    { "type": "text", "id": "title", "label": "Title", "default": "Custom Gifts for Real-Life MVPs" },
-    { "type": "text", "id": "subtext", "label": "Subtext", "default": "Celebrate your crew with made-to-order gear." },
-
-    { "type": "image_picker", "id": "image", "label": "Desktop image" },
-    { "type": "image_picker", "id": "image_mobile", "label": "Mobile image (optional)" },
-    { "type": "text", "id": "image_alt", "label": "Image alt text" },
-
-    { "type": "range", "id": "overlay_opacity", "label": "Overlay opacity", "min": 0, "max": 80, "step": 5, "default": 30 },
-    { "type": "select", "id": "text_align", "label": "Text alignment", "default": "center",
+    {
+      "type": "text",
+      "id": "kicker",
+      "label": "Kicker",
+      "default": "MADE TO ORDER"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Custom Gifts for Real-Life MVPs"
+    },
+    {
+      "type": "richtext",
+      "id": "subtext",
+      "label": "Subtext",
+      "default": "<p>Celebrate your crew with made-to-order gear.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image (desktop)"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Background image (mobile)",
+      "info": "Optional. If not set, desktop image will be used."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Iron Phoenix hero"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "unit": "%"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Section height",
+      "default": "large",
+      "options": [
+        { "value": "small", "label": "Small (40vh)" },
+        { "value": "medium", "label": "Medium (56vh)" },
+        { "value": "large", "label": "Large (72vh)" },
+        { "value": "fullscreen", "label": "Fullscreen (100vh)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "text_align",
+      "label": "Text alignment",
+      "default": "center",
       "options": [
         { "value": "left", "label": "Left" },
         { "value": "center", "label": "Center" },
         { "value": "right", "label": "Right" }
       ]
     },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" },
-
-    { "type": "text", "id": "primary_label", "label": "Primary button label", "default": "Shop Personalized" },
-    { "type": "url",  "id": "primary_link",  "label": "Primary button link",  "default": "/collections/all" },
-    { "type": "text", "id": "secondary_label", "label": "Secondary button label", "default": "Gift Finder" },
-    { "type": "url",  "id": "secondary_link",  "label": "Secondary button link",  "default": "/collections/all" },
-    { "type": "checkbox", "id": "cta_new_tab", "label": "Open buttons in new tab", "default": false }
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "text",
+      "id": "primary_label",
+      "label": "Primary button label",
+      "default": "Shop Personalized"
+    },
+    {
+      "type": "url",
+      "id": "primary_link",
+      "label": "Primary button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "primary_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "text",
+      "id": "secondary_label",
+      "label": "Secondary button label",
+      "default": "Gift Finder"
+    },
+    {
+      "type": "url",
+      "id": "secondary_link",
+      "label": "Secondary button link"
+    },
+    {
+      "type": "checkbox",
+      "id": "secondary_new_tab",
+      "label": "Open in new tab",
+      "default": false
+    }
   ],
   "presets": [
-    { "name": "Home lead hero" }
+    {
+      "name": "Home Lead Hero"
+    }
   ]
 }
 {% endschema %}

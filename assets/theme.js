@@ -1,5 +1,5 @@
 /* path: assets/theme.js */
-/* Iron Phoenix GHG — lean runtime: drawers, accessibility, AJAX cart, section lifecycle */
+/* Go Hard Gaming Discord LLC — lean runtime: drawers, accessibility, AJAX cart, section lifecycle, media zoom */
 
 (() => {
   'use strict';
@@ -364,6 +364,41 @@
   };
 
   /* -----------------------------
+   * Product Media Zoom (merged from global.js)
+   * ----------------------------- */
+  const bindMediaZoom = () => {
+    // Guard if modal API isn't present yet
+    const hasModal = () => typeof window.IPXMediaModal?.open === 'function';
+
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-ipx-zoom]');
+      if (!btn || !hasModal()) return;
+
+      // Accept either data-ipx-media-id or href="#ip-media-123"
+      const id = btn.getAttribute('data-ipx-media-id')
+        || (btn.hash && btn.hash.replace('#ip-media-', ''));
+      if (!id) return;
+
+      const tpl = document.getElementById('ip-media-' + id);
+      if (!tpl) return;
+
+      // Prefer <template>.content when available
+      let html = '';
+      if ('content' in tpl) {
+        const frag = tpl.content.cloneNode(true);
+        const wrap = document.createElement('div');
+        wrap.appendChild(frag);
+        html = wrap.innerHTML;
+      } else {
+        // Fallback (very old browsers)
+        html = tpl.innerHTML;
+      }
+
+      if (html) window.IPXMediaModal.open(html);
+    }, { passive: true });
+  };
+
+  /* -----------------------------
    * Shopify Section lifecycle
    * ----------------------------- */
   const rebindAll = () => {
@@ -387,7 +422,6 @@
    * Boot
    * ----------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
-    // Define routes fallback if theme didn’t inject window.routes
     window.routes = window.routes || {
       cart_add_url: '/cart/add.js',
       cart_change_url: '/cart/change.js',
@@ -397,11 +431,10 @@
 
     // Enable features
     MenuDrawer.bind();
-    stickyHeader();
     bindQtyControls();
     interceptAddToCart();
+    bindMediaZoom(); 
 
-    // Optional: open drawer when URL has ?openCart=1 (useful for testing)
     if (new URLSearchParams(location.search).get('openCart') === '1') {
       const cd = getCartDrawerEl();
       cd && cd.open();

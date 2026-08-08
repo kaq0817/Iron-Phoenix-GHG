@@ -1,51 +1,69 @@
-/* contact-us.css */
+/* contact-us.css — Iron Phoenix GHG */
 .contact-us-container {
-  padding: 2rem;
-  background-color: #ffffff;
-  color: #000000;
+  padding-top: var(--section-pt);
+  padding-bottom: var(--section-pb);
+  background-color: #F9F6F1;
+  color: #1A1310;
   max-width: 1200px;
   margin: 0 auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
 .contact-us-title {
   font-size: 2.5rem;
   text-align: center;
   margin-bottom: 1.5rem;
+  color: #1C0F14;
 }
 
 .contact-us-intro {
   text-align: center;
   font-size: 1.2rem;
   margin-bottom: 2rem;
+  color: #5C4E44;
 }
 
 .contact-section {
   margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.08);
 }
 
 .section-heading {
   font-size: 1.75rem;
   margin-bottom: 1rem;
+  color: #1C0F14;
 }
 
 .contact-details-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 2rem;
+  margin-top: 1.5rem;
 }
 
 .contact-detail-item h3 {
   font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: #6B2737;
+  font-weight: 600;
+}
+
+.contact-detail-item p {
+  color: #3D2B22;
+  line-height: 1.6;
   margin-bottom: 0.5rem;
 }
 
 .contact-link {
-  color: #6a1b9a;
+  color: #6B2737;
   text-decoration: underline;
+  transition: color 0.2s;
 }
 
 .contact-link:hover {
-  color: #26a69a;
+  color: #C9A84C;
 }
 
 .website-list {
@@ -54,21 +72,157 @@
 }
 
 .website-list li {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+  color: #3D2B22;
+}
+
+.website-list li:before {
+  content: "→";
+  position: absolute;
+  left: 0;
+  color: #C9A84C;
 }
 
 .note-text {
   font-size: 0.95rem;
-  color: #444;
+  color: #5C4E44;
+  padding: 1rem;
+  background: rgba(201, 168, 76, 0.06);
+  border-left: 3px solid rgba(201, 168, 76, 0.4);
+  margin: 1rem 0;
+  line-height: 1.6;
 }
 
 .note-text.important {
-  font-weight: bold;
-  color: #b71c1c;
+  font-weight: 600;
+  color: #1A1310;
+  border-left-color: #6B2737;
 }
 
-@media (max-width: 768px) {
+.voicemail-policy-box {
+  margin-top: 20px;
+  padding: 16px;
+  border-left: 3px solid #C9A84C;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(201, 168, 76, 0.12);
+  background: rgba(201, 168, 76, 0.05);
+}
+
+.voicemail-policy-box p:first-child {
+  margin: 0 0 10px;
+  font-weight: 700;
+  color: #6B2737;
+  font-size: 1.05em;
+}
+
+.contact-us-container .field {
+  margin-bottom: 1.5rem;
+}
+
+.contact-us-container .field label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #1A1310;
+}
+
+.contact-us-container .field input[type="text"],
+.contact-us-container .field input[type="email"],
+.contact-us-container .field input[type="tel"],
+.contact-us-container .field textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  color: #1A1310;
+}
+
+.contact-us-container .field textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.contact-us-container .field input:focus,
+.contact-us-container .field textarea:focus {
+  border-color: #C9A84C;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(201, 168, 76, 0.25);
+}
+
+.contact-us-container .button {
+  margin-top: 1.5rem;
+  padding: 0.85rem 2rem;
+  background-color: #6B2737;
+  color: #F9F6F1;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.contact-us-container .button:hover {
+  background-color: #4F1D28;
+  transform: translateY(-2px);
+}
+
+.form-status {
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.form-status--success {
+  background-color: rgba(201, 168, 76, 0.1);
+  color: #4F3A12;
+  border: 1px solid rgba(201, 168, 76, 0.4);
+}
+
+.form-status--error {
+  background-color: rgba(107, 39, 55, 0.08);
+  color: #6B2737;
+  border: 1px solid rgba(107, 39, 55, 0.3);
+}
+
+.form-status ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.form-status li {
+  margin-bottom: 0.5rem;
+}
+
+.hp-wrap,
+.visually-hidden,
+.contact__decoy {
+  position: absolute !important;
+  left: -10000px !important;
+  top: auto !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+
+.contact__error {
+  color: #6B2737;
+  margin-top: 1rem;
+}
+
+@media screen and (max-width: 768px) {
   .contact-details-grid {
     grid-template-columns: 1fr;
+  }
+
+  .contact-us-title {
+    font-size: 2rem;
+  }
+
+  .section-heading {
+    font-size: 1.5rem;
   }
 }

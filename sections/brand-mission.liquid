@@ -1,0 +1,44 @@
+<section class="page-width brand-mission" role="region" aria-labelledby="brand-mission-title">
+  <div class="brand-mission__inner">
+    <h2 id="brand-mission-title" class="h2">
+  {{ section.settings.heading | default: page.title | default: 'Our Mission' | escape }}
+</h2>
+
+
+    {%- if section.settings.use_page_content and page and page.content != blank -%}
+      <div class="rte">{{ page.content }}</div>
+    {%- elsif settings.mission_statement != blank -%}
+      <p class="rte">{{ settings.mission_statement | escape }}</p>
+    {%- else -%}
+      <p class="rte">
+        {{ 'brand.mission' | t | default: 'We spark resilience and joy with bold, mindfully crafted gear that inspires imagination and equips our community to build mental strength, elevate gaming performance, and unleash athletic spirit—no matter the challenge.' | escape }}
+      </p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand mission",
+  "tag": "section",
+  "class": "brand-mission-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading override",
+      "default": "Our Mission"
+    },
+    {
+      "type": "checkbox",
+      "id": "use_page_content",
+      "label": "Use this page’s content",
+      "default": true
+    }
+  ],
+  "enabled_on": { "templates": ["page"] },
+  "presets": [
+    { "name": "Brand mission" }
+  ]
+}
+{% endschema %}

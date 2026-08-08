@@ -1,0 +1,244 @@
+{%- comment -%}
+   Go Hard Gaming Discord LLC— Refund & Return Policy (Mini Widget)
+  - UPDATED: Added "International Orders" tab linking to Etsy
+  - Forces ALL text inside the white box to be BLACK (readable)
+  - Removes physical address from display
+  - Adds mandatory "Contact Customer Service" instruction
+{%- endcomment -%}
+
+<style>
+.policy-tabs {
+  max-width: 60rem;
+  margin: 3rem auto;
+  padding: 0 2rem;
+}
+
+.policy__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.policy__header .h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  /* Keep main header white/theme color to match site background */
+  color: rgb(var(--color-base-text, 255, 255, 255));
+}
+
+.policy__updated {
+  color: rgba(var(--color-base-text, 255, 255, 255), 0.6);
+  font-size: 1.2rem;
+}
+
+.tabs {
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  overflow: hidden;
+  background: white; 
+}
+
+.tab {
+  width: 100%;
+  background: white;
+  border: none;
+  border-bottom: 1px solid #eee;
+  padding: 1.2rem 1.5rem;
+  text-align: left;
+  font-size: 1.4rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #333333 !important; /* Force Black Title */
+  transition: background 0.2s;
+}
+
+.tab:last-child {
+  border-bottom: none;
+}
+
+.tab:hover {
+  background: #f5f5f5;
+}
+
+.tab[aria-expanded="true"] {
+  background: #fffacd; /* Soft Yellow Highlight */
+  color: black !important;
+  border-bottom: 1px solid #eee;
+}
+
+.tab::after {
+  content: '';
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+  margin-left: 1rem;
+}
+
+.tab[aria-expanded="true"]::after {
+  transform: rotate(-135deg);
+}
+
+.tab-content {
+  padding: 1.5rem;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  font-size: 1.3rem;
+  color: #444444 !important; /* Force Black Body Text */
+}
+
+/* Force ALL internal text elements to be black */
+.tab-content p, 
+.tab-content li, 
+.tab-content ul,
+.tab-content address,
+.tab-content span {
+  color: #000000 !important; 
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+.tab-content ul {
+  padding-left: 1.5rem;
+}
+
+.tab-content a {
+  color: #0066cc !important;
+  text-decoration: underline;
+}
+
+.policy__note {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 1.2rem;
+  color: rgba(var(--color-base-text, 255, 255, 255), 0.6);
+}
+</style>
+
+<section class="policy-tabs page-width" aria-labelledby="policy-title">
+  <header class="policy__header">
+    <h2 id="policy-title" class="h1">{{ section.settings.title | default: 'Shipping & Returns' | escape }}</h2>
+    <p class="policy__updated">Updated: {{ section.settings.last_updated | default: 'June 2025' | escape }}</p>
+  </header>
+
+  <div class="tabs">
+    
+    <button class="tab" aria-expanded="false" data-tab="international-ship">International Orders (Canada/UK)</button>
+    <div class="tab-content" id="content-international-ship" hidden>
+      <p>We currently ship to the <strong>US only</strong> on this website.</p>
+      <p>Shopping from Canada or overseas? Please visit our Etsy shop for international shipping options:</p>
+      <p><a href="https://ironphoenixghg.etsy.com" target="_blank"><strong>Visit Iron Phoenix on Etsy &rarr;</strong></a></p>
+    </div>
+
+    <button class="tab" aria-expanded="false" data-tab="custom">Custom Orders</button>
+    <div class="tab-content" id="content-custom" hidden>
+      <p>Custom & personalized products are <strong>non-returnable</strong> unless there is a verified printing defect. Cancellations must be requested within <strong>24 hours</strong>.</p>
+    </div>
+
+    <button class="tab" aria-expanded="false" data-tab="damaged">Damaged or Defective</button>
+    <div class="tab-content" id="content-damaged" hidden>
+      <p>Report damage within <strong>{{ section.settings.defect_days | default: 30 }} days</strong>. Photos required for verification.</p>
+    </div>
+
+    <button class="tab" aria-expanded="false" data-tab="standard">Standard Returns</button>
+    <div class="tab-content" id="content-standard" hidden>
+      <ul>
+        <li>Window: <strong>{{ section.settings.standard_days | default: 30 }} days</strong>.</li>
+        <li>Item must be unused in original packaging.</li>
+        <li>Customer pays return shipping.</li>
+      </ul>
+    </div>
+
+    <button class="tab" aria-expanded="false" data-tab="contact">Start a Return</button>
+    <div class="tab-content" id="content-contact" hidden>
+      <p style="font-weight: bold; color: #d00000 !important;">⚠️ Do not ship items back without approval.</p>
+      <p>Please contact Customer Service prior to any return to receive the correct return address and an RMA number.</p>
+      <p><strong>Contact Us:</strong><br>
+      Email: <a href="mailto:{{ section.settings.support_email | escape }}">{{ section.settings.support_email | escape }}</a></p>
+    </div>
+  </div>
+
+  <p class="policy__note">
+    Full details available on our <a href="/pages/refund-policy">Policy Page</a>.
+  </p>
+</section>
+
+<script>
+(function() {
+  const tabs = document.querySelectorAll('.policy-tabs .tab');
+  
+  tabs.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const wasExpanded = btn.getAttribute('aria-expanded') === 'true';
+      const content = btn.nextElementSibling;
+      
+      // Close all tabs first (Accordion behavior)
+      tabs.forEach(t => {
+          t.setAttribute('aria-expanded', 'false');
+          t.nextElementSibling.hidden = true;
+      });
+
+      if (!wasExpanded) {
+        btn.setAttribute('aria-expanded', 'true');
+        content.hidden = false;
+      }
+    });
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Refund & Returns (Mini)",
+  "class": "section-policy-mini",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Shipping & Returns"
+    },
+    {
+      "type": "text",
+      "id": "last_updated",
+      "label": "Date",
+      "default": "June 2025"
+    },
+    {
+      "type": "range",
+      "id": "standard_days",
+      "min": 7,
+      "max": 60,
+      "step": 1,
+      "label": "Return Window",
+      "default": 30
+    },
+    {
+      "type": "range",
+      "id": "defect_days",
+      "min": 7,
+      "max": 60,
+      "step": 1,
+      "label": "Defect Window",
+      "default": 30
+    },
+    {
+      "type": "text",
+      "id": "support_email",
+      "label": "Email",
+      "default": "support@ironphoenixghg.store"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Refund & Returns (Mini)"
+    }
+  ]
+}
+{% endschema %}

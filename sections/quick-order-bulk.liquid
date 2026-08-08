@@ -1,6 +1,6 @@
 {% comment %}
-  Quick Order (Bulk) — Section wrapper for Iron Phoenix GHG
-  - Full replacement (clean rewrite)
+  Quick Order (Bulk) — Section wrapper for Go Hard Gaming Discord LLC's quick order list feature
+  - Uses translations from quick_order.*
   - No inline CSS here; uses assets/quick-order-list.css
   - Defer JS; uses assets/quick-order-list.js
   - Escapes all dynamic text in this section
@@ -19,11 +19,11 @@
   <div class="page-width">
     <header class="quick-order-bulk__header">
       <h2 class="quick-order-bulk__title">
-        {{ section.settings.title | default: col.title | escape }}
+        {{ section.settings.title | escape }}
       </h2>
     </header>
 
-    {%- if col and col.products_count > 0 -%}
+    {%- if col != blank and col.products_count > 0 -%}
       <div class="quick-order-bulk__grid" role="list">
         {%- for p in col.products limit: item_limit -%}
           <article class="quick-order-bulk__item" role="listitem">
@@ -36,7 +36,7 @@
         {%- endfor -%}
       </div>
     {%- else -%}
-      <p class="quick-order-bulk__empty">No products available.</p>
+      <p class="quick-order-bulk__empty">{{ 'quick_order.unavailable' | t }}</p>
     {%- endif -%}
   </div>
 </section>

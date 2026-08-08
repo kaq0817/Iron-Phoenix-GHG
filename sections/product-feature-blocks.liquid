@@ -1,38 +1,229 @@
-<section class="product-feature-blocks page-width">
-  {% for i in (1..3) %}
-    {% assign photo_key = "photo" | append: i %}
-    {% assign headline_key = "photo" | append: i | append: "_headline" %}
-    {% assign desc_key = "photo" | append: i | append: "_desc" %}
-    {% assign alt_key = "photo" | append: i | append: "_alt" %}
+{% comment %}
+  Iron Phoenix GHG — Product Feature Blocks (Opaque Americana Edition)
+  - Layout: Elegant alternating solid blocks with no hard text clipping
+  - Logic: Pulls full layout text cleanly without sentence-shredding filters
+{% endcomment %}
 
-    {% if product.metafields.custom[photo_key] %}
-      <div class="feature-block{% if i == 2 %} feature-block--reverse{% endif %}">
-        <div class="feature-image">
-          <img
-            src="{{ product.metafields.custom[photo_key] | image_url: width: 1200, format: 'webp' }}"
-            alt="{{ product.metafields.custom[alt_key] | default: product.title | escape }}"
-            width="1200"
-            height="auto"
-            loading="lazy"
-          >
+{{ 'section-product-feature-blocks.css' | asset_url | stylesheet_tag }}
+
+<style>
+  /* ── Feature Cards Container Layout ─────────────────────────── */
+  .pfb-section {
+    max-width: 140rem;
+    margin: 4rem auto;
+    padding: 0 2rem;
+  }
+
+  .pfb-card {
+    display: flex;
+    align-items: center; /* Vertically centers text perfectly next to images */
+    gap: 5rem;
+    padding: 4rem;
+    margin-bottom: 4rem;
+    background: #FFFFFF !important; /* 100% Solid white card backing */
+    border: 2px solid #6B2737;      /* Solid deep wine frame line */
+    border-radius: 4px;             /* Hard Americana block corners */
+    box-shadow: none !important;
+  }
+
+  /* Alternating Card Orientation mapping */
+  .pfb-card--reverse {
+    flex-direction: row-reverse;
+  }
+
+  /* ── Image Presentation Column ────────────────────────────────── */
+  .pfb-card__image {
+    flex: 0 0 45%;
+    border: 2px solid #6B2737;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+    background: #FFFFFF;
+  }
+
+  .pfb-card__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Keeps product geometry completely intact */
+    display: block;
+  }
+
+  /* ── Content Presentation Column ───────────────────────────────── */
+  .pfb-card__body {
+    flex: 1;
+    padding: 1rem 0;
+    text-align: left !important;
+  }
+
+  .pfb-card__eyebrow {
+    display: inline-block;
+    font-size: 1.3rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #A6192E !important; /* Flag Red Eyebrow Title */
+    margin-bottom: 1.2rem;
+  }
+
+  .pfb-card__text {
+    font-size: 1.6rem;
+    line-height: 1.7;
+    color: #1A1A1A !important; /* High-visibility dark charcoal text */
+    margin: 0;
+  }
+
+  .pfb-card__text p {
+    margin-bottom: 1rem;
+    color: #1A1A1A !important;
+  }
+
+  /* Clean solid boundary indicator line next to text side */
+  .pfb-card__body {
+    border-left: 4px solid #6B2737; /* Hard wine accent bar */
+    padding-left: 2.5rem;
+  }
+
+  .pfb-card--reverse .pfb-card__body {
+    border-left: none;
+    border-right: 4px solid #6B2737; /* Reverse bar orientation */
+    padding-left: 0;
+    padding-right: 2.5rem;
+  }
+
+  /* ── Mobile Viewport Containment ─────────────────────────────── */
+  @media screen and (max-width: 749px) {
+    .pfb-card,
+    .pfb-card--reverse {
+      flex-direction: column !important;
+      padding: 2.5rem 2rem !important;
+      gap: 2.5rem !important;
+    }
+
+    .pfb-card__image {
+      flex: none !important;
+      width: 100% !important;
+    }
+
+    .pfb-card__body {
+      border-left: 4px solid #6B2737 !important;
+      border-right: none !important;
+      padding-left: 1.5rem !important;
+      padding-right: 0 !important;
+    }
+  }
+</style>
+
+<section class="product-feature-blocks section-{{ section.id }}-padding">
+  <div class="pfb-section page-width">
+
+    {%- liquid
+      assign available_images = product.images
+      assign card_count = 0
+    -%}
+
+    {%- comment -%}
+      Pulls structural layout cards directly from your backend product metafield text fields.
+      This isolates the Feature Blocks completely so your Main Description can handle your tabs perfectly.
+    {%- endcomment -%}
+    {%- if product.metafields.custom.feature_block_1 != blank and available_images.size > 1 -%}
+      
+      {% comment %} Card 1 {% endcomment %}
+      <div class="pfb-card">
+        <div class="pfb-card__image">
+          <img src="{{ available_images[1] | image_url: width: 700, height: 525, crop: 'center', format: 'webp' }}" alt="Feature 1" width="700" height="525" loading="lazy">
         </div>
-        <div class="feature-text">
-          {% if product.metafields.custom[headline_key] %}
-            <h2 class="feature-headline">{{ product.metafields.custom[headline_key] | escape }}</h2>
-          {% endif %}
-          {% if product.metafields.custom[desc_key] %}
-            <div class="feature-desc rte">{{ product.metafields.custom[desc_key] | strip_html | escape }}</div>
-          {% endif %}
+        <div class="pfb-card__body">
+          <span class="pfb-card__eyebrow">What Makes It Special</span>
+          <div class="pfb-card__text">{{ product.metafields.custom.feature_block_1 }}</div>
         </div>
       </div>
-    {% endif %}
-  {% endfor %}
+
+      {% comment %} Card 2 {% endcomment %}
+      {%- if product.metafields.custom.feature_block_2 != blank and available_images.size > 2 -%}
+        <div class="pfb-card pfb-card--reverse">
+          <div class="pfb-card__image">
+            <img src="{{ available_images[2] | image_url: width: 700, height: 525, crop: 'center', format: 'webp' }}" alt="Feature 2" width="700" height="525" loading="lazy">
+          </div>
+          <div class="pfb-card__body">
+            <span class="pfb-card__eyebrow">Built to Last</span>
+            <div class="pfb-card__text">{{ product.metafields.custom.feature_block_2 }}</div>
+          </div>
+        </div>
+      {%- endif -%}
+
+      {% comment %} Card 3 {% endcomment %}
+      {%- if product.metafields.custom.feature_block_3 != blank and available_images.size > 3 -%}
+        <div class="pfb-card">
+          <div class="pfb-card__image">
+            <img src="{{ available_images[3] | image_url: width: 700, height: 525, crop: 'center', format: 'webp' }}" alt="Feature 3" width="700" height="525" loading="lazy">
+          </div>
+          <div class="pfb-card__body">
+            <span class="pfb-card__eyebrow">Made to Impress</span>
+            <div class="pfb-card__text">{{ product.metafields.custom.feature_block_3 }}</div>
+          </div>
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- comment -%} Fallback layout fallback style if custom text blocks aren't filled out in backend yet {%- endcomment -%}
+      <div class="pfb-card">
+        <div class="pfb-card__image">
+          <img src="{{ product.featured_image | image_url: width: 700, height: 525, crop: 'center', format: 'webp' }}" alt="{{ product.title }}" width="700" height="525" loading="lazy">
+        </div>
+        <div class="pfb-card__body">
+          <span class="pfb-card__eyebrow">Product Details</span>
+          <div class="pfb-card__text">{{ product.description }}</div>
+        </div>
+      </div>
+    {%- endif -%}
+
+  </div>
 </section>
+
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
 
 {% schema %}
 {
   "name": "Product Feature Blocks",
-  "settings": [],
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding bottom",
+      "default": 36
+    }
+  ],
   "presets": [
     {
       "name": "Product Feature Blocks"

@@ -1,24 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html class="no-js" lang="{{ request.locale.iso_code | escape }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_background | default: '#3D0F18' | escape }}">
 
-    <meta name="theme-color" content="{{ settings.color_background | default: '#000000' | escape }}">
-
-    {%- comment -%} Robots — block password, checkout, search; paywalled/premium articles {%- endcomment -%}
     {%- assign robots_directive = 'index, follow' -%}
     {%- if shop.password_enabled or template.name == 'search' or request.path contains '/checkout' -%}
       {%- assign robots_directive = 'noindex, nofollow' -%}
     {%- elsif template.name == 'article' and article -%}
-      {%- if (article.metafields.content.paywalled and article.metafields.content.paywalled.value) or (article.tags contains 'premium') -%}
+      {%- if article.metafields.content.paywalled
+        and article.metafields.content.paywalled.value
+        or article.tags contains 'premium'
+      -%}
         {%- assign robots_directive = 'noindex, noimageindex, noarchive, nosnippet' -%}
       {%- endif -%}
     {%- endif -%}
-    <meta name="robots" content="{{ robots_directive | escape }}">
+    {%- if request.path contains 'short-trade-description' -%}
+      <meta name="robots" content="noindex, nofollow">
+    {%- else -%}
+      <meta name="robots" content="{{ robots_directive | escape }}">
+    {%- endif -%}
+    <link rel="canonical" href="https://ironphoenixghg.store{{ request.path }}">
 
-    <link rel="canonical" href="{{ canonical_url | escape }}">
+    <meta name="description" content="Iron Phoenix GHG — lifestyle products, apparel, and gifts for parents who work hard and come home ready to relax. Secure checkout, US-based support.">
 
     <title>
       {% if page_title %}
@@ -28,20 +34,17 @@
       {% endif %}
     </title>
 
+    {%- render 'cart-notification' -%}
+    {%- render 'schema-protection' -%}
     {%- render 'meta-tags' -%}
     {%- render 'schema-structured-data' -%}
 
-    {%- if settings.favicon != blank -%}
-      <link rel="icon" type="image/png" sizes="32x32" href="{{ settings.favicon | image_url: width: 32, height: 32 | escape }}">
-    {%- endif -%}
-
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
+      <link rel="preconnect" href="https://fonts.shopifycdn.com">
     {%- endunless -%}
-
-    {%- comment -%} Helpful preconnects for analytics (perf); still remote by design {%- endcomment -%}
-    <link rel="preconnect" href="https://www.googletagmanager.com" crossorigin>
-    <link rel="preconnect" href="https://www.google-analytics.com" crossorigin>
+    <link rel="preconnect" href="https://www.googletagmanager.com">
+    <link rel="preconnect" href="https://www.google-analytics.com">
+    <link rel="preconnect" href="https://cdn.shopify.com">
 
     {%- capture body_json -%}{{ settings.type_body_font | json }}{%- endcapture -%}
     {%- capture head_json -%}{{ settings.type_header_font | json }}{%- endcapture -%}
@@ -52,91 +55,172 @@
       {{ settings.type_header_font | font_url | preload_tag }}
     {%- endif -%}
 
-    {%- comment -%} Load CSS variables first (ensure this asset is .css or .css.liquid) {%- endcomment -%}
-    {{ 'css-variables.css' | asset_url | stylesheet_tag }}
+    {%- if template.name == 'product' and product and product.featured_media -%}
+      {%- assign lcp_img = product.featured_media -%}
+      {%- capture lcp_srcset -%}
+        {{ lcp_img | image_url: width: 600, format: 'webp' }} 600w,
+        {{ lcp_img | image_url: width: 900, format: 'webp' }} 900w,
+        {{ lcp_img | image_url: width: 1200, format: 'webp' }} 1200w
+      {%- endcapture -%}
+      <link rel="preload" as="image" href="{{ lcp_img | image_url: width: 900, format: 'webp' }}" imagesrcset="{{ lcp_srcset | strip_newlines | strip }}" imagesizes="(min-width: 750px) 50vw, 100vw">
+    {%- endif -%}
 
     <style>
-      /* Base resets and font faces — no :root variables here */
-      html{box-sizing:border-box}
-      *,*::before,*::after{box-sizing:inherit}
-      html{font-size:calc(var(--font-body-scale) * 62.5%)}
-      body{
-        display:grid;grid-template-rows:auto auto 1fr auto;min-height:100%;
-        margin:0;background-color:rgb(var(--color-black));color:rgb(var(--color-white));
-        font-family:var(--font-body-family);font-size:1.5rem;
+      :root {
+        --font-body-family: Arial, Helvetica, sans-serif;
+        --font-heading-family: Arial, Helvetica, sans-serif;
+        --font-body-scale: 1;
+        --font-heading-scale: 1;
+        --page-width: 120rem;
+        --color-black: 0,0,0;
+        --color-white: 255,255,255;
+        --buttons-radius: 4px;
+
+        --color-bg: #3D0F18;
+        --color-card-bg: #FFFFFF;
+        --color-primary-bg: #3D0F18;
+        --color-main-text: #F3E6D8;
+        --color-body-text: #F3E6D8;
+        --color-body-text-rgb: 243,230,216;
+        --color-text-secondary: #C9B8A8;
+        --color-text-muted: #C9B8A8;
+        --color-text-faded: #8C7568;
+        --color-text-highlight: #C9A84C;
+        --color-text-light: #F3E6D8;
+        --color-primary: #C9A84C;
+        --color-accent: #C9A84C;
+        --color-accent-rgb: 201,168,76;
+        --rgb-accent: 201,168,76;
+        --color-accent-hover: #5C4E44;
+        --color-accent-hover-rgb: 92,78,68;
+        --color-secondary: #5C4E44;
+        --color-deep-accent: #3D2B22;
+        --color-cta: #6B2737;
+        --color-cta-hover: #8a3344;
+        --color-button-primary-bg: #6B2737;
+        --color-button-primary-text: #F9F6F1;
+        --color-button-primary-hover: #8a3344;
+        --color-border: #EAE0D5;
+        --color-border-subtle: #EAE0D5;
+        --color-border-subtle-dark: #D8CCB8;
+        --color-icon-default: #8B7B72;
+        --color-header-gradient-start: #3D0F18;
+        --color-header-gradient-end: #3D0F18;
+        --color-search-bg: rgba(26,26,26,0.06);
+        --color-search-placeholder: #9ca3af;
       }
-      @media (min-width:750px){body{font-size:1.6rem}}
+      
+      .color-default {
+        --color-background: 61, 15, 24; 
+        --gradient-background: none;
+        --color-foreground: 243, 230, 216; 
+        --color-background-contrast: 243, 230, 216;
+        --color-shadow: 0, 0, 0;
+        --color-button: 201, 168, 76;
+        --color-button-text: 61, 15, 24;
+        --color-secondary-button: 243, 230, 216;
+        --color-secondary-button-text: 61, 15, 24;
+        --color-link: 201, 168, 76;
+        --color-badge-foreground: 243, 230, 216;
+        --color-badge-background: 61, 15, 24;
+        --color-badge-border: 201, 168, 76;
+        --payment-terms-background-color: rgb(61, 15, 24);
+      }
+
+      html { box-sizing: border-box; }
+      *, *::before, *::after { box-sizing: inherit; }
+      html { font-size: calc(var(--font-body-scale) * 62.5%); }
+
+      body {
+        display: grid;
+        grid-template-rows: auto auto 1fr auto;
+        min-height: 100%;
+        margin: 0;
+        background-color: var(--color-bg, #3D0F18);
+        color: var(--color-main-text, #F3E6D8);
+        font-family: var(--font-body-family);
+        font-size: 1.5rem;
+      }
+      @media (min-width: 750px) { body { font-size: 1.6rem; } }
+
+      body.color-default {
+        color: rgba(var(--color-foreground), 1);
+        background-color: rgb(var(--color-background));
+      }
+
+      body.template-index #MainContent {
+        position: relative;
+        background: var(--color-bg, #3D0F18);
+      }
+      body.template-index #MainContent .shopify-section { position: relative; }
+      body.template-index #MainContent .shopify-section + .shopify-section { border-top: 0; }
+
       {{ settings.type_body_font | font_face: font_display: 'swap' }}
       {{ settings.type_header_font | font_face: font_display: 'swap' }}
-      img{max-width:100%;height:auto;object-fit:cover;object-position:center}
+      img { max-width: 100%; height: auto; object-fit: cover; object-position: center; }
     </style>
 
-    {{ 'brand-tokens.css' | asset_url | stylesheet_tag }}
-    {{ 'theme.css' | asset_url | stylesheet_tag }}
-    {{ 'section-main-product.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
-    <noscript>{{ 'section-main-product.css' | asset_url | stylesheet_tag }}</noscript>
+    <style>
+      /* HARD OVERRIDE FOR MOODY THEME & CENTER ALIGNMENT */
+      html, body, #MainContent, .template-index, .shopify-section {
+        background-color: #3D0F18 !important;
+        background: #3D0F18 !important;
+      }
+      h1, h2, h3, h4, h5, h6, p, a, span, .card__heading, .collection-hero__title {
+        color: #F3E6D8 !important;
+      }
+      a:hover {
+        color: #C9A84C !important;
+      }
+      .title-wrapper, .title-wrapper-with-link, .section-header, .collection-list-title,
+      .card__content, .card__information, .product__title, .product__description,
+      .footer, .footer__content, .footer__blocks-wrapper, .footer__block {
+        text-align: center !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      .grid__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
 
-    {%- comment -%} Choose GTM / GA4 IDs (fallbacks per host) {%- endcomment -%}
-    {%- assign chosen_gtm = settings.gtm_id -%}
-    {%- assign chosen_ga4 = settings.ga4_id -%}
-    {%- if chosen_gtm == blank or chosen_ga4 == blank -%}
-      {%- if request.host contains 'ironphoenixghg.store' -%}
-        {%- if chosen_gtm == blank -%}{%- assign chosen_gtm = 'GTM-MBXZB3HQ' -%}{%- endif -%}
-        {%- if chosen_ga4 == blank -%}{%- assign chosen_ga4 = 'G-630YS12KSN' -%}{%- endif -%}
-      {%- else -%}
-        {%- if chosen_gtm == blank -%}{%- assign chosen_gtm = 'GTM-TQD686VL' -%}{%- endif -%}
-        {%- if chosen_ga4 == blank -%}{%- assign chosen_ga4 = 'G-C6E01GLSZW' -%}{%- endif -%}
-      {%- endif -%}
-    {%- endif -%}
-
-    {%- if chosen_ga4 != blank -%}
-      <!-- Google Analytics 4 -->
-      {% comment %} theme-check-disable RemoteAsset {% endcomment %}
-      <script async src="https://www.googletagmanager.com/gtag/js?id={{ chosen_ga4 | escape }}"></script>
-      {% comment %} theme-check-enable RemoteAsset {% endcomment %}
-      <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){ dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', '{{ chosen_ga4 | escape }}');
-      </script>
-    {%- endif -%}
-
-    {%- if chosen_gtm != blank -%}
-      <!-- Google Tag Manager -->
-      {% comment %} theme-check-disable RemoteAsset {% endcomment %}
-      <script>
-        (function(w,d,s,l,i){
-          w[l]=w[l]||[];
-          w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});
-          var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';
-          j.async=true;
-          j.src='https://www.googletagmanager.com/gtm.js?id='+encodeURIComponent('{{ chosen_gtm | escape }}')+dl;
-          f.parentNode.insertBefore(j,f);
-        })(window,document,'script','dataLayer','{{ chosen_gtm | escape }}');
-      </script>
-      {% comment %} theme-check-enable RemoteAsset {% endcomment %}
-    {%- endif -%}
-
-    {%- comment -%}
-      IMPORTANT: Place content_for_header at the end of <head>.
-      Many apps rely on injecting right before </head>.
-    {%- endcomment -%}
+    {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
+    {{ 'product-modal.css' | asset_url | stylesheet_tag }}
     {{ content_for_header }}
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Iron Phoenix GHG",
+        "alternateName": "Iron Phoenix GHG",
+        "legalName": "Go Hard Gaming Discord LLC",
+        "url": "https://ironphoenixghg.store",
+        "description": "Iron Phoenix GHG is operated by Go Hard Gaming Discord LLC.",
+        "contactPoint": [
+          {
+            "@type": "ContactPoint",
+            "contactType": "Customer Support",
+            "email": "support@ironphoenixghg.store",
+            "telephone": "+1-518-415-8496",
+            "url": "https://ironphoenixghg.store/pages/contact",
+            "availableLanguage": ["English"],
+            "areaServed": "US"
+          }
+        ]
+      }
+    </script>
   </head>
 
-  <body class="gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
-    <script>document.documentElement.classList.replace('no-js','js');</script>
-
-    {%- if chosen_gtm != blank -%}
-      <!-- Google Tag Manager (noscript) -->
-      {% comment %} theme-check-disable RemoteAsset {% endcomment %}
-      <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ chosen_gtm | escape }}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-      {% comment %} theme-check-enable RemoteAsset {% endcomment %}
-    {%- endif -%}
+  <body class="template-{{ template.name | escape }} gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
+    <script>document.documentElement.classList.replace('no-js', 'js');</script>
 
     {%- unless template.name == 'password' -%}
-      {%- if settings.cart_type == 'drawer' -%}{% render 'cart-drawer' %}{%- endif -%}
+      {%- if settings.cart_type == 'drawer' -%}{% section 'cart-drawer' %}{%- endif -%}
       {% section 'header' %}
     {%- endunless -%}
 
@@ -148,12 +232,36 @@
       {% section 'footer' %}
     {%- endunless -%}
 
+    {%- render 'product-media-modal' -%}
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t | escape }}</li>
       <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t | escape }}</li>
     </ul>
-
     {%- render 'bot-protection' -%}
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {%- assign ga4_id = settings.ga4_id | strip | default: 'G-V6ZP7KWRZN' -%}
+    {%- assign gtag_id = settings.google_tag_id | strip | default: 'GT-552Q5J6X' -%}
+    {%- assign ga4_prefix = ga4_id | slice: 0, 2 -%}
+    {%- assign gtag_prefix = gtag_id | slice: 0, 3 -%}
+    {%- assign has_ga4 = false -%}{%- if ga4_id != blank and ga4_prefix == 'G-' -%}{%- assign has_ga4 = true -%}{%- endif -%}
+    {%- assign has_gtag = false -%}{%- if gtag_id != blank and gtag_prefix == 'GT-' -%}{%- assign has_gtag = true -%}{%- endif -%}
+    {%- assign primary_id = '' -%}{%- if has_ga4 -%}{%- assign primary_id = ga4_id -%}{%- elsif has_gtag -%}{%- assign primary_id = gtag_id -%}{%- endif -%}
+
+    {%- if primary_id != '' -%}
+      <script async src="https://www.googletagmanager.com/gtag/js?id={{ primary_id | escape }}"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){ dataLayer.push(arguments); }
+        gtag('js', new Date());
+        {% if has_ga4 %}gtag('config', '{{ ga4_id | escape }}');{% endif %}
+        {% if has_gtag %}gtag('config', '{{ gtag_id | escape }}');{% endif %}
+      </script>
+    {%- else -%}
+      <script>console.warn('gtag not loaded: no valid GA4 (G-*) or Google Tag (GT-*) ID.');</script>
+    {%- endif -%}
+
+    {%- render 'feature-scripts' -%}
+    <script>window.addEventListener('load', function () {});</script>
   </body>
 </html>

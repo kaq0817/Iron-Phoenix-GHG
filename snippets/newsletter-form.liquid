@@ -1,25 +1,50 @@
-<form method="post" action="/contact#newsletter" accept-charset="UTF-8" class="newsletter-form" id="ContactForm">
-  <input type="hidden" name="form_type" value="customer" />
-  <input type="hidden" name="utf8" value="✓" />
-  <input type="hidden" name="contact[tags]" value="newsletter-tiered-sale" />
-  
-  <label for="Email" class="visually-hidden">Email</label>
-  <input type="email" name="contact[email]" id="Email" class="input" placeholder="Enter your email" required>
+{%- assign ns_id = section.id | default: 'global' -%}
 
-  <label>
-    <input type="checkbox" name="contact[tags]" value="Product Updates">
-    Product Updates
-  </label>
-  <label>
-    <input type="checkbox" name="contact[tags]" value="Blog News">
-    Blog News
-  </label>
+<section id="newsletter-{{ ns_id }}" class="newsletter">
+  {% form 'customer', id: "NewsletterForm-" | append: ns_id, class: 'newsletter-form', novalidate: 'novalidate' %}
+    {%- comment -%} Base tag so you can segment this signup source {%- endcomment -%}
+    <input type="hidden" name="contact[tags]" value="newsletter-tiered-sale">
 
-  <button type="submit" class="button">Subscribe</button>
+    <div class="newsletter-form__row">
+      <label for="NewsletterEmail-{{ ns_id }}" class="visually-hidden">
+        {{ 'newsletter.label' | t | default: 'Email' }}
+      </label>
+      <input
+        id="NewsletterEmail-{{ ns_id }}"
+        class="input"
+        type="email"
+        name="contact[email]"
+        autocomplete="email"
+        placeholder="{{ 'newsletter.label' | t | default: 'Email' }}"
+        required
+      >
+      <button type="submit" class="button">
+        {{ 'newsletter.button_label' | t | default: 'Subscribe' }}
+      </button>
+    </div>
 
-  {% if form.posted_successfully? %}
-    <p class="success-message" aria-live="polite">Thanks for subscribing!</p>
-  {% elsif form.errors %}
-    <p class="error-message" aria-live="polite">{{ form.errors | default_errors }}</p>
-  {% endif %}
-</form>
+    <fieldset class="newsletter-form__interests" aria-label="Interests">
+      <legend class="visually-hidden">Interests</legend>
+
+      <label class="checkbox">
+        <input type="checkbox" name="contact[tags]" value="Product Updates">
+        <span>Product Updates</span>
+      </label>
+
+      <label class="checkbox">
+        <input type="checkbox" name="contact[tags]" value="Blog News">
+        <span>Blog News</span>
+      </label>
+    </fieldset>
+
+    {% if form.posted_successfully? %}
+      <p class="success-message" aria-live="polite">
+        {{ 'newsletter.success' | t | default: 'Thanks for subscribing' }}
+      </p>
+    {% elsif form.errors %}
+      <div class="error-message" aria-live="polite">
+        {{ form.errors | default_errors }}
+      </div>
+    {% endif %}
+  {% endform %}
+</section>

@@ -1,208 +1,259 @@
-/* component-footer.css — Iron Phoenix GHG */
+/* component-footer.css — Iron Phoenix GHG • Wine & Gold Edition */
 
-/* Uses your theme.liquid vars:
-   --color-base-background-1, --color-base-text, --color-base-accent-1
-   plus neon accents you defined: --color-neon-yellow, etc. */
-
+/* Boutique Footer */
 .footer {
-  background-color: rgb(var(--color-base-background-1, 17,17,17));
-  color: rgb(var(--color-base-text, 255,255,255));
-  padding: 2rem 1rem;
-  font-size: 0.95rem;
-}
-
-/* container */
-.footer__content-top,
-.footer__blocks,
-.footer-wrapper {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
-  justify-content: space-between;
-  max-width: var(--page-width, 120rem);
-  margin: 0 auto;
-}
-
-/* blocks/columns */
-.footer-block {
-  flex: 1 1 220px;
-  min-width: 220px;
-}
-
-/* logo */
-.footer__logo img,
-.footer-logo img {
-  max-width: 200px;
-  height: auto;
-  display: block;
-  margin-bottom: 1rem;
-}
-
-/* headings */
-.footer .footer-block__heading,
-.footer .footer__title {
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: .06em;
-  margin-bottom: .75rem;
-}
-
-/* links */
-.footer-links ul,
-.footer .list-menu {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.footer-links li,
-.footer .list-menu__item {
-  margin: 0 0 .5rem 0;
-}
-
-.footer a {
-  color: rgb(var(--color-base-text, 255,255,255));
-  text-decoration: none;
-  transition: color .25s ease, box-shadow .25s ease;
-}
-
-.footer a:hover {
-  color: rgb(var(--color-neon-yellow, 255,255,0));
-}
-
-/* focus visibility */
-.footer a:focus-visible,
-.footer button:focus-visible,
-.footer input:focus-visible,
-.footer select:focus-visible {
-  outline: 2px solid rgb(var(--color-neon-yellow,255,255,0));
-  outline-offset: 2px;
-  border-radius: .25rem;
-}
-
-/* newsletter */
-.footer-newsletter .newsletter-form,
-.footer .footer__newsletter .newsletter-form {
-  max-width: 420px;
-}
-
-.footer-newsletter input[type="email"],
-.footer .newsletter-form .field__input {
-  width: 100%;
-  padding: .6rem .8rem;
-  border-radius: 6px;
-  border: 1px solid rgba(255,255,255,.15);
-  background: rgba(0,0,0,.25);
-  color: rgb(var(--color-base-text,255,255,255));
-  transition: border-color .2s ease, box-shadow .2s ease;
-}
-
-.footer-newsletter input[type="email"]:focus,
-.footer .newsletter-form .field__input:focus {
-  border-color: rgba(255,255,0,.6);
-  box-shadow: 0 0 0 3px rgba(255,255,0,.25);
-}
-
-.footer-newsletter button,
-.footer .newsletter-form .button {
-  background: rgb(var(--color-neon-yellow,255,255,0));
-  color: #000;
-  padding: .6rem 1rem;
-  border: 0;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 800;
-  letter-spacing: .04em;
-  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-}
-
-.footer-newsletter button:hover,
-.footer .newsletter-form .button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 8px 20px rgba(255,255,0,.35);
-}
-
-/* social */
-.footer .list-social {
-  display: flex;
-  gap: .75rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer .list-social__link {
-  display: inline-flex;
-  width: 36px; height: 36px;
-  align-items: center; justify-content: center;
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 999px;
-  transition: border-color .25s ease, box-shadow .25s ease;
-}
-
-.footer .list-social__link:hover {
-  border-color: rgba(255,255,0,.8);
-  box-shadow: 0 0 0 3px rgba(255,255,0,.25);
-}
-
-.footer__payment,
-.footer__payment-icons,
-.list-payment {
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.footer__payment-icons svg,
-.list-payment__item svg {
-  width: 32px; height: auto;
-}
-
-/* bottom row */
-.footer__content-bottom,
-.footer__bottom,
-.footer-bottom {
-  margin-top: 2rem;
-  padding-top: 1rem;
-  border-top: 1px solid rgba(255,255,255,.12);
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  font-size: .875rem;
+  background-color: #000000;
+  color: #F3E6D8;
+  padding: 70px 20px 35px;
+  border-top: 2px solid #C9A84C;
+  font-family: "Roboto", sans-serif;
   text-align: center;
 }
 
-.footer .copyright__content {
-  opacity: .85;
+.footer-wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* localization dropdowns */
-.footer__localization select {
-  background: rgba(0,0,0,.25);
-  color: rgb(var(--color-base-text,255,255,255));
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 6px;
-  padding: .45rem .6rem;
+/* ===== 4-Column Neon Card Grid ===== */
+.footer-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  margin-bottom: 40px;
 }
 
-/* responsive */
-@media (max-width: 749px) {
-  .footer { padding: 2rem 1.25rem; }
+/* ===== Card Panels ===== */
+.contact-box {
 
-  .footer__content-top,
-  .footer__blocks,
-  .footer-wrapper {
-    gap: 1.5rem;
+  border: 1.5px solid rgba(201, 168, 76, 0.4);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(201, 168, 76, 0.15);
+  padding: 25px 20px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.contact-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 18px rgba(201, 168, 76, 0.35);
+}
+
+/* ===== Headings ===== */
+.footer-block h3,
+.contact-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: #C9A84C;
+  margin-bottom: 18px;
+  letter-spacing: 2px;
+}
+
+/* Mission Statement */
+.footer-mission {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: #F3E6D8;
+  text-align: center;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ===== Text + Links ===== */
+.footer-block p {
+  margin: 6px 0;
+  line-height: 1.6;
+  color: #ddd;
+}
+
+.footer-block a {
+  color: #C9A84C;
+  text-decoration: none;
+  font-weight: 500;
+}
+.footer-block a:hover {
+  color: #F3E6D8;
+}
+
+/* ===== Newsletter + Social ===== */
+.newsletter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 320px;
+}
+
+.newsletter-input {
+  background: #0a0a0a;
+  border: 1px solid rgba(201, 168, 76, 0.3);
+  color: #F3E6D8;
+  padding: 12px;
+  border-radius: 4px;
+}
+.newsletter-input::placeholder {
+  color: #888;
+}
+
+.newsletter-button {
+  background: #6B2737;
+  color: #F9F6F1;
+  border: none;
+  padding: 12px;
+  border-radius: 4px;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.25s ease;
+}
+.newsletter-button:hover {
+  background: #C9A84C;
+  color: #1A1310;
+}
+
+/* ===== Neon Social Icon Glow - Iron Phoenix Signature ===== */
+.footer-social {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin-top: 15px;
+}
+
+.footer-social a {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 1.5px solid #111;
+  transition: all 0.25s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0);
+}
+
+/* Per-platform hover glow */
+.footer-social a[href*="facebook"],
+.footer-social a[aria-label="Facebook"] {
+  color: #1877f2;
+}
+.footer-social a[href*="facebook"]:hover {
+  box-shadow: 0 0 15px #1877f2;
+  background: rgba(24, 119, 242, 0.15);
+}
+
+.footer-social a[href*="twitter"],
+.footer-social a[aria-label="Twitter"] {
+  color: #1da1f2;
+}
+.footer-social a[href*="twitter"]:hover {
+  box-shadow: 0 0 15px #1da1f2;
+  background: rgba(29, 161, 242, 0.15);
+}
+
+.footer-social a[href*="tiktok"],
+.footer-social a[aria-label="TikTok"] {
+  color: #fff;
+}
+.footer-social a[href*="tiktok"]:hover {
+  box-shadow: 0 0 15px #ff0050;
+  background: rgba(255, 0, 80, 0.15);
+}
+
+.footer-social a[href*="pinterest"],
+.footer-social a[aria-label="Pinterest"] {
+  color: #e60023;
+}
+.footer-social a[href*="pinterest"]:hover {
+  box-shadow: 0 0 15px #e60023;
+  background: rgba(230, 0, 35, 0.15);
+}
+
+.footer-social a[href*="youtube"],
+.footer-social a[aria-label="YouTube"] {
+  color: #ff0000;
+}
+.footer-social a[href*="youtube"]:hover {
+  box-shadow: 0 0 15px #ff0000;
+  background: rgba(255, 0, 0, 0.15);
+}
+
+.footer-social a[href*="twitch"],
+.footer-social a[aria-label="Twitch"] {
+  color: #9146ff;
+}
+.footer-social a[href*="twitch"]:hover {
+  box-shadow: 0 0 15px #9146ff;
+  background: rgba(145, 70, 255, 0.15);
+}
+
+
+/* ===== Bottom Bar ===== */
+.footer-bottom {
+  border-top: 1px solid #333;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.footer-payment {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.footer-policies {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+}
+.footer-policies a {
+  color: #999;
+  font-size: 0.9rem;
+}
+.footer-policies a:hover {
+  color: #fff;
+}
+
+/* ===== Accessibility Focus ===== */
+.footer a:focus,
+.newsletter-input:focus,
+.newsletter-button:focus {
+  outline: 2px solid #C9A84C;
+  outline-offset: 2px;
+}
+
+/* ===== Responsive Tweaks ===== */
+@media (max-width: 1024px) {
+  .footer-blocks {
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   }
-
-  .footer-block { min-width: min(100%, 280px); flex: 1 1 100%; }
-
-  .footer__content-bottom,
-  .footer__bottom,
-  .footer-bottom {
+}
+@media (max-width: 768px) {
+  .footer {
+    padding: 40px 15px 20px;
+  }
+  .footer-blocks {
+    gap: 20px;
+  }
+}
+@media (max-width: 480px) {
+  .footer-block h3 {
+    font-size: 0.95rem;
+  }
+  .footer-policies {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
   }
 }

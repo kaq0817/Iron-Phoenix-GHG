@@ -1,6 +1,1 @@
-{
-  "sections": {
-    "main": { "type": "page", "settings": {} }
-  },
-  "order": ["main"]
-}
+{"sections":{"main":{"type":"page","settings":{"heading_size":"h1","color_scheme":"","padding_top":36,"padding_bottom":36}},"founder_note_piJg9k":{"type":"founder-note","name":"Founder note","settings":{"color_scheme":"","heading":"A Real Brand, Built By a Real Person","body":"<p>Hi, I’m the founder of Iron Phoenix.<br\/><br\/>I went to Eisenberg School of Business, left to raise my sons after losing my mother, and later worked in home healthcare. After a tough relapse in 2016, I needed a new path. I discovered design, learned the hard way that big platforms favor big budgets, and decided to build something real—this brand. Every order supports a real person, not a corporation. Thank you for being here and proving small brands still matter.<\/p>","signature":"Shadowseeker KB"}},"badge_back_8nKbfx":{"type":"badge-back","name":"Badge Pack","settings":{"color_scheme":"","heading":"Why shop with us?","item_1":"✅ Secure Checkout","item_2":"📦 Fast US Shipping","item_3":"🎁 Exclusive Designs","item_4":"🧠 Mental Health-Focused Brand"}}},"order":["main","founder_note_piJg9k","badge_back_8nKbfx"]}

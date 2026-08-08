@@ -27,14 +27,15 @@ Grid of category links (icons/images + labels)
         <a class="home-categories-nav__link" href="{{ href | escape }}">
           <span class="home-categories-nav__media" aria-hidden="true">
             {% if block.settings.image %}
-              {{ block.settings.image
-                | image_url: width: 320
-                | image_tag:
-                    alt: block.settings.title | escape,
-                    width: block.settings.image.width,
-                    height: block.settings.image.height,
-                    loading: 'lazy',
-                    class: 'home-categories-nav__img' }}
+              {%- assign img_alt = block.settings.title | default: 'Category' | escape -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 320 }}"
+                alt="{{ img_alt }}"
+                loading="lazy"
+                class="home-categories-nav__img"
+                width="320"
+                height="{{ 320 | divided_by: block.settings.image.aspect_ratio | round }}"
+              >
             {% elsif block.settings.icon != 'none' %}
               <span class="home-categories-nav__icon">
                 {% case block.settings.icon %}
@@ -60,7 +61,7 @@ Grid of category links (icons/images + labels)
   "class": "section-home-categories-nav",
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" },
-    { "type": "text", "id": "subheading", "label": "Subheading", "default": "" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Explore top categories" },
     { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "background-1" }
   ],
   "blocks": [
@@ -86,11 +87,14 @@ Grid of category links (icons/images + labels)
   ],
   "max_blocks": 12,
   "presets": [
-    { "name": "Home categories nav", "blocks": [
-      { "type": "category", "settings": { "title": "Gaming" } },
-      { "type": "category", "settings": { "title": "Wellness" } },
-      { "type": "category", "settings": { "title": "Sports" } }
-    ] }
+    {
+      "name": "Home categories nav",
+      "blocks": [
+        { "type": "category", "settings": { "title": "Gaming" } },
+        { "type": "category", "settings": { "title": "Wellness" } },
+        { "type": "category", "settings": { "title": "Sports" } }
+      ]
+    }
   ]
 }
 {% endschema %}

@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "main": {
+      "type": "sitemap-enhanced",
+      "settings": {}
+    }
+  },
+  "order": ["main"]
+}

@@ -67,7 +67,7 @@ form {
 .btn {
   width: 100%;
   padding: 0.85rem 0;
-  background: linear-gradient(90deg, #FF10F0 0%, #39FF14 100%);
+  
   color: #111;
   font-size: 1.125rem;
   font-weight: 700;
@@ -82,7 +82,7 @@ form {
 
 .btn:hover,
 .btn:focus {
-  background: linear-gradient(90deg, #FFFF00 0%, #FF10F0 100%);
+  
   box-shadow: 0 0 16px #fff, 0 0 36px #FFFF00;
   color: #181a1f;
 }

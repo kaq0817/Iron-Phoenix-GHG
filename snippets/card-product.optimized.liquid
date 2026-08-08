@@ -1,36 +1,56 @@
-{%- comment -%}
-Optimized Product Card (evaluation only)
-- Title limited to 5 words
-- Image via 'optimized-image' snippet (adds width/height, srcset)
-- Price via Dawn 'price' snippet
-{%- endcomment -%}
-
 {%- if card_product and card_product != empty -%}
   {%- liquid
-    assign title_words = card_product.title | split: ' ' | slice: 0, 5 | join: ' '
+    assign card_loading = 'lazy'
+    if lazy_load == false
+      assign card_loading = 'eager'
+    endif
+    assign on_sale = false
+    if card_product.compare_at_price > card_product.price
+      assign on_sale = true
+    endif
   -%}
 
   <div class="card-wrapper product-card-wrapper underline-links-hover">
     <div class="card card--{{ settings.card_style | default: 'standard' }} card--media card--extend-height">
 
-      {%- if card_product.featured_media -%}
-        <a class="card__media" href="{{ card_product.url }}">
-          <div class="media media--transparent">
-            {% render 'optimized-image',
-              image: card_product.featured_media,
-              alt: card_product.featured_media.alt | default: title_words,
-              sizes: '(max-width: 749px) 50vw, (min-width: 750px) 25vw',
-              class: 'card__img motion-reduce'
-            %}
-          </div>
-        </a>
-      {%- endif -%}
+      <a class="card__media" href="{{ card_product.url }}">
+        <div class="media media--transparent">
+          <img
+            src="{{ card_product.featured_media | image_url: width: 400, format: 'webp' }}"
+            srcset="{{ card_product.featured_media | image_url: width: 300, format: 'webp' }} 300w,
+                    {{ card_product.featured_media | image_url: width: 400, format: 'webp' }} 400w,
+                    {{ card_product.featured_media | image_url: width: 600, format: 'webp' }} 600w,
+                    {{ card_product.featured_media | image_url: width: 800, format: 'webp' }} 800w"
+            sizes="(max-width: 749px) calc(50vw - 20px), (max-width: 989px) calc(33vw - 20px), 280px"
+            alt="{{ card_product.featured_media.alt | default: card_product.title | escape }}"
+            loading="{{ card_loading }}"
+            width="400"
+            height="{{ 400 | divided_by: card_product.featured_media.aspect_ratio | round }}"
+            class="card__img motion-reduce"
+          >
+        </div>
+      </a>
 
-      <div class="card__content">
+      <div class="card__content card__content--{{ settings.card_text_align | default: 'center' }}">
         <h3 class="card__heading h4">
-          <a href="{{ card_product.url }}">{{ title_words }}</a>
+          <a href="{{ card_product.url }}">{{ card_product.title | escape }}</a>
         </h3>
-        {% render 'price', product: card_product, price_class: 'price--listing' %}
+        <div class="price{% if on_sale %} price--on-sale{% endif %}">
+          {%- if on_sale -%}
+            <span class="price-item price-item--sale">{{ card_product.price | money }}</span>
+            <s class="price-item price-item--regular">{{ card_product.compare_at_price | money }}</s>
+          {%- else -%}
+            <span class="price-item price-item--regular">{{ card_product.price | money }}</span>
+          {%- endif -%}
+        </div>
+        {%- assign shipping_times = card_product.metafields.custom.production_and_shipping.value -%}
+        {%- if shipping_times and shipping_times.size > 0 -%}
+          <ul class="card__shipping-times">
+            {%- for item in shipping_times -%}
+              <li>{{ item | escape }}</li>
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
       </div>
     </div>
   </div>

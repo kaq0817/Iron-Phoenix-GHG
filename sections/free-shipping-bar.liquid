@@ -1,0 +1,181 @@
+{%- style -%}
+  .free-shipping-bar {
+    background: #111111;
+    color: white;
+    text-align: center;
+    padding: 12px 20px;
+    font-size: 14px;
+    font-weight: 600;
+
+    /* Keep this section in normal flow to avoid top-line artifacts */
+    position: relative;
+    top: auto;
+    z-index: 2;
+    width: 100%;
+    margin: 0;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  .free-shipping-bar.is-empty {
+    background: #111111;
+  }
+
+  .fsb__text {
+    margin: 0 0 8px 0;
+    font-size: 14px;
+    color: #ffffff !important;
+  }
+
+  .fsb__text strong {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #ffffff !important;
+  }
+
+  .fsb__track {
+  background: rgba(255, 255, 255, 0.25);  /* the empty part */
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.fsb__bar {
+  background: #ffffff;  /* solid white for the filled part */
+  height: 100%;
+  border-radius: 3px;
+  width: var(--fsb-progress);
+  transition: width 0.3s ease;
+}
+
+  @media (max-width: 768px) {
+    .free-shipping-bar {
+      padding: 10px 15px;
+      font-size: 13px;
+    }
+
+    .fsb__text {
+      font-size: 13px;
+    }
+  }
+
+  /* Hide on checkout and certain pages */
+  .template-cart .free-shipping-bar,
+  .template-checkout .free-shipping-bar {
+    display: none;
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign show_everywhere = section.settings.show_everywhere | default: true
+  assign hide_on_cart = section.settings.hide_on_cart | default: false
+
+  assign should_hide = false
+  if show_everywhere == false
+    assign should_hide = true
+  endif
+
+  if hide_on_cart and request.page_type == 'cart'
+    assign should_hide = true
+  endif
+
+  if request.page_type == 'checkout'
+    assign should_hide = true
+  endif
+
+assign default_threshold_cents = section.settings.default_threshold | default: '159' | remove: '$' | remove: ',' | times: 100
+assign threshold_cents = default_threshold_cents
+
+  assign cart_total = cart.total_price | default: 0
+  assign item_count = cart.items | size
+
+  if item_count == 0 and threshold_cents > 0
+    assign is_empty_state = true
+  else
+    assign is_empty_state = false
+  endif
+
+  assign progress = 0
+  if threshold_cents > 0
+    if cart_total > 0
+      assign progress = cart_total | times: 100 | divided_by: threshold_cents
+      if progress > 100
+        assign progress = 100
+      endif
+    else
+      assign progress = 0
+    endif
+  else
+    assign progress = 100
+  endif
+
+  assign amount_remaining = threshold_cents | minus: cart_total
+-%}
+
+{%- unless should_hide -%}
+  <div class="free-shipping-bar{% if is_empty_state %} is-empty{% endif %}" role="status" aria-live="polite">
+    {%- if cart_total >= threshold_cents -%}
+      <p class="fsb__text">🎉 You qualify for free shipping!</p>
+    {%- elsif is_empty_state -%}
+      <p class="fsb__text">
+        🛍️ Spend <strong>{{ threshold_cents | money }}</strong> for free shipping!
+      </p>
+    {%- else -%}
+      <p class="fsb__text">
+        Add <strong>{{ amount_remaining | money }}</strong> more for free shipping!
+      </p>
+    {%- endif -%}
+
+    {%- unless is_empty_state and cart_total == 0 -%}
+      <div class="fsb__track" aria-hidden="true">
+        <div class="fsb__bar" style="--fsb-progress: {{ progress }}%;"></div>
+      </div>
+    {%- endunless -%}
+  </div>
+{%- endunless -%}
+
+
+
+{% schema %}
+{
+  "name": "Free Shipping Bar",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_everywhere",
+      "label": "Show on entire site",
+      "default": true,
+      "info": "Display the free shipping bar across all pages to encourage higher cart values"
+    },
+    {
+      "type": "checkbox",
+      "id": "hide_on_cart",
+      "label": "Hide on cart page",
+      "default": false,
+      "info": "Hide the bar on cart page if you prefer"
+    },
+    {
+      "type": "header",
+      "content": "Thresholds"
+    },
+    {
+      "type": "text",
+      "id": "default_threshold",
+      "label": "Free shipping threshold",
+      "default": "159",
+      "info": "Order amount needed to qualify for free shipping"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Free Shipping Bar",
+      "settings": {
+        "show_everywhere": true,
+        "hide_on_cart": false
+      }
+    }
+  ]
+}
+{% endschema %}

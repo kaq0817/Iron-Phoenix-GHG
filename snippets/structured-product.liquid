@@ -1,9 +1,9 @@
 {%- comment -%}
-/snippets/structured-product.liquid
-Product JSON-LD aligned with visible availability:
-- POD + v.available → InStock
-- POD + not v.available → PreOrder
-- Non-POD → InStock/OutOfStock based on v.available
+  /snippets/structured-product.liquid
+  Product JSON-LD aligned with visible availability:
+  - POD + v.available → InStock
+  - POD + not v.available → PreOrder
+  - Non-POD → InStock/OutOfStock based on v.available
 {%- endcomment -%}
 
 {%- assign p = product -%}
@@ -11,9 +11,14 @@ Product JSON-LD aligned with visible availability:
 {%- assign mf = p.metafields.custom -%}
 
 {%- assign vendor = p.vendor | strip -%}
+{%- assign pod_vendors = 'Printify,Printful,AnywherePod' | split: ',' -%}
 {%- assign is_pod_vendor = false -%}
-{%- for vn in 'Printify,Printful,AnywherePod' | split: ',' -%}
-  {%- if vendor == vn | strip -%}{%- assign is_pod_vendor = true -%}{%- break -%}{%- endif -%}
+{%- for vn in pod_vendors -%}
+  {%- assign vn_clean = vn | strip -%}
+  {%- if vendor == vn_clean -%}
+    {%- assign is_pod_vendor = true -%}
+    {%- break -%}
+  {%- endif -%}
 {%- endfor -%}
 
 {%- assign desc_source = '' -%}
@@ -44,20 +49,22 @@ Product JSON-LD aligned with visible availability:
   "description": {{ desc_source | truncate: 500 | json }},
   "sku": {{ v.sku | json }},
   "brand": {{ p.vendor | json }},
-  "url": {{ p.url | within: collection | json }},
+  "url": {{ shop.url | append: p.url | json }},
   "image": {{ p.featured_image | image_url: width: 1500 | prepend: "https:" | json }},
   "offers": {
     "@type": "Offer",
     "priceCurrency": {{ cart.currency.iso_code | json }},
     "price": {{ v.price | money_without_currency | replace: ',', '' | json }},
     "availability": "{{ availability_uri }}",
-    "url": {{ p.url | within: collection | json }},
+    "url": {{ shop.url | append: p.url | json }},
     "hasMerchantReturnPolicy": {
       "@type": "MerchantReturnPolicy",
-      "url": "https://ironphoenix.store/pages/return-and-refunded-page"
+      "url": {{ shop.url | append: "/policies/refund-policy" | json }}
     }
   }
 }
 {%- endcapture -%}
 
-<script type="application/ld+json">{{ product_ld | strip }}</script>
+<script type="application/ld+json">
+  {{ product_ld | strip }}
+</script>

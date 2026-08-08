@@ -1,10 +1,10 @@
 /* assets/section-article.css - minimal, brand-aware, fast */
 :root{
-  --ipx-teal: #26e1d2;          /* bright teal accent */
-  --ipx-purple: #2b0a3d;        /* dark purple */
-  --ipx-black: #000000;         /* deep black */
-  --ipx-text: #e8f8f6;          /* soft light teal text */
-  --ipx-muted: #a0b7b4;
+  --ipx-gold: #C9A84C;
+  --ipx-wine: #6B2737;
+  --ipx-cream: #F9F6F1;
+  --ipx-text: #1A1310;
+  --ipx-muted: #5C4E44;
 }
 
 .article{
@@ -14,7 +14,7 @@
 
 .article__header{
   margin-bottom: 1.25rem;
-  border-bottom: 1px solid rgba(255,255,255,.08);
+  border-bottom: 1px solid rgba(201, 168, 76, 0.2);
   padding-bottom: 1rem;
 }
 
@@ -22,9 +22,7 @@
   margin: 0 0 .5rem 0;
   font-size: clamp(2.2rem, 4.5vw, 3rem);
   line-height: 1.1;
-  background: linear-gradient(135deg, #fff, var(--ipx-teal));
-  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-  text-shadow: 0 0 18px rgba(38,225,210,0.25);
+  color: #1A1310;
 }
 
 .article__meta{
@@ -34,7 +32,7 @@
 
 .article__image{
   margin-top: 1.25rem; border-radius: 14px; overflow: hidden;
-  box-shadow: 0 14px 40px rgba(0,0,0,.35);
+  box-shadow: 0 14px 40px rgba(0,0,0,.1);
 }
 
 .article__body{
@@ -43,10 +41,10 @@
   max-width: 75ch;
 }
 .article__body p{ margin: 0 0 1rem; }
-.article__body a{ color: var(--ipx-teal); text-decoration: underline; text-underline-offset: 2px; }
+.article__body a{ color: var(--ipx-wine); text-decoration: underline; text-underline-offset: 2px; }
 
 .article__tags{
   margin-top: 1.25rem; color: var(--ipx-muted);
 }
-.article__tags a{ color: var(--ipx-teal); text-decoration: none; }
+.article__tags a{ color: var(--ipx-gold); text-decoration: none; }
 .article__tags a:hover{ text-decoration: underline; }

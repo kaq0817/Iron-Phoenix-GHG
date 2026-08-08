@@ -1,339 +1,220 @@
 {% comment %}
-  Featured blog section for Iron Phoenix GHG
-  - Displays recent blog posts with teal and black scheme
-  - Compatible with landing page
-  - Optimized for Dawn 15.3.0
+  Featured Blog — compact thumbnails
+  - Small fixed-height thumbnails (120/160/200px)
+  - 2 cols mobile (configurable 1–3) / 3–4 cols desktop
+  - Lightweight so products remain the hero
 {% endcomment %}
 
-{{ 'component-slider.css' | asset_url | stylesheet_tag: media: 'print', onload: 'this.media="all"' }}
-{{ 'component-card.css' | asset_url | stylesheet_tag: media: 'print', onload: 'this.media="all"' }}
-{{ 'component-article-card.css' | asset_url | stylesheet_tag: media: 'print', onload: 'this.media="all"' }}
-{{ 'section-featured-blog.css' | asset_url | stylesheet_tag: preload: true }}
-
 {%- liquid
-  assign posts_displayed = section.settings.blog.articles_count
-  if section.settings.post_limit <= section.settings.blog.articles_count or section.settings.post_limit <= 4
-    assign posts_exceed_limit = true
-    assign posts_displayed = section.settings.post_limit
+  assign blog_obj = section.settings.blog
+  assign limit = section.settings.post_limit | default: 4
+
+  if section.settings.thumb_size == 'md'
+    assign thumb_h = 280
+  elsif section.settings.thumb_size == 'lg'
+    assign thumb_h = 380
+  else
+    assign thumb_h = 180
   endif
-  
-  # Pass colors as CSS variables to the external stylesheet
-  assign wellness_accent_rgb = section.settings.wellness_accent | default: '#26a69a' | color_to_rgb
-  assign wellness_bg_rgb = section.settings.wellness_bg | default: '#f5f6f5' | color_to_rgb
-  assign wellness_text_rgb = section.settings.wellness_text | default: '#2c3e50' | color_to_rgb
+
+  assign card_style = section.settings.card_style | default: 'rounded'
 -%}
 
-{%- style -%}
-  .section-featured-blog {
-    --section-featured-blog-padding-top: {{ section.settings.padding_top }}px;
-    --section-featured-blog-padding-bottom: {{ section.settings.padding_bottom }}px;
-    --color-wellness-background: rgb({{ wellness_bg_rgb.red }}, {{ wellness_bg_rgb.green }}, {{ wellness_bg_rgb.blue }});
-    --color-wellness-accent: rgb({{ wellness_accent_rgb.red }}, {{ wellness_accent_rgb.green }}, {{ wellness_accent_rgb.blue }});
-    --color-wellness-accent-rgb: {{ wellness_accent_rgb.red }}, {{ wellness_accent_rgb.green }}, {{ wellness_accent_rgb.blue }};
-    --color-wellness-text: rgb({{ wellness_text_rgb.red }}, {{ wellness_text_rgb.green }}, {{ wellness_text_rgb.blue }});
-  }
-{%- endstyle -%}
+<section
+  class="featured-blog-grid compact color-{{ section.settings.color_scheme }} card-style-{{ card_style }}"
+  style="--thumb-h: {{ thumb_h }}px;"
+>
+  <div class="page-width">
+    {% unless section.settings.heading == blank %}
+      <div class="fbg__header">
+        <h2 class="fbg__title {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+        {% if blog_obj and section.settings.show_view_all and blog_obj.articles_count > limit %}
+          <a class="fbg__viewall" href="{{ blog_obj.url }}">View all</a>
+        {% endif %}
+      </div>
+    {% endunless %}
 
-<div class="section-featured-blog">
-  <div
-    class="blog section-{{ section.id }}-padding"
-    itemscope
-    itemtype="http://schema.org/Blog"
-  >
-    <div class="page-width-desktop isolate{% if posts_displayed < 3 %} page-width-tablet{% endif %}">
-      {%- unless section.settings.heading == blank -%}
-        <div class="title-wrapper-with-link{% if posts_displayed > 2 %} title-wrapper--self-padded-tablet-down{% else %} title-wrapper--self-padded-mobile{% endif %} title-wrapper--no-top-margin">
-          <h2
-            id="SectionHeading-{{ section.id }}"
-            class="blog__title inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-            {% if settings.animations_reveal_on_scroll %}
-              data-cascade
-            {% endif %}
-          >
-            {{ section.settings.heading }}
-          </h2>
-          {%- if section.settings.blog != blank and section.settings.show_view_all and section.settings.post_limit < section.settings.blog.articles_count -%}
-            <a
-              href="{{ section.settings.blog.url }}"
-              class="link underlined-link large-up-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-              style="color: var(--color-wellness-accent);"
-            >
-              {{ 'sections.featured_blog.view_all' | t }}
-            </a>
-          {%- endif -%}
-        </div>
-      {%- endunless -%}
-
-      <slider-component class="slider-mobile-gutter{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
-        <ul
-          id="Slider-{{ section.id }}"
-          class="blog__posts articles-wrapper contains-card contains-card--article grid grid--peek grid--2-col-tablet grid--{{ section.settings.columns_desktop }}-col-desktop slider {% if posts_displayed > 2 %}slider--tablet{% else %}slider--mobile{% endif %}"
-          role="list"
-        >
-          {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
-            {%- for article in section.settings.blog.articles limit: section.settings.post_limit -%}
-              <li
-                id="Slide-{{ section.id }}-{{ forloop.index }}"
-                class="blog__post grid__item article slider__slide slider__slide--full-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-                itemscope
-                itemtype="http://schema.org/BlogPosting"
-              >
-                {% render 'main-article',
-                  blog: section.settings.blog,
-                  article: article,
-                  media_aspect_ratio: 1.66,
-                  show_image: section.settings.show_image,
-                  show_date: section.settings.show_date,
-                  show_author: section.settings.show_author,
-                  show_excerpt: true
-                %}
-                <meta itemprop="headline" content="{{ article.title }}">
-                <meta itemprop="datePublished" content="{{ article.published_at | date: '%Y-%m-%d' }}">
-                <meta itemprop="author" content="{{ article.author }}">
-              </li>
-            {%- endfor -%}
-          {%- else -%}
-            {% for i in (1..section.settings.post_limit) %}
-              <li
-                id="Slide-{{ section.id }}-{{ forloop.index }}"
-                class="blog__post grid__item article slider__slide slider__slide--full-width{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                {% if settings.animations_reveal_on_scroll %}
-                  data-cascade
-                  style="--animation-order: {{ forloop.index }};"
-                {% endif %}
-              >
-                <div class="article-card-wrapper card-wrapper">
-                  <div
-                    class="card article-card card--standard"
-                  >
-                    <div
-                      class="card__inner ratio"
-                      style="--ratio-percent: 80%;"
-                    >
-                      {%- if section.settings.show_image -%}
-                        <div class="article-card__image-wrapper card__media">
-                          <div class="article-card__image media">
-                            <img
-                              src="{{ 'placeholder.png' | asset_url }}"
-                              alt="{{ 'sections.featured_blog.onboarding_title' | t }}"
-                              class="blog-placeholder-image"
-                              loading="lazy"
-                              width="400"
-                              height="240"
-                            >
-                          </div>
-                        </div>
-                      {%- endif -%}
-                      <div class="card__content">
-                        <div class="card__information">
-                          <h3 class="card__heading h2" style="font-family: var(--font-heading-family);">
-                            {{ 'sections.featured_blog.onboarding_title' | t }}
-                          </h3>
-                          <p class="article-card__excerpt rte-width" style="font-family: var(--font-body-family);">
-                            {{ 'sections.featured_blog.onboarding_content' | t }}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
+    <ul
+      class="fbg__grid"
+      style="--cols-desktop: {{ section.settings.columns_desktop }}; --cols-mobile: {{ section.settings.columns_mobile }};"
+    >
+      {% if blog_obj and blog_obj.articles_count > 0 %}
+        {% for article in blog_obj.articles limit: limit %}
+          <li class="fbg__item">
+            <article class="fbg-card" itemscope itemtype="http://schema.org/BlogPosting">
+              <a class="fbg-card__media" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
+                {% if article.image %}
+                  <div class="thumb">
+                    <img
+                      src="{{ article.image | image_url: width: 240 }}"
+                      alt="{{ article.image.alt | default: article.title | escape }}"
+                      loading="eager"
+                      width="240"
+                      height="{{ thumb_h }}"
+                     fetchpriority="high">
                   </div>
-                </div>
-              </li>
-            {%- endfor -%}
-          {%- endif -%}
-        </ul>
-        {%- if posts_exceed_limit -%}
-          <div class="slider-buttons{% if section.settings.post_limit < 3 %} medium-hide{% endif %}{% if section.settings.post_limit < 2 %} small-hide{% endif %}">
-            <button
-              type="button"
-              class="slider-button slider-button--prev"
-              name="previous"
-              aria-label="{{ 'general.slider.previous_slide' | t }}"
-              style="color: var(--color-wellness-accent);"
-            >
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
-            </button>
-            <div class="slider-counter caption">
-              <span class="slider-counter--current">1</span>
-              <span aria-hidden="true"> / </span>
-              <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
-              <span class="slider-counter--total">{{ section.settings.post_limit }}</span>
-            </div>
-            <button
-              type="button"
-              class="slider-button slider-button--next"
-              name="next"
-              aria-label="{{ 'general.slider.next_slide' | t }}"
-              style="color: var(--color-wellness-accent);"
-            >
-              <span class="svg-wrapper">
-                {{- 'icon-caret.svg' | inline_asset_content -}}
-              </span>
-            </button>
-          </div>
-        {%- endif -%}
-      </slider-component>
+                {% else %}
+                  <div class="thumb placeholder">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+              </a>
 
-      {%- if section.settings.show_view_all and section.settings.post_limit < section.settings.blog.articles_count -%}
-        <div
-          class="blog__view-all center small-hide medium-hide{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-          {% if settings.animations_reveal_on_scroll %}
-            data-cascade
-          {% endif %}
-        >
-          <a
-            href="{{ section.settings.blog.url }}"
-            id="ViewAll-{{ section.id }}"
-            class="blog__button button"
-            aria-labelledby="ViewAll-{{ section.id }} SectionHeading-{{ section.id }}"
-            style="background: var(--color-wellness-accent); color: rgb(var(--color-white)); font-family: var(--font-body-family);"
-          >
-            {{ 'sections.featured_blog.view_all' | t }}
-          </a>
-        </div>
-      {%- endif -%}
-    </div>
+              <div class="fbg-card__content">
+                <h3 class="fbg-card__title">
+                  <a href="{{ article.url }}" itemprop="headline">{{ article.title | escape }}</a>
+                </h3>
+
+                {% if section.settings.show_excerpt %}
+                  <p class="fbg-card__excerpt">
+                    {{ article.excerpt_or_content | strip_html | truncate: 60 }}
+                  </p>
+                {% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      {% else %}
+        {% for i in (1..limit) %}
+          <li class="fbg__item">
+            <article class="fbg-card">
+              <div class="thumb placeholder">
+                {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+              </div>
+              <div class="fbg-card__content">
+                <h3 class="fbg-card__title"><span>Blog post</span></h3>
+                {% if section.settings.show_excerpt %}
+                  <p class="fbg-card__excerpt">Quick summary of your blog.</p>
+                {% endif %}
+              </div>
+            </article>
+          </li>
+        {% endfor %}
+      {% endif %}
+    </ul>
+
+    {% if blog_obj and section.settings.show_view_all and blog_obj.articles_count > limit %}
+      <div class="fbg__footer">
+        <a class="button" href="{{ blog_obj.url }}">View all posts</a>
+      </div>
+    {% endif %}
   </div>
-</div>
+</section>
+
+<style>
+  .featured-blog-grid{padding-top:{{ section.settings.padding_top }}px;padding-bottom:{{ section.settings.padding_bottom }}px}
+  .fbg__header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
+  .fbg__title{margin:0}
+  .fbg__viewall{font-size:.85rem;text-decoration:none;color:var(--color-accent,currentColor)}
+
+  .fbg__grid{list-style:none;margin:0;padding:0;display:grid;gap:.75rem;
+    grid-template-columns:repeat(var(--cols-mobile),minmax(0,1fr))}
+  @media(min-width:750px){.fbg__grid{gap:1rem;grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media(min-width:990px){.fbg__grid{gap:1rem;grid-template-columns:repeat(var(--cols-desktop),minmax(0,1fr))}}
+
+  .fbg-card{background:rgba(255,255,255,.03);border:1px solid rgba(0,0,0,.12);overflow:hidden;display:flex;flex-direction:column;transition:transform .3s,box-shadow .3s}
+  .fbg-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
+
+  /* Shape styles */
+  .card-style-rectangle .fbg-card{border-radius:8px}
+  .card-style-rounded .fbg-card{border-radius:16px}
+  .card-style-circular .fbg-card{border-radius:24px}
+  .card-style-circular .thumb{aspect-ratio:1;height:auto;border-radius:50%;margin:1rem auto 0;width:calc(100% - 2rem);max-width:180px}
+  .card-style-circular .fbg-card__content{text-align:center}
+  .card-style-blob .fbg-card{border-radius:60% 40% 30% 70%/60% 30% 70% 40%}
+  .card-style-blob .thumb{border-radius:50% 30% 40% 60%/40% 60% 30% 50%;margin:.75rem;width:calc(100% - 1.5rem);height:calc(var(--thumb-h) - 1.5rem)}
+
+  .thumb{width:100%;height:var(--thumb-h);background:rgba(0,0,0,.06);overflow:hidden}
+  .thumb img{width:100%;height:100%;object-fit:cover}
+  .placeholder-svg{width:100%;height:100%;opacity:.4}
+
+  .fbg-card__content{padding:6px 8px}
+  .fbg-card__title{margin:0;font-size:.9rem;line-height:1.2}
+  .fbg-card__title a{text-decoration:none;color:inherit}
+  .fbg-card__excerpt{margin:4px 0 0;font-size:.8rem;opacity:.8}
+
+  .fbg__footer{margin-top:.75rem;text-align:center}
+  .button{display:inline-block;padding:.55rem .85rem;border-radius:8px;background:var(--color-accent,#26a69a);color:#fff;text-decoration:none;font-weight:600}
+</style>
 
 {% schema %}
 {
-  "name": "Featured Blog",
-  "tag": "section",
+  "name": "Blog thumbnails",
   "settings": [
+    { "type": "blog", "id": "blog", "label": "Blog" },
+    { "type": "range", "id": "post_limit", "min": 2, "max": 12, "step": 1, "default": 4, "label": "Posts to show" },
+
+    { "type": "inline_richtext", "id": "heading", "label": "Heading", "default": "From the Phoenix Journal" },
     {
-      "type": "blog",
-      "id": "blog",
-      "label": "Blog"
+      "type": "select",
+      "id": "heading_size",
+      "label": "Heading size",
+      "default": "h2",
+      "options": [
+        { "value": "h3", "label": "Small" },
+        { "value": "h2", "label": "Medium" }
+      ]
     },
+
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card shape",
+      "default": "rounded",
+      "options": [
+        { "value": "rectangle", "label": "Rectangle" },
+        { "value": "rounded", "label": "Rounded" },
+        { "value": "circular", "label": "Circular" },
+        { "value": "blob", "label": "Blob (organic)" }
+      ]
+    },
+
+    {
+      "type": "select",
+      "id": "thumb_size",
+      "label": "Thumbnail height",
+      "default": "sm",
+      "options": [
+        { "value": "sm", "label": "Small (180px)" },
+        { "value": "md", "label": "Medium (280px)" },
+        { "value": "lg", "label": "Large (380px)" }
+      ]
+    },
+
     {
       "type": "range",
-      "id": "post_limit",
+      "id": "columns_desktop",
       "min": 2,
       "max": 4,
       "step": 1,
       "default": 3,
-      "label": "Number of posts to show"
-    },
-    {
-      "type": "header",
-      "content": "Text"
-    },
-    {
-      "type": "inline_richtext",
-      "id": "heading",
-      "default": "Wellness Insights",
-      "label": "Heading"
-    },
-    {
-      "type": "select",
-      "id": "heading_size",
-      "options": [
-        {"value": "h2", "label": "Small"},
-        {"value": "h1", "label": "Medium"},
-        {"value": "h0", "label": "Large"}
-      ],
-      "default": "h1",
-      "label": "Heading size"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
+      "label": "Columns on desktop"
     },
     {
       "type": "range",
-      "id": "columns_desktop",
+      "id": "columns_mobile",
       "min": 1,
-      "max": 4,
+      "max": 3,
       "step": 1,
-      "default": 3,
-      "label": "Desktop columns"
+      "default": 2,
+      "label": "Columns on mobile"
     },
-    {
-      "type": "checkbox",
-      "id": "show_view_all",
-      "default": true,
-      "label": "Show 'View all' button"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_image",
-      "default": true,
-      "label": "Show article image"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_date",
-      "default": true,
-      "label": "Show date"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_author",
-      "default": false,
-      "label": "Show author"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "wellness_bg",
-      "label": "Background",
-      "default": "#f5f6f5"
-    },
-    {
-      "type": "color",
-      "id": "wellness_accent",
-      "label": "Accent",
-      "default": "#26a69a"
-    },
-    {
-      "type": "color",
-      "id": "wellness_text",
-      "label": "Text",
-      "default": "#2c3e50"
-    },
-    {
-      "type": "header",
-      "content": "Section Padding"
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Top padding",
-      "default": 36
-    },
+
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View all' link", "default": true },
+    { "type": "checkbox", "id": "show_excerpt", "label": "Show excerpt", "default": false },
+
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "default": 24, "label": "Top padding" },
     {
       "type": "range",
       "id": "padding_bottom",
       "min": 0,
       "max": 100,
       "step": 4,
-      "unit": "px",
-      "label": "Bottom padding",
-      "default": 36
+      "default": 24,
+      "label": "Bottom padding"
     }
   ],
-  "presets": [
-    {
-      "name": "Featured Blog",
-      "settings": {
-        "heading": "Wellness Insights",
-        "post_limit": 3,
-        "columns_desktop": 3
-      }
-    }
-  ]
+  "presets": [{ "name": "Blog thumbnails", "settings": { "post_limit": 4, "columns_desktop": 3, "columns_mobile": 2 } }]
 }
 {% endschema %}

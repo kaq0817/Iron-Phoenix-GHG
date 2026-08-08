@@ -121,9 +121,7 @@ Depends on: structured-product, member-price snippets
   }
   .mp-buy-price-row { display: flex; align-items: baseline; gap: 0.8rem; }
   .mp-buy-price { font-size: 2.6rem; font-weight: 400; }
-  .mp-buy-compare { font-size: 1.4rem; color: #999; text-decoration: line-through; }
-  .mp-buy-save { font-size: 1.3rem; color: #c0392b; font-weight: 700; margin-top: 0.2rem; margin-bottom: 0.2rem; }
-
+  
   .mp-delivery {
     background: #f0faf9; border: 1px solid #b2dbd9;
     border-radius: 6px; padding: 1.2rem; margin: 1.2rem 0;
@@ -200,6 +198,17 @@ Depends on: structured-product, member-price snippets
   .mp-sticky-title { flex: 1; font-size: 1.3rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .mp-sticky-btn { flex-shrink: 0; padding: 0.9rem 1.8rem; background: #26A69A; color: #fff; border: none; border-radius: 2rem; font-size: 1.4rem; font-weight: 700; cursor: pointer; }
   .mp-sticky-btn:disabled { background: #999; }
+
+  /* ===== FIX INVISIBLE TEXT ON WHITE CARDS/BUY BOXES ===== */
+  .mp-buy-box, .mp-buy-box *, .mp-img-main, .mp-swatch span {
+    color: #0f1c2e !important;
+  }
+  .mp-swatch input:checked + span {
+    color: #0f1c2e !important;
+  }
+  .mp-buy-box .mp-delivery {
+    color: #0f1c2e !important;
+  }
 </style>
 
 <div class="mp-wrap">
@@ -259,12 +268,6 @@ Depends on: structured-product, member-price snippets
     <!-- INFO COLUMN -->
     <div class="mp-col-info">
 
-      {% if section.settings.show_vendor and p.vendor %}
-        <div class="mp-vendor">
-          <a href="{{ routes.collections_url }}/vendors?q={{ p.vendor | url_encode }}">{{ p.vendor | escape }}</a>
-        </div>
-      {% endif %}
-
       <h1 class="mp-title">{{ p.title | escape }}</h1>
 
       {%- assign rating_val = p.metafields.reviews.rating.value -%}
@@ -302,8 +305,8 @@ Depends on: structured-product, member-price snippets
             {%- for b in bullets -%}<li>{{ b }}</li>{%- endfor -%}
           </ul>
         </div>
-      {%- elsif p.description != blank -%}
-        <div class="mp-short-desc">{{ p.description | strip_html | truncate: 220 }}</div>
+      {%- elsif p.metafields.global.description_tag != blank -%}
+        <div class="mp-short-desc">{{ p.metafields.global.description_tag }}</div>
       {%- endif -%}
 
       {% if p.has_only_default_variant == false %}
@@ -350,9 +353,35 @@ Depends on: structured-product, member-price snippets
         {%- endif -%}
 
         <div class="mp-delivery">
-          <strong>📦 Free Delivery</strong><br>
-          <span id="DelivDate-{{ section.id }}">—</span><br>
-          <span style="font-size:1.2rem;">Order within <strong id="Countdown-{{ section.id }}">—</strong></span>
+          <strong>📦 Shipping Information</strong><br>
+
+          {%- assign shipping_meta = p.metafields.custom.production_and_shipping -%}
+
+          {%- if shipping_meta.value != blank -%}
+            <div style="margin-top: 0.5rem;">
+              {%- if shipping_meta.type contains 'list' -%}
+                <ul style="margin: 0 0 0 1.5rem; padding: 0;">
+                  {%- for item in shipping_meta.value -%}
+                    <li>{{ item }}</li>
+                  {%- endfor -%}
+                </ul>
+              {%- else -%}
+                {{ shipping_meta.value | newline_to_br }}
+              {%- endif -%}
+            </div>
+          {%- else -%}
+            {%- if is_pod -%}
+              <span style="display: block; margin-top: 0.5rem;">
+                Custom-made to order.<br>
+                Est. delivery: <strong>8–14 business days</strong>
+              </span>
+            {%- else -%}
+              <span style="display: block; margin-top: 0.5rem;">
+                Ships directly from Iron Phoenix GHG.<br>
+                Est. delivery: <strong>5–7 business days</strong>
+              </span>
+            {%- endif -%}
+          {%- endif -%}
         </div>
 
         {%- assign stock_qty = v.inventory_quantity -%}
@@ -369,10 +398,9 @@ Depends on: structured-product, member-price snippets
             "id": {{ variant.id }},
             "available": {{ variant.available }},
             "price": {{ variant.price }},
-            "compare_at_price": {{ variant.compare_at_price | default: 0 }},
             "options": [{% for opt in variant.options %}{{ opt | json }}{% unless forloop.last %},{% endunless %}{% endfor %}],
             "inventory_quantity": {{ variant.inventory_quantity | default: 0 }},
-            "featured_media_src": {{ variant.featured_image.src | image_url: width: 1000, format: 'webp' | json }}
+            "featured_media_src": {% if variant.featured_media %}{{ variant.featured_media | image_url: width: 1000, format: 'webp' | json }}{% else %}null{% endif %}
           }{% unless forloop.last %},{% endunless %}{% endfor %}]
         </script>
 
@@ -673,8 +701,7 @@ function mpBuyNow(sId) {
 {
   "name": "Main product",
   "settings": [
-    { "type": "checkbox", "id": "show_vendor", "label": "Show vendor", "default": true },
-    { "type": "checkbox", "id": "show_sku",    "label": "Show SKU",    "default": true },
+    { "type": "checkbox", "id": "show_sku", "label": "Show SKU", "default": true },
     {
       "type": "select",
       "id": "description_mode",
@@ -682,7 +709,7 @@ function mpBuyNow(sId) {
       "default": "richtext",
       "options": [
         { "value": "richtext", "label": "Rich text (recommended)" },
-        { "value": "plain",    "label": "Plain text" }
+        { "value": "plain", "label": "Plain text" }
       ]
     }
   ],

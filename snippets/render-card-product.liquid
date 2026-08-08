@@ -1,29 +1,25 @@
-{%- comment -%} Switches between default and optimized card {%- endcomment -%}
+{%- comment -%}
+  render-card-product.liquid - OPTIMIZED ONLY VERSION
+  Always uses the optimized card, no switching logic needed
+  Expects:
+    - card_product (or falls back to product)
+    - section.id
+    - media_aspect_ratio, show_secondary_image, show_vendor, show_rating, lazy_load
+    - show_quick_add, quick_add
+{%- endcomment -%}
+
 {%- liquid
   assign p = card_product | default: product
 -%}
-{%- if settings.use_optimized_card -%}
-  {%- render 'card-product.optimized',
-    card_product: p,
-    section_id: section.id,
-    media_aspect_ratio: media_aspect_ratio,
-    show_secondary_image: show_secondary_image,
-    show_vendor: show_vendor,
-    show_rating: show_rating,
-    lazy_load: lazy_load,
-    show_quick_add: show_quick_add,
-    quick_add: quick_add
-  -%}
-{%- else -%}
-  {%- render 'card-product',
-    card_product: p,
-    section_id: section.id,
-    media_aspect_ratio: media_aspect_ratio,
-    show_secondary_image: show_secondary_image,
-    show_vendor: show_vendor,
-    show_rating: show_rating,
-    lazy_load: lazy_load,
-    show_quick_add: show_quick_add,
-    quick_add: quick_add
-  -%}
-{%- endif -%}
+
+{%- render 'card-product.optimized',
+  card_product: p,
+  section_id: section.id,
+  media_aspect_ratio: media_aspect_ratio,
+  show_secondary_image: show_secondary_image,
+  show_vendor: show_vendor,
+  show_rating: show_rating,
+  lazy_load: lazy_load,
+  show_quick_add: show_quick_add,
+  quick_add: quick_add
+-%}

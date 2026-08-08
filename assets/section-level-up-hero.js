@@ -1,33 +1,32 @@
+// assets/section-level-up-hero.js
 (function () {
-  // Simple pub/sub for when sections mount (supports multiple instances)
   function initSection(cfg) {
     const root = document.getElementById(cfg.id);
     if (!root) return;
 
-    // Respect theme padding settings via CSS vars
-    const top = root.closest('[data-section-id]') ? null : null; // not needed; kept for clarity
-    const st = root.getAttribute('style') || '';
-    root.style.setProperty('--lu-pad-top', (window.LevelUpHeroPadTop || 64) + 'px');
-    root.style.setProperty('--lu-pad-bot', (window.LevelUpHeroPadBot || 64) + 'px');
+    // Respect padding coming from Liquid inline style; set only if missing
+    if (!root.style.getPropertyValue('--lu-pad-top')) {
+      root.style.setProperty('--lu-pad-top', ((cfg.pad_top ?? 64)) + 'px');
+    }
+    if (!root.style.getPropertyValue('--lu-pad-bot')) {
+      root.style.setProperty('--lu-pad-bot', ((cfg.pad_bottom ?? 64)) + 'px');
+    }
 
-    // Overlay intensity via extra glow behind content
+    // Ambient overlay glow (intensity slider is 0-60)
     const overlay = document.createElement('div');
     overlay.className = 'levelup-hero__overlay';
-    overlay.style.position = 'absolute';
-    overlay.style.inset = '0';
-    overlay.style.background = `radial-gradient(60% 60% at 50% 50%, rgba(57,255,20,${cfg.overlay_opacity/200}) 0%, transparent 70%)`;
-    overlay.style.pointerEvents = 'none';
-    overlay.style.zIndex = '0';
-    root.querySelector('.levelup-hero__bg').appendChild(overlay);
+    const alpha = Math.max(0, Math.min(1, (cfg.overlay_opacity || 0) / 100));
+    overlay.style.background = `radial-gradient(60% 60% at 50% 50%, rgba(57,255,20,${alpha}) 0%, transparent 70%)`;
+    root.querySelector('.levelup-hero__bg')?.appendChild(overlay);
 
     // Floating particles
+    let spawn = null;
     if (cfg.particles) {
       const holder = root.querySelector('.levelup-hero__particles');
       const palette = [cfg.colors.neonGreen, cfg.colors.neonPink, cfg.colors.cyan, cfg.colors.yellow];
 
       function createParticle() {
         const p = document.createElement('div');
-        p.className = 'LU-p';
         const size = Math.random() * 3 + 3;
         p.style.cssText = `
           position:absolute;width:${size}px;height:${size}px;border-radius:50%;
@@ -41,39 +40,47 @@
         setTimeout(() => p.remove(), 9000);
       }
 
-      const key = document.createElement('style');
-      key.textContent = `
-        @keyframes LU-float {
-          0% { transform: translateY(0) rotate(0deg); opacity:0; }
-          10% { opacity:.6; }
-          90% { opacity:.6; }
-          100% { transform: translateY(-120vh) rotate(360deg); opacity:0; }
-        }
-      `;
-      document.head.appendChild(key);
+      // one-time keyframes
+      if (!document.getElementById('lu-float-key')) {
+        const key = document.createElement('style');
+        key.id = 'lu-float-key';
+        key.textContent = `
+          @keyframes LU-float {
+            0% { transform: translateY(0) rotate(0deg); opacity:0; }
+            10% { opacity:.6; }
+            90% { opacity:.6; }
+            100% { transform: translateY(-120vh) rotate(360deg); opacity:0; }
+          }
+        `;
+        document.head.appendChild(key);
+      }
 
-      const spawn = setInterval(createParticle, 800);
-      root.addEventListener('shopify:section:unload', () => clearInterval(spawn));
+      spawn = setInterval(createParticle, 800);
     }
 
     // Parallax
-    if (cfg.parallax) {
+    function onScroll() {
       const content = root.querySelector('.levelup-hero__content');
       const particles = root.querySelector('.levelup-hero__particles');
-      const onScroll = () => {
-        const scrolled = window.pageYOffset;
-        if (!root.getBoundingClientRect) return;
-        content.style.transform = `translateY(${scrolled * 0.3}px)`;
-        particles.style.transform = `translateY(${scrolled * 0.1}px)`;
-      };
+      const rect = root.getBoundingClientRect();
+      if (!rect) return;
+      const offset = Math.max(0, -rect.top); // only after leaving top
+      if (cfg.parallax && content) {
+        content.style.transform = `translateY(${offset * 0.1}px)`;
+      }
+      if (cfg.parallax && particles) {
+        particles.style.transform = `translateY(${offset * 0.05}px)`;
+      }
+    }
+    if (cfg.parallax) {
       window.addEventListener('scroll', onScroll, { passive: true });
-      root.addEventListener('shopify:section:unload', () => window.removeEventListener('scroll', onScroll));
     }
 
     // Animate stat counters when visible
     const statCards = root.querySelectorAll('.stat');
+    let obs = null;
     if (statCards.length) {
-      const obs = new IntersectionObserver((entries) => {
+      obs = new IntersectionObserver((entries) => {
         entries.forEach((e) => {
           if (!e.isIntersecting) return;
           const numEl = e.target.querySelector('.stat__number');
@@ -81,7 +88,6 @@
 
           const suffix = (numEl.dataset.suffix || '');
           const raw = (numEl.dataset.number || '0').toString();
-          // If number includes non-digits (like 24/7), don't animate—just show it.
           if (!/^\d+$/.test(raw)) {
             numEl.textContent = raw + suffix;
             numEl.dataset.luDone = '1';
@@ -109,21 +115,27 @@
       }, { threshold: 0.6 });
 
       statCards.forEach((c) => obs.observe(c));
-      root.addEventListener('shopify:section:unload', () => obs.disconnect());
     }
 
-    // Subtle entrance fade to avoid jarring loads
+    // Subtle entrance fade
     requestAnimationFrame(() => {
       root.style.opacity = '0';
       root.style.transition = 'opacity .5s ease';
       requestAnimationFrame(() => root.style.opacity = '1');
     });
+
+    // Cleanup on section unload in editor
+    root.addEventListener('shopify:section:unload', () => {
+      if (spawn) clearInterval(spawn);
+      if (cfg.parallax) window.removeEventListener('scroll', onScroll);
+      if (obs) obs.disconnect();
+    });
   }
 
-  // Drain queue on load
+  // Drain queue on load / allow future pushes
   function drainQueue(){
     (window.LevelUpHeroQueue || []).forEach(initSection);
-    window.LevelUpHeroQueue = { push: initSection }; // hijack push for late sections
+    window.LevelUpHeroQueue = { push: initSection };
   }
 
   if (document.readyState === 'loading') {

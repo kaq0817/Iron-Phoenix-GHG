@@ -1,59 +1,121 @@
-<!-- /sections/cart-drawer.liquid -->
 {% comment %}
-Cart Drawer (OS 2.0 section)
-- Matches custom element JS: #CartDrawer, .drawer__inner, #CartDrawer-Overlay
-- Server-renders contents so AJAX "sections" updates can swap .drawer__inner
+  Cart Drawer (Online Store 2.0 Section)
+
+  This file combines the best practices from both the provided snippet and the OS 2.0 section.
+  It is designed to work seamlessly with the custom 'cart-drawer.js' you provided.
 {% endcomment %}
 
 <cart-drawer class="cart-drawer" aria-hidden="true">
+  {% comment %}
+    ID "CartDrawer-Overlay" is required by the JavaScript for the close action.
+  {% endcomment %}
   <div id="CartDrawer-Overlay" class="cart-drawer__overlay" data-close-drawer></div>
 
+  {% comment %}
+    ID "CartDrawer" is required by the JavaScript for the focus trap and section updates.
+  {% endcomment %}
   <div id="CartDrawer" class="cart-drawer__panel" role="dialog" aria-modal="true" aria-labelledby="CartDrawer-Title">
+    
     <div class="cart-drawer__header">
       <h2 id="CartDrawer-Title" class="cart-drawer__title">{{ 'sections.cart.title' | t | default: 'Your cart' }}</h2>
+      
+      {% comment %} 
+        Retain the 'vip-banner' render if you are using it in this theme. 
+      {% endcomment %}
       {% render 'vip-banner' %}
-      <button type="button" class="cart-drawer__close" data-close-drawer aria-label="{{ 'accessibility.close' | t | default: 'Close cart' }}">×</button>
+      
+      <button type="button" class="cart-drawer__close" data-close-drawer aria-label="{{ 'accessibility.close' | t | default: 'Close cart' }}">✕</button>
     </div>
 
     <div class="cart-drawer__loading" hidden>Loading…</div>
 
+    {% comment %}
+      Class 'drawer__inner' is required by the JS classes 'CartDrawer' and 'CartDrawerItems'.
+    {% endcomment %}
     <cart-drawer-items class="drawer__inner{% if cart == empty %} is-empty{% endif %}">
+      
       {% if cart == empty %}
         <div class="drawer__inner-empty">
-          <p>{{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}</p>
+          <p class="cart__empty-text">{{ 'sections.cart.empty' | t | default: 'Your cart is empty.' }}</p>
         </div>
       {% else %}
-        <ul class="cart-drawer__items" role="list">
+        <ul class="cart-drawer__items list-unstyled" role="list">
           {% for item in cart.items %}
-            <li class="cart-drawer__item">
+            <li class="cart-drawer__item" data-cart-item data-line-index="{{ forloop.index }}" data-variant-id="{{ item.variant_id }}">
               <a href="{{ item.url }}" class="cart-drawer__image">
-                {{
-                  item.image
-                  | image_url: width: 180
-                  | image_tag:
-                    loading: 'lazy',
-                    widths: '180,360',
-                    sizes: '(max-width: 480px) 33vw, 180px',
-                    alt: item.title | escape
-                }}
+                <img
+                  src="{{ item.image | image_url: width: 180 }}"
+                  srcset="
+                    {{ item.image | image_url: width: 180 }} 180w,
+                    {{ item.image | image_url: width: 360 }} 360w
+                  "
+                  sizes="(max-width: 480px) 33vw, 180px"
+                  loading="lazy"
+                  alt="{{ item.title | escape }}"
+                  width="180"
+                  height="{{ 180 | divided_by: item.image.aspect_ratio | round }}"
+                >
               </a>
               <div class="cart-drawer__meta">
                 <a href="{{ item.url }}" class="cart-drawer__product-title">{{ item.product.title | escape }}</a>
                 {% unless item.product.has_only_default_variant %}
                   <div class="cart-drawer__variant">{{ item.variant.title | escape }}</div>
                 {% endunless %}
-                <div class="cart-drawer__qty-price">
-                  <span class="cart-drawer__qty">× {{ item.quantity }}</span>
-                  <span class="cart-drawer__line-price">{{ item.final_line_price | money }}</span>
+                
+                {% comment %} Enhanced quantity controls {% endcomment %}
+                <div class="cart-drawer__quantity-wrapper">
+                  <div class="cart-drawer__quantity">
+                    <button 
+                      type="button" 
+                      class="cart-drawer__qty-btn" 
+                      data-decrease-qty 
+                      data-line="{{ forloop.index }}"
+                      aria-label="Decrease quantity for {{ item.product.title | escape }}"
+                      {% if item.quantity <= 1 %}disabled{% endif %}
+                    >
+                      <svg width="10" height="2" viewBox="0 0 10 2" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0 1H10" stroke="currentColor" stroke-width="1.5"/>
+                      </svg>
+                    </button>
+                    <input 
+                      type="number" 
+                      class="cart-drawer__qty-input" 
+                      value="{{ item.quantity }}" 
+                      min="1" 
+                      data-qty-input
+                      data-line="{{ forloop.index }}"
+                      aria-label="Quantity for {{ item.product.title | escape }}"
+                    >
+                    <button 
+                      type="button" 
+                      class="cart-drawer__qty-btn" 
+                      data-increase-qty 
+                      data-line="{{ forloop.index }}"
+                      aria-label="Increase quantity for {{ item.product.title | escape }}"
+                    >
+                      <svg width="10" height="10" viewBox="0 0 10 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M5 0V10M0 5H10" stroke="currentColor" stroke-width="1.5"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <span class="cart-drawer__line-price" data-line-price>{{ item.final_line_price | money }}</span>
                 </div>
-                <a class="cart-drawer__remove" href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0">
+                
+                <button 
+                  type="button"
+                  class="cart-drawer__remove" 
+                  data-remove-item
+                  data-line="{{ forloop.index }}"
+                  aria-label="Remove {{ item.product.title | escape }}"
+                >
                   {{ 'sections.cart.remove' | t | default: 'Remove' }}
-                </a>
+                </button>
               </div>
             </li>
           {% endfor %}
         </ul>
       {% endif %}
+      
     </cart-drawer-items>
 
     <div class="cart-drawer__footer" data-cart-footer {% if cart == empty %}hidden{% endif %}>
@@ -61,13 +123,292 @@ Cart Drawer (OS 2.0 section)
         <span>{{ 'sections.cart.subtotal' | t | default: 'Subtotal' }}</span>
         <span data-cart-subtotal>{{ cart.total_price | money }}</span>
       </div>
-      <a href="{{ routes.cart_url }}" class="cart-drawer__checkout-button button">
+      
+      <a href="{{ routes.cart_url }}" class="button button--secondary cart-drawer__view-cart">
+        {{ 'general.cart.view_empty_cart' | t | default: 'View cart' }}
+      </a>
+      
+      <a href="{{ routes.checkout_url }}" class="cart-drawer__checkout-button button button--primary">
         {{ 'sections.cart.checkout' | t | default: 'Checkout' }}
       </a>
     </div>
+
   </div>
 </cart-drawer>
 
+<style>
+  /* ==========================================================================
+     STRUCTURAL POSITIONING — 100% Solid Americana Sidebar Architecture
+     ========================================================================== */
+  
+  /* Parent element overlay container */
+  cart-drawer.cart-drawer {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 2000 !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    pointer-events: none;
+    background: transparent !important; /* Wrapper is clear to let overlay layer paint below */
+  }
+
+  cart-drawer.cart-drawer[aria-hidden="true"] {
+    display: none !important;
+  }
+
+  /* Solid Backing Overlay Layer */
+  .cart-drawer__overlay {
+    position: fixed !important;
+    inset: 0 !important;
+    background: #3D0F18 !important; /* Solid deep wine shield */
+    opacity: 0.40 !important;       /* Hard containment dimming */
+    pointer-events: auto;
+    z-index: -1;
+  }
+
+  /* The actual sliding panel drawer card */
+  .cart-drawer__panel {
+    pointer-events: auto;
+    position: relative !important;
+    width: 100% !important;
+    max-width: 440px !important;    /* Clean desktop sidebar width column */
+    height: 100vh !important;
+    background: #FFFFFF !important; /* 100% Solid white background */
+    border-left: 4px solid #6B2737 !important; /* Crisp solid wine edge frame */
+    display: flex !important;
+    flex-direction: column !important;
+    box-sizing: border-box !important;
+    padding: 30px 24px !important;
+    overflow-y: auto;
+  }
+
+  .cart-drawer__header {
+    position: relative !important;
+    border-bottom: 2px solid #E5E7EB !important;
+    padding-bottom: 12px !important;
+    margin-bottom: 20px !important;
+    text-align: left !important;
+  }
+
+  .cart-drawer__title {
+    font-size: 2.4rem !important;
+    font-weight: 800 !important;
+    color: #6B2737 !important;     /* Header uses Deep Wine */
+    text-transform: uppercase !important;
+    letter-spacing: 0.02em !important;
+    margin: 0 !important;
+  }
+
+  .cart-drawer__close {
+    position: absolute !important;
+    top: 4px !important;
+    right: 0 !important;
+    color: #6B2737 !important;
+    font-size: 2.2rem !important;
+    font-weight: 800 !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    border: none !important;
+  }
+
+  .cart-drawer__close:hover {
+    color: #A6192E !important;     /* Active red element pops on hover interaction */
+  }
+
+  /* Items Content List Elements */
+  cart-drawer-items.drawer__inner {
+    flex: 1 !important;
+    display: block !important;
+    overflow-y: auto !important;
+  }
+
+  .cart-drawer__items {
+    list-style: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .cart-drawer__item {
+    display: flex !important;
+    gap: 16px !important;
+    padding: 16px 0 !important;
+    border-bottom: 1px solid #E5E7EB !important;
+    text-align: left !important;
+  }
+
+  .cart-drawer__image {
+    width: 90px !important;
+    flex-shrink: 0 !important;
+    border: 1px solid #6B2737 !important;
+    border-radius: 4px !important;
+    overflow: hidden !important;
+  }
+
+  .cart-drawer__image img {
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain !important;
+  }
+
+  .cart-drawer__meta {
+    flex: 1 !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .cart-drawer__product-title {
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    color: #6B2737 !important;
+    line-height: 1.3 !important;
+  }
+
+  .cart-drawer__variant {
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    color: #1A1A1A !important;
+    margin-top: 4px !important;
+  }
+
+  /* Empty state message elements */
+  .drawer__inner-empty {
+    padding: 40px 0 !important;
+    text-align: left !important;
+  }
+
+  .cart__empty-text {
+    color: #1A1A1A !important;
+    font-size: 1.6rem !important;
+    font-weight: 700 !important;
+  }
+
+  /* Quantity Counter Sizing Controls Layout */
+  .cart-drawer__quantity-wrapper {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 1rem !important;
+    margin-top: auto !important;
+    padding-top: 8px !important;
+  }
+
+  .cart-drawer__quantity {
+    display: flex !important;
+    align-items: center !important;
+    border: 2px solid #6B2737 !important; /* Hard solid wine outline profile */
+    border-radius: 4px !important;
+    padding: 2px !important;
+    background: #FFFFFF !important;
+  }
+
+  .cart-drawer__qty-btn {
+    background: transparent !important;
+    border: none !important;
+    cursor: pointer !important;
+    padding: 4px 8px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #6B2737 !important;
+  }
+
+  .cart-drawer__qty-btn:hover:not(:disabled) {
+    color: #A6192E !important;
+  }
+
+  .cart-drawer__qty-btn:disabled {
+    opacity: 0.3 !important;
+    cursor: not-allowed !important;
+  }
+
+  .cart-drawer__qty-input {
+    width: 35px !important;
+    border: none !important;
+    text-align: center !important;
+    font-size: 1.4rem !important;
+    font-weight: 700 !important;
+    color: #6B2737 !important;
+    -moz-appearance: textfield;
+  }
+
+  .cart-drawer__qty-input::-webkit-outer-spin-button,
+  .cart-drawer__qty-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .cart-drawer__line-price {
+    font-size: 1.5rem !important;
+    font-weight: 700 !important;
+    color: #1A1A1A !important;
+  }
+
+  .cart-drawer__remove {
+    background: transparent !important;
+    border: none !important;
+    color: #A6192E !important; /* Flag Red for deletion task values */
+    cursor: pointer !important;
+    font-size: 1.3rem !important;
+    font-weight: 700 !important;
+    padding: 4px 0 0 0 !important;
+    width: fit-content !important;
+    text-decoration: underline !important;
+    text-align: left !important;
+  }
+
+  /* Footer & Action Elements Layer */
+  .cart-drawer__footer {
+    border-top: 2px solid #6B2737 !important; /* Solid wine boundary track lines */
+    padding-top: 20px !important;
+    margin-top: 20px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .cart-drawer__total {
+    display: flex !important;
+    justify-content: space-between !important;
+    font-size: 1.8rem !important;
+    font-weight: 800 !important;
+    color: #6B2737 !important;
+    margin-bottom: 8px !important;
+    text-transform: uppercase !important;
+  }
+
+  .cart-drawer__view-cart,
+  .cart-drawer__checkout-button {
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 1.4rem 2rem !important;
+    font-size: 1.5rem !important;
+    font-weight: 800 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.05em !important;
+    border-radius: 4px !important;
+    text-align: center !important;
+    display: block !important;
+  }
+
+  /* ── Mobile Viewport Overrides ── */
+  @media (max-width: 749px) {
+    .cart-drawer__panel {
+      max-width: 100vw !important;
+      width: 100vw !important;
+      border-left: none !important;
+      border-top: 6px solid #6B2737 !important;
+    }
+  }
+</style>
+
 {% schema %}
-{ "name": "Cart drawer", "settings": [] }
+{ 
+  "name": "Cart drawer", 
+  "settings": [],
+  "presets": [
+    {
+      "name": "Cart drawer"
+    }
+  ]
+}
 {% endschema %}

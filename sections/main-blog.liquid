@@ -1,87 +1,61 @@
-{% comment %}
-  Main Blog section
-  - Styles now correctly externalized to assets/section-main-blog.css
-  - Uses theme's global CSS variables for colors
-{% endcomment %}
-
 {{ 'component-article-card.css' | asset_url | stylesheet_tag }}
 {{ 'component-card.css' | asset_url | stylesheet_tag }}
-{{ 'section-main-blog.css' | asset_url | stylesheet_tag }} {# Correctly linking the existing external CSS file #}
+{{ 'section-main-blog.css' | asset_url | stylesheet_tag }}
 
 {%- style -%}
-  /* Define CSS variables for padding and colors dynamically from section settings.
-     These variables are used by assets/section-main-blog.css */
-  .main-blog.section-{{ section.id }}-padding {
-    --main-blog-padding-top-mobile: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
-    --main-blog-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
-    --main-blog-padding-top-desktop: {{ section.settings.padding_top }}px;
-    --main-blog-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
-    --color-wellness-background: rgb(var(--color-background)); /* Base background from global scheme */
-    --color-wellness-text: rgb(var(--color-foreground)); /* Base foreground from global scheme */
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
 {%- endstyle -%}
 
-{%- paginate blog.articles by 6 -%}
-  <div class="main-blog page-width section-{{ section.id }}-padding" itemscope itemtype="http://schema.org/Blog">
-    <h1 class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}" style="font-family: var(--font-heading-family);">
+{%- paginate blog.articles by section.settings.posts_per_page -%}
+  <div class="main-blog page-width section-{{ section.id }}-padding card-style-{{ section.settings.card_style }}">
+
+    {%- assign heading_tag = 'h1' -%}
+    {%- if template.name == 'index' -%}
+      {%- assign heading_tag = 'h2' -%}
+    {%- endif -%}
+
+    <{{ heading_tag }} class="title--primary{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}" style="text-align: center;">
       {{ blog.title | escape }}
-    </h1>
+    </{{ heading_tag }}>
 
-    {%- comment -%} Grid auto-fit based on layout {%- endcomment -%}
-    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}"
-         style="grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));">
+    <div class="blog-intro" style="max-width: 700px; margin: 2rem auto; text-align: center;">
+      <p>
+        Welcome to the <strong>Phoenix Journal</strong> — your source for mindset, performance, and gaming wellness.
+        Discover tools and strategies that help you build resilience, sharpen your skills, and stay healthy in and out of the game.
+        Whether you’re an athlete, content creator, or weekend warrior, our articles are made for you.
+      </p>
+    </div>
+
+
+    <div class="blog-articles {% if section.settings.layout == 'collage' %}blog-articles--collage{% endif %}">
       {%- for article in blog.articles -%}
-        {%- assign excerpt_fallback = article.excerpt | default: article.content -%}
-        <article class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
-                 {% if settings.animations_reveal_on_scroll %}data-cascade style="--animation-order: {{ forloop.index }};"{% endif %}
-                 itemscope itemtype="http://schema.org/BlogPosting">
-
-          {% if section.settings.show_image and article.image %}
-            <a class="article-card__image" href="{{ article.url }}" aria-label="{{ article.title | escape }}">
-              {{
-                article.image
-                | image_url: width: 800
-                | image_tag:
-                  widths: '400,600,800',
-                  sizes: '(max-width: 749px) 100vw, 400px',
-                  loading: 'lazy',
-                  decoding: 'async',
-                  alt: article.title | escape,
-                  width: article.image.width,
-                  height: article.image.width | divided_by: article.image.aspect_ratio | round
-              }}
-            </a>
+        <div
+          class="blog-articles__article article{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+          {% if settings.animations_reveal_on_scroll %}
+            data-cascade
+            style="--animation-order: {{ forloop.index }};"
           {% endif %}
-
-          <h2 class="article-card__title h3" itemprop="headline">
-            <a href="{{ article.url }}">{{ article.title | escape }}</a>
-          </h2>
-
-          <div class="article-card__meta">
-            {% if section.settings.show_date %}
-              <time itemprop="datePublished" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-                {{ article.published_at | date: '%B %d, %Y' }}
-              </time>
-            {% endif %}
-            {% if section.settings.show_author %}
-              <span aria-hidden="true">•</span>
-              <span itemprop="author">{{ article.author | escape }}</span>
-            {% endif %}
-          </div>
-
-          {%- comment -%}
-            SECURITY: Never render article.content raw in index views.
-            Use sanitized, escaped excerpt text only.
-          {%- endcomment -%}
-          <p class="article-card__excerpt" itemprop="description">
-            {{ excerpt_fallback | strip_html | truncate: 160 | escape }}
-          </p>
-
-          {#-- Structured data helpers --#}
-          <meta itemprop="headline" content="{{ article.title | escape }}">
-          <meta itemprop="datePublished" content="{{ article.published_at | date: '%Y-%m-%d' }}">
-          <meta itemprop="author" content="{{ article.author | escape }}">
-        </article>
+        >
+          {%- render 'article-card',
+            article: article,
+            media_height: section.settings.image_height,
+            media_aspect_ratio: article.image.aspect_ratio,
+            show_image: section.settings.show_image,
+            show_date: section.settings.show_date,
+            show_author: section.settings.show_author,
+            show_excerpt: true
+          -%}
+        </div>
       {%- endfor -%}
     </div>
 
@@ -98,33 +72,90 @@
   "class": "section",
   "settings": [
     {
+      "type": "range",
+      "id": "posts_per_page",
+      "min": 3,
+      "max": 24,
+      "step": 3,
+      "default": 6,
+      "label": "Posts per page"
+    },
+    {
       "type": "select",
       "id": "layout",
       "options": [
-        { "value": "grid", "label": "t:sections.main-blog.settings.layout.options__1.label" },
-        { "value": "collage", "label": "t:sections.main-blog.settings.layout.options__2.label" }
+        { "value": "grid", "label": "Grid" },
+        { "value": "collage", "label": "Collage" }
       ],
-      "default": "collage",
-      "label": "t:sections.main-blog.settings.layout.label"
+      "default": "grid",
+      "label": "Layout"
     },
-    { "type": "checkbox", "id": "show_image", "default": true, "label": "t:sections.main-blog.settings.show_image.label" },
+    {
+      "type": "select",
+      "id": "card_style",
+      "label": "Card style",
+      "default": "rounded",
+      "options": [
+        { "value": "sharp", "label": "Sharp corners" },
+        { "value": "rounded", "label": "Rounded" },
+        { "value": "super-rounded", "label": "Super rounded" },
+        { "value": "blob", "label": "Blob (organic)" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_image",
+      "default": true,
+      "label": "Show featured image"
+    },
     {
       "type": "select",
       "id": "image_height",
       "options": [
-        { "value": "adapt", "label": "t:sections.main-blog.settings.image_height.options__1.label" },
-        { "value": "small", "label": "t:sections.main-blog.settings.image_height.options__2.label" },
-        { "value": "medium", "label": "t:sections.main-blog.settings.image_height.options__3.label" },
-        { "value": "large", "label": "t:sections.main-blog.settings.image_height.options__4.label" }
+        { "value": "adapt", "label": "Adapt to image" },
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
       ],
       "default": "medium",
-      "label": "t:sections.main-blog.settings.image_height.label"
+      "label": "Image height"
     },
-    { "type": "checkbox", "id": "show_date", "default": true, "label": "t:sections.main-blog.settings.show_date.label" },
-    { "type": "checkbox", "id": "show_author", "default": false, "label": "t:sections.main-blog.settings.show_author.label" },
-    { "type": "header", "content": "t:sections.all.padding.section_padding_heading" },
-    { "type": "range", "id": "padding_top", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_top", "default": 36 },
-    { "type": "range", "id": "padding_bottom", "min": 0, "max": 100, "step": 4, "unit": "px", "label": "t:sections.all.padding.padding_bottom", "default": 36 }
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Show date"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": false,
+      "label": "Show author"
+    },
+    {
+      "type": "header",
+      "content": "Section padding"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Top padding",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "Bottom padding",
+      "default": 36
+    }
   ]
 }
 {% endschema %}

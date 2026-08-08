@@ -8,7 +8,7 @@
 <footer class="ipx-footer" role="contentinfo">
   <style>
     .ipx-footer {
-      background: #0B1E36 !important; /* Solid, commanding Deep Navy — zero transparency */
+      background: #000000 !important;
       background-image: none !important;
       color: #FFFFFF !important;
       border-top: 4px solid #A6192E;  /* Solid Flag Red border boundary track */
@@ -16,17 +16,26 @@
       font-family: 'Inter', sans-serif;
     }
 
-    .ipx-footer,
-    .ipx-footer .ipx-wrap,
-    .ipx-footer .ipx-grid,
-    .ipx-footer .ipx-col,
     .ipx-footer p,
     .ipx-footer li,
     .ipx-footer span,
     .ipx-footer strong,
-    .ipx-footer em,
-    .ipx-footer a {
-      color: #FFFFFF !important; /* Force high-contrast pure white legibility on text blocks */
+    .ipx-footer em {
+      color: #FFFFFF !important;
+    }
+
+    /* Standard footer links */
+    .ipx-footer .ipx-link,
+    .ipx-footer .ipx-policies a {
+      color: #FFFFFF !important;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .ipx-footer .ipx-link:hover,
+    .ipx-footer .ipx-policies a:hover {
+      color: #A6192E !important;
+      text-decoration: underline !important;
     }
 
     .ipx-wrap {
@@ -168,14 +177,14 @@
     }
     .ipx-bizbtn:hover {
       background: #FFFFFF !important;
-      color: #0B1E36 !important;
+      color: #6B2737 !important;
     }
 
     .ipx-gate[hidden] { display: none !important; }
     .ipx-gate {
       position: fixed;
       inset: 0;
-      background: #0B1E36 !important; /* Solid Navy modal wrap instead of faded black blend */
+      background: #3D0F18 !important; /* Solid deep wine modal wrap instead of faded black blend */
       display: flex;
       align-items: center;
       justify-content: center;
@@ -185,15 +194,15 @@
     .ipx-gate-card {
       max-width: 480px;
       width: 100%;
-      background: #FFFFFF !important; /* Solid pure white layout card */
-      border: 3px solid #0B1E36;
+      background: #FFFFFF !important; 
+      border: 3px solid #111111; /* Matches the dark footer/header theme */
       border-radius: 4px;
       padding: 28px;
     }
     .ipx-gate-card h4 {
       font-size: 1.8rem;
       font-weight: 800;
-      color: #0B1E36 !important;
+      color: #6B2737 !important;
       margin-bottom: 12px;
       text-transform: uppercase;
     }
@@ -221,8 +230,8 @@
     }
     .ipx-gate-cancel {
       background: transparent;
-      border: 2px solid #0B1E36;
-      color: #0B1E36 !important;
+      border: 2px solid #6B2737;
+      color: #6B2737 !important;
     }
     .ipx-gate-cancel:hover {
       background: #F7F7F5 !important;

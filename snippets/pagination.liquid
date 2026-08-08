@@ -21,11 +21,14 @@
     role="navigation"
     aria-label="{{ 'general.pagination.label' | t | escape }}"
   >
+    {%- comment -%}
+      Replaced <link rel="prev/next"> with hidden <a rel="prev/next"> to avoid RemoteAsset warnings.
+    {%- endcomment -%}
     {%- if paginate.previous -%}
-      <link rel="prev" href="{{ paginate.previous.url }}" />
+      <a rel="prev" href="{{ paginate.previous.url }}" hidden aria-hidden="true" tabindex="-1"></a>
     {%- endif -%}
     {%- if paginate.next -%}
-      <link rel="next" href="{{ paginate.next.url }}" />
+      <a rel="next" href="{{ paginate.next.url }}" hidden aria-hidden="true" tabindex="-1"></a>
     {%- endif -%}
 
     <ul class="pagination__list list-unstyled" role="list">
@@ -36,7 +39,6 @@
             class="pagination__item pagination__item--prev pagination__item-arrow link motion-reduce"
             aria-label="{{ 'general.pagination.previous' | t | escape }}"
           >
-            {%- comment -%} caret icon (Dawn-compatible) {%- endcomment -%}
             <span class="svg-wrapper">
               {{- 'icon-caret.svg' | inline_asset_content -}}
             </span>

@@ -3,12 +3,20 @@
 /* Dynamic padding set by Liquid via CSS variables */
 .header-wrapper .header {
   padding-top: var(--header-padding-top-mobile);
-  padding-right: 3rem; /* Keeping original fixed value */
+  padding-right: 3rem;
   padding-bottom: var(--header-padding-bottom-mobile);
-  padding-left: 3rem;  /* Keeping original fixed value */
+  padding-left: 3rem;
 }
+
+@media (max-width: 749px) {
+  .header-wrapper .header {
+    padding-right: 1rem;
+    padding-left: 1rem;
+  }
+}
+
 .section-header-wrapper {
-  position: sticky;
+  position: relative;
   margin-bottom: var(--header-margin-bottom-mobile);
 }
 
@@ -17,6 +25,7 @@
     margin-bottom: var(--header-margin-bottom-desktop);
   }
 }
+
 @media (min-width: 990px) {
   .header-wrapper .header {
     padding-top: var(--header-padding-top-desktop);
@@ -46,14 +55,32 @@
   gap: .75rem;
 }
 
-/* Individual icon wrapper styling */
+/* Icon buttons */
+.header__icon {
+  color: #ffffff;
+  transition: color 0.2s ease;
+}
+
+.header__icon:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
 .header__icon .svg-wrapper svg {
   display: block;
   width: 24px;
   height: 24px;
+  fill: #ffffff;
 }
 
-/* Cart count bubble specific styles */
+.header__icon:hover .svg-wrapper svg,
+.header__icon--cart .svg-wrapper svg,
+.header__icon--account .svg-wrapper svg,
+.header__icon--search .svg-wrapper svg,
+.header__icon--menu .svg-wrapper svg {
+  fill: #ffffff;
+}
+
+/* Cart count bubble */
 .cart-count-bubble {
   position: absolute;
   transform: translate(-30%, -40%);
@@ -64,7 +91,30 @@
   align-items: center;
   justify-content: center;
   font-size: 12px;
+  font-weight: 700;
   padding: .1rem .35rem;
-  background: rgb(var(--color-neon-green)); /* Using --color-neon-green from css-variables */
-  color: rgb(var(--color-black)); /* Using --color-black from css-variables */
+  background: #ffffff;
+  color: #111111;
+}
+
+/* Header links */
+.header__menu-item,
+.header__link {
+  color: #ffffff;
+}
+
+.header__menu-item:hover,
+.header__link:hover {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* Search input */
+.header__search input {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.header__search input:focus {
+  border-color: rgba(255, 255, 255, 0.5);
 }

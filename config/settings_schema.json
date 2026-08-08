@@ -1,186 +1,213 @@
 [
   {
-    "name": "Design",
+    "name": "Theme info",
     "settings": [
-      { "type": "header", "content": "Typography" },
-      { "type": "font_picker", "id": "type_body_font", "label": "Body font", "default": "system-ui" },
-      { "type": "font_picker", "id": "type_header_font", "label": "Heading font", "default": "system-ui" },
-
-      { "type": "header", "content": "Sizing" },
-      { "type": "range", "id": "body_scale", "label": "Body scale (%)", "min": 90, "max": 120, "step": 1, "default": 100 },
-      { "type": "range", "id": "heading_scale", "label": "Heading scale (%)", "min": 80, "max": 160, "step": 1, "default": 100 },
-      { "type": "range", "id": "page_width", "label": "Page width (px)", "min": 1000, "max": 1600, "step": 10, "default": 1200 },
-
-      { "type": "header", "content": "Animation" },
-      { "type": "checkbox", "id": "animations_reveal_on_scroll", "label": "Reveal on scroll", "default": false },
       {
-        "type": "select",
-        "id": "animations_hover_elements",
-        "label": "Hover effect",
-        "default": "none",
-        "options": [
-          { "value": "none", "label": "None" },
-          { "value": "grow", "label": "Grow" },
-          { "value": "shrink", "label": "Shrink" }
-        ]
+        "type": "paragraph",
+        "content": "Go Hard Gaming Discord LLC — custom high-performance theme (no app reliance)"
       }
-    ]
-  },
-  {
-    "name": "Colors",
-    "settings": [
-      { "type": "color_scheme", "id": "color_schemes", "label": "Color schemes" }
-    ]
-  },
-  {
-    "name": "Cart & Search",
-    "settings": [
-      {
-        "type": "select",
-        "id": "cart_type",
-        "label": "Cart type",
-        "default": "drawer",
-        "options": [
-          { "value": "drawer", "label": "Drawer" },
-          { "value": "page", "label": "Cart page" }
-        ]
-      },
-      { "type": "checkbox", "id": "predictive_search_enabled", "label": "Enable predictive search", "default": true }
     ]
   },
   {
     "name": "Brand",
     "settings": [
+      { "type": "text", "id": "store_name", "label": "Store name", "default": "Go Hard Gaming Discord LLC" },
+      { "type": "text", "id": "store_email", "label": "Store email", "default": "support@ironphoenixghg.store" },
+      { "type": "text", "id": "store_phone", "label": "Store phone", "default": "+1 (518) 415-8496" },
+      { "type": "textarea", "id": "store_address", "label": "Store address", "default": "142 W. Milton Rd Trlr 7, Ballston Spa, NY 12020" },
+      { "type": "textarea", "id": "mission_statement", "label": "Mission statement", "default": "We spark resilience and joy with bold, mindfully crafted gear that inspires imagination and equips our community to build mental strength, elevate gaming performance, and unleash athletic spirit—no matter the challenge." },
+      { "type": "image_picker", "id": "favicon", "label": "Favicon (32×32 recommended)" }
+    ]
+  },
+  {
+    "name": "Logo",
+    "settings": [
+      { "type": "image_picker", "id": "logo_image", "label": "Logo" },
+      { "type": "range", "id": "logo_width", "min": 60, "max": 300, "step": 3, "unit": "px", "label": "Logo width", "default": 150 }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
       {
-        "type": "select",
-        "id": "brand_variant",
-        "label": "Brand variant",
-        "default": "",
-        "options": [
-          { "value": "", "label": "Auto (by domain)" },
-          { "value": "gamer", "label": "Gamer (ironphoenix.store)" },
-          { "value": "customs", "label": "Customs (ironphoenixghg.store)" }
-        ]
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          { "type": "color", "id": "background", "label": "Background", "default": "#FFFFFF" },
+          { "type": "color_background", "id": "background_gradient", "label": "Background gradient" },
+          { "type": "color", "id": "text", "label": "Text", "default": "#121212" },
+          { "type": "color", "id": "button", "label": "Solid button background", "default": "#121212" },
+          { "type": "color", "id": "button_label", "label": "Solid button label", "default": "#FFFFFF" },
+          { "type": "color", "id": "secondary_button_label", "label": "Outline button", "default": "#121212" },
+          { "type": "color", "id": "shadow", "label": "Shadow", "default": "#121212" }
+        ],
+        "role": {
+          "text": "text",
+          "background": {
+            "solid": "background",
+            "gradient": "background_gradient"
+          },
+          "links": "secondary_button_label",
+          "icons": "text",
+          "primary_button": "button",
+          "on_primary_button": "button_label",
+          "primary_button_border": "button",
+          "secondary_button": "background",
+          "on_secondary_button": "secondary_button_label",
+          "secondary_button_border": "secondary_button_label"
+        }
+      },
+      {
+        "type": "paragraph",
+        "content": "Tip: Your brand tokens in CSS can override these; keep these as safe editor defaults."
       }
     ]
   },
   {
-    "name": "Iron Phoenix Optimizations",
+    "name": "Typography",
+    "settings": [
+      { "type": "font_picker", "id": "type_header_font", "label": "Heading font", "default": "assistant_n4" },
+      { "type": "range", "id": "heading_scale", "label": "Heading scale", "min": 75, "max": 150, "step": 5, "default": 100, "unit": "%" },
+      { "type": "font_picker", "id": "type_body_font", "label": "Body font", "default": "assistant_n4" },
+      { "type": "range", "id": "body_scale", "label": "Body scale", "min": 75, "max": 150, "step": 5, "default": 100, "unit": "%" }
+    ]
+  },
+  {
+    "name": "Layout & Animations",
+    "settings": [
+      { "type": "range", "id": "page_width", "label": "Page width", "min": 1000, "max": 1600, "step": 10, "default": 1200, "unit": "px" },
+      { "type": "checkbox", "id": "animations_reveal_on_scroll", "label": "Reveal sections on scroll", "default": false },
+      {
+        "type": "select",
+        "id": "animations_hover_elements",
+        "label": "Hover effect",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "lift", "label": "Vertical lift" },
+          { "value": "lift-3d", "label": "3D lift" }
+        ],
+        "default": "none"
+      }
+    ]
+  },
+  {
+    "name": "Product Layout",
     "settings": [
       {
         "type": "checkbox",
-        "id": "use_optimized_card",
-        "label": "Use optimized product card (evaluation)",
-        "default": true
+        "id": "amazon_style_layout",
+        "label": "Enable Amazon-style product layout",
+        "default": true,
+        "info": "Shows alternating image/text sections below product details"
       }
     ]
   },
   {
-    "name": "General",
+    "name": "Search",
     "settings": [
-      { "type": "text", "id": "store_name", "label": "Store name", "default": "My Store" },
-      { "type": "text", "id": "store_email", "label": "Store email", "default": "email@example.com" },
-      { "type": "text", "id": "store_phone", "label": "Store phone", "default": "+1 (555) 555-5555" },
-      { "type": "textarea", "id": "store_address", "label": "Store address", "default": "123 Main St, Anytown, USA" },
+      { "type": "checkbox", "id": "predictive_search_enabled", "label": "Enable search suggestions", "default": true }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
       {
-        "type": "textarea",
-        "id": "mission_statement",
-        "label": "Mission statement",
-        "default": "We spark resilience and joy with bold, mindfully crafted gear that inspires imagination and equips our community to build mental strength, elevate gaming performance, and unleash athletic spirit—no matter the challenge."
+        "type": "select",
+        "id": "cart_type",
+        "label": "Cart type",
+        "options": [
+          { "value": "drawer", "label": "Drawer" },
+          { "value": "page", "label": "Page" },
+          { "value": "notification", "label": "Popup notification" }
+        ],
+        "default": "drawer"
       },
-      { "type": "image_picker", "id": "favicon", "label": "Favicon" },
-      { "type": "image_picker", "id": "share_image", "label": "Default share image (OG/Twitter)" }
+      { "type": "checkbox", "id": "enable_order_notes", "label": "Enable order notes", "default": true }
     ]
   },
   {
     "name": "Social media",
     "settings": [
-      { "type": "url", "id": "facebook_url", "label": "Facebook URL", "default": "https://www.facebook.com/" },
-      { "type": "url", "id": "twitter_url", "label": "Twitter URL", "default": "https://www.twitter.com/" },
-      { "type": "url", "id": "instagram_url", "label": "Instagram URL", "default": "https://www.instagram.com/" },
-      { "type": "url", "id": "linkedin_url", "label": "LinkedIn URL", "default": "https://www.linkedin.com/" },
-      { "type": "text", "id": "twitter_handle", "label": "Twitter @handle (for cards)", "default": "@IronPhoenixGHG" }
+      { "type": "url", "id": "facebook_url", "label": "Facebook" },
+      { "type": "url", "id": "twitter_url", "label": "X / Twitter" },
+      { "type": "text", "id": "twitter_handle", "label": "Twitter handle" },
+      { "type": "url", "id": "instagram_url", "label": "Instagram" },
+      { "type": "url", "id": "linkedin_url", "label": "LinkedIn" }
     ]
   },
   {
-    "name": "Checkout",
+  "name": "Analytics & Pixels",
+  "settings": [
+    { "type": "checkbox", "id": "enable_google_analytics", "label": "Enable Universal Analytics (legacy)", "default": false },
+    { "type": "text", "id": "google_analytics_id", "label": "UA Property ID", "default": "UA-0000000-1" },
+
+    { "type": "header", "content": "Google Analytics / Google Tag" },
+    { "type": "text", "id": "ga4_id", "label": "GA4 Measurement ID (G-…)", "default": "G-V6ZP7KWRZN" },
+    { "type": "text", "id": "google_tag_id", "label": "Google Tag ID (GT-…)", "default": "GT-552Q5J6X" },
+
+    { "type": "header", "content": "Legacy (not used by theme)" },
+    { "type": "text", "id": "gtm_id", "label": "GTM Container ID (legacy — not used)", "default": "GTM-LEGACY" },
+    { "type": "text", "id": "ga4_id_baby", "label": "GA4 (Baby) Measurement ID (legacy — not used)", "default": "G-BABY-LEGACY" },
+    { "type": "text", "id": "gtm_id_baby", "label": "GTM (Baby) Container ID (legacy — not used)", "default": "GTM-BABY-LEGACY" },
+
+    { "type": "checkbox", "id": "enable_facebook_pixel", "label": "Enable Facebook Pixel", "default": false },
+    { "type": "text", "id": "facebook_pixel_id", "label": "Facebook Pixel ID", "default": "000000000000000" },
+    { "type": "text", "id": "facebook_domain_verification", "label": "Facebook Domain Verification", "default": "example_verification_code" }
+  ]
+  },
+  {
+    "name": "Payments (UI toggles)",
     "settings": [
-      { "type": "checkbox", "id": "enable_guest_checkout", "label": "Enable guest checkout", "default": true },
-      { "type": "checkbox", "id": "require_phone_number", "label": "Require phone number", "default": false },
-      { "type": "checkbox", "id": "enable_order_notes", "label": "Enable order notes", "default": true }
+      { "type": "checkbox", "id": "enable_paypal", "label": "Show PayPal badge/buttons", "default": true },
+      { "type": "checkbox", "id": "enable_stripe", "label": "Show Card icons (Stripe UI)", "default": true },
+      { "type": "checkbox", "id": "enable_bank_transfer", "label": "Show bank transfer instructions", "default": false }
     ]
   },
   {
-    "name": "Shipping",
+    "name": "Shipping & Free shipping bar",
     "settings": [
       {
-        "type": "radio",
+        "type": "select",
         "id": "shipping_origin",
         "label": "Shipping origin",
-        "default": "shop_address",
         "options": [
-          { "value": "shop_address", "label": "Shop address" },
-          { "value": "custom_address", "label": "Custom address" }
-        ]
+          { "value": "shop_address", "label": "Use shop address" },
+          { "value": "custom", "label": "Use custom address" }
+        ],
+        "default": "shop_address"
       },
-      { "type": "text", "id": "custom_shipping_address", "label": "Custom shipping address", "default": "" },
-      { "type": "checkbox", "id": "enable_free_shipping", "label": "Enable free shipping", "default": false },
-      { "type": "text", "id": "free_shipping_minimum", "label": "Free shipping minimum order amount", "default": "50.00" }
-    ]
-  },
-  {
-    "name": "Payments",
-    "settings": [
-      { "type": "checkbox", "id": "enable_paypal", "label": "Enable PayPal", "default": true },
-      { "type": "checkbox", "id": "enable_stripe", "label": "Enable Stripe", "default": true },
-      { "type": "checkbox", "id": "enable_bank_transfer", "label": "Enable bank transfer", "default": false }
-    ]
-  },
-  {
-    "name": "Marketing",
-    "settings": [
-      { "type": "checkbox", "id": "enable_google_analytics", "label": "Enable Google Analytics (legacy)", "default": false },
-      { "type": "text", "id": "google_analytics_id", "label": "Google Analytics UA ID (legacy)", "default": "" },
-
-      { "type": "text", "id": "gtm_id", "label": "Main GTM ID", "default": "GTM-TQD686VL" },
-      { "type": "text", "id": "ga4_id", "label": "Main GA4 ID", "default": "G-C6E01GLSZW" },
-      { "type": "text", "id": "gtm_id_baby", "label": "Baby GTM ID", "default": "GTM-MBXZB3HQ" },
-      { "type": "text", "id": "ga4_id_baby", "label": "Baby GA4 ID", "default": "G-630YS12KSN" },
-
-      { "type": "checkbox", "id": "enable_facebook_pixel", "label": "Enable Meta Pixel", "default": false },
-      { "type": "text", "id": "facebook_pixel_id", "label": "Meta Pixel ID", "default": "" },
-      { "type": "text", "id": "facebook_domain_verification", "label": "Facebook domain verification", "default": "" }
+      { "type": "textarea", "id": "custom_shipping_address", "label": "Custom shipping address" },
+      { "type": "checkbox", "id": "enable_free_shipping", "label": "Enable free shipping threshold", "default": false },
+      { "type": "text", "id": "free_shipping_minimum", "label": "Free shipping minimum (e.g., 50.00)", "default": "50.00" }
     ]
   },
   {
     "name": "Notifications",
     "settings": [
-      { "type": "checkbox", "id": "enable_order_notifications", "label": "Enable order notifications", "default": true },
-      { "type": "checkbox", "id": "enable_shipping_notifications", "label": "Enable shipping notifications", "default": true },
-      { "type": "checkbox", "id": "enable_marketing_notifications", "label": "Enable marketing notifications", "default": false }
+      { "type": "checkbox", "id": "enable_order_notifications", "label": "Order notifications", "default": true },
+      { "type": "checkbox", "id": "enable_shipping_notifications", "label": "Shipping notifications", "default": true },
+      { "type": "checkbox", "id": "enable_marketing_notifications", "label": "Marketing notifications", "default": false }
     ]
   },
   {
-    "name": "Legal",
+    "name": "Policies",
     "settings": [
-      { "type": "textarea", "id": "terms_and_conditions", "label": "Terms and conditions", "default": "" },
-      { "type": "textarea", "id": "privacy_policy", "label": "Privacy policy", "default": "" },
-      { "type": "textarea", "id": "refund_policy", "label": "Refund policy", "default": "" }
+      { "type": "page", "id": "terms_and_conditions", "label": "Terms & Conditions page" },
+      { "type": "page", "id": "privacy_policy", "label": "Privacy Policy page" },
+      { "type": "page", "id": "refund_policy", "label": "Refund Policy page" }
     ]
   },
   {
-    "name": "Membership / VIP",
+    "name": "Membership & VIP",
     "settings": [
       { "type": "checkbox", "id": "enable_membership", "label": "Enable membership features", "default": false },
-      { "type": "text", "id": "membership_allowed_tags", "label": "Allowed tags (comma-separated)", "default": "Member,VIP" },
-      { "type": "range", "id": "membership_term_months", "label": "Membership term (months)", "min": 1, "max": 36, "step": 1, "default": 12 },
+      { "type": "text", "id": "membership_allowed_tags", "label": "Allowed customer tags (comma-separated)", "default": "Member,VIP" },
+      { "type": "number", "id": "membership_term_months", "label": "Membership term (months)", "default": 12 },
       { "type": "text", "id": "membership_product_handle", "label": "Membership product handle", "default": "membership" },
-
-      { "type": "checkbox", "id": "vip_show_member_price", "label": "Show member price on PDP if available", "default": true },
-      { "type": "range", "id": "vip_discount_percent", "label": "Fallback VIP % off (display only)", "default": 15, "min": 0, "max": 50, "step": 1 },
-
-      { "type": "checkbox", "id": "gift_enabled", "label": "Enable free gift with membership", "default": false },
-      { "type": "text", "id": "gift_product_handle", "label": "Gift product handle (tee/hoodie)", "default": "vip-gift-tee" },
+      { "type": "checkbox", "id": "vip_show_member_price", "label": "Show member price", "default": true },
+      { "type": "number", "id": "vip_discount_percent", "label": "VIP discount (%)", "default": 15 },
+      { "type": "checkbox", "id": "gift_enabled", "label": "Enable VIP gift", "default": false },
+      { "type": "text", "id": "gift_product_handle", "label": "VIP gift product handle", "default": "vip-gift-tee" },
       { "type": "text", "id": "vip_badge_text", "label": "VIP badge text", "default": "VIP" }
     ]
   }

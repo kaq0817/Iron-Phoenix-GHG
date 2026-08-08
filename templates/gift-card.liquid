@@ -3,17 +3,19 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-    {%- comment -%} Inlined CSS Variables (snippet; keep) {%- endcomment -%}
-    {% render 'css-variables' %}
+    {% comment %} Inlined CSS Variables (snippet; keep) {% endcomment %}
+    {% comment %} Inlined CSS Variables (snippet; keep) {% endcomment %}
+    {{ 'css-variables.css' | asset_url | stylesheet_tag }}
 
-    {%- comment -%} Critical CSS (already present) {%- endcomment -%}
+    {% comment %} Critical CSS {% endcomment %}
     {{ 'critical.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {%- comment -%} Meta / OG / Twitter {%- endcomment -%}
+    {% comment %} Meta / OG / Twitter {% endcomment %}
     {% render 'meta-tags' %}
 
-    {%- comment -%} Non-critical page CSS (extracted from inline) {%- endcomment -%}
+    {% comment %} Non-critical gift card CSS {% endcomment %}
     {{ 'template-gift-card.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
+    <noscript>{{ 'template-gift-card.css' | asset_url | stylesheet_tag }}</noscript>
 
     {{ content_for_header }}
   </head>
@@ -32,22 +34,28 @@
           <p>{{ 'gift_card.expires_on' | t: expires_on: expires_on }}</p>
         {% endif %}
 
-        <p>
+        <div class="gift-card__logo">
           {% if settings.logo %}
-            {{ settings.logo | image_url: width: 300 | image_tag: alt: shop.name | escape }}
+            {{
+              settings.logo
+              | image_url: width: 300
+              | image_tag: alt: shop.name, loading: 'lazy', class: 'gift-card__image'
+            }}
           {% else %}
             <img
               src="{{ 'gift-card/card.svg' | shopify_asset_url }}"
               alt="{{ 'gift_card.card' | t }}"
               width="300"
               height="200"
+              loading="lazy"
+              class="gift-card__image"
             >
           {% endif %}
-        </p>
+        </div>
 
         <h2>{{ shop.name | escape }}</h2>
         <p>{{ 'gift_card.use_at_checkout' | t }}</p>
-        <p>{{ gift_card.code | format_code }}</p>
+        <p class="gift-card__code">{{ gift_card.code | format_code }}</p>
 
         {% if gift_card.pass_url %}
           <a href="{{ gift_card.pass_url }}">
@@ -56,6 +64,7 @@
               alt="{{ 'gift_card.add_to_apple_wallet' | t }}"
               width="200"
               height="60"
+              loading="lazy"
             >
           </a>
         {% endif %}

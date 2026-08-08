@@ -1,5 +1,5 @@
 {%- comment -%}
-Iron Phoenix GHG — Home Collections Trio (Gaming / Wellness / Sports)
+Go Hard Gaming Discord LLC — Home Collections Trio (Gaming / Wellness / Sports)
 - No inline CSS; styles in assets/section-home-collections-trio.css
 - Uses brand tokens if present; otherwise has safe defaults
 - Correct pluralization for product counts
@@ -16,7 +16,7 @@ Iron Phoenix GHG — Home Collections Trio (Gaming / Wellness / Sports)
     --home-collections-padding-block: clamp(2.4rem, 3vw, 4rem) 0;
     /* Gradient color definitions from settings, converted to RGB for consistency */
     --color-background-gradient-start-gaming: rgb(0, 189, 189); /* Default #00BDBD */
-    --color-background-gradient-end-gaming: rgb(106, 27, 154); /* Default #6a1b9a */
+    --color-background-gradient-end-gaming: rgb(31, 31, 31); /* was purple */
     --color-background-gradient-start-wellness: rgb(240, 147, 251); /* Default #f093fb */
     --color-background-gradient-end-wellness: rgb(245, 87, 108); /* Default #f5576c */
     --color-background-gradient-start-sports: rgb(79, 172, 254); /* Default #4facfe */
@@ -47,13 +47,15 @@ Iron Phoenix GHG — Home Collections Trio (Gaming / Wellness / Sports)
         <div class="hc-tile__media" aria-hidden="true">
           {%- assign img = block.settings.image | default: c.image -%}
           {%- if img -%}
-            {{ img | image_url: width: 1200 | image_tag:
-              widths: '480,720,960,1200',
-              sizes: '(max-width: 749px) 100vw, 33vw',
-              alt: tile_title | escape,
-              loading: 'lazy',
-              class: 'hc-tile__img'
-            }}
+            {%- assign img_alt = tile_title | default: 'Collection' | escape -%}
+            <img
+              src="{{ img | image_url: width: 1200 }}"
+              alt="{{ img_alt }}"
+              loading="lazy"
+              class="hc-tile__img"
+              width="1200"
+              height="{{ 1200 | divided_by: img.aspect_ratio | round }}"
+            >
           {%- else -%}
             {{ 'collection-1' | placeholder_svg_tag: 'hc-tile__ph' }}
           {%- endif -%}

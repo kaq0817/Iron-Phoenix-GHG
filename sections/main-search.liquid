@@ -71,7 +71,7 @@
               {%- for item in listing -%}
                 {%- comment -%} listing is already products only {%- endcomment -%}
                 <li class="grid__item">
-                  {%- render 'card-product',
+                  {%- render 'render-card-product',
                     card_product: item,
                     media_aspect_ratio: section.settings.image_ratio,
                     image_shape: section.settings.image_shape,
@@ -98,7 +98,7 @@
                 {%- assign skip_card_product_styles = false -%}
                 {%- for p in product_results -%}
                   <li class="grid__item">
-                    {%- render 'card-product',
+                    {%- render 'render-card-product',
                       card_product: p,
                       media_aspect_ratio: section.settings.image_ratio,
                       image_shape: section.settings.image_shape,

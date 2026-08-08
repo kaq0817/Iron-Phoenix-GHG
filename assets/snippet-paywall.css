@@ -1,13 +1,76 @@
-/* snippet-paywall.css */
-.ipx-preview p{margin-bottom:1rem}
-.ipx-gate{display:flex;justify-content:center;margin:1.5rem 0}
-.ipx-gate__box{max-width:680px;width:100%;padding:1.25rem;border:1px solid #e5e7eb;border-radius:14px;background:linear-gradient(135deg,#f9fafb 0%,#eef2ff 100%);text-align:center}
-.ipx-gate__title{font-weight:800;margin:0 0 .5rem}
-.ipx-gate__subtitle{color:#4b5563;margin:0 0 1rem}
-.ipx-gate__cta{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:.5rem}
-.ipx-btn{padding:.7rem 1.1rem;border-radius:10px;font-weight:700;text-decoration:none;display:inline-block}
-.ipx-btn--primary{background:#2563eb;color:#fff}
-.ipx-btn--primary:hover{background:#1d4ed8}
-.ipx-btn--ghost{background:#fff;border:1px solid #c7d2fe;color:#1f2937}
-.ipx-btn--ghost:hover{background:#f8fafc}
-.ipx-gate__note{font-size:.875rem;color:#6b7280;margin:0}
+/* snippet-paywall.css — Iron Phoenix GHG */
+
+.ipx-preview {
+  margin-bottom: 2rem;
+  color: var(--color-main-text);
+  font-size: 1.4rem;
+  line-height: 1.7;
+  max-width: 65ch;
+}
+
+.ipx-gate {
+  background-color: #FFFFFF;
+  border: 1px solid rgba(201, 168, 76, 0.25);
+  border-radius: var(--radius);
+  padding: 2rem;
+  color: #1A1310;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(28, 15, 20, 0.08);
+}
+
+.ipx-gate__title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1C0F14;
+  margin-bottom: 1rem;
+}
+
+.ipx-gate__subtitle {
+  font-size: 1.2rem;
+  color: #5C4E44;
+  margin-bottom: 2rem;
+}
+
+.ipx-btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  border-radius: var(--buttons-radius);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: all 0.2s ease-in-out;
+  font-family: var(--font-heading-family);
+}
+
+.ipx-btn--primary {
+  background: #6B2737;
+  color: #F9F6F1;
+  box-shadow: 0 4px 14px rgba(107, 39, 55, 0.25);
+}
+
+.ipx-btn--primary:hover {
+  background: #4F1D28;
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(107, 39, 55, 0.35);
+}
+
+.ipx-btn--ghost {
+  background: transparent;
+  border: 2px solid #C9A84C;
+  color: #6B2737;
+}
+
+.ipx-btn--ghost:hover {
+  background: rgba(201, 168, 76, 0.1);
+  color: #1C0F14;
+  border-color: #C9A84C;
+  box-shadow: 0 4px 12px rgba(201, 168, 76, 0.2);
+}
+
+.ipx-gate__note {
+  margin-top: 2rem;
+  font-size: 0.95rem;
+  color: #8B7B72;
+  font-style: italic;
+}

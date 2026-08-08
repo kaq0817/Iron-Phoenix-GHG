@@ -1,78 +1,257 @@
-{%- comment -%}
-/sections/hero-custom.liquid
-Hero Custom Section
-- Styles externalized to assets/section-hero-custom.css
-- Uses optimized-image snippet for background image
-- Uses theme's global CSS variables for colors
-{%- endcomment -%}
-
-{{ 'section-hero-custom.css' | asset_url | stylesheet_tag: preload: true, onload: "this.media='all'" }}
-<noscript>{{ 'section-hero-custom.css' | asset_url | stylesheet_tag }}</noscript>
-
 {%- liquid
-  assign heading_text = section.settings.headline | default: section.settings.title | default: shop.name
-  assign sub_text     = section.settings.subheadline | default: section.settings.subtitle
+  assign heading_text = section.settings.headline | default: shop.name
+  assign sub_text     = section.settings.subheadline
   assign cta_link     = section.settings.cta_link | default: routes.all_products_collection_url
-  assign has_bg       = section.settings.background_image
-  assign has_heading  = heading_text != blank
+  assign fetch_priority = 'high'
 -%}
 
 <section
-  class="hero-custom color-{{ section.settings.color_scheme }}"
-  role="region"
-  {% if has_heading %}aria-labelledby="HeroHeading-{{ section.id }}"{% else %}aria-label="{{ shop.name | escape }}"{% endif %}
-  {% if has_bg %}
-    style="--hero-bg: url({{ section.settings.background_image | image_url: width: 1920, format: 'webp' }});"
-  {% endif %}
+  class="hero-custom"
+  style="
+    --hero-min-height: {{ section.settings.min_height }}px;
+    --hero-content-align: {{ section.settings.content_align }};
+    --hero-headline-color: {{ section.settings.headline_color }};
+    --hero-headline-size: {{ section.settings.headline_size }}px;
+    --hero-subheadline-color: {{ section.settings.subheadline_color | default: '#44f3db' }};
+    --hero-subheadline-size: {{ section.settings.subheadline_size }}px;
+    --hero-nav-color: {{ section.settings.nav_color | default: '#ffffff' }};
+    --hero-nav-hover-color: {{ section.settings.nav_hover_color | default: '#ffb300' }};
+    --hero-nav-size: {{ section.settings.nav_size | default: 18 }}px;
+    --hero-cta-bg: {{ section.settings.cta_bg_color | default: '#7588bc' }};
+    --hero-cta-color: {{ section.settings.cta_text_color | default: '#230c5d' }};
+  "
 >
-  {% if section.settings.logo %}
-    <img
-      src="{{ section.settings.logo | image_url: width: 400, format: 'webp' }}"
-      alt="{{ heading_text | escape }}"
-      width="200"
-      height="200"
-      loading="lazy"
-      class="hero-logo"
-    >
-  {% endif %}
+  {%- if section.settings.background_image != blank -%}
+    <div class="hero-custom__background">
+      {{
+        section.settings.background_image
+        | image_url: width: 2000, format: 'webp'
+        | image_tag:
+          loading: 'eager',
+          fetchpriority: fetch_priority,
+          widths: '375, 550, 750, 1100, 1500, 1780, 2000',
+          sizes: '100vw',
+          width: section.settings.background_image.width,
+          height: section.settings.background_image.height,
+          alt: section.settings.background_image.alt | escape
+      }}
+    </div>
+  {%- endif -%}
 
-  {% if has_heading %}
-    <h1 class="hero-headline neon-glow" id="HeroHeading-{{ section.id }}">
-      {{ heading_text | escape }}
-    </h1>
-  {% endif %}
+  <div class="hero-custom__content">
+    {%- if section.blocks.size > 0 -%}
+      <nav class="hero-custom__nav" aria-label="Hero collections navigation">
+        {%- for block in section.blocks -%}
+          <a class="hero-custom__nav-link" href="{{ block.settings.collection | default: '#' }}" {{ block.shopify_attributes }}>
+            {{ block.settings.label | escape }}
+          </a>
+        {%- endfor -%}
+      </nav>
+    {%- endif -%}
 
-  {% if sub_text %}
-    <p class="hero-subheadline" id="HeroSub-{{ section.id }}">
-      {{ sub_text | escape }}
-    </p>
-  {% endif %}
+    {%- if section.settings.eyebrow != blank -%}
+      <span class="hero-custom__eyebrow">{{ section.settings.eyebrow | escape }}</span>
+    {%- endif -%}
 
-  {% if section.settings.cta_label and cta_link %}
-    <a href="{{ cta_link | escape }}" class="button--neon">
-      {{ section.settings.cta_label | escape }}
-    </a>
-  {% endif %}
+    {%- if heading_text != blank -%}
+      <h2 class="hero-custom__headline">{{ heading_text | escape }}</h2>
+    {%- endif -%}
+
+    {%- if sub_text != blank -%}
+      <p class="hero-custom__subheadline">{{ sub_text | escape }}</p>
+    {%- endif -%}
+
+    {%- if section.settings.cta_label != blank -%}
+      <a href="{{ cta_link }}" class="hero-custom__button">
+        {{ section.settings.cta_label | escape }}
+      </a>
+    {%- endif -%}
+  </div>
 </section>
+
+{% stylesheet %}
+  .hero-custom {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: var(--hero-content-align, flex-start);
+    min-height: var(--hero-min-height, 600px);
+    overflow: hidden;
+    background-color: #0a53a8ff;
+  }
+
+  .hero-custom__background {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .hero-custom__background img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-custom__content {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 60px 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: var(--hero-content-align, flex-start);
+    text-align: left;
+  }
+
+  .hero-custom__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem 2.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .hero-custom__nav-link {
+    color: var(--hero-nav-color, #ffffff);
+    font-size: var(--hero-nav-size, 18px);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .hero-custom__nav-link:hover,
+  .hero-custom__nav-link:focus {
+    color: var(--hero-nav-hover-color, #ffb300);
+  }
+
+  .hero-custom__eyebrow {
+    font-size: clamp(0.75rem, 1.1vw, 0.95rem);
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: #ffffff;
+    margin: 0 0 0.4rem;
+    display: block;
+  }
+
+  .hero-custom__headline {
+    color: #ffffff !important; /* Forces pure white */
+    -webkit-text-fill-color: #ffffff !important;
+    font-size: var(--hero-headline-size, 80px);
+    font-weight: 900;
+    line-height: 0.95;
+    text-transform: capitalize;
+    margin: 0 0 0.5rem;
+    letter-spacing: -0.02em;
+    opacity: 1 !important; /* Removes any inherited transparency */
+    text-shadow: none !important; /* Kills the grey 'cloud' behind letters */
+  }
+
+  .hero-custom__subheadline {
+    color: #ffffff !important; /* Forces pure white */
+    opacity: 1 !important;
+    text-transform: capitalize;
+    letter-spacing: 0.15em;
+    font-weight: 600;
+    font-size: var(--hero-subheadline-size, 14px);
+    text-shadow: none !important;
+  }
+
+  .hero-custom__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.9rem 2rem;
+    background: var(--hero-cta-bg, #214090ff) !important;
+    color: var(--hero-cta-color, #ffffff) !important;
+    border: none !important;
+    border-radius: 3px;
+    font-size: clamp(0.78rem, 1vw, 0.88rem);
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    text-decoration: none !important;
+    transition: filter 0.2s ease;
+    box-shadow: 0 2px 12px rgba(246, 244, 244, 0.3);
+  }
+  .hero-custom__background::after {
+    display: none !important;
+    content: none !important;
+  }
+
+  .hero-custom__button::after {
+    content: '→';
+  }
+
+  .hero-custom__button:hover {
+    filter: brightness(1.15);
+    text-decoration: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    .hero-custom__content {
+      padding: 2rem 1.25rem 2.5rem;
+    }
+
+    .hero-custom__headline {
+      font-size: clamp(2rem, 10vw, 3.5rem) !important;
+      white-space: normal;
+    }
+
+    .hero-custom__subheadline {
+      font-size: clamp(0.75rem, 3vw, 1rem) !important;
+    }
+
+    .hero-custom__nav-link {
+      font-size: clamp(0.8rem, 3vw, 1rem);
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {
   "name": "Hero Custom",
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Hero logo" },
-    { "type": "image_picker", "id": "background_image", "label": "Background image (optional)" },
-
-    { "type": "text", "id": "headline", "label": "Headline", "default": "Forged Phoenix" },
-    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Strength. Resilience. Rebirth." },
-
-    { "type": "text", "id": "cta_label", "label": "CTA label", "default": "Shop now" },
-    { "type": "url", "id": "cta_link", "label": "CTA link" },
-
-    { "type": "text", "id": "title", "label": "Fallback title (legacy)", "default": "Welcome to Iron Phoenix GHG" },
-    { "type": "text", "id": "subtitle", "label": "Fallback subtitle (legacy)", "default": "Gaming gear designed with wellness in mind" }
+    { "type": "header", "content": "Images" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
+    { "type": "header", "content": "Navigation (Collections)" },
+    { "type": "color", "id": "nav_color", "label": "Navigation link color", "default": "#ffffff" },
+    { "type": "color", "id": "nav_hover_color", "label": "Navigation link hover color", "default": "#ffb300" },
+    { "type": "range", "id": "nav_size", "min": 12, "max": 32, "step": 1, "unit": "px", "label": "Navigation font size", "default": 18 },
+    { "type": "header", "content": "Text content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Equip Your Next" },
+    { "type": "text", "id": "headline", "label": "Headline", "default": "Adventure" },
+    { "type": "text", "id": "subheadline", "label": "Subheadline", "default": "Apparel • Accessories • Lifestyle" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "headline_color", "label": "Headline & Eyebrow Color", "default": "#ffffff" },
+    { "type": "color", "id": "subheadline_color", "label": "Subheadline Color", "default": "#ffffff" },
+    { "type": "header", "content": "Sizes" },
+    { "type": "range", "id": "headline_size", "min": 20, "max": 120, "step": 2, "unit": "px", "label": "Headline font size (desktop)", "default": 80 },
+    { "type": "range", "id": "subheadline_size", "min": 10, "max": 40, "step": 1, "unit": "px", "label": "Subheadline font size (desktop)", "default": 14 },
+    { "type": "header", "content": "CTA Button" },
+    { "type": "text", "id": "cta_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "cta_link", "label": "Button link" },
+    { "type": "color", "id": "cta_bg_color", "label": "Button background color", "default": "#1a3683" },
+    { "type": "color", "id": "cta_text_color", "label": "Button text color", "default": "#ffffff" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "min_height", "min": 200, "max": 1000, "step": 20, "unit": "px", "label": "Minimum height", "default": 600 },
+    { "type": "select", "id": "content_align", "label": "Content alignment", "options": [{ "value": "flex-start", "label": "Left" }, { "value": "center", "label": "Center" }], "default": "flex-start" }
   ],
-  "presets": [
-    { "name": "Hero Custom" }
-  ]
+  "blocks": [
+    {
+      "type": "collection_link",
+      "name": "Collection Link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Link label", "default": "Collection" },
+        { "type": "url", "id": "collection", "label": "Collection link" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Hero Custom", "blocks": [ { "type": "collection_link" } ] }]
 }
 {% endschema %}

@@ -1,45 +1,189 @@
-/* assets/section-product-feature-blocks.css */
+/* Product Feature Blocks - Clean & Mobile-Optimized Version */
 
 .product-feature-blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 5rem;
+  background: rgb(var(--color-background));
+  overflow: hidden;
 }
+
 .feature-block {
-  display: flex;
-  align-items: center;
-  gap: 4rem;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
   margin-bottom: 4rem;
+  align-items: center;
 }
-.feature-block--reverse {
-  flex-direction: row-reverse;
+
+@media screen and (min-width: 750px) {
+  .feature-block {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-bottom: 5rem;
+  }
 }
-.feature-image img {
-  border-radius: 1.5rem;
-  box-shadow: 0 2rem 4rem rgba(0,0,0,0.08);
+
+.feature-block:last-child {
+  margin-bottom: 0;
+}
+
+/* Reverse layout for alternating blocks - DESKTOP ONLY */
+@media screen and (min-width: 750px) {
+  .feature-block--reverse {
+    direction: rtl;
+  }
+
+  .feature-block--reverse > * {
+    direction: ltr;
+  }
+}
+
+/* Image styling */
+.feature-image {
   width: 100%;
-  max-width: 600px;
+  max-width: 400px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px;
+  background: rgba(255,255,255,.02);
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.feature-image img {
+  width: 100%;
   height: auto;
+  max-height: 300px;
+  object-fit: cover;
   display: block;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  opacity: 0;
 }
+
+.feature-image img[src] {
+  opacity: 1;
+}
+
+.feature-image:hover img {
+  transform: scale(1.02);
+}
+
+/* Text content */
 .feature-text {
-  max-width: 500px;
+  padding: 1rem 0;
 }
-.feature-headline {
-  font-size: 2.2rem;
-  font-weight: 700;
-  margin-bottom: 1.2rem;
+
+@media screen and (min-width: 750px) {
+  .feature-text {
+    padding: 2rem 0;
+  }
 }
+
+/* Description paragraph - large and readable */
 .feature-desc {
-  font-size: 1.12rem;
-  color: #333;
+  font-size: 1.6rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,.9);
+  margin: 0;
 }
-@media (max-width: 900px) {
-  .feature-block, .feature-block--reverse {
-    flex-direction: column;
-    gap: 2rem;
+
+@media screen and (min-width: 750px) {
+  .feature-desc {
+    font-size: 1.8rem;
+    line-height: 1.8;
   }
-  .feature-text, .feature-image img {
-    max-width: 100%;
+}
+
+.feature-desc p {
+  margin: 0 0 1rem 0;
+}
+
+.feature-desc p:last-child {
+  margin-bottom: 0;
+}
+
+/* --- MOBILE OPTIMIZATIONS --- */
+@media screen and (max-width: 749px) {
+  .feature-block {
+    margin-bottom: 2.5rem;
+    gap: 1.5rem;
   }
+  
+  /* Mobile image sizing - LEFT ALIGNED, CONSTRAINED */
+  .feature-image {
+    max-width: 320px;
+    margin: 0; /* Left-aligned, no centering */
+    border-radius: 8px;
+  }
+  
+  .feature-image img {
+    max-height: 250px;
+    object-fit: contain; /* Contain instead of cover to prevent cropping */
+  }
+  
+  /* Mobile text */
+  .feature-text {
+    padding: 1rem 0 0;
+  }
+  
+  .feature-desc {
+    font-size: 1.4rem;
+    line-height: 1.6;
+  }
+}
+
+/* Tablet adjustments */
+@media screen and (min-width: 750px) and (max-width: 989px) {
+  .feature-image {
+    max-width: 350px;
+  }
+  
+  .feature-image img {
+    max-height: 280px;
+  }
+  
+  .feature-desc {
+    font-size: 1.7rem;
+  }
+}
+
+/* Desktop optimization */
+@media screen and (min-width: 990px) {
+  .feature-image {
+    max-width: 450px;
+  }
+  
+  .feature-image img {
+    max-height: 350px;
+  }
+}
+
+/* Fallback content */
+.feature-block-fallback {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  align-items: center;
+  text-align: center;
+  padding: 2rem;
+  color: rgba(255,255,255,.6);
+}
+
+@media screen and (min-width: 750px) {
+  .feature-block-fallback {
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    text-align: left;
+  }
+}
+
+/* Hover effects - Desktop only */
+@media (hover: hover) and (min-width: 750px) {
+  .feature-block:hover .feature-image img {
+    transform: scale(1.03);
+  }
+}
+
+/* Accessibility */
+.feature-block:focus-within {
+  outline: 2px solid rgba(var(--color-accent, 0,255,0), .6);
+  outline-offset: 4px;
+  border-radius: 12px;
 }

@@ -1,0 +1,50 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "sub_collections_mHPb3y": {
+      "type": "auto-subcollections",
+      "name": "Auto SubCollections",
+      "settings": {}
+    },
+    "main": {
+      "type": "main-collection-product-grid",
+      "settings": {
+        "show_vendor": false,
+        "products_per_page": 16
+      }
+    },
+    "trust_badges_M7eFxk": {
+      "type": "trust-badges",
+      "name": "Trust Badges",
+      "settings": {
+        "trust_image": "shopify://shop_images/png.png",
+        "alt_text": "Trust Badges: Gamer Designed, Wellness, Secure, Support"
+      }
+    },
+    "collection-blog": {
+      "type": "featured-blog",
+      "settings": {
+        "post_limit": 3,
+        "heading": "Latest Dispatches",
+        "columns_desktop": 3,
+        "show_view_all": true,
+        "padding_top": 48,
+        "padding_bottom": 48
+      }
+    }
+  },
+  "order": [
+    "sub_collections_mHPb3y",
+    "main",
+    "trust_badges_M7eFxk",
+    "collection-blog"
+  ]
+}

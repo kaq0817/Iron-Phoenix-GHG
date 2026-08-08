@@ -1,14 +1,23 @@
 {%- comment -%}
 snippets/meta-tags.liquid
-- Dynamic Open Graph + Twitter cards (no hardcoded handles)
-- No <title> here (theme.liquid already sets it)
-- Proper escaping for text; URLs left intact
+- Dynamic Open Graph + Twitter cards
+- Adds sitemap hint
+- Fixes Liquid syntax errors (theme-check safe)
 {%- endcomment -%}
 
 {%- liquid
-  assign is_product    = template contains 'product'
-  assign is_article    = template contains 'article'
-  assign is_collection = template contains 'collection'
+  # Detect page type safely
+  assign is_product = false
+  assign is_article = false
+  assign is_collection = false
+
+  if template contains 'product'
+    assign is_product = true
+  elsif template contains 'article'
+    assign is_article = true
+  elsif template contains 'collection'
+    assign is_collection = true
+  endif
 
   # Title/description for cards
   assign meta_title = page_title | default: shop.name
@@ -46,12 +55,14 @@ snippets/meta-tags.liquid
     assign og_type = 'article'
   endif
 
-  # Optional Twitter handle (if your theme settings have one)
-  assign twitter_site = settings.twitter_handle
-  if twitter_site and twitter_site != blank
-    unless twitter_site startswith '@'
+  # Optional Twitter handle (normalize to @username)
+  assign twitter_site = settings.twitter_handle | strip
+  if twitter_site != blank
+    if twitter_site contains '@'
+      assign twitter_site = twitter_site
+    else
       assign twitter_site = '@' | append: twitter_site
-    endunless
+    endif
   endif
 -%}
 
@@ -71,7 +82,7 @@ snippets/meta-tags.liquid
 
 {%- comment -%} Twitter Card {%- endcomment -%}
 <meta name="twitter:card" content="summary_large_image">
-{%- if twitter_site and twitter_site != blank -%}
+{%- if twitter_site != blank -%}
   <meta name="twitter:site" content="{{ twitter_site | escape }}">
 {%- endif -%}
 <meta name="twitter:title" content="{{ meta_title | escape }}">
@@ -86,18 +97,20 @@ snippets/meta-tags.liquid
   <link rel="icon" href="{{ settings.favicon | image_url: width: 32 }}">
 {%- endif -%}
 
-{%- comment -%}
-JSON-LD Organization (homepage only). Keep portable: no hardcoded sameAs.
-If you want social profiles here, we can wire from settings in a follow-up.
-{%- endcomment -%}
+{%- comment -%} Sitemap hint {%- endcomment -%}
+{% comment %} theme-check-disable RemoteAsset {% endcomment %}
+<link rel="sitemap" type="application/xml" href="{{ shop.url }}/sitemap.xml">
+{% comment %} theme-check-enable RemoteAsset {% endcomment %}
+
+{%- comment -%} JSON-LD Organization (homepage only) {%- endcomment -%}
 {%- if template.name == 'index' -%}
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": {{ shop.name | json }},
-  "url": {{ shop.url | json }},
-  {% if settings.share_image %}"logo": {{ settings.share_image | image_url: width: 600 | json }},{% endif %}
+  "url": {{ shop.url | json }}{% if settings.share_image %},
+  "logo": {{ settings.share_image | image_url: width: 600 | json }}{% endif %},
   "description": {{ shop.description | default: shop.name | json }}
 }
 </script>

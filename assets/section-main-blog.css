@@ -1,53 +1,140 @@
-/* assets/section-main-blog.css */
-
-.main-blog.section-padding {
-  padding-top: var(--main-blog-padding-top-mobile);
-  padding-bottom: var(--main-blog-padding-bottom-mobile);
+/* Main Blog Grid - Beautiful Cards */
+.blog-articles {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem;
+  margin-top: 3rem;
 }
-@media screen and (min-width: 750px) {
-  .main-blog.section-padding {
-    padding-top: var(--main-blog-padding-top-desktop);
-    padding-bottom: var(--main-blog-padding-bottom-desktop);
+
+/* Individual Article Card Container */
+.blog-articles__article {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+/* Article Card - Clean Box Style */
+.article-card {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100%;
+  background: rgba(var(--color-background), 0.05);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(var(--color-foreground), 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.article-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* Image - Top of Card */
+.article-card__image-wrapper {
+  width: 100%;
+  height: 240px;
+  overflow: hidden;
+  flex-shrink: 0;
+  background: rgba(var(--color-foreground), 0.02);
+}
+
+.article-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.article-card:hover .article-card__image {
+  transform: scale(1.05);
+}
+
+/* Content Area - Below Image */
+.article-card__info {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+/* Title - Normal Size */
+.article-card__title {
+  font-size: 1.25rem !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
+  font-weight: 600;
+  color: rgb(var(--color-headings));
+}
+
+.article-card__title a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.article-card__title a:hover {
+  opacity: 0.8;
+}
+
+/* Meta (Date/Author) */
+.article-card__meta {
+  font-size: 0.85rem;
+  color: rgba(var(--color-foreground), 0.7);
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* Excerpt */
+.article-card__excerpt {
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+  margin: 0 !important;
+  color: rgba(var(--color-foreground), 0.9);
+}
+
+/* Mobile Responsive */
+@media screen and (max-width: 749px) {
+  .blog-articles {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+  
+  .article-card__image-wrapper {
+    height: 200px;
+  }
+  
+  .article-card__title {
+    font-size: 1.1rem !important;
   }
 }
 
-.title--primary {
-  font-family: var(--font-heading-family);
-  color: var(--color-wellness-text); /* Uses Liquid-set CSS var */
-}
-.blog-articles {
-  gap: 2rem;
-  display: grid;
-}
-.blog-articles--collage .blog-articles__article {
-  /* optional collage tweaks */
+/* Collage Layout (if selected) */
+.blog-articles--collage {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
 
-.article {
-  background: var(--color-wellness-background); /* Uses Liquid-set CSS var */
-  border-radius: 12px;
-  padding: 1rem;
-  overflow: hidden;
+/* Card Style Variations */
+.card-style-sharp .article-card {
+  border-radius: 0 !important;
 }
-.article-card__image {
-  border-radius: 8px;
-  overflow: hidden;
+
+.card-style-rounded .article-card {
+  border-radius: 12px !important;
 }
-.article-card__image img {
-  display: block;
-  width: 100%;
-  height: auto;
+
+.card-style-super-rounded .article-card {
+  border-radius: 24px !important;
 }
-.article-card__title {
-  margin: .75rem 0 .25rem;
+
+.card-style-blob .article-card {
+  border-radius: 60% 40% 30% 70% / 60% 30% 70% 40% !important;
 }
-.article-card__meta {
-  font-size: .9rem;
-  color: rgba(var(--color-black), .6); /* Using --color-black */
-  display: flex;
-  gap: .5rem;
-  align-items: center;
-}
-.article-card__excerpt {
-  margin-top: .5rem;
+
+.card-style-blob .article-card__image-wrapper {
+  border-radius: 50% 30% 40% 60% / 40% 60% 30% 50% !important;
+  margin: 1rem;
+  width: calc(100% - 2rem);
+  height: calc(240px - 2rem);
 }

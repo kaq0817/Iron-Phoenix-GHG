@@ -1,19 +1,54 @@
+/* Free Shipping Bar — 100% Solid Americana Contrast, hides when empty */
 .free-shipping-bar {
-  background-color: var(--color-background-gradient-start, #f4f4f4);
-  padding: 0.75rem;
-  margin-top: 1rem;
-  border-radius: 6px;
-  font-size: 0.95rem;
+  --fsb-bg: #FFFFFF;        /* Solid Pure White container — zero transparency */
+  --fsb-text: #C9A84C;      /* Solid Warm Gold for crisp text legibility */
+  --fsb-bar: #A6192E;       /* Solid Flag Red progress indicator */
+
+  display: block;
+  padding: 8px 12px;
+  margin: 12px 0;
+  border: 2px solid #C9A84C; /* Hard solid Gold framing line */
+  border-radius: 4px;        /* Solid block design profile */
+  background: var(--fsb-bg);
+  color: var(--fsb-text);
+  font-size: 1.3rem;         
+  font-weight: 800;          /* Heavy weight for maximum readability */
+  line-height: 1.3;
 }
-.progress-container {
-  height: 10px;
-  background-color: #ddd;
-  border-radius: 5px;
-  margin-top: 0.5rem;
+
+.free-shipping-bar.is-empty { 
+  display: none !important; 
+}
+
+.free-shipping-bar .fsb__text { 
+  margin: 0 0 6px; 
+  text-align: center; 
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.free-shipping-bar .fsb__track {
+  position: relative; 
+  height: 10px;              /* Slightly deeper for solid visual weight */
+  border-radius: 2px;
+  background: #E5E7EB;       /* Solid, clean light grey background track */
+  border: 1px solid #C9A84C; /* Solid Gold border boundary for the path */
   overflow: hidden;
 }
-.progress-bar {
+
+.free-shipping-bar .fsb__bar {
+  position: absolute; 
+  inset: 0 auto 0 0; 
   height: 100%;
-  background-color: var(--color-accent, #26a69a);
-  transition: width 0.3s ease-in-out;
+  width: var(--fsb-progress, 0%);
+  background: var(--fsb-bar); /* Solid Red fills the goal meter */
+  border-radius: inherit; 
+  transition: width 200ms ease;
+}
+
+/* Hard margins for cart drawers/slideouts to keep blocks locked in place */
+.cart-drawer .free-shipping-bar, 
+#CartDrawer .free-shipping-bar { 
+  margin: 8px 0; 
+  padding: 8px 10px;
 }

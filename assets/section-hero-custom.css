@@ -1,74 +1,142 @@
-/* assets/section-hero-custom.css */
+/* assets/section-hero-custom.css — Dark elegant hero */
 
-/* Wrapper */
 .hero-custom {
   position: relative;
-  display: grid;
-  place-items: center;
-  padding: clamp(3rem, 6vw, 8rem) 1.6rem;
-  text-align: center;
-  background-color: rgb(var(--color-background)); /* Use theme's background color */
-  background-image: var(--hero-bg, none); /* Dynamic background image from Liquid */
-  background-size: cover;
-  background-position: center;
-  isolation: isolate; /* Creates a new stacking context */
-  color: rgb(var(--color-foreground)); /* Use theme's foreground color for text */
+  min-height: clamp(480px, 60vw, 680px);
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  isolation: isolate;
+  color: #ffffff;
 }
 
-/* Media */
-.hero-logo {
+/* Full-bleed background image */
+.hero-custom__background {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+
+.hero-custom__background img,
+.hero-custom__background picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+.hero-custom::after {
+  display: none;
+}
+
+/* Content — left aligned, constrained column */
+.hero-custom__content {
+  width: 100%;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 5rem) clamp(1.5rem, 5vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.hero-custom__headline,
+.hero-custom__subheadline,
+.hero-custom__eyebrow,
+.hero-custom__cta {
+  max-width: 480px;
+  width: 100%;
+}
+
+.hero-custom__logo {
   margin-bottom: 1.5rem;
-  object-fit: contain;
-  max-width: 200px;
+}
+
+.hero-custom__logo img,
+.hero-custom__logo picture {
+  width: clamp(80px, 14vw, 140px);
   height: auto;
+  display: block;
 }
 
-/* Text */
-.hero-headline {
-  margin: 0 0 .5rem;
-  font-size: clamp(2.2rem, 4.5vw, 4rem);
-  line-height: 1.05;
-}
-.hero-subheadline {
-  margin: 0 0 1.25rem;
-  opacity: .9;
-  max-width: 72ch;
+/* Small eyebrow — "EQUIP YOUR NEXT" */
+.hero-custom__eyebrow {
+  font-size: clamp(0.8rem, 1.1vw, 0.95rem);
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0 0 0.4rem;
 }
 
-/* Neon accents (using core brand accents from css-variables.css.liquid) */
-.hero-headline.neon-glow {
-  text-shadow:
-    0 0 10px rgba(var(--color-neon-pink), .5), /* Using --color-neon-pink */
-    0 0 30px rgba(var(--color-neon-pink), .35);
+/* Massive display headline — "ADVENTURE" */
+.hero-custom__headline {
+  margin: 0 0 0.5rem;
+  font-size: clamp(4rem, 10vw, 8rem);
+  line-height: 0.95;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
 }
-.hero-custom .button--neon {
+
+/* Subheadline — "APPAREL • ACCESSORIES • LIFESTYLE" */
+.hero-custom__subheadline {
+  margin: 0 0 2.5rem;
+  font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  max-width: 640px;
+  line-height: 1.5;
+}
+
+/* CTA button (color set via section color scheme) */
+.hero-custom__button {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: .5rem;
-  padding: .9rem 1.25rem;
-  border-radius: 12px;
+  gap: 0.6rem;
+  padding: 0.85rem 1.8rem;
+  border-radius: 3px;
+  font-size: clamp(0.78rem, 1vw, 0.88rem);
   font-weight: 700;
-  color: rgb(var(--color-black)); /* Text is black on neon button */
-  background: linear-gradient(90deg, rgb(var(--color-neon-pink)), rgb(var(--color-neon-green))); /* Neon gradient */
-  box-shadow:
-    0 0 16px rgba(var(--color-neon-pink), .35),
-    0 0 10px rgba(var(--color-neon-green), .25);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
   text-decoration: none;
-  transition: transform .15s ease, filter .15s ease;
-}
-.hero-custom .button--neon:hover {
-  transform: translateY(-2px);
-  filter: saturate(1.05);
-}
-.hero-custom .button--neon:focus-visible {
-  outline: 2px solid rgb(var(--color-white)); /* White outline for focus */
-  outline-offset: 2px;
+  transition: background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
 }
 
-/* Responsive niceties */
-@media (min-width: 990px) {
+.hero-custom__button::after {
+  content: '→';
+  font-size: 1em;
+}
+
+.hero-custom__button:hover {
+  filter: brightness(1.15);
+}
+
+@media (max-width: 749px) {
   .hero-custom {
-    padding: clamp(6rem, 9vw, 12rem) 2rem;
+    min-height: clamp(380px, 90vw, 520px);
+    align-items: flex-end;
+  }
+
+  .hero-custom::after {
+    display: none;
+  }
+
+  .hero-custom__content {
+    padding: 2rem 1.25rem 2.5rem;
+    align-items: flex-start;
+  }
+
+  .hero-custom__headline {
+    font-size: clamp(1.8rem, 8vw, 2.6rem);
+    white-space: normal;
+  }
+
+  .hero-custom__button {
+    width: auto;
   }
 }

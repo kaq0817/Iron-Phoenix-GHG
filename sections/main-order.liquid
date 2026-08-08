@@ -7,9 +7,10 @@
 <section id="customer-order" class="account-section account-order" aria-labelledby="order-title">
   <header class="account-header">
     <a class="account-breadcrumb" href="{{ routes.account_url }}">{{ 'customer.account.return' | t | escape }}</a>
-    <h1 id="order-title" class="account-title">
-      {{ 'customer.order.title' | t: name: order.name | escape }}
-    </h1>
+    <h2 id="order-title" class="account-title">
+  {{ 'customer.order.title' | t: name: order.name | escape }}
+    </h2>
+
     <p class="account-subtitle">
       {{ 'customer.order.date_html' | t: date: order.processed_at | escape }}
     </p>

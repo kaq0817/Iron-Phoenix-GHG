@@ -1,0 +1,36 @@
+<script>
+(() => {
+  class FacetFiltersForm extends HTMLElement {
+    constructor() {
+      super();
+      this.form = this.querySelector('form');
+      if (!this.form) return;
+      this.onInput = this.onInput.bind(this);
+      this.form.addEventListener('input', this.onInput);
+    }
+    onInput() {
+      const params = new URLSearchParams(new FormData(this.form));
+      this.render(params);
+    }
+    render(params) {
+      const url = `${window.location.pathname}?${params.toString()}`;
+      history.replaceState({ params: params.toString() }, '', url);
+      fetch(url, { credentials: 'same-origin' })
+        .then(r => r.text())
+        .then(html => {
+          const doc = new DOMParser().parseFromString(html, 'text/html');
+          const incomingGrid = doc.querySelector('#product-grid');
+          const currentGrid  = document.querySelector('#product-grid');
+          if (incomingGrid && currentGrid) currentGrid.innerHTML = incomingGrid.innerHTML;
+          const incomingFacets = doc.querySelector('#Facets');
+          const currentFacets  = document.querySelector('#Facets');
+          if (incomingFacets && currentFacets) currentFacets.replaceWith(incomingFacets);
+        })
+        .catch(console.warn);
+    }
+  }
+  if (!customElements.get('facet-filters-form')) {
+    customElements.define('facet-filters-form', FacetFiltersForm);
+  }
+})();
+</script>

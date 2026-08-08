@@ -1,0 +1,87 @@
+{% comment %}
+  Rich text (Valentine’s-ready, compliance-safe, centered)
+  - No urgency, no guarantees.
+  - Defaults describe made-to-order apparel + variable timelines.
+{% endcomment %}
+
+{%- liquid
+  assign wrapper_classes = 'rich-text section-' | append: section.id | append: '-padding'
+  if section.settings.full_width
+    assign wrapper_classes = wrapper_classes | append: ' rich-text--full-width'
+  endif
+-%}
+
+<section class="rich-text-wrapper color-{{ section.settings.color_scheme }} gradient" role="region" aria-label="Store information">
+  <div class="{% if section.settings.full_width %}page-full{% else %}page-width{% endif %}">
+    <div class="{{ wrapper_classes }} rich-text--align-center"> 
+      
+      {%- if section.settings.heading != blank -%}
+        <h2 class="rich-text__heading inline-richtext">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+
+      {%- if section.settings.text != blank -%}
+        <div class="rich-text__text rte">
+          {{ section.settings.text }}
+        </div>
+      {%- endif -%}
+
+      {%- if section.settings.note != blank -%}
+        <p class="rich-text__note" style="opacity:.82; font-size:.95em; margin-top:.5rem;">
+          {{ section.settings.note }}
+        </p>
+      {%- endif -%}
+
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <div class="rich-text__buttons">
+          <a
+            href="{{ section.settings.button_link }}"
+            class="button{% if section.settings.button_style_secondary %} button--secondary{% endif %}"
+          >
+            {{ section.settings.button_label | escape }}
+          </a>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Valentine Info Block",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "checkbox", "id": "full_width", "label": "Make section full width", "default": true },
+
+    { "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "About Our Made-to-Order Apparel"
+    },
+
+    { "type": "richtext",
+      "id": "text",
+      "label": "Main text",
+      "default": "<p>Many of our apparel items, including hoodies and shirts, are made on demand. Other categories—such as drinkware, accessories, and home goods—may use ready-to-ship or partner-fulfilled production. Timelines can vary during seasonal periods such as Valentine’s.</p><p>Each item is crafted with care and follows the production method best suited for its materials and design.</p>"
+    },
+
+    { "type": "richtext",
+      "id": "note",
+      "label": "Optional small-print note",
+      "default": "<p>Production and delivery windows vary by item. Please see our Shipping &amp; Returns page for the most accurate and up-to-date information.</p>"
+    },
+
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "View Shipping Details" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "checkbox", "id": "button_style_secondary", "label": "Use secondary button style", "default": false }
+  ],
+
+  "presets": [
+    { "name": "Valentine Info Block" }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+{% comment %}
+  Renders an article card for blog listings
+  
+  Accepts:
+  - article: {Object} Article object
+  - media_height: {String} Image height (small, medium, large, adapt)
+  - show_image: {Boolean} Show featured image
+  - show_date: {Boolean} Show publish date
+  - show_author: {Boolean} Show author
+  - show_excerpt: {Boolean} Show excerpt
+{% endcomment %}
+
+<div class="article-card">
+  {% if show_image and article.image %}
+    <a href="{{ article.url }}" class="article-card__image-wrapper">
+      <img
+        srcset="
+          {%- if article.image.width >= 165 -%}{{ article.image | image_url: width: 165 }} 165w,{%- endif -%}
+          {%- if article.image.width >= 360 -%}{{ article.image | image_url: width: 360 }} 360w,{%- endif -%}
+          {%- if article.image.width >= 533 -%}{{ article.image | image_url: width: 533 }} 533w,{%- endif -%}
+          {%- if article.image.width >= 720 -%}{{ article.image | image_url: width: 720 }} 720w,{%- endif -%}
+          {%- if article.image.width >= 1000 -%}{{ article.image | image_url: width: 1000 }} 1000w,{%- endif -%}
+          {%- if article.image.width >= 1500 -%}{{ article.image | image_url: width: 1500 }} 1500w,{%- endif -%}
+          {{ article.image | image_url }} {{ article.image.width }}w
+        "
+        src="{{ article.image | image_url: width: 533 }}"
+        sizes="(min-width: 990px) calc((100vw - 130px) / 2), (min-width: 750px) calc((100vw - 120px) / 2), calc((100vw - 35px))"
+        alt="{{ article.image.alt | escape }}"
+        class="article-card__image"
+        loading="lazy"
+        width="{{ article.image.width }}"
+        height="{{ article.image.height }}"
+      >
+    </a>
+  {% endif %}
+
+  <div class="article-card__info">
+    <h2 class="article-card__title h3">
+      <a href="{{ article.url }}">{{ article.title | escape }}</a>
+    </h2>
+
+    {% if show_date or show_author %}
+      <div class="article-card__meta">
+        {% if show_date %}
+          <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+            {{ article.published_at | date: '%B %d, %Y' }}
+          </time>
+        {% endif %}
+        {% if show_author and show_date %}
+          <span aria-hidden="true">•</span>
+        {% endif %}
+        {% if show_author %}
+          <span>{{ article.author | escape }}</span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if show_excerpt %}
+      <p class="article-card__excerpt">
+        {{ article.excerpt_or_content | strip_html | truncate: 150 }}
+      </p>
+    {% endif %}
+  </div>
+</div>
