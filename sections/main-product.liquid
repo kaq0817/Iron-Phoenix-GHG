@@ -103,16 +103,17 @@ Depends on: structured-product, member-price snippets
 
   .mp-option { margin-bottom: 1.2rem; }
   .mp-opt-label { font-size: 1.3rem; font-weight: 700; display: block; margin-bottom: 0.6rem; }
-  .mp-opt-label em { font-weight: 400; color: #555; font-style: normal; }
-  .mp-swatches { display: flex; flex-wrap: wrap; gap: 8px; }
-  .mp-swatch input { display: none; }
-  .mp-swatch span {
-    display: inline-block; padding: 7px 14px; border: 1px solid #aaa;
-    border-radius: 3px; background: #fff; font-size: 1.3rem;
-    cursor: pointer; transition: border-color 0.15s;
+  .mp-opt-select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #aaa;
+    border-radius: 6px;
+    font-size: 1.4rem;
+    background: #fff;
+    color: #1A1310;
+    cursor: pointer;
+    margin-bottom: 0.4rem;
   }
-  .mp-swatch span:hover { border-color: #6B2737; }
-  .mp-swatch input:checked + span { border: 2px solid #6B2737; background: #F5E6E9; font-weight: 600; }
 
   .mp-buy-box {
     border: 1px solid #d0d0d0; border-radius: 8px;
@@ -200,10 +201,7 @@ Depends on: structured-product, member-price snippets
   .mp-sticky-btn:disabled { background: #999; }
 
   /* ===== FIX INVISIBLE TEXT ON WHITE CARDS/BUY BOXES ===== */
-  .mp-buy-box, .mp-buy-box *, .mp-img-main, .mp-swatch span {
-    color: #1A1310 !important;
-  }
-  .mp-swatch input:checked + span {
+  .mp-buy-box, .mp-buy-box *, .mp-img-main, .mp-opt-select {
     color: #1A1310 !important;
   }
   .mp-buy-box .mp-delivery {
@@ -313,24 +311,17 @@ Depends on: structured-product, member-price snippets
         <div id="InfoOpts-{{ section.id }}">
           {% for option in p.options_with_values %}
             <div class="mp-option" data-option-index="{{ forloop.index0 }}">
-              <span class="mp-opt-label">
-                {{ option.name }}: <em id="OptVal-{{ option.name | handleize }}-{{ section.id }}">{{ option.selected_value }}</em>
-              </span>
-              <div class="mp-swatches">
+              <span class="mp-opt-label">{{ option.name }}</span>
+              <select
+                class="mp-opt-select"
+                name="mp-opt-{{ option.name | handleize }}-{{ section.id }}"
+                data-option-name="{{ option.name | escape }}"
+                data-option-index="{{ forloop.index0 }}"
+              >
                 {% for value in option.values %}
-                  <label class="mp-swatch">
-                    <input
-                      type="radio"
-                      name="mp-opt-{{ option.name | handleize }}-{{ section.id }}"
-                      value="{{ value | escape }}"
-                      data-option-name="{{ option.name | escape }}"
-                      data-option-index="{{ forloop.parentloop.index0 }}"
-                      {% if option.selected_value == value %}checked{% endif %}
-                    >
-                    <span>{{ value | escape }}</span>
-                  </label>
+                  <option value="{{ value | escape }}" {% if option.selected_value == value %}selected{% endif %}>{{ value | escape }}</option>
                 {% endfor %}
-              </div>
+              </select>
             </div>
           {% endfor %}
         </div>
@@ -530,9 +521,8 @@ Depends on: structured-product, member-price snippets
 
   function getOpts() {
     var opts = [];
-    document.querySelectorAll('#InfoOpts-' + S + ' .mp-option').forEach(function (block) {
-      var checked = block.querySelector('input[type="radio"]:checked');
-      opts.push(checked ? checked.value : '');
+    document.querySelectorAll('#InfoOpts-' + S + ' select.mp-opt-select').forEach(function (sel) {
+      opts.push(sel.value);
     });
     return opts;
   }
@@ -562,18 +552,6 @@ Depends on: structured-product, member-price snippets
     if (atcBtn)   { atcBtn.disabled = !avail; atcBtn.textContent = avail ? 'Add to Cart' : 'Sold Out'; }
     if (stickyBtn) { stickyBtn.disabled = !avail; }
 
-    /* Update selected value labels */
-    document.querySelectorAll('#InfoOpts-' + S + ' .mp-option').forEach(function (block, i) {
-      var inp = block.querySelector('input[type="radio"]');
-      if (!inp) return;
-      var name = inp.dataset.optionName;
-      var em = document.getElementById('OptVal-' + name.toLowerCase().replace(/\s+/g, '-') + '-' + S);
-      if (em && variants[0] && variants[0].options[i] !== undefined) {
-        var checked = block.querySelector('input[type="radio"]:checked');
-        if (checked) em.textContent = checked.value;
-      }
-    });
-
     if (variant.featured_media_src && mainImg) {
       mainImg.src = variant.featured_media_src;
       if (imgWrap) imgWrap.classList.remove('zoomed');
@@ -594,7 +572,7 @@ Depends on: structured-product, member-price snippets
   var infoOpts = document.getElementById('InfoOpts-' + S);
   if (infoOpts) {
     infoOpts.addEventListener('change', function (e) {
-      if (e.target.name && e.target.name.startsWith('mp-opt-')) updateUI(findVariant(getOpts()));
+      if (e.target.tagName === 'SELECT') updateUI(findVariant(getOpts()));
     });
   }
 
