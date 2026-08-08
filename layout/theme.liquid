@@ -1,33 +1,10 @@
 <!doctype html>
-{%- liquid
-  assign host_name = request.host | downcase
-  assign host_parts = host_name | split: '.'
-  assign host_subdomain = host_parts.first
-  assign brand_from_host = ''
-
-  case host_subdomain
-    when 'sports', 'active'
-      assign brand_from_host = 'sports'
-    when 'outdoors', 'outdoor', 'camping'
-      assign brand_from_host = 'outdoors'
-    when 'home', 'decor', 'homedecor'
-      assign brand_from_host = 'home'
-    when 'americana'
-      assign brand_from_host = 'americana'
-    when 'gaming', 'gamer', 'gamingfamily'
-      assign brand_from_host = 'family'
-    when 'jewelry', 'jewellery'
-      assign brand_from_host = 'jewelry'
-    when 'family', 'children', 'child', 'kids', 'kid'
-      assign brand_from_host = 'family'
-  endcase
--%}
-<html class="no-js" lang="{{ request.locale.iso_code | escape }}"{% if brand_from_host != '' %} data-brand="{{ brand_from_host }}"{% endif %}>
+<html class="no-js" lang="{{ request.locale.iso_code | escape }}">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_background | default: '#000000' | escape }}">
+    <meta name="theme-color" content="{{ settings.color_background | default: '#3D0F18' | escape }}">
 
     {%- assign robots_directive = 'index, follow' -%}
     {%- if shop.password_enabled or template.name == 'search' or request.path contains '/checkout' -%}
@@ -45,12 +22,9 @@
     {%- else -%}
       <meta name="robots" content="{{ robots_directive | escape }}">
     {%- endif -%}
-    <link rel="canonical" href="https://ironphoenix.store{{ request.path }}">
+    <link rel="canonical" href="https://ironphoenixghg.store{{ request.path }}">
 
-    <meta
-      name="description"
-      content="Iron Phoenix GHG — lifestyle products, apparel, and gifts for parents who work hard and come home ready to relax. Secure checkout, US-based support."
-    >
+    <meta name="description" content="Iron Phoenix GHG — lifestyle products, apparel, and gifts for parents who work hard and come home ready to relax. Secure checkout, US-based support.">
 
     <title>
       {% if page_title %}
@@ -65,7 +39,6 @@
     {%- render 'meta-tags' -%}
     {%- render 'schema-structured-data' -%}
 
-    {%- comment -%} Preconnect to critical origins {%- endcomment -%}
     {%- unless settings.type_header_font.system? and settings.type_body_font.system? -%}
       <link rel="preconnect" href="https://fonts.shopifycdn.com">
     {%- endunless -%}
@@ -73,7 +46,6 @@
     <link rel="preconnect" href="https://www.google-analytics.com">
     <link rel="preconnect" href="https://cdn.shopify.com">
 
-    {%- comment -%} Font preloading {%- endcomment -%}
     {%- capture body_json -%}{{ settings.type_body_font | json }}{%- endcapture -%}
     {%- capture head_json -%}{{ settings.type_header_font | json }}{%- endcapture -%}
     {%- if body_json contains '"family":' -%}
@@ -83,7 +55,6 @@
       {{ settings.type_header_font | font_url | preload_tag }}
     {%- endif -%}
 
-    {%- comment -%} ⚡️ LCP OPTIMIZATION: Preload hero image on product pages {%- endcomment -%}
     {%- if template.name == 'product' and product and product.featured_media -%}
       {%- assign lcp_img = product.featured_media -%}
       {%- capture lcp_srcset -%}
@@ -91,28 +62,10 @@
         {{ lcp_img | image_url: width: 900, format: 'webp' }} 900w,
         {{ lcp_img | image_url: width: 1200, format: 'webp' }} 1200w
       {%- endcapture -%}
-      {% comment %}theme-check-disable RemoteAsset{% endcomment %}
-      <link rel="preload" as="image"
-        href="{{ lcp_img | image_url: width: 900, format: 'webp' }}"
-        imagesrcset="{{ lcp_srcset | strip_newlines | strip }}"
-        imagesizes="(min-width: 750px) 50vw, 100vw"
-      >
-      {% comment %}theme-check-enable RemoteAsset{% endcomment %}
+      <link rel="preload" as="image" href="{{ lcp_img | image_url: width: 900, format: 'webp' }}" imagesrcset="{{ lcp_srcset | strip_newlines | strip }}" imagesizes="(min-width: 750px) 50vw, 100vw">
     {%- endif -%}
 
-    {%- comment -%}
-      ═══════════════════════════════════════════════════════
-      CRITICAL CSS — single merged block
-      Previously: 4 separate render-blocking stylesheet requests
-        (css-variables.css, brand-tokens.css, theme.css, product-modal.css)
-      Now: all variables inlined here + only theme.css loaded as preload.
-      This saves 3 round-trip HTTP requests on every mobile page load.
-      brand-tokens.css and css-variables.css content is inlined below.
-      product-modal.css is non-critical — load after theme.css.
-      ═══════════════════════════════════════════════════════
-    {%- endcomment -%}
     <style>
-      /* ── Base font & layout tokens ── */
       :root {
         --font-body-family: Arial, Helvetica, sans-serif;
         --font-heading-family: Arial, Helvetica, sans-serif;
@@ -123,18 +76,17 @@
         --color-white: 255,255,255;
         --buttons-radius: 4px;
 
-        /* ── Iron Phoenix GHG brand palette (default) ── */
-        --color-bg: #F9F6F1;
+        --color-bg: #3D0F18;
         --color-card-bg: #FFFFFF;
-        --color-primary-bg: #F9F6F1;
-        --color-main-text: #1A1310;
-        --color-body-text: #1A1310;
-        --color-body-text-rgb: 26,19,16;
-        --color-text-secondary: #5C4E44;
-        --color-text-muted: #5C4E44;
-        --color-text-faded: #A8998E;
-        --color-text-highlight: #3D2B22;
-        --color-text-light: #1A1310;
+        --color-primary-bg: #3D0F18;
+        --color-main-text: #F3E6D8;
+        --color-body-text: #F3E6D8;
+        --color-body-text-rgb: 243,230,216;
+        --color-text-secondary: #C9B8A8;
+        --color-text-muted: #C9B8A8;
+        --color-text-faded: #8C7568;
+        --color-text-highlight: #C9A84C;
+        --color-text-light: #F3E6D8;
         --color-primary: #C9A84C;
         --color-accent: #C9A84C;
         --color-accent-rgb: 201,168,76;
@@ -152,61 +104,29 @@
         --color-border-subtle: #EAE0D5;
         --color-border-subtle-dark: #D8CCB8;
         --color-icon-default: #8B7B72;
-
-        /* Header */
-        --color-header-gradient-start: #ffffff;
-        --color-header-gradient-end: #f9f7f4;
+        --color-header-gradient-start: #3D0F18;
+        --color-header-gradient-end: #3D0F18;
         --color-search-bg: rgba(26,26,26,0.06);
         --color-search-placeholder: #9ca3af;
-
-        /* Jewelry / Art Deco overrides (used by jewelry brand subdomain) */
-        --color-navy-deep: #0b1e3d;
-        --color-royal-blue: #1a3a8f;
-        --color-jewel-blue: #1e4db7;
-        --color-ice-blue: #a8c4e0;
-        --color-ivory: #F9F6F1;
-        --color-pearl: #f8f5ef;
-        --color-sapphire: #1845c8;
-        --color-deco-gold: #C9A84C;
-
-        /* Americana */
-        --color-americana-white: #f2ede4;
-        --color-americana-navy: #1e3466;
-        --color-americana-red: #9e2a2b;
-        --color-americana-sky: #b8d4da;
-        --color-americana-terra: #c1713a;
-        --color-americana-check: #2d4a7a;
-        --color-americana-wheat: #d9c49a;
       }
-
-      /* ── Default Shopify color scheme ── */
+      
       .color-default {
-        --color-background: 0,0,0;
+        --color-background: 61, 15, 24; 
         --gradient-background: none;
-        --color-foreground: 255,255,255;
-        --color-background-contrast: 255,255,255;
-        --color-shadow: 0,0,0;
-        --color-button: 201,168,76;
-        --color-button-text: 0,0,0;
-        --color-secondary-button: 255,255,255;
-        --color-secondary-button-text: 0,0,0;
-        --color-link: 201,168,76;
-        --color-badge-foreground: 255,255,255;
-        --color-badge-background: 0,0,0;
-        --color-badge-border: 255,255,255;
-        --payment-terms-background-color: rgb(0,0,0);
+        --color-foreground: 243, 230, 216; 
+        --color-background-contrast: 243, 230, 216;
+        --color-shadow: 0, 0, 0;
+        --color-button: 201, 168, 76;
+        --color-button-text: 61, 15, 24;
+        --color-secondary-button: 243, 230, 216;
+        --color-secondary-button-text: 61, 15, 24;
+        --color-link: 201, 168, 76;
+        --color-badge-foreground: 243, 230, 216;
+        --color-badge-background: 61, 15, 24;
+        --color-badge-border: 201, 168, 76;
+        --payment-terms-background-color: rgb(61, 15, 24);
       }
 
-      /* ── Brand overrides via data-brand attribute ── */
-      :root[data-brand="sports"]   { --color-accent:#00AEEF; --color-accent-rgb:0,174,239; --color-primary:#00AEEF; --rgb-accent:0,174,239; --color-button-primary-bg:#00AEEF; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#0097CC; }
-      :root[data-brand="outdoors"] { --color-accent:#2E7D32; --color-accent-rgb:46,125,50; --color-primary:#2E7D32; --rgb-accent:46,125,50; --color-button-primary-bg:#2E7D32; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#1B5E20; }
-      :root[data-brand="home"]     { --color-accent:#A1887F; --color-accent-rgb:161,136,127; --color-primary:#A1887F; --rgb-accent:161,136,127; --color-button-primary-bg:#A1887F; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#8D6E63; --color-card-bg:#FFF8E1; }
-      :root[data-brand="americana"]{ --color-accent:#1A237E; --color-accent-rgb:26,35,126; --color-primary:#1A237E; --rgb-accent:26,35,126; --color-button-primary-bg:#1A237E; --color-button-primary-text:#FFFFFF; --color-button-primary-hover:#0D1753; }
-      :root[data-brand="gaming"]   { --color-accent:#C9A84C; --color-accent-rgb:201,168,76; --color-primary:#C9A84C; --rgb-accent:201,168,76; --color-button-primary-bg:#C9A84C; --color-button-primary-text:#1A1310; --color-button-primary-hover:#b8922e; }
-      :root[data-brand="jewelry"]  { --color-bg:#F9F6F1; --color-primary-bg:#F9F6F1; --color-accent:#C9A84C; --color-accent-rgb:201,168,76; --color-primary:#C9A84C; --rgb-accent:201,168,76; --color-deco-gold:#C9A84C; --color-button-primary-bg:#6B2737; --color-button-primary-text:#F9F6F1; --color-button-primary-hover:#8a3344; }
-      :root[data-brand="family"]   { --color-accent:#64B5F6; --color-accent-rgb:100,181,246; --color-primary:#64B5F6; --rgb-accent:100,181,246; --color-button-primary-bg:#64B5F6; --color-button-primary-text:#1A1310; --color-button-primary-hover:#42A5F5; }
-
-      /* ── Base layout ── */
       html { box-sizing: border-box; }
       *, *::before, *::after { box-sizing: inherit; }
       html { font-size: calc(var(--font-body-scale) * 62.5%); }
@@ -216,23 +136,21 @@
         grid-template-rows: auto auto 1fr auto;
         min-height: 100%;
         margin: 0;
-        background-color: var(--color-bg, #F9F6F1);
-        color: var(--color-main-text, #1A1310);
+        background-color: var(--color-bg, #3D0F18);
+        color: var(--color-main-text, #F3E6D8);
         font-family: var(--font-body-family);
         font-size: 1.5rem;
       }
-      @media (min-width: 750px) {
-        body { font-size: 1.6rem; }
-      }
+      @media (min-width: 750px) { body { font-size: 1.6rem; } }
 
       body.color-default {
-        color: rgba(var(--color-foreground), 0.75);
+        color: rgba(var(--color-foreground), 1);
         background-color: rgb(var(--color-background));
       }
 
       body.template-index #MainContent {
         position: relative;
-        background: var(--color-bg, #F9F6F1);
+        background: var(--color-bg, #3D0F18);
       }
       body.template-index #MainContent .shopify-section { position: relative; }
       body.template-index #MainContent .shopify-section + .shopify-section { border-top: 0; }
@@ -242,11 +160,36 @@
       img { max-width: 100%; height: auto; object-fit: cover; object-position: center; }
     </style>
 
+    <style>
+      /* HARD OVERRIDE FOR MOODY THEME & CENTER ALIGNMENT */
+      html, body, #MainContent, .template-index, .shopify-section {
+        background-color: #3D0F18 !important;
+        background: #3D0F18 !important;
+      }
+      h1, h2, h3, h4, h5, h6, p, a, span, .card__heading, .collection-hero__title {
+        color: #F3E6D8 !important;
+      }
+      a:hover {
+        color: #C9A84C !important;
+      }
+      .title-wrapper, .title-wrapper-with-link, .section-header, .collection-list-title,
+      .card__content, .card__information, .product__title, .product__description,
+      .footer, .footer__content, .footer__blocks-wrapper, .footer__block {
+        text-align: center !important;
+        align-items: center !important;
+        justify-content: center !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+      }
+      .grid__item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    </style>
+
     {{ 'theme.css' | asset_url | stylesheet_tag: preload: true }}
-
-    {%- comment -%} product-modal.css is non-critical: load after theme.css {%- endcomment -%}
     {{ 'product-modal.css' | asset_url | stylesheet_tag }}
-
     {{ content_for_header }}
 
     <script type="application/ld+json">
@@ -256,7 +199,7 @@
         "name": "Iron Phoenix GHG",
         "alternateName": "Iron Phoenix GHG",
         "legalName": "Go Hard Gaming Discord LLC",
-        "url": "https://ironphoenix.store",
+        "url": "https://ironphoenixghg.store",
         "description": "Iron Phoenix GHG is operated by Go Hard Gaming Discord LLC.",
         "contactPoint": [
           {
@@ -264,19 +207,17 @@
             "contactType": "Customer Support",
             "email": "support@ironphoenixghg.store",
             "telephone": "+1-518-415-8496",
-            "url": "https://ironphoenix.store/pages/contact",
+            "url": "https://ironphoenixghg.store/pages/contact",
             "availableLanguage": ["English"],
             "areaServed": "US"
           }
         ]
       }
     </script>
-</head>
+  </head>
 
   <body class="template-{{ template.name | escape }} gradient{% if settings.animations_hover_elements != 'none' %} animate--hover-{{ settings.animations_hover_elements | escape }}{% endif %}">
-    <script>
-      document.documentElement.classList.replace('no-js', 'js');
-    </script>
+    <script>document.documentElement.classList.replace('no-js', 'js');</script>
 
     {%- unless template.name == 'password' -%}
       {%- if settings.cart_type == 'drawer' -%}{% section 'cart-drawer' %}{%- endif -%}
@@ -292,27 +233,20 @@
     {%- endunless -%}
 
     {%- render 'product-media-modal' -%}
-
     <ul hidden>
       <li id="a11y-refresh-page-message">{{ 'accessibility.refresh_page' | t | escape }}</li>
       <li id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t | escape }}</li>
     </ul>
-
     {%- render 'bot-protection' -%}
-
     <script src="{{ 'theme.js' | asset_url }}" defer></script>
 
-    {%- comment -%} Google gtag.js only (no GTM; no duplicates) {%- endcomment -%}
     {%- assign ga4_id = settings.ga4_id | strip | default: 'G-V6ZP7KWRZN' -%}
     {%- assign gtag_id = settings.google_tag_id | strip | default: 'GT-552Q5J6X' -%}
     {%- assign ga4_prefix = ga4_id | slice: 0, 2 -%}
     {%- assign gtag_prefix = gtag_id | slice: 0, 3 -%}
-    {%- assign has_ga4 = false -%}
-    {%- if ga4_id != blank and ga4_prefix == 'G-' -%}{%- assign has_ga4 = true -%}{%- endif -%}
-    {%- assign has_gtag = false -%}
-    {%- if gtag_id != blank and gtag_prefix == 'GT-' -%}{%- assign has_gtag = true -%}{%- endif -%}
-    {%- assign primary_id = '' -%}
-    {%- if has_ga4 -%}{%- assign primary_id = ga4_id -%}{%- elsif has_gtag -%}{%- assign primary_id = gtag_id -%}{%- endif -%}
+    {%- assign has_ga4 = false -%}{%- if ga4_id != blank and ga4_prefix == 'G-' -%}{%- assign has_ga4 = true -%}{%- endif -%}
+    {%- assign has_gtag = false -%}{%- if gtag_id != blank and gtag_prefix == 'GT-' -%}{%- assign has_gtag = true -%}{%- endif -%}
+    {%- assign primary_id = '' -%}{%- if has_ga4 -%}{%- assign primary_id = ga4_id -%}{%- elsif has_gtag -%}{%- assign primary_id = gtag_id -%}{%- endif -%}
 
     {%- if primary_id != '' -%}
       <script async src="https://www.googletagmanager.com/gtag/js?id={{ primary_id | escape }}"></script>
@@ -328,11 +262,6 @@
     {%- endif -%}
 
     {%- render 'feature-scripts' -%}
-
-    <script>
-      window.addEventListener('load', function () {
-        // load chat widgets or other non-critical scripts here
-      });
-    </script>
+    <script>window.addEventListener('load', function () {});</script>
   </body>
 </html>

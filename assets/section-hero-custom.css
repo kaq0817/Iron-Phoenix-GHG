@@ -92,7 +92,7 @@
   line-height: 1.5;
 }
 
-/* Velvet royal blue CTA button */
+/* CTA button (color set via section color scheme) */
 .hero-custom__button {
   display: inline-flex;
   align-items: center;

@@ -25,7 +25,7 @@
     <div class="hero-custom__background">
       {{
         section.settings.background_image
-        | image_url: width: 2000
+        | image_url: width: 2000, format: 'webp'
         | image_tag:
           loading: 'eager',
           fetchpriority: fetch_priority,
@@ -35,10 +35,6 @@
           height: section.settings.background_image.height,
           alt: section.settings.background_image.alt | escape
       }}
-    </div>
-  {%- elsif section.settings.asset_bg != blank -%}
-    <div class="hero-custom__background">
-      <img src="{{ section.settings.asset_bg | asset_url }}" loading="eager" fetchpriority="high" alt="" width="2000" height="1000">
     </div>
   {%- endif -%}
 
@@ -82,7 +78,7 @@
     align-items: var(--hero-content-align, flex-start);
     min-height: var(--hero-min-height, 600px);
     overflow: hidden;
-    background-color: #050b12;
+    background-color: #0a53a8ff;
   }
 
   .hero-custom__background {
@@ -138,28 +134,32 @@
     font-weight: 600;
     letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: rgba(255, 255, 255, 0.85);
+    color: #ffffff;
     margin: 0 0 0.4rem;
     display: block;
   }
 
   .hero-custom__headline {
-    color: var(--hero-headline-color, #ffffff) !important;
+    color: #ffffff !important; /* Forces pure white */
+    -webkit-text-fill-color: #ffffff !important;
     font-size: var(--hero-headline-size, 80px);
     font-weight: 900;
     line-height: 0.95;
     text-transform: capitalize;
     margin: 0 0 0.5rem;
     letter-spacing: -0.02em;
+    opacity: 1 !important; /* Removes any inherited transparency */
+    text-shadow: none !important; /* Kills the grey 'cloud' behind letters */
   }
 
   .hero-custom__subheadline {
-    color: var(--hero-subheadline-color, #ffffff) !important;
+    color: #ffffff !important; /* Forces pure white */
     opacity: 1 !important;
     text-transform: capitalize;
     letter-spacing: 0.15em;
     font-weight: 600;
     font-size: var(--hero-subheadline-size, 14px);
+    text-shadow: none !important;
   }
 
   .hero-custom__button {
@@ -167,7 +167,7 @@
     align-items: center;
     gap: 0.6rem;
     padding: 0.9rem 2rem;
-    background: var(--hero-cta-bg, #0c126b) !important;
+    background: var(--hero-cta-bg, #214090ff) !important;
     color: var(--hero-cta-color, #ffffff) !important;
     border: none !important;
     border-radius: 3px;
@@ -177,7 +177,11 @@
     text-transform: uppercase;
     text-decoration: none !important;
     transition: filter 0.2s ease;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    box-shadow: 0 2px 12px rgba(246, 244, 244, 0.3);
+  }
+  .hero-custom__background::after {
+    display: none !important;
+    content: none !important;
   }
 
   .hero-custom__button::after {
@@ -214,8 +218,7 @@
   "name": "Hero Custom",
   "settings": [
     { "type": "header", "content": "Images" },
-    { "type": "image_picker", "id": "background_image", "label": "Background image (uploaded file)" },
-    { "type": "text", "id": "asset_bg", "label": "Theme asset image filename", "info": "Filename from theme assets folder (e.g. luxury-spa.webp). Used when no image is picked above." },
+    { "type": "image_picker", "id": "background_image", "label": "Background image" },
     { "type": "header", "content": "Navigation (Collections)" },
     { "type": "color", "id": "nav_color", "label": "Navigation link color", "default": "#ffffff" },
     { "type": "color", "id": "nav_hover_color", "label": "Navigation link hover color", "default": "#ffb300" },

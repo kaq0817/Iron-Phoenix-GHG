@@ -6,7 +6,7 @@
   - EXCLUDES current product if on a product page
 {%- endcomment -%}
 
-{{ 'section-featured-collection.css' | asset_url | stylesheet_tag }}
+{{ 'section-featured-collection.css' | asset_url | stylesheet_tag: preload: true }}
 
 {%- liquid
   assign chosen_collection = section.settings.collection
@@ -22,6 +22,23 @@
     --featured-collection-padding-bottom-mobile: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
     --featured-collection-padding-top-desktop: {{ section.settings.padding_top }}px;
     --featured-collection-padding-bottom-desktop: {{ section.settings.padding_bottom }}px;
+  }
+/* Connecting the slider to the grid */
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding .featured-collection__grid {
+      display: grid !important;
+      grid-template-columns: repeat({{ section.settings.columns_desktop | default: 4 }}, 1fr) !important;
+      gap: 1.5rem;
+      list-style: none;
+      padding: 0;
+    }
+    
+    /* Ensuring cards shrink and text stays crisp (0% transparency) */
+    .section-{{ section.id }}-padding .featured-collection__item {
+      width: 100% !important;
+      max-width: none !important;
+      opacity: 1 !important;
+    }
   }
 {%- endstyle -%}
 
@@ -56,7 +73,7 @@
                 quick_add: 'standard',
                 section_id: section.id,
                 lazy_load: true,
-                image_width: 600
+                image_width: 400
               -%}
             </li>
 
@@ -92,6 +109,15 @@
       "type": "collection",
       "id": "collection",
       "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Number of columns on desktop"
     },
     {
       "type": "range",

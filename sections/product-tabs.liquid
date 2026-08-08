@@ -1,23 +1,22 @@
 {%- comment -%}
-  Go Hard Gaming Discord LLC — Product Tabs
- - Auto Product Tabs
-  - Automatically converts H3 Headers in your Product Description into Tabs.
-  - Content before the first H3 is the "Description" tab.
-  - Self-contained (CSS/JS included).
+  Go Hard Gaming Discord LLC — Auto Product Tabs (Compliant Dynamic Splitter)
+  - Automatically converts H3 Headers in your Product Description into crisp tabs.
+  - Handles Shopify-injected tag variables (IDs, classes) smoothly.
 {%- endcomment -%}
 
 <style>
   .product-tabs-section {
     margin: 4rem auto;
-    max-width: 120rem; /* Matches page width */
+    max-width: 140rem;
     padding: 0 2rem;
   }
 
   .tabs-nav {
     display: flex;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: 3px solid #6B2737;
     margin-bottom: 2rem;
-    overflow-x: auto; /* Scroll on mobile if many tabs */
+    overflow-x: auto; 
+    gap: 4px;
   }
 
   .tab-btn {
@@ -25,104 +24,128 @@
     border: none;
     padding: 1.5rem 2.5rem;
     font-size: 1.6rem;
-    font-weight: 600;
-    color: rgba(255,255,255,0.6);
+    font-weight: 700;
+    color: #F3E6D8;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: color 0.15s ease, border-color 0.15s ease;
     white-space: nowrap;
-    border-bottom: 3px solid transparent;
+    border-bottom: 4px solid transparent;
+    margin-bottom: -3px;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
   }
 
   .tab-btn:hover {
-    color: rgba(255,255,255,0.9);
+    color: #26A69A;
   }
 
   .tab-btn.active {
-    color: #fff;
-    border-bottom: 3px solid rgb(var(--color-base-accent-1));
+    color: #26A69A;
+    border-bottom: 4px solid #26A69A;
   }
 
   .tab-content {
     display: none;
-    font-size: 1.5rem;
+    font-size: 1.6rem;
     line-height: 1.7;
-    color: rgba(255,255,255,0.85);
-    animation: fadeIn 0.3s ease;
+    color: #F3E6D8 !important;
+    padding: 2rem 0;
+    text-align: left !important;
   }
 
   .tab-content.active {
     display: block;
   }
 
-  /* Typography inside tabs */
-  .tab-content h3 { display: none; } /* Hide the H3 since it is now a button */
-  .tab-content ul { padding-left: 2rem; margin-bottom: 1.5rem; }
-  .tab-content p { margin-bottom: 1.5rem; }
+  /* Force every single element inside the tab content to use the readable cream color */
+  .tab-content, .tab-content *, .tab-content p, .tab-content span, .tab-content li {
+    color: #F3E6D8 !important;
+  }
 
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
-    to { opacity: 1; transform: translateY(0); }
+  .tab-content h3, 
+  .tab-content [class*="heading"] { 
+    display: none !important; 
+  } 
+  
+  .tab-content ul { 
+    padding-left: 2rem !important; 
+    margin-bottom: 1.5rem !important; 
+  }
+  
+  .tab-content p { 
+    margin-bottom: 1.5rem !important; 
   }
 </style>
 
 <div class="product-tabs-section page-width">
   {%- if product.description != blank -%}
     
-    {%- assign description_parts = product.description | split: '<h3' -%}
+    {%- liquid
+      assign normalized_desc = product.description | replace: '<H3', '<h3' | replace: ' </h3', '</h3'
+      assign base_description = normalized_desc | split: '<h3' | first
+      assign raw_tab_chunks = normalized_desc | replace: '<h3', '|||SPLIT|||' | split: '|||SPLIT|||'
+    -%}
     
     <div class="tabs-nav" role="tablist">
-      
-      <button class="tab-btn active" onclick="openTab(event, 'tab-0')">Description</button>
+      <button class="tab-btn active" onclick="openProductTab(event, 'prod-tab-0')">Description</button>
 
-      {%- for part in description_parts -%}
+      {%- for chunk in raw_tab_chunks -%}
         {%- unless forloop.first -%}
-          {%- assign title_parts = part | split: '</h3>' -%}
-          {%- assign tab_title = title_parts.first | strip_html | strip -%}
-          <button class="tab-btn" onclick="openTab(event, 'tab-{{ forloop.index0 }}')">{{ tab_title }}</button>
+          {%- liquid
+            assign clean_chunk = chunk | replace: '</h3>', '|||HEADEREND|||'
+            assign chunk_parts = clean_chunk | split: '|||HEADEREND|||'
+            assign tab_title = chunk_parts.first | split: '>' | last | strip_html | strip
+          -%}
+          {%- if tab_title != blank -%}
+            <button class="tab-btn" onclick="openProductTab(event, 'prod-tab-{{ forloop.index0 }}')">{{ tab_title }}</button>
+          {%- endif -%}
         {%- endunless -%}
       {%- endfor -%}
     </div>
 
     <div class="tabs-content-wrapper">
-      
-      <div id="tab-0" class="tab-content active rte">
-        {{ description_parts.first }}
+      <div id="prod-tab-0" class="tab-content active rte">
+        {{ base_description }}
       </div>
 
-      {%- for part in description_parts -%}
+      {%- for chunk in raw_tab_chunks -%}
         {%- unless forloop.first -%}
-          {%- assign content_parts = part | split: '</h3>' -%}
-          <div id="tab-{{ forloop.index0 }}" class="tab-content rte">
-            {{ content_parts.last }}
+          {%- liquid
+            assign clean_chunk = chunk | replace: '</h3>', '|||HEADEREND|||'
+            assign chunk_parts = clean_chunk | split: '|||HEADEREND|||'
+            assign tab_content = chunk_parts.last | strip
+          -%}
+          <div id="prod-tab-{{ forloop.index0 }}" class="tab-content rte">
+            {{ tab_content }}
           </div>
         {%- endunless -%}
       {%- endfor -%}
-
     </div>
 
   {%- endif -%}
 </div>
 
 <script>
-  function openTab(evt, tabName) {
-    // 1. Hide all tab content
+  function openProductTab(evt, tabId) {
     var i, tabcontent, tablinks;
+    
     tabcontent = document.getElementsByClassName("tab-content");
     for (i = 0; i < tabcontent.length; i++) {
       tabcontent[i].style.display = "none";
       tabcontent[i].classList.remove("active");
     }
 
-    // 2. Deactivate all buttons
     tablinks = document.getElementsByClassName("tab-btn");
     for (i = 0; i < tablinks.length; i++) {
-      tablinks[i].className = tablinks[i].className.replace(" active", "");
+      tablinks[i].classList.remove("active");
     }
 
-    // 3. Show current tab and activate button
-    document.getElementById(tabName).style.display = "block";
-    setTimeout(() => document.getElementById(tabName).classList.add("active"), 10);
-    evt.currentTarget.className += " active";
+    var selectedTab = document.getElementById(tabId);
+    if (selectedTab) {
+      selectedTab.style.display = "block";
+      selectedTab.classList.add("active");
+    }
+    evt.currentTarget.classList.add("active");
   }
 </script>
 

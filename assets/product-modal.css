@@ -42,20 +42,20 @@
   border-bottom: 1px solid rgba(201, 168, 76, 0.2);
 }
 
-.ip-modal__title {
-  font-size: 1.6rem;
-  margin: 0;
+.ip-modal__title, .ip-modal__close, .ip-modal__caption {
+  color: #F0EAE0 !important;
 }
 
 .ip-modal__close {
   appearance: none;
-  background: transparent;
-  color: #F0EAE0;
-  border: 1px solid rgba(240, 234, 224, 0.25);
+  background: 1px solid rgba(201, 168, 76, 0.15);
+  color: #C9A84C !important;
+  border: 1px solid rgba(201, 168, 76, 0.15);
   border-radius: 10px;
   font-size: 1.6rem;
   padding: .3rem .7rem;
   cursor: pointer;
+  border-color: #C9A84C !important;
 }
 
 .ip-modal__body {

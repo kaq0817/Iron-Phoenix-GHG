@@ -32,7 +32,7 @@
   cursor: pointer;
   font-size: 1.1rem;
   font-weight: 500;
-  color: #5C4E44;
+  color: #f7e2d4ff;
   white-space: nowrap;
   border-bottom: 3px solid transparent;
   transition: all 0.3s ease;
@@ -49,7 +49,7 @@
 .product-tab-button.is-active {
   border-bottom-color: var(--ip-gold);
   font-weight: 600;
-  color: #1C0F14;
+  color: #d26790ff;
   background: rgba(201, 168, 76, 0.1);
 }
 

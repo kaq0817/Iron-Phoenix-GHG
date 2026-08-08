@@ -1,25 +1,45 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "free_shipping_bar_PaUwAf": {
-      "type": "free-shipping-bar",
-      "name": "Free Shipping Bar",
-      "settings": {
-        "show_everywhere": true,
-        "hide_on_cart": false,
-        "default_threshold": "$159.00",
-        "vip_threshold": "$139.00",
-        "legend_free_shipping": true
-      }
-    },
     "main": {
       "type": "main-product",
-      "settings": {}
-    },
-    "featureblocks": {
-      "type": "product-feature-blocks",
+      "blocks": {
+        "judge_me_reviews_preview_badge_qXnArr": {
+          "type": "shopify://apps/judge-me-reviews/blocks/preview_badge/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        },
+        "printify_print_on_demand_personalize_button_9Ma7Px": {
+          "type": "shopify://apps/printify-print-on-demand/blocks/personalize_button/019a5dbe-775d-7320-afec-36b77e3421a0",
+          "settings": {
+            "use_default_theme_style": true,
+            "button_text": "Add personalized design",
+            "button_text_with_personalization": "Remove saved design",
+            "button_extra_classes": "product-form__buttons button--full-width",
+            "button_extra_classes_with_personalization": "product-form__buttons button--full-width button--secondary",
+            "button_color": "#007bff",
+            "text_color": "#ffffff",
+            "button_padding": "12px 24px",
+            "font_size": "16px",
+            "border_radius": "4px",
+            "modal_title": "Personalize Your Product"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_preview_badge_qXnArr",
+        "printify_print_on_demand_personalize_button_9Ma7Px"
+      ],
       "settings": {
-        "padding_top": 36,
-        "padding_bottom": 36
+        "show_sku": true,
+        "description_mode": "richtext"
       }
     },
     "refund_policy_tabbed_h3fYgn": {
@@ -37,7 +57,7 @@
       "type": "related-products",
       "name": "Related Products",
       "settings": {
-        "heading": "Complete Your Setup",
+        "heading": "Releasing stress",
         "products_to_show": 4,
         "columns_desktop": 4,
         "color_scheme": "background-1",
@@ -48,13 +68,56 @@
         "padding_top": 36,
         "padding_bottom": 36
       }
+    },
+    "1784767292c0a6b954": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_cards_carousel_pdVRVm": {
+          "type": "shopify://apps/judge-me-reviews/blocks/cards_carousel/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+            "show_sample_reviews": true,
+            "reviews_selection": "all",
+            "products": [],
+            "filter_pinned": false,
+            "filter_featured": false,
+            "filter_custom_tags": "",
+            "star_rating": "all",
+            "show_review_media": true,
+            "display_order": "media_first",
+            "no_image_fallback": "review_text_only",
+            "max_reviews": 20,
+            "review_length": "medium",
+            "text_size": "medium",
+            "image_ratio": "1",
+            "reviews_shown": 4,
+            "show_reviewer_name": true,
+            "show_product_name": true,
+            "hide_arrows_mobile": true,
+            "arrows_position": "sides",
+            "max_width": 1100,
+            "corner_styling": "soft",
+            "header_text_color": "#F3E6D8",
+            "text_color": "#F3E6D8",
+            "card_color": "#F9F9F9",
+            "stars_color": "",
+            "arrows_color": "#C9A84C",
+            "transition_speed": 5,
+            "header_text": "Customers are saying",
+            "show_average_rating": true,
+            "rating_display": "default"
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_cards_carousel_pdVRVm"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "free_shipping_bar_PaUwAf",
     "main",
-    "featureblocks",
     "refund_policy_tabbed_h3fYgn",
-    "related_products_DUhD6V"
+    "related_products_DUhD6V",
+    "1784767292c0a6b954"
   ]
 }

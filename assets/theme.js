@@ -422,7 +422,6 @@
    * Boot
    * ----------------------------- */
   document.addEventListener('DOMContentLoaded', () => {
-    // Define routes fallback if theme didn't inject window.routes
     window.routes = window.routes || {
       cart_add_url: '/cart/add.js',
       cart_change_url: '/cart/change.js',
@@ -432,12 +431,10 @@
 
     // Enable features
     MenuDrawer.bind();
-    // Sticky header intentionally disabled.
     bindQtyControls();
     interceptAddToCart();
-    bindMediaZoom(); // Product zoom functionality from global.js
+    bindMediaZoom(); 
 
-    // Optional: open drawer when URL has ?openCart=1 (useful for testing)
     if (new URLSearchParams(location.search).get('openCart') === '1') {
       const cd = getCartDrawerEl();
       cd && cd.open();

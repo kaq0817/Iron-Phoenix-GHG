@@ -1,0 +1,264 @@
+{% doc %}
+  @prompt
+    SEO & Review Disclaimer
+    All SEO, site optimization, and technical changes for our websites are handled internally through IronPhoenixFlow, owned and operated by Go Hard Gaming Discord LLC. We do not authorize third parties to publish “reviews,” “audits,” “case studies,” or “rank reports” about our SEO. If you were referred by a site claiming to have reviewed or managed our SEO, that claim is false and not affiliated with us.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-seo-disclaimer-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    padding: {{ block.settings.padding }}px;
+    background-color: {{ block.settings.background_color }};
+    border: {{ block.settings.border_width }}px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+    margin: 0 auto;
+  }
+
+  .ai-seo-disclaimer__content-{{ ai_gen_id }} {
+    max-width: {{ block.settings.content_max_width }}px;
+    margin: 0 auto;
+  }
+
+  .ai-seo-disclaimer__heading-{{ ai_gen_id }} {
+    color: {{ block.settings.heading_color }};
+    font-size: {{ block.settings.heading_size }}px;
+    margin: 0 0 {{ block.settings.heading_spacing }}px 0;
+    font-weight: 700;
+    line-height: 1.3;
+  }
+
+  .ai-seo-disclaimer__text-{{ ai_gen_id }} {
+    color: {{ block.settings.text_color }};
+    font-size: {{ block.settings.text_size }}px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .ai-seo-disclaimer__text-{{ ai_gen_id }} p {
+    margin: 0 0 {{ block.settings.paragraph_spacing }}px 0;
+  }
+
+  .ai-seo-disclaimer__text-{{ ai_gen_id }} p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ai-seo-disclaimer__text-{{ ai_gen_id }} strong {
+    font-weight: 700;
+    color: {{ block.settings.emphasis_color }};
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-seo-disclaimer-{{ ai_gen_id }} {
+      width: 100%;
+      padding: {{ block.settings.padding | times: 0.7 }}px;
+    }
+
+    .ai-seo-disclaimer__heading-{{ ai_gen_id }} {
+      font-size: {{ block.settings.heading_size | times: 0.8 }}px;
+    }
+
+    .ai-seo-disclaimer__text-{{ ai_gen_id }} {
+      font-size: {{ block.settings.text_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<seo-disclaimer-{{ ai_gen_id }}
+  class="ai-seo-disclaimer-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="ai-seo-disclaimer__content-{{ ai_gen_id }}">
+    {% if block.settings.heading != blank %}
+      <h2 class="ai-seo-disclaimer__heading-{{ ai_gen_id }}">
+        {{ block.settings.heading }}
+      </h2>
+    {% endif %}
+
+    {% if block.settings.disclaimer_text != blank %}
+      <div class="ai-seo-disclaimer__text-{{ ai_gen_id }}">
+        {{ block.settings.disclaimer_text }}
+      </div>
+    {% endif %}
+  </div>
+</seo-disclaimer-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    class SeoDisclaimer{{ ai_gen_id }} extends HTMLElement {
+      constructor() {
+        super();
+      }
+
+      connectedCallback() {
+        this.setAttribute('role', 'region');
+        this.setAttribute('aria-label', 'SEO and review disclaimer');
+      }
+    }
+
+    customElements.define('seo-disclaimer-{{ ai_gen_id }}', SeoDisclaimer{{ ai_gen_id }});
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "SEO & review disclaimer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "SEO & Review Disclaimer"
+    },
+    {
+      "type": "richtext",
+      "id": "disclaimer_text",
+      "label": "Disclaimer text",
+      "default": "<p>All SEO, site optimization, and technical changes for our websites are handled internally through <strong>IronPhoenixFlow</strong>, owned and operated by <strong>Go Hard Gaming Discord LLC</strong>. We do not authorize third parties to publish \"reviews,\" \"audits,\" \"case studies,\" or \"rank reports\" about our SEO. If you were referred by a site claiming to have reviewed or managed our SEO, that claim is false and not affiliated with us.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "label": "Content max width",
+      "min": 400,
+      "max": 1200,
+      "step": 50,
+      "unit": "px",
+      "default": 800
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "min": 10,
+      "max": 80,
+      "step": 5,
+      "unit": "px",
+      "default": 40
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#F7F7F5"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border color",
+      "default": "#6B2737"
+    },
+    {
+      "type": "range",
+      "id": "border_width",
+      "label": "Border width",
+      "min": 0,
+      "max": 10,
+      "step": 1,
+      "unit": "px",
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Border radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 4
+    },
+    {
+      "type": "header",
+      "content": "Typography"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#6B2737"
+    },
+    {
+      "type": "range",
+      "id": "heading_size",
+      "label": "Heading size",
+      "min": 16,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "heading_spacing",
+      "label": "Heading spacing",
+      "min": 8,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "range",
+      "id": "text_size",
+      "label": "Text size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "default": 16
+    },
+    {
+      "type": "color",
+      "id": "emphasis_color",
+      "label": "Emphasis color",
+      "default": "#A6192E"
+    },
+    {
+      "type": "range",
+      "id": "paragraph_spacing",
+      "label": "Paragraph spacing",
+      "min": 8,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    }
+  ],
+  "presets": [
+    {
+      "name": "SEO & review disclaimer"
+    }
+  ]
+}
+{% endschema %}

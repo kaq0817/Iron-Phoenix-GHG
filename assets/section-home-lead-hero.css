@@ -8,8 +8,9 @@
   position: relative;
   display: block;
   width: 100%;
-  overflow: clip;
-  color: var(--color-foreground, #fff);
+  overflow: hidden;
+  color: #ffffff;
+  background: #121212; /* Dark fallback while image loads */
 }
 
 /* Media container */
@@ -27,11 +28,10 @@
   object-position: center;
 }
 
+/* Kill the 95% dark wall and the 30% overlay */
+.home-lead-hero__gradient, 
 .home-lead-hero__overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, calc(var(--hero-overlay, 30) / 100));
-  pointer-events: none;
+  display: none !important;
 }
 
 /* Content container */

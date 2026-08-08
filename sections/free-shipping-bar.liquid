@@ -34,22 +34,21 @@
   }
 
   .fsb__track {
-    background: rgba(255, 255, 255, 0.3);
-    height: 6px;
-    border-radius: 3px;
-    overflow: hidden;
-    max-width: 400px;
-    margin: 0 auto;
-  }
+  background: rgba(255, 255, 255, 0.25);  /* the empty part */
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  max-width: 400px;
+  margin: 0 auto;
+}
 
-  .fsb__bar {
-    background: rgba(255, 255, 255, 0.9);
-    height: 100%;
-    border-radius: 3px;
-    width: var(--fsb-progress);
-    transition: width 0.3s ease;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-  }
+.fsb__bar {
+  background: #ffffff;  /* solid white for the filled part */
+  height: 100%;
+  border-radius: 3px;
+  width: var(--fsb-progress);
+  transition: width 0.3s ease;
+}
 
   @media (max-width: 768px) {
     .free-shipping-bar {
@@ -86,18 +85,8 @@
     assign should_hide = true
   endif
 
-  assign default_threshold_cents = section.settings.default_threshold | remove: '$' | remove: ',' | times: 100
-  assign vip_threshold_cents = section.settings.vip_threshold | remove: '$' | remove: ',' | times: 100
-  assign legend_threshold_enabled = section.settings.legend_free_shipping | default: true
-
-  assign threshold_cents = default_threshold_cents
-  if customer
-    if legend_threshold_enabled and customer.tags contains 'Legend'
-      assign threshold_cents = 0
-    elsif customer.tags contains 'VIP' or customer.tags contains 'Pro'
-      assign threshold_cents = vip_threshold_cents
-    endif
-  endif
+assign default_threshold_cents = section.settings.default_threshold | default: '159' | remove: '$' | remove: ',' | times: 100
+assign threshold_cents = default_threshold_cents
 
   assign cart_total = cart.total_price | default: 0
   assign item_count = cart.items | size
@@ -127,21 +116,16 @@
 
 {%- unless should_hide -%}
   <div class="free-shipping-bar{% if is_empty_state %} is-empty{% endif %}" role="status" aria-live="polite">
-    {%- if threshold_cents == 0 -%}
-      <p class="fsb__text">🎉 You get <strong>free shipping</strong> on every order!</p>
-    {%- elsif cart_total >= threshold_cents -%}
-      <p class="fsb__text">🎉 You qualify for <strong>free shipping!</strong></p>
+    {%- if cart_total >= threshold_cents -%}
+      <p class="fsb__text">🎉 You qualify for free shipping!</p>
+    {%- elsif is_empty_state -%}
+      <p class="fsb__text">
+        🛍️ Spend <strong>{{ threshold_cents | money }}</strong> for free shipping!
+      </p>
     {%- else -%}
-      {%- if is_empty_state -%}
-        <p class="fsb__text">
-          🛍️ Start shopping and get <strong>free shipping</strong> on orders over {{ threshold_cents | money }}!
-        </p>
-      {%- else -%}
-        {% capture amount_remaining_money %}{{ amount_remaining | money }}{% endcapture %}
-        <p class="fsb__text">
-          Add <strong>{{ amount_remaining_money }}</strong> more for <strong>free shipping!</strong>
-        </p>
-      {%- endif -%}
+      <p class="fsb__text">
+        Add <strong>{{ amount_remaining | money }}</strong> more for free shipping!
+      </p>
     {%- endif -%}
 
     {%- unless is_empty_state and cart_total == 0 -%}
@@ -151,6 +135,8 @@
     {%- endunless -%}
   </div>
 {%- endunless -%}
+
+
 
 {% schema %}
 {
@@ -177,23 +163,9 @@
     {
       "type": "text",
       "id": "default_threshold",
-      "label": "Default free shipping threshold",
-      "default": "$159.00",
-      "info": "Amount needed for free shipping"
-    },
-    {
-      "type": "text",
-      "id": "vip_threshold",
-      "label": "VIP/Pro customer threshold",
-      "default": "$139.00",
-      "info": "Lower threshold for VIP customers"
-    },
-    {
-      "type": "checkbox",
-      "id": "legend_free_shipping",
-      "label": "Legend customers get free shipping",
-      "default": true,
-      "info": "Legend tier customers always qualify"
+      "label": "Free shipping threshold",
+      "default": "159",
+      "info": "Order amount needed to qualify for free shipping"
     }
   ],
   "presets": [
