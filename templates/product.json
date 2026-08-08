@@ -24,7 +24,7 @@
             "button_text_with_personalization": "Remove saved design",
             "button_extra_classes": "product-form__buttons button--full-width",
             "button_extra_classes_with_personalization": "product-form__buttons button--full-width button--secondary",
-            "button_color": "#007bff",
+            "button_color": "#6B2737",
             "text_color": "#ffffff",
             "button_padding": "12px 24px",
             "font_size": "16px",
